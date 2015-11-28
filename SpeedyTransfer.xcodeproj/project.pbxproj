@@ -1,0 +1,305 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		CED62A2F1C094FDD00270EDB /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = CED62A2E1C094FDD00270EDB /* main.m */; };
+		CED62A321C094FDD00270EDB /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = CED62A311C094FDD00270EDB /* AppDelegate.m */; };
+		CED62A351C094FDD00270EDB /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CED62A341C094FDD00270EDB /* ViewController.m */; };
+		CED62A381C094FDD00270EDB /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CED62A361C094FDD00270EDB /* Main.storyboard */; };
+		CED62A3A1C094FDD00270EDB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CED62A391C094FDD00270EDB /* Assets.xcassets */; };
+		CED62A3D1C094FDD00270EDB /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CED62A3B1C094FDD00270EDB /* LaunchScreen.storyboard */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		CED62A2A1C094FDD00270EDB /* SpeedyTransfer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SpeedyTransfer.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		CED62A2E1C094FDD00270EDB /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		CED62A301C094FDD00270EDB /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		CED62A311C094FDD00270EDB /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		CED62A331C094FDD00270EDB /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
+		CED62A341C094FDD00270EDB /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
+		CED62A371C094FDD00270EDB /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		CED62A391C094FDD00270EDB /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		CED62A3C1C094FDD00270EDB /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		CED62A3E1C094FDD00270EDB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		CED62A271C094FDD00270EDB /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		CED62A211C094FDD00270EDB = {
+			isa = PBXGroup;
+			children = (
+				CED62A2C1C094FDD00270EDB /* SpeedyTransfer */,
+				CED62A2B1C094FDD00270EDB /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		CED62A2B1C094FDD00270EDB /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				CED62A2A1C094FDD00270EDB /* SpeedyTransfer.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		CED62A2C1C094FDD00270EDB /* SpeedyTransfer */ = {
+			isa = PBXGroup;
+			children = (
+				CED62A301C094FDD00270EDB /* AppDelegate.h */,
+				CED62A311C094FDD00270EDB /* AppDelegate.m */,
+				CED62A331C094FDD00270EDB /* ViewController.h */,
+				CED62A341C094FDD00270EDB /* ViewController.m */,
+				CED62A361C094FDD00270EDB /* Main.storyboard */,
+				CED62A391C094FDD00270EDB /* Assets.xcassets */,
+				CED62A3B1C094FDD00270EDB /* LaunchScreen.storyboard */,
+				CED62A3E1C094FDD00270EDB /* Info.plist */,
+				CED62A2D1C094FDD00270EDB /* Supporting Files */,
+			);
+			path = SpeedyTransfer;
+			sourceTree = "<group>";
+		};
+		CED62A2D1C094FDD00270EDB /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				CED62A2E1C094FDD00270EDB /* main.m */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		CED62A291C094FDD00270EDB /* SpeedyTransfer */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = CED62A411C094FDD00270EDB /* Build configuration list for PBXNativeTarget "SpeedyTransfer" */;
+			buildPhases = (
+				CED62A261C094FDD00270EDB /* Sources */,
+				CED62A271C094FDD00270EDB /* Frameworks */,
+				CED62A281C094FDD00270EDB /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = SpeedyTransfer;
+			productName = SpeedyTransfer;
+			productReference = CED62A2A1C094FDD00270EDB /* SpeedyTransfer.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		CED62A221C094FDD00270EDB /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0710;
+				ORGANIZATIONNAME = ZZ;
+				TargetAttributes = {
+					CED62A291C094FDD00270EDB = {
+						CreatedOnToolsVersion = 7.1.1;
+					};
+				};
+			};
+			buildConfigurationList = CED62A251C094FDD00270EDB /* Build configuration list for PBXProject "SpeedyTransfer" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = CED62A211C094FDD00270EDB;
+			productRefGroup = CED62A2B1C094FDD00270EDB /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				CED62A291C094FDD00270EDB /* SpeedyTransfer */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		CED62A281C094FDD00270EDB /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CED62A3D1C094FDD00270EDB /* LaunchScreen.storyboard in Resources */,
+				CED62A3A1C094FDD00270EDB /* Assets.xcassets in Resources */,
+				CED62A381C094FDD00270EDB /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		CED62A261C094FDD00270EDB /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CED62A351C094FDD00270EDB /* ViewController.m in Sources */,
+				CED62A321C094FDD00270EDB /* AppDelegate.m in Sources */,
+				CED62A2F1C094FDD00270EDB /* main.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		CED62A361C094FDD00270EDB /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				CED62A371C094FDD00270EDB /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		CED62A3B1C094FDD00270EDB /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				CED62A3C1C094FDD00270EDB /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		CED62A3F1C094FDD00270EDB /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.1;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+			};
+			name = Debug;
+		};
+		CED62A401C094FDD00270EDB /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.1;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		CED62A421C094FDD00270EDB /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				INFOPLIST_FILE = SpeedyTransfer/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.zz.SpeedyTransfer;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		CED62A431C094FDD00270EDB /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				INFOPLIST_FILE = SpeedyTransfer/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.zz.SpeedyTransfer;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		CED62A251C094FDD00270EDB /* Build configuration list for PBXProject "SpeedyTransfer" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CED62A3F1C094FDD00270EDB /* Debug */,
+				CED62A401C094FDD00270EDB /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		CED62A411C094FDD00270EDB /* Build configuration list for PBXNativeTarget "SpeedyTransfer" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CED62A421C094FDD00270EDB /* Debug */,
+				CED62A431C094FDD00270EDB /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = CED62A221C094FDD00270EDB /* Project object */;
+}
