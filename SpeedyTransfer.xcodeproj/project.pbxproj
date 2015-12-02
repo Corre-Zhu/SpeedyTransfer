@@ -7,25 +7,40 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		CED62A2F1C094FDD00270EDB /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = CED62A2E1C094FDD00270EDB /* main.m */; };
+		81B11DB05739291B2827F0AD /* libPods-SpeedyTransfer.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 43A35BB86492F999A43AE1F4 /* libPods-SpeedyTransfer.a */; };
+		CED003121C0B2766005146A4 /* UIButton+ZZ.m in Sources */ = {isa = PBXBuildFile; fileRef = CED003111C0B2766005146A4 /* UIButton+ZZ.m */; };
 		CED62A321C094FDD00270EDB /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = CED62A311C094FDD00270EDB /* AppDelegate.m */; };
-		CED62A351C094FDD00270EDB /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CED62A341C094FDD00270EDB /* ViewController.m */; };
-		CED62A381C094FDD00270EDB /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CED62A361C094FDD00270EDB /* Main.storyboard */; };
-		CED62A3A1C094FDD00270EDB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CED62A391C094FDD00270EDB /* Assets.xcassets */; };
-		CED62A3D1C094FDD00270EDB /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CED62A3B1C094FDD00270EDB /* LaunchScreen.storyboard */; };
+		CED62A351C094FDD00270EDB /* STHomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CED62A341C094FDD00270EDB /* STHomeViewController.m */; };
+		CED62A481C09512100270EDB /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = CED62A461C09512100270EDB /* main.m */; };
+		CED62A4B1C09514200270EDB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CED62A4A1C09514200270EDB /* Assets.xcassets */; };
+		CED62A531C09719500270EDB /* UIView+ZZ.m in Sources */ = {isa = PBXBuildFile; fileRef = CED62A521C09719500270EDB /* UIView+ZZ.m */; };
+		CED62A561C09721F00270EDB /* UIDevice+ZZ.m in Sources */ = {isa = PBXBuildFile; fileRef = CED62A551C09721F00270EDB /* UIDevice+ZZ.m */; };
+		CED62A5F1C099C6000270EDB /* UIColor+ZZ.m in Sources */ = {isa = PBXBuildFile; fileRef = CED62A5E1C099C6000270EDB /* UIColor+ZZ.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		43A35BB86492F999A43AE1F4 /* libPods-SpeedyTransfer.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-SpeedyTransfer.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		8EA48F6AD6EDCB7E537ACCBC /* Pods-SpeedyTransfer.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SpeedyTransfer.debug.xcconfig"; path = "Pods/Target Support Files/Pods-SpeedyTransfer/Pods-SpeedyTransfer.debug.xcconfig"; sourceTree = "<group>"; };
+		CED003101C0B2766005146A4 /* UIButton+ZZ.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIButton+ZZ.h"; sourceTree = "<group>"; };
+		CED003111C0B2766005146A4 /* UIButton+ZZ.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIButton+ZZ.m"; sourceTree = "<group>"; };
 		CED62A2A1C094FDD00270EDB /* SpeedyTransfer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SpeedyTransfer.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		CED62A2E1C094FDD00270EDB /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		CED62A301C094FDD00270EDB /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		CED62A311C094FDD00270EDB /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
-		CED62A331C094FDD00270EDB /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
-		CED62A341C094FDD00270EDB /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
-		CED62A371C094FDD00270EDB /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
-		CED62A391C094FDD00270EDB /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		CED62A3C1C094FDD00270EDB /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
-		CED62A3E1C094FDD00270EDB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		CED62A331C094FDD00270EDB /* STHomeViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = STHomeViewController.h; sourceTree = "<group>"; };
+		CED62A341C094FDD00270EDB /* STHomeViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = STHomeViewController.m; sourceTree = "<group>"; };
+		CED62A451C09512100270EDB /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		CED62A461C09512100270EDB /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		CED62A4A1C09514200270EDB /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		CED62A511C09719500270EDB /* UIView+ZZ.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+ZZ.h"; sourceTree = "<group>"; };
+		CED62A521C09719500270EDB /* UIView+ZZ.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+ZZ.m"; sourceTree = "<group>"; };
+		CED62A541C09721F00270EDB /* UIDevice+ZZ.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIDevice+ZZ.h"; sourceTree = "<group>"; };
+		CED62A551C09721F00270EDB /* UIDevice+ZZ.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIDevice+ZZ.m"; sourceTree = "<group>"; };
+		CED62A571C09722E00270EDB /* ZZCategory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZZCategory.h; sourceTree = "<group>"; };
+		CED62A581C0972EB00270EDB /* SpeedyTransfer-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "SpeedyTransfer-Prefix.pch"; sourceTree = "<group>"; };
+		CED62A5D1C099C6000270EDB /* UIColor+ZZ.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+ZZ.h"; sourceTree = "<group>"; };
+		CED62A5E1C099C6000270EDB /* UIColor+ZZ.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+ZZ.m"; sourceTree = "<group>"; };
+		CED62A611C09A53F00270EDB /* ZZMacros.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZZMacros.h; sourceTree = "<group>"; };
+		FBFC0383354923B95659CB9F /* Pods-SpeedyTransfer.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SpeedyTransfer.release.xcconfig"; path = "Pods/Target Support Files/Pods-SpeedyTransfer/Pods-SpeedyTransfer.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -33,17 +48,40 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				81B11DB05739291B2827F0AD /* libPods-SpeedyTransfer.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		37DD61B7600E78194ED4A9FD /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				8EA48F6AD6EDCB7E537ACCBC /* Pods-SpeedyTransfer.debug.xcconfig */,
+				FBFC0383354923B95659CB9F /* Pods-SpeedyTransfer.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
+		5AED4E2A6C934D663D247AEC /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				43A35BB86492F999A43AE1F4 /* libPods-SpeedyTransfer.a */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		CED62A211C094FDD00270EDB = {
 			isa = PBXGroup;
 			children = (
+				CED62A601C09A52200270EDB /* Common */,
+				CED62A491C09514200270EDB /* Resource */,
+				CED62A501C09718600270EDB /* Category */,
 				CED62A2C1C094FDD00270EDB /* SpeedyTransfer */,
 				CED62A2B1C094FDD00270EDB /* Products */,
+				37DD61B7600E78194ED4A9FD /* Pods */,
+				5AED4E2A6C934D663D247AEC /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -60,23 +98,56 @@
 			children = (
 				CED62A301C094FDD00270EDB /* AppDelegate.h */,
 				CED62A311C094FDD00270EDB /* AppDelegate.m */,
-				CED62A331C094FDD00270EDB /* ViewController.h */,
-				CED62A341C094FDD00270EDB /* ViewController.m */,
-				CED62A361C094FDD00270EDB /* Main.storyboard */,
-				CED62A391C094FDD00270EDB /* Assets.xcassets */,
-				CED62A3B1C094FDD00270EDB /* LaunchScreen.storyboard */,
-				CED62A3E1C094FDD00270EDB /* Info.plist */,
-				CED62A2D1C094FDD00270EDB /* Supporting Files */,
+				CED62A331C094FDD00270EDB /* STHomeViewController.h */,
+				CED62A341C094FDD00270EDB /* STHomeViewController.m */,
+				CED62A441C09512100270EDB /* Supporting Files */,
 			);
 			path = SpeedyTransfer;
 			sourceTree = "<group>";
 		};
-		CED62A2D1C094FDD00270EDB /* Supporting Files */ = {
+		CED62A441C09512100270EDB /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				CED62A2E1C094FDD00270EDB /* main.m */,
+				CED62A581C0972EB00270EDB /* SpeedyTransfer-Prefix.pch */,
+				CED62A451C09512100270EDB /* Info.plist */,
+				CED62A461C09512100270EDB /* main.m */,
 			);
-			name = "Supporting Files";
+			path = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		CED62A491C09514200270EDB /* Resource */ = {
+			isa = PBXGroup;
+			children = (
+				CED62A4A1C09514200270EDB /* Assets.xcassets */,
+			);
+			name = Resource;
+			path = SpeedyTransfer/Resource;
+			sourceTree = "<group>";
+		};
+		CED62A501C09718600270EDB /* Category */ = {
+			isa = PBXGroup;
+			children = (
+				CED62A571C09722E00270EDB /* ZZCategory.h */,
+				CED62A5D1C099C6000270EDB /* UIColor+ZZ.h */,
+				CED62A5E1C099C6000270EDB /* UIColor+ZZ.m */,
+				CED62A511C09719500270EDB /* UIView+ZZ.h */,
+				CED62A521C09719500270EDB /* UIView+ZZ.m */,
+				CED62A541C09721F00270EDB /* UIDevice+ZZ.h */,
+				CED62A551C09721F00270EDB /* UIDevice+ZZ.m */,
+				CED003101C0B2766005146A4 /* UIButton+ZZ.h */,
+				CED003111C0B2766005146A4 /* UIButton+ZZ.m */,
+			);
+			name = Category;
+			path = SpeedyTransfer/Category;
+			sourceTree = "<group>";
+		};
+		CED62A601C09A52200270EDB /* Common */ = {
+			isa = PBXGroup;
+			children = (
+				CED62A611C09A53F00270EDB /* ZZMacros.h */,
+			);
+			name = Common;
+			path = SpeedyTransfer/Common;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -86,9 +157,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = CED62A411C094FDD00270EDB /* Build configuration list for PBXNativeTarget "SpeedyTransfer" */;
 			buildPhases = (
+				0361190F0683BA9A8645CADC /* Check Pods Manifest.lock */,
 				CED62A261C094FDD00270EDB /* Sources */,
 				CED62A271C094FDD00270EDB /* Frameworks */,
 				CED62A281C094FDD00270EDB /* Resources */,
+				CBA6A0EE3C50FF64B281767C /* Embed Pods Frameworks */,
+				0AEB88C6B2B5337C97F565E5 /* Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -136,45 +210,76 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CED62A3D1C094FDD00270EDB /* LaunchScreen.storyboard in Resources */,
-				CED62A3A1C094FDD00270EDB /* Assets.xcassets in Resources */,
-				CED62A381C094FDD00270EDB /* Main.storyboard in Resources */,
+				CED62A4B1C09514200270EDB /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		0361190F0683BA9A8645CADC /* Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		0AEB88C6B2B5337C97F565E5 /* Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-SpeedyTransfer/Pods-SpeedyTransfer-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		CBA6A0EE3C50FF64B281767C /* Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-SpeedyTransfer/Pods-SpeedyTransfer-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		CED62A261C094FDD00270EDB /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CED62A351C094FDD00270EDB /* ViewController.m in Sources */,
+				CED62A351C094FDD00270EDB /* STHomeViewController.m in Sources */,
+				CED62A561C09721F00270EDB /* UIDevice+ZZ.m in Sources */,
+				CED62A481C09512100270EDB /* main.m in Sources */,
+				CED62A5F1C099C6000270EDB /* UIColor+ZZ.m in Sources */,
+				CED003121C0B2766005146A4 /* UIButton+ZZ.m in Sources */,
+				CED62A531C09719500270EDB /* UIView+ZZ.m in Sources */,
 				CED62A321C094FDD00270EDB /* AppDelegate.m in Sources */,
-				CED62A2F1C094FDD00270EDB /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
-
-/* Begin PBXVariantGroup section */
-		CED62A361C094FDD00270EDB /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				CED62A371C094FDD00270EDB /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
-		CED62A3B1C094FDD00270EDB /* LaunchScreen.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				CED62A3C1C094FDD00270EDB /* Base */,
-			);
-			name = LaunchScreen.storyboard;
-			sourceTree = "<group>";
-		};
-/* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
 		CED62A3F1C094FDD00270EDB /* Debug */ = {
@@ -259,9 +364,13 @@
 		};
 		CED62A421C094FDD00270EDB /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 8EA48F6AD6EDCB7E537ACCBC /* Pods-SpeedyTransfer.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				INFOPLIST_FILE = SpeedyTransfer/Info.plist;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				GCC_PREFIX_HEADER = "SpeedyTransfer/Supporting Files/SpeedyTransfer-Prefix.pch";
+				INFOPLIST_FILE = "$(SRCROOT)/SpeedyTransfer/Supporting Files/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.zz.SpeedyTransfer;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -270,9 +379,13 @@
 		};
 		CED62A431C094FDD00270EDB /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = FBFC0383354923B95659CB9F /* Pods-SpeedyTransfer.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				INFOPLIST_FILE = SpeedyTransfer/Info.plist;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				GCC_PREFIX_HEADER = "SpeedyTransfer/Supporting Files/SpeedyTransfer-Prefix.pch";
+				INFOPLIST_FILE = "$(SRCROOT)/SpeedyTransfer/Supporting Files/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.zz.SpeedyTransfer;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -298,6 +411,7 @@
 				CED62A431C094FDD00270EDB /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

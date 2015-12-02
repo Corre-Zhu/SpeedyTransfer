@@ -1,0 +1,460 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		06262BDE10D2D76360ED852BB79B31FB /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3E4E89230EF59BC255123B67864ACF77 /* Foundation.framework */; };
+		1C3E5CE7E8950002862A544209712A79 /* GCDSemaphore.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DB78DE69AEB7F54D7DED90579E3D1D5 /* GCDSemaphore.m */; };
+		1DA27084EC1A8E529BBDEA841ABAD733 /* GCDSemaphore.h in Headers */ = {isa = PBXBuildFile; fileRef = BE57D586FA10268F2D68210F81BFE2CF /* GCDSemaphore.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		1FCB914F9363FC32F4C86A9929199B32 /* GCDGroup.m in Sources */ = {isa = PBXBuildFile; fileRef = 71605E2CC5B5521AF718CEBCC94348EB /* GCDGroup.m */; };
+		5BC78A79147CE5CB0566C12E11E4D817 /* GCDQueue.h in Headers */ = {isa = PBXBuildFile; fileRef = AC6F61FF97EB3E5C05CA0DAA29799354 /* GCDQueue.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		A5B9450BD2806C684C41B50EB899BD10 /* GCDQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = 8F051079C7CA93F71F2E17BA1C0435E2 /* GCDQueue.m */; };
+		CDD0FA434E11CB21A99E331626D142B6 /* GCDGroup.h in Headers */ = {isa = PBXBuildFile; fileRef = F55EA855FD319332CF2398FD9E78289B /* GCDGroup.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		EC812E043CE7B162797525F39A981B18 /* GCDObjC.h in Headers */ = {isa = PBXBuildFile; fileRef = 8A38C56F803E165F58064B33D156565E /* GCDObjC.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		EE27B8E80E51A0444881F9FABB0A255E /* GCDObjC-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 91A218C9210B1F9B46FB8A6FA4C186AD /* GCDObjC-dummy.m */; };
+		F0A5544103319D4CB547816A479347E5 /* GCDMacros.h in Headers */ = {isa = PBXBuildFile; fileRef = 0A3814F14B77811F2C469CD298F3D5D5 /* GCDMacros.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		F84BCFEAA3CDAD1552496B4E30DDA8A7 /* Pods-SpeedyTransfer-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = B4E98B6C0EC082337CE380FE4B521773 /* Pods-SpeedyTransfer-dummy.m */; };
+		FC4F937A8CF65A538537FE630689B06F /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3E4E89230EF59BC255123B67864ACF77 /* Foundation.framework */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		725E16326743D0223B8C02B39AFC4A50 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D41D8CD98F00B204E9800998ECF8427E /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 64538076362B64A72AE20CC6B0836BA5;
+			remoteInfo = GCDObjC;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		0A3814F14B77811F2C469CD298F3D5D5 /* GCDMacros.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = GCDMacros.h; path = GCDObjC/GCDMacros.h; sourceTree = "<group>"; };
+		14623781D58A0460C9196B4E3BED3CD0 /* GCDObjC-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "GCDObjC-prefix.pch"; sourceTree = "<group>"; };
+		1DB78DE69AEB7F54D7DED90579E3D1D5 /* GCDSemaphore.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = GCDSemaphore.m; path = GCDObjC/GCDSemaphore.m; sourceTree = "<group>"; };
+		3E4E89230EF59BC255123B67864ACF77 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS9.0.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
+		485A61B68D931D04873BE249BD719A6E /* Pods-SpeedyTransfer-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-SpeedyTransfer-acknowledgements.markdown"; sourceTree = "<group>"; };
+		59498D518A454A974469D6494689EE1E /* Pods-SpeedyTransfer-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-SpeedyTransfer-acknowledgements.plist"; sourceTree = "<group>"; };
+		5E989B1693BE1C2BD743C5B479BA8C31 /* libPods-SpeedyTransfer.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-SpeedyTransfer.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		6578C25E2E21AA6341258FDBF357E2C7 /* Pods-SpeedyTransfer-frameworks.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-SpeedyTransfer-frameworks.sh"; sourceTree = "<group>"; };
+		71605E2CC5B5521AF718CEBCC94348EB /* GCDGroup.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = GCDGroup.m; path = GCDObjC/GCDGroup.m; sourceTree = "<group>"; };
+		8A38C56F803E165F58064B33D156565E /* GCDObjC.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = GCDObjC.h; path = GCDObjC/GCDObjC.h; sourceTree = "<group>"; };
+		8F051079C7CA93F71F2E17BA1C0435E2 /* GCDQueue.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = GCDQueue.m; path = GCDObjC/GCDQueue.m; sourceTree = "<group>"; };
+		91A218C9210B1F9B46FB8A6FA4C186AD /* GCDObjC-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "GCDObjC-dummy.m"; sourceTree = "<group>"; };
+		97A3B52DCF04E7601824803762ED9A34 /* Pods-SpeedyTransfer.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-SpeedyTransfer.release.xcconfig"; sourceTree = "<group>"; };
+		A5AF6EE70736507CB423BB9484853B46 /* libGCDObjC.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libGCDObjC.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		AC6F61FF97EB3E5C05CA0DAA29799354 /* GCDQueue.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = GCDQueue.h; path = GCDObjC/GCDQueue.h; sourceTree = "<group>"; };
+		B4E98B6C0EC082337CE380FE4B521773 /* Pods-SpeedyTransfer-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-SpeedyTransfer-dummy.m"; sourceTree = "<group>"; };
+		B622D9715DC58363558D31534B942169 /* Pods-SpeedyTransfer.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-SpeedyTransfer.debug.xcconfig"; sourceTree = "<group>"; };
+		BA6428E9F66FD5A23C0A2E06ED26CD2F /* Podfile */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		BB42EB5A41E8E9646F7EFEDC34D4EA11 /* GCDObjC.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = GCDObjC.xcconfig; sourceTree = "<group>"; };
+		BE57D586FA10268F2D68210F81BFE2CF /* GCDSemaphore.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = GCDSemaphore.h; path = GCDObjC/GCDSemaphore.h; sourceTree = "<group>"; };
+		CFE0864FE03F9C351DE31EFC9E882844 /* Pods-SpeedyTransfer-resources.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-SpeedyTransfer-resources.sh"; sourceTree = "<group>"; };
+		F55EA855FD319332CF2398FD9E78289B /* GCDGroup.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = GCDGroup.h; path = GCDObjC/GCDGroup.h; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		0378E9AD1FE76C67867DFEE43AA63E27 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				06262BDE10D2D76360ED852BB79B31FB /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E1606FCF54753AF136D954DCD82CC45A /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FC4F937A8CF65A538537FE630689B06F /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		1A5243991D068ABF798149EA8383C393 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				1A9E578686EC1EC0381796FE77495150 /* GCDObjC */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
+		1A9E578686EC1EC0381796FE77495150 /* GCDObjC */ = {
+			isa = PBXGroup;
+			children = (
+				F55EA855FD319332CF2398FD9E78289B /* GCDGroup.h */,
+				71605E2CC5B5521AF718CEBCC94348EB /* GCDGroup.m */,
+				0A3814F14B77811F2C469CD298F3D5D5 /* GCDMacros.h */,
+				8A38C56F803E165F58064B33D156565E /* GCDObjC.h */,
+				AC6F61FF97EB3E5C05CA0DAA29799354 /* GCDQueue.h */,
+				8F051079C7CA93F71F2E17BA1C0435E2 /* GCDQueue.m */,
+				BE57D586FA10268F2D68210F81BFE2CF /* GCDSemaphore.h */,
+				1DB78DE69AEB7F54D7DED90579E3D1D5 /* GCDSemaphore.m */,
+				B791378CD0CEFD3EAD4548564326165D /* Support Files */,
+			);
+			path = GCDObjC;
+			sourceTree = "<group>";
+		};
+		1CA05F776C183C55C28DB6AD9A86E269 /* Pods-SpeedyTransfer */ = {
+			isa = PBXGroup;
+			children = (
+				485A61B68D931D04873BE249BD719A6E /* Pods-SpeedyTransfer-acknowledgements.markdown */,
+				59498D518A454A974469D6494689EE1E /* Pods-SpeedyTransfer-acknowledgements.plist */,
+				B4E98B6C0EC082337CE380FE4B521773 /* Pods-SpeedyTransfer-dummy.m */,
+				6578C25E2E21AA6341258FDBF357E2C7 /* Pods-SpeedyTransfer-frameworks.sh */,
+				CFE0864FE03F9C351DE31EFC9E882844 /* Pods-SpeedyTransfer-resources.sh */,
+				B622D9715DC58363558D31534B942169 /* Pods-SpeedyTransfer.debug.xcconfig */,
+				97A3B52DCF04E7601824803762ED9A34 /* Pods-SpeedyTransfer.release.xcconfig */,
+			);
+			name = "Pods-SpeedyTransfer";
+			path = "Target Support Files/Pods-SpeedyTransfer";
+			sourceTree = "<group>";
+		};
+		36A799A527542504452B857F6BF778B5 /* Targets Support Files */ = {
+			isa = PBXGroup;
+			children = (
+				1CA05F776C183C55C28DB6AD9A86E269 /* Pods-SpeedyTransfer */,
+			);
+			name = "Targets Support Files";
+			sourceTree = "<group>";
+		};
+		7DB346D0F39D3F0E887471402A8071AB = {
+			isa = PBXGroup;
+			children = (
+				BA6428E9F66FD5A23C0A2E06ED26CD2F /* Podfile */,
+				BC3CA7F9E30CC8F7E2DD044DD34432FC /* Frameworks */,
+				1A5243991D068ABF798149EA8383C393 /* Pods */,
+				FF478BD70963EE3960B1E93322CF587F /* Products */,
+				36A799A527542504452B857F6BF778B5 /* Targets Support Files */,
+			);
+			sourceTree = "<group>";
+		};
+		B791378CD0CEFD3EAD4548564326165D /* Support Files */ = {
+			isa = PBXGroup;
+			children = (
+				BB42EB5A41E8E9646F7EFEDC34D4EA11 /* GCDObjC.xcconfig */,
+				91A218C9210B1F9B46FB8A6FA4C186AD /* GCDObjC-dummy.m */,
+				14623781D58A0460C9196B4E3BED3CD0 /* GCDObjC-prefix.pch */,
+			);
+			name = "Support Files";
+			path = "../Target Support Files/GCDObjC";
+			sourceTree = "<group>";
+		};
+		BC3CA7F9E30CC8F7E2DD044DD34432FC /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				BF6342C8B29F4CEEA088EFF7AB4DE362 /* iOS */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		BF6342C8B29F4CEEA088EFF7AB4DE362 /* iOS */ = {
+			isa = PBXGroup;
+			children = (
+				3E4E89230EF59BC255123B67864ACF77 /* Foundation.framework */,
+			);
+			name = iOS;
+			sourceTree = "<group>";
+		};
+		FF478BD70963EE3960B1E93322CF587F /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				A5AF6EE70736507CB423BB9484853B46 /* libGCDObjC.a */,
+				5E989B1693BE1C2BD743C5B479BA8C31 /* libPods-SpeedyTransfer.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		585EE5D96E3A59FA9BCDA093A591669F /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CDD0FA434E11CB21A99E331626D142B6 /* GCDGroup.h in Headers */,
+				F0A5544103319D4CB547816A479347E5 /* GCDMacros.h in Headers */,
+				EC812E043CE7B162797525F39A981B18 /* GCDObjC.h in Headers */,
+				5BC78A79147CE5CB0566C12E11E4D817 /* GCDQueue.h in Headers */,
+				1DA27084EC1A8E529BBDEA841ABAD733 /* GCDSemaphore.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXNativeTarget section */
+		0317265198D44958C3C74F5F0498C0F0 /* Pods-SpeedyTransfer */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = B25FDFC4A0B7D43C37627EE3DD5EDF2B /* Build configuration list for PBXNativeTarget "Pods-SpeedyTransfer" */;
+			buildPhases = (
+				3D1F570AAB9C6DDD765E4E4E6ACE2ABC /* Sources */,
+				E1606FCF54753AF136D954DCD82CC45A /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				39B61CD07C2F636FC4CFD27347EF77F0 /* PBXTargetDependency */,
+			);
+			name = "Pods-SpeedyTransfer";
+			productName = "Pods-SpeedyTransfer";
+			productReference = 5E989B1693BE1C2BD743C5B479BA8C31 /* libPods-SpeedyTransfer.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+		64538076362B64A72AE20CC6B0836BA5 /* GCDObjC */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = FA1D77F97D9647FB12FFA61599C2DDEC /* Build configuration list for PBXNativeTarget "GCDObjC" */;
+			buildPhases = (
+				1FABC53D59E7661C003E3F8C3CEBF6A0 /* Sources */,
+				0378E9AD1FE76C67867DFEE43AA63E27 /* Frameworks */,
+				585EE5D96E3A59FA9BCDA093A591669F /* Headers */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = GCDObjC;
+			productName = GCDObjC;
+			productReference = A5AF6EE70736507CB423BB9484853B46 /* libGCDObjC.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		D41D8CD98F00B204E9800998ECF8427E /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 0700;
+				LastUpgradeCheck = 0700;
+			};
+			buildConfigurationList = 2D8E8EC45A3A1A1D94AE762CB5028504 /* Build configuration list for PBXProject "Pods" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 7DB346D0F39D3F0E887471402A8071AB;
+			productRefGroup = FF478BD70963EE3960B1E93322CF587F /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				64538076362B64A72AE20CC6B0836BA5 /* GCDObjC */,
+				0317265198D44958C3C74F5F0498C0F0 /* Pods-SpeedyTransfer */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		1FABC53D59E7661C003E3F8C3CEBF6A0 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1FCB914F9363FC32F4C86A9929199B32 /* GCDGroup.m in Sources */,
+				EE27B8E80E51A0444881F9FABB0A255E /* GCDObjC-dummy.m in Sources */,
+				A5B9450BD2806C684C41B50EB899BD10 /* GCDQueue.m in Sources */,
+				1C3E5CE7E8950002862A544209712A79 /* GCDSemaphore.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		3D1F570AAB9C6DDD765E4E4E6ACE2ABC /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F84BCFEAA3CDAD1552496B4E30DDA8A7 /* Pods-SpeedyTransfer-dummy.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		39B61CD07C2F636FC4CFD27347EF77F0 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = GCDObjC;
+			target = 64538076362B64A72AE20CC6B0836BA5 /* GCDObjC */;
+			targetProxy = 725E16326743D0223B8C02B39AFC4A50 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		052A17875CB827423D627183396CEB60 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = YES;
+				ENABLE_NS_ASSERTIONS = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_PREPROCESSOR_DEFINITIONS = "RELEASE=1";
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				STRIP_INSTALLED_PRODUCT = NO;
+				SYMROOT = "${SRCROOT}/../build";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		2208D85D67742CDC485BC0F0DF242500 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 97A3B52DCF04E7601824803762ED9A34 /* Pods-SpeedyTransfer.release.xcconfig */;
+			buildSettings = {
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				MACH_O_TYPE = staticlib;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+			};
+			name = Release;
+		};
+		324F0C44073779C99D4F6D56FA6D7C61 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = BB42EB5A41E8E9646F7EFEDC34D4EA11 /* GCDObjC.xcconfig */;
+			buildSettings = {
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_PREFIX_HEADER = "Target Support Files/GCDObjC/GCDObjC-prefix.pch";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PRIVATE_HEADERS_FOLDER_PATH = "";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PUBLIC_HEADERS_FOLDER_PATH = "";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
+		9D4AB32BC7AE3B73C559FF6F84CA6B9A /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = BB42EB5A41E8E9646F7EFEDC34D4EA11 /* GCDObjC.xcconfig */;
+			buildSettings = {
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_PREFIX_HEADER = "Target Support Files/GCDObjC/GCDObjC-prefix.pch";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PRIVATE_HEADERS_FOLDER_PATH = "";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PUBLIC_HEADERS_FOLDER_PATH = "";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+			};
+			name = Release;
+		};
+		B37F0F91F85060E28F1DAAB522DC7EC1 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				ONLY_ACTIVE_ARCH = YES;
+				STRIP_INSTALLED_PRODUCT = NO;
+				SYMROOT = "${SRCROOT}/../build";
+			};
+			name = Debug;
+		};
+		FB4C891DF21C93753491E9A8833ECBEC /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = B622D9715DC58363558D31534B942169 /* Pods-SpeedyTransfer.debug.xcconfig */;
+			buildSettings = {
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				MACH_O_TYPE = staticlib;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		2D8E8EC45A3A1A1D94AE762CB5028504 /* Build configuration list for PBXProject "Pods" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B37F0F91F85060E28F1DAAB522DC7EC1 /* Debug */,
+				052A17875CB827423D627183396CEB60 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		B25FDFC4A0B7D43C37627EE3DD5EDF2B /* Build configuration list for PBXNativeTarget "Pods-SpeedyTransfer" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				FB4C891DF21C93753491E9A8833ECBEC /* Debug */,
+				2208D85D67742CDC485BC0F0DF242500 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		FA1D77F97D9647FB12FFA61599C2DDEC /* Build configuration list for PBXNativeTarget "GCDObjC" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				324F0C44073779C99D4F6D56FA6D7C61 /* Debug */,
+				9D4AB32BC7AE3B73C559FF6F84CA6B9A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = D41D8CD98F00B204E9800998ECF8427E /* Project object */;
+}

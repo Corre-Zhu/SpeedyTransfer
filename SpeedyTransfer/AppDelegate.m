@@ -7,8 +7,12 @@
 //
 
 #import "AppDelegate.h"
+#import "STHomeViewController.h"
 
 @interface AppDelegate ()
+{
+    UIWindow *startingWindow;
+}
 
 @end
 
@@ -16,8 +20,66 @@
 
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-    // Override point for customization after application launch.
+    
+    STHomeViewController *vc = [[STHomeViewController alloc] init];
+    UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:vc];
+    UIWindow *window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+    window.rootViewController = nav;
+    self.window = window;
+    [self.window makeKeyAndVisible];
+    
+    [[UIApplication sharedApplication] setStatusBarHidden:NO];
+    [[UINavigationBar appearance] setBarTintColor:RGBFromHex(0xeb694a)];
+    [[UINavigationBar appearance] setTranslucent:NO];
+    [[UINavigationBar appearance] setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:
+                                                          [UIColor whiteColor],NSForegroundColorAttributeName,
+                                                          [UIFont boldSystemFontOfSize:17.0f],NSFontAttributeName,nil]];
+    
+    [self setupStartingView];
+
     return YES;
+}
+
+- (void)setupStartingView {
+    int height = [[UIScreen mainScreen] currentMode].size.height;
+    if (height == 2001) {
+        height = 1334;
+    }
+    UIImage *startingImage = [UIImage imageNamed:[NSString stringWithFormat:@"%dh", height]];
+    if (startingImage) {
+        startingWindow = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+        startingWindow.windowLevel = UIWindowLevelStatusBar + 1;
+        startingWindow.backgroundColor = [UIColor colorWithPatternImage:startingImage];
+        startingWindow.hidden = NO;
+        
+        UIViewController *rootViewController = [[UIViewController alloc] init];
+        startingWindow.rootViewController = rootViewController;
+        
+        UILabel *label1 = [[UILabel alloc] initWithFrame:CGRectMake(0.0f, IPHONE_HEIGHT - 180.0f, IPHONE_WIDTH, 44.0f)];
+        label1.text = NSLocalizedString(@"点传", nil);
+        label1.textColor = [UIColor whiteColor];
+        label1.font = [UIFont systemFontOfSize:36.0f];
+        label1.textAlignment = NSTextAlignmentCenter;
+        [startingWindow addSubview:label1];
+        
+        UILabel *label2 = [[UILabel alloc] initWithFrame:CGRectMake(0.0f, IPHONE_HEIGHT - 119.0f, IPHONE_WIDTH, 25.0f)];
+        label2.text = NSLocalizedString(@"随时随地，极速互传", nil);
+        label2.textColor = RGBFromHex(0xfbeeed);
+        label2.font = [UIFont systemFontOfSize:20.0f];
+        label2.textAlignment = NSTextAlignmentCenter;
+        [startingWindow addSubview:label2];
+        
+        [self performSelector:@selector(dismissStartingView) withObject:nil afterDelay:3.0f];
+    }
+}
+
+- (void)dismissStartingView {
+    [UIView animateWithDuration:0.3f animations:^{
+        startingWindow.alpha = 0.1f;
+    } completion:^(BOOL finished) {
+        startingWindow.hidden = YES;
+        startingWindow = nil;
+    }];
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application {
