@@ -7,6 +7,11 @@
 //
 
 #import "STHomeViewController.h"
+#import "STFileSelectionTabViewController.h"
+#import "STPictureSelectionViewController.h"
+#import "STMusicSelectionViewController.h"
+#import "STVideoSelectionViewController.h"
+#import "STContactsSelectionViewController.h"
 
 @interface STHomeViewController ()
 
@@ -63,12 +68,12 @@
     imageView.frame = CGRectMake(0.0f, 160.0f, IPHONE_WIDTH, 80.0f);
     [backView addSubview:imageView];
     
+    UIImage *image = [[UIImage imageNamed:@"webshare_bg"] resizableImageWithCapInsets:UIEdgeInsetsMake(9, 13, 9, 13)];
     UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
-    [button setBackgroundColor:[[UIColor whiteColor] colorWithAlphaComponent:0.2f]];
+    [button setBackgroundImage:image forState:UIControlStateNormal];
     button.frame = CGRectMake(16.0f, 40.0f, IPHONE_WIDTH - 32.0f, 80.0f);
     [button addTarget:self action:@selector(transferButtonClick) forControlEvents:UIControlEventTouchUpInside];
     [backView addSubview:button];
-    button.layer.cornerRadius = 4.0f;
     
     UILabel *descLabel1 = [[UILabel alloc] initWithFrame:CGRectMake(16.0f, 20.0f, 200.0f, 21.0f)];
     descLabel1.text = NSLocalizedString(@"无界传送", nil);
@@ -88,12 +93,12 @@
     
     CGFloat inset = IPHONE_WIDTH / 375.0f * 65.0f;
     
-    [self addButtonWithImage:@"3" title:NSLocalizedString(@"我要接收", nil) frame:CGRectMake(IPHONE_WIDTH / 2.0f - 30.0f, backView.bottom, 60.0f, 90.0f) selector:@selector(receiveButtonClick)];
-    [self addButtonWithImage:@"1" title:NSLocalizedString(@"无界传送", nil) frame:CGRectMake(IPHONE_WIDTH / 2.0f - 90.0f - inset, backView.bottom, 60.0f, 90.0f) selector:@selector(receiveButtonClick)];
-    [self addButtonWithImage:@"2" title:NSLocalizedString(@"邀请好友", nil) frame:CGRectMake(IPHONE_WIDTH / 2.0f + 30.0f + inset, backView.bottom, 60.0f, 90.0f) selector:@selector(receiveButtonClick)];
-    [self addButtonWithImage:@"5" title:NSLocalizedString(@"设置", nil) frame:CGRectMake(IPHONE_WIDTH / 2.0f - 30.0f, backView.bottom + 123.0f, 60.0f, 90.0f) selector:@selector(receiveButtonClick)];
-    [self addButtonWithImage:@"4" title:NSLocalizedString(@"发现", nil) frame:CGRectMake(IPHONE_WIDTH / 2.0f - 90.0f - inset, backView.bottom + 123.0f, 60.0f, 90.0f) selector:@selector(receiveButtonClick)];
-    [self addButtonWithImage:@"6" title:NSLocalizedString(@"反馈", nil) frame:CGRectMake(IPHONE_WIDTH / 2.0f + 30.0f + inset, backView.bottom + 123.0f, 60.0f, 90.0f) selector:@selector(receiveButtonClick)];
+    [self addButtonWithImage:@"home3" title:NSLocalizedString(@"我要接收", nil) frame:CGRectMake(IPHONE_WIDTH / 2.0f - 30.0f, backView.bottom, 60.0f, 90.0f) selector:@selector(receiveButtonClick)];
+    [self addButtonWithImage:@"home1" title:NSLocalizedString(@"无界传送", nil) frame:CGRectMake(IPHONE_WIDTH / 2.0f - 90.0f - inset, backView.bottom, 60.0f, 90.0f) selector:@selector(transferButtonClick)];
+    [self addButtonWithImage:@"home2" title:NSLocalizedString(@"邀请好友", nil) frame:CGRectMake(IPHONE_WIDTH / 2.0f + 30.0f + inset, backView.bottom, 60.0f, 90.0f) selector:@selector(inviteFriendButtonClick)];
+    [self addButtonWithImage:@"home5" title:NSLocalizedString(@"设置", nil) frame:CGRectMake(IPHONE_WIDTH / 2.0f - 30.0f, backView.bottom + 123.0f, 60.0f, 90.0f) selector:@selector(settingButtonClick)];
+    [self addButtonWithImage:@"home4" title:NSLocalizedString(@"发现", nil) frame:CGRectMake(IPHONE_WIDTH / 2.0f - 90.0f - inset, backView.bottom + 123.0f, 60.0f, 90.0f) selector:@selector(discoverButtonClick)];
+    [self addButtonWithImage:@"home6" title:NSLocalizedString(@"反馈", nil) frame:CGRectMake(IPHONE_WIDTH / 2.0f + 30.0f + inset, backView.bottom + 123.0f, 60.0f, 90.0f) selector:@selector(feedbackButtonClick)];
     
 }
 
@@ -108,10 +113,49 @@
 }
 
 - (void)transferButtonClick {
+    STFileSelectionTabViewController *fileSelectionVc = [[STFileSelectionTabViewController alloc] init];
+    STPictureSelectionViewController *picVC = [[STPictureSelectionViewController alloc] init];
+    STMusicSelectionViewController *musicVC = [[STMusicSelectionViewController alloc] init];
+    STVideoSelectionViewController *videoVC = [[STVideoSelectionViewController alloc] init];
+    STContactsSelectionViewController *contactVC = [[STContactsSelectionViewController alloc] init];
     
+    [picVC.tabBarItem setTitle:NSLocalizedString(@"图片", nil)];
+    [picVC.tabBarItem setImage:[UIImage imageNamed:@"picture_line"]];
+    [picVC.tabBarItem setSelectedImage:[UIImage imageNamed:@"picture_block"]];
+    
+    [musicVC.tabBarItem setTitle:NSLocalizedString(@"音乐", nil)];
+    [musicVC.tabBarItem setImage:[UIImage imageNamed:@"music_line"]];
+    [musicVC.tabBarItem setSelectedImage:[UIImage imageNamed:@"music_block"]];
+    
+    [videoVC.tabBarItem setTitle:NSLocalizedString(@"视频", nil)];
+    [videoVC.tabBarItem setImage:[UIImage imageNamed:@"video_line"]];
+    [videoVC.tabBarItem setSelectedImage:[UIImage imageNamed:@"video_block"]];
+    
+    [contactVC.tabBarItem setTitle:NSLocalizedString(@"联系人", nil)];
+    [contactVC.tabBarItem setImage:[UIImage imageNamed:@"contact_line"]];
+    [contactVC.tabBarItem setSelectedImage:[UIImage imageNamed:@"contact_block"]];
+    
+    fileSelectionVc.viewControllers = @[picVC,musicVC,videoVC,contactVC];
+    [self.navigationController pushViewController:fileSelectionVc animated:YES];
 }
 
 - (void)receiveButtonClick {
+    
+}
+
+- (void)inviteFriendButtonClick {
+    
+}
+
+- (void)discoverButtonClick {
+    
+}
+
+- (void)settingButtonClick {
+    
+}
+
+- (void)feedbackButtonClick {
     
 }
 

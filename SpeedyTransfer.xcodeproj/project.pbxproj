@@ -9,6 +9,15 @@
 /* Begin PBXBuildFile section */
 		81B11DB05739291B2827F0AD /* libPods-SpeedyTransfer.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 43A35BB86492F999A43AE1F4 /* libPods-SpeedyTransfer.a */; };
 		CED003121C0B2766005146A4 /* UIButton+ZZ.m in Sources */ = {isa = PBXBuildFile; fileRef = CED003111C0B2766005146A4 /* UIButton+ZZ.m */; };
+		CED0D1051C1D3D7B00F5C0E3 /* STFileSelectionTabViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CED0D1041C1D3D7B00F5C0E3 /* STFileSelectionTabViewController.m */; };
+		CED0D1131C1D53ED00F5C0E3 /* Photos.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CED0D1121C1D53ED00F5C0E3 /* Photos.framework */; };
+		CED0D1201C1D576D00F5C0E3 /* STContactsSelectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CED0D1161C1D576D00F5C0E3 /* STContactsSelectionViewController.m */; };
+		CED0D1211C1D576D00F5C0E3 /* STMusicSelectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CED0D1191C1D576D00F5C0E3 /* STMusicSelectionViewController.m */; };
+		CED0D1221C1D576D00F5C0E3 /* STPictureSelectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CED0D11C1C1D576D00F5C0E3 /* STPictureSelectionViewController.m */; };
+		CED0D1231C1D576D00F5C0E3 /* STVideoSelectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CED0D11F1C1D576D00F5C0E3 /* STVideoSelectionViewController.m */; };
+		CED0D1261C1D57E000F5C0E3 /* STAlbumViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CED0D1251C1D57E000F5C0E3 /* STAlbumViewCell.m */; };
+		CED0D12D1C1D77DF00F5C0E3 /* HZAssetCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CED0D12C1C1D77DF00F5C0E3 /* HZAssetCollectionViewCell.m */; };
+		CED0D1331C1D959800F5C0E3 /* UITableViewCell+ST.m in Sources */ = {isa = PBXBuildFile; fileRef = CED0D1321C1D959800F5C0E3 /* UITableViewCell+ST.m */; };
 		CED62A321C094FDD00270EDB /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = CED62A311C094FDD00270EDB /* AppDelegate.m */; };
 		CED62A351C094FDD00270EDB /* STHomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CED62A341C094FDD00270EDB /* STHomeViewController.m */; };
 		CED62A481C09512100270EDB /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = CED62A461C09512100270EDB /* main.m */; };
@@ -23,6 +32,23 @@
 		8EA48F6AD6EDCB7E537ACCBC /* Pods-SpeedyTransfer.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SpeedyTransfer.debug.xcconfig"; path = "Pods/Target Support Files/Pods-SpeedyTransfer/Pods-SpeedyTransfer.debug.xcconfig"; sourceTree = "<group>"; };
 		CED003101C0B2766005146A4 /* UIButton+ZZ.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIButton+ZZ.h"; sourceTree = "<group>"; };
 		CED003111C0B2766005146A4 /* UIButton+ZZ.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIButton+ZZ.m"; sourceTree = "<group>"; };
+		CED0D1031C1D3D7B00F5C0E3 /* STFileSelectionTabViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STFileSelectionTabViewController.h; sourceTree = "<group>"; };
+		CED0D1041C1D3D7B00F5C0E3 /* STFileSelectionTabViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STFileSelectionTabViewController.m; sourceTree = "<group>"; };
+		CED0D1121C1D53ED00F5C0E3 /* Photos.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Photos.framework; path = System/Library/Frameworks/Photos.framework; sourceTree = SDKROOT; };
+		CED0D1151C1D576D00F5C0E3 /* STContactsSelectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STContactsSelectionViewController.h; sourceTree = "<group>"; };
+		CED0D1161C1D576D00F5C0E3 /* STContactsSelectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STContactsSelectionViewController.m; sourceTree = "<group>"; };
+		CED0D1181C1D576D00F5C0E3 /* STMusicSelectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STMusicSelectionViewController.h; sourceTree = "<group>"; };
+		CED0D1191C1D576D00F5C0E3 /* STMusicSelectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STMusicSelectionViewController.m; sourceTree = "<group>"; };
+		CED0D11B1C1D576D00F5C0E3 /* STPictureSelectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STPictureSelectionViewController.h; sourceTree = "<group>"; };
+		CED0D11C1C1D576D00F5C0E3 /* STPictureSelectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STPictureSelectionViewController.m; sourceTree = "<group>"; };
+		CED0D11E1C1D576D00F5C0E3 /* STVideoSelectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STVideoSelectionViewController.h; sourceTree = "<group>"; };
+		CED0D11F1C1D576D00F5C0E3 /* STVideoSelectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STVideoSelectionViewController.m; sourceTree = "<group>"; };
+		CED0D1241C1D57E000F5C0E3 /* STAlbumViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STAlbumViewCell.h; sourceTree = "<group>"; };
+		CED0D1251C1D57E000F5C0E3 /* STAlbumViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STAlbumViewCell.m; sourceTree = "<group>"; };
+		CED0D12B1C1D77DF00F5C0E3 /* HZAssetCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HZAssetCollectionViewCell.h; sourceTree = "<group>"; };
+		CED0D12C1C1D77DF00F5C0E3 /* HZAssetCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HZAssetCollectionViewCell.m; sourceTree = "<group>"; };
+		CED0D1311C1D959800F5C0E3 /* UITableViewCell+ST.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UITableViewCell+ST.h"; sourceTree = "<group>"; };
+		CED0D1321C1D959800F5C0E3 /* UITableViewCell+ST.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UITableViewCell+ST.m"; sourceTree = "<group>"; };
 		CED62A2A1C094FDD00270EDB /* SpeedyTransfer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SpeedyTransfer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CED62A301C094FDD00270EDB /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		CED62A311C094FDD00270EDB /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -48,6 +74,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CED0D1131C1D53ED00F5C0E3 /* Photos.framework in Frameworks */,
 				81B11DB05739291B2827F0AD /* libPods-SpeedyTransfer.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -67,9 +94,63 @@
 		5AED4E2A6C934D663D247AEC /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				CED0D1121C1D53ED00F5C0E3 /* Photos.framework */,
 				43A35BB86492F999A43AE1F4 /* libPods-SpeedyTransfer.a */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		CED0D1021C1D3C8B00F5C0E3 /* FileSelection */ = {
+			isa = PBXGroup;
+			children = (
+				CED0D1031C1D3D7B00F5C0E3 /* STFileSelectionTabViewController.h */,
+				CED0D1041C1D3D7B00F5C0E3 /* STFileSelectionTabViewController.m */,
+				CED0D11A1C1D576D00F5C0E3 /* Picture */,
+				CED0D1171C1D576D00F5C0E3 /* Music */,
+				CED0D11D1C1D576D00F5C0E3 /* Video */,
+				CED0D1141C1D576D00F5C0E3 /* Contacts */,
+			);
+			path = FileSelection;
+			sourceTree = "<group>";
+		};
+		CED0D1141C1D576D00F5C0E3 /* Contacts */ = {
+			isa = PBXGroup;
+			children = (
+				CED0D1151C1D576D00F5C0E3 /* STContactsSelectionViewController.h */,
+				CED0D1161C1D576D00F5C0E3 /* STContactsSelectionViewController.m */,
+			);
+			path = Contacts;
+			sourceTree = "<group>";
+		};
+		CED0D1171C1D576D00F5C0E3 /* Music */ = {
+			isa = PBXGroup;
+			children = (
+				CED0D1181C1D576D00F5C0E3 /* STMusicSelectionViewController.h */,
+				CED0D1191C1D576D00F5C0E3 /* STMusicSelectionViewController.m */,
+			);
+			path = Music;
+			sourceTree = "<group>";
+		};
+		CED0D11A1C1D576D00F5C0E3 /* Picture */ = {
+			isa = PBXGroup;
+			children = (
+				CED0D11B1C1D576D00F5C0E3 /* STPictureSelectionViewController.h */,
+				CED0D11C1C1D576D00F5C0E3 /* STPictureSelectionViewController.m */,
+				CED0D1241C1D57E000F5C0E3 /* STAlbumViewCell.h */,
+				CED0D1251C1D57E000F5C0E3 /* STAlbumViewCell.m */,
+				CED0D12B1C1D77DF00F5C0E3 /* HZAssetCollectionViewCell.h */,
+				CED0D12C1C1D77DF00F5C0E3 /* HZAssetCollectionViewCell.m */,
+			);
+			path = Picture;
+			sourceTree = "<group>";
+		};
+		CED0D11D1C1D576D00F5C0E3 /* Video */ = {
+			isa = PBXGroup;
+			children = (
+				CED0D11E1C1D576D00F5C0E3 /* STVideoSelectionViewController.h */,
+				CED0D11F1C1D576D00F5C0E3 /* STVideoSelectionViewController.m */,
+			);
+			path = Video;
 			sourceTree = "<group>";
 		};
 		CED62A211C094FDD00270EDB = {
@@ -100,6 +181,7 @@
 				CED62A311C094FDD00270EDB /* AppDelegate.m */,
 				CED62A331C094FDD00270EDB /* STHomeViewController.h */,
 				CED62A341C094FDD00270EDB /* STHomeViewController.m */,
+				CED0D1021C1D3C8B00F5C0E3 /* FileSelection */,
 				CED62A441C09512100270EDB /* Supporting Files */,
 			);
 			path = SpeedyTransfer;
@@ -136,6 +218,8 @@
 				CED62A551C09721F00270EDB /* UIDevice+ZZ.m */,
 				CED003101C0B2766005146A4 /* UIButton+ZZ.h */,
 				CED003111C0B2766005146A4 /* UIButton+ZZ.m */,
+				CED0D1311C1D959800F5C0E3 /* UITableViewCell+ST.h */,
+				CED0D1321C1D959800F5C0E3 /* UITableViewCell+ST.m */,
 			);
 			name = Category;
 			path = SpeedyTransfer/Category;
@@ -269,12 +353,20 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CED0D1051C1D3D7B00F5C0E3 /* STFileSelectionTabViewController.m in Sources */,
+				CED0D1221C1D576D00F5C0E3 /* STPictureSelectionViewController.m in Sources */,
+				CED0D1201C1D576D00F5C0E3 /* STContactsSelectionViewController.m in Sources */,
+				CED0D1331C1D959800F5C0E3 /* UITableViewCell+ST.m in Sources */,
 				CED62A351C094FDD00270EDB /* STHomeViewController.m in Sources */,
+				CED0D1231C1D576D00F5C0E3 /* STVideoSelectionViewController.m in Sources */,
 				CED62A561C09721F00270EDB /* UIDevice+ZZ.m in Sources */,
 				CED62A481C09512100270EDB /* main.m in Sources */,
 				CED62A5F1C099C6000270EDB /* UIColor+ZZ.m in Sources */,
+				CED0D1261C1D57E000F5C0E3 /* STAlbumViewCell.m in Sources */,
 				CED003121C0B2766005146A4 /* UIButton+ZZ.m in Sources */,
 				CED62A531C09719500270EDB /* UIView+ZZ.m in Sources */,
+				CED0D12D1C1D77DF00F5C0E3 /* HZAssetCollectionViewCell.m in Sources */,
+				CED0D1211C1D576D00F5C0E3 /* STMusicSelectionViewController.m in Sources */,
 				CED62A321C094FDD00270EDB /* AppDelegate.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -370,7 +462,7 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				GCC_PREFIX_HEADER = "SpeedyTransfer/Supporting Files/SpeedyTransfer-Prefix.pch";
 				INFOPLIST_FILE = "$(SRCROOT)/SpeedyTransfer/Supporting Files/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.zz.SpeedyTransfer;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -385,7 +477,7 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				GCC_PREFIX_HEADER = "SpeedyTransfer/Supporting Files/SpeedyTransfer-Prefix.pch";
 				INFOPLIST_FILE = "$(SRCROOT)/SpeedyTransfer/Supporting Files/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.zz.SpeedyTransfer;
 				PRODUCT_NAME = "$(TARGET_NAME)";

@@ -30,11 +30,13 @@
     
     [[UIApplication sharedApplication] setStatusBarHidden:NO];
     [[UINavigationBar appearance] setBarTintColor:RGBFromHex(0xeb694a)];
+    [[UINavigationBar appearance] setTintColor:[UIColor whiteColor]];
     [[UINavigationBar appearance] setTranslucent:NO];
     [[UINavigationBar appearance] setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:
                                                           [UIColor whiteColor],NSForegroundColorAttributeName,
                                                           [UIFont boldSystemFontOfSize:17.0f],NSFontAttributeName,nil]];
     
+    [[UITabBar appearance] setTintColor:RGBFromHex(0xeb694a)];
     [self setupStartingView];
 
     return YES;
