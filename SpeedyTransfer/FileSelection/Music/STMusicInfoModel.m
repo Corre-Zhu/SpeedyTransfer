@@ -10,7 +10,7 @@
 #import <MediaPlayer/MediaPlayer.h>
 #import <AVFoundation/AVFoundation.h>
 
-#define LETTER	@"#ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+#define LETTER	@"ABCDEFGHIJKLMNOPQRSTUVWXYZ#"
 
 @implementation STMusicInfoModel
 
@@ -68,6 +68,8 @@
         return [model1.shortTitle compare:model2.shortTitle options:NSCaseInsensitiveSearch];
     }];
     
+    NSMutableArray *othersArray = [NSMutableArray array];
+    
     NSMutableArray *tempSectionArray = [NSMutableArray array];
     for (STMusicInfoModel *model in tempArray) {
          NSString *letter = nil;
@@ -82,6 +84,11 @@
             }
         }
         
+        if ([letter isEqualToString:@"#"]) {
+            [othersArray addObject:model];
+            continue;
+        }
+        
         NSDictionary *dic = tempSectionArray.lastObject;
         if (![dic.allKeys.firstObject isEqualToString:letter]) {
             dic = @{letter: [NSMutableArray array]};
@@ -89,6 +96,10 @@
         }
         NSMutableArray *arr = dic.allValues.firstObject;
         [arr addObject:model];
+    }
+    
+    if (othersArray.count > 0) {
+        [tempSectionArray addObject:@{@"#": othersArray}];
     }
     
     return tempSectionArray;

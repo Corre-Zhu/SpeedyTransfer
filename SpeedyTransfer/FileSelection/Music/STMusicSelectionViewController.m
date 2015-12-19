@@ -26,6 +26,8 @@ static NSString *headerIdentifier = @"ContactsHeaderView";
     self.tableView.allowsMultipleSelection = YES;
     self.tableView.sectionIndexColor = RGBFromHex(0xeb694a);
     self.tableView.tableFooterView = [UIView new];
+    self.tableView.contentInset = UIEdgeInsetsMake(0.0f, 0.0f, 49.0f, 0.0f);
+    self.tableView.scrollIndicatorInsets = UIEdgeInsetsMake(0.0f, 0.0f, 49.0f, 0.0f);
     [self.tableView registerClass:[HTContactsHeaderView class] forHeaderFooterViewReuseIdentifier:headerIdentifier];
     _musicInfoModels = [STMusicInfoModel musicModelList];
     

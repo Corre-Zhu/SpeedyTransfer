@@ -8,7 +8,7 @@
 
 #import "STHomeViewController.h"
 #import "STFileSelectionTabViewController.h"
-#import "STPictureSelectionViewController.h"
+#import "STPictureCollectionViewController.h"
 #import "STMusicSelectionViewController.h"
 #import "STVideoSelectionViewController.h"
 #import "STContactsSelectionViewController.h"
@@ -114,7 +114,8 @@
 
 - (void)transferButtonClick {
     STFileSelectionTabViewController *fileSelectionVc = [[STFileSelectionTabViewController alloc] init];
-    STPictureSelectionViewController *picVC = [[STPictureSelectionViewController alloc] init];
+    STPictureCollectionViewController *picVC = [[STPictureCollectionViewController alloc] initWithCollectionViewLayout:[UICollectionViewFlowLayout new]];
+
     STMusicSelectionViewController *musicVC = [[STMusicSelectionViewController alloc] init];
     STVideoSelectionViewController *videoVC = [[STVideoSelectionViewController alloc] init];
     STContactsSelectionViewController *contactVC = [[STContactsSelectionViewController alloc] init];

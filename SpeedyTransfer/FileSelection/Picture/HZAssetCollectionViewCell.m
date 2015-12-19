@@ -49,6 +49,11 @@
 }
 
 - (void)setup {
+    if (_isCameraRoll) {
+        _thumbnailImageView.contentMode = UIViewContentModeScaleAspectFit;
+    } else {
+        _thumbnailImageView.contentMode = UIViewContentModeScaleAspectFill;
+    }
 	_thumbnailImageView.image = _thumbnailImage;
 }
 

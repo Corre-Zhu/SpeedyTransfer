@@ -13,6 +13,7 @@
 @interface HZAssetCollectionViewCell : UICollectionViewCell
 
 @property (nonatomic, strong) UIImage *thumbnailImage;
+@property (nonatomic) BOOL isCameraRoll; // 是否是相机胶卷
 
 - (void)setup;
 
