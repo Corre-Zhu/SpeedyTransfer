@@ -12,9 +12,9 @@
 @class PHFetchResult;
 @class STMusicInfoModel;
 
-// 图片
 @interface STFileSelectionTabViewController : UITabBarController
 
+// 图片
 @property (nonatomic, strong, readonly) NSDictionary *selectedAssetsDic;
 @property (nonatomic, strong, readonly) NSArray *selectedAssetsArr;
 
@@ -31,5 +31,12 @@
 - (void)removeMusics:(NSArray *)musics;
 - (BOOL)isSelectedWithMusic:(STMusicInfoModel *)music;
 - (BOOL)isSelectedWithMusics:(NSArray *)musics;
+
+// 视频
+@property (nonatomic, strong, readonly) NSArray *selectedVideoAssetsArr;
+
+- (void)addVideoAsset:(PHAsset *)asset;
+- (void)removeVideoAsset:(PHAsset *)asset;
+- (BOOL)isSelectedWithVideoAsset:(PHAsset *)asset;
 
 @end

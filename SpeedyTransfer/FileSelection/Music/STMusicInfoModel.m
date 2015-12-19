@@ -32,7 +32,7 @@
 + (NSArray *)musicModelList
 {
     MPMediaQuery *mediaQuery = [[MPMediaQuery alloc] init];
-    MPMediaPropertyPredicate *predicate =[MPMediaPropertyPredicate predicateWithValue:[NSNumber numberWithInt:MPMediaTypeMusic ] forProperty: MPMediaItemPropertyMediaType];
+    MPMediaPropertyPredicate *predicate =[MPMediaPropertyPredicate predicateWithValue:[NSNumber numberWithInt:MPMediaTypeMusic] forProperty: MPMediaItemPropertyMediaType];
     [mediaQuery addFilterPredicate:predicate];
     NSArray *items = [mediaQuery items];
     NSMutableArray *tempArray = [[NSMutableArray alloc] init];

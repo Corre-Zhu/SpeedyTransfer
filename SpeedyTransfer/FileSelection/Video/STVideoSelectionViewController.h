@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface STVideoSelectionViewController : UIViewController
+@interface STVideoSelectionViewController : UITableViewController
 
 @end

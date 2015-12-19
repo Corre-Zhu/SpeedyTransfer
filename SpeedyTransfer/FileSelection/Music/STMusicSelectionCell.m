@@ -49,6 +49,10 @@
     return self;
 }
 
+- (void)setImage:(UIImage *)image {
+    coverImageView.image = image;
+}
+
 - (void)setTitle:(NSString *)title {
     _title = title;
     titleLabel.text = title;

@@ -150,6 +150,13 @@
 			path = Models;
 			sourceTree = "<group>";
 		};
+		CE8649171C2577110072518B /* Model */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
 		CEB29E641C21B73500F17804 /* ZZUIKit */ = {
 			isa = PBXGroup;
 			children = (
@@ -239,6 +246,7 @@
 		CED0D11D1C1D576D00F5C0E3 /* Video */ = {
 			isa = PBXGroup;
 			children = (
+				CE8649171C2577110072518B /* Model */,
 				CED0D11E1C1D576D00F5C0E3 /* STVideoSelectionViewController.h */,
 				CED0D11F1C1D576D00F5C0E3 /* STVideoSelectionViewController.m */,
 			);

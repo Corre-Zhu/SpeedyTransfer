@@ -86,6 +86,8 @@
     
     count += _selectedMusicsArr.count;
     
+    count += _selectedVideoAssetsArr.count;
+    
     return count;
 }
 
@@ -230,5 +232,50 @@
     
     return YES;
 }
+
+- (void)addVideoAsset:(PHAsset *)asset {
+    if (!asset) {
+        return;
+    }
+    
+    @autoreleasepool {
+        if (!_selectedVideoAssetsArr) {
+            _selectedVideoAssetsArr = [NSArray arrayWithObject:asset];
+        } else {
+            NSMutableArray *tempArr = [NSMutableArray arrayWithArray:_selectedVideoAssetsArr];
+            if (![tempArr containsObject:asset]) {
+                [tempArr addObject:asset];
+                _selectedVideoAssetsArr = [NSArray arrayWithArray:tempArr];
+            }
+        }
+       
+    }
+    
+    [self configToolView];
+}
+
+- (void)removeVideoAsset:(PHAsset *)asset {
+    if (!asset) {
+        return;
+    }
+    
+    @autoreleasepool {
+        if (_selectedVideoAssetsArr) {
+            NSMutableArray *tempArr = [NSMutableArray arrayWithArray:_selectedVideoAssetsArr];
+            if ([tempArr containsObject:asset]) {
+                [tempArr removeObject:asset];
+                _selectedVideoAssetsArr = [NSArray arrayWithArray:tempArr];
+            }
+        }
+        
+    }
+    
+    [self configToolView];
+}
+
+- (BOOL)isSelectedWithVideoAsset:(PHAsset *)asset {
+    return [_selectedVideoAssetsArr containsObject:asset];
+}
+
 
 @end
