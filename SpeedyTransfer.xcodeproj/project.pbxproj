@@ -8,6 +8,14 @@
 
 /* Begin PBXBuildFile section */
 		81B11DB05739291B2827F0AD /* libPods-SpeedyTransfer.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 43A35BB86492F999A43AE1F4 /* libPods-SpeedyTransfer.a */; };
+		CEB29E601C21A9EB00F17804 /* NSDictionary+HT.m in Sources */ = {isa = PBXBuildFile; fileRef = CEB29E5F1C21A9EB00F17804 /* NSDictionary+HT.m */; };
+		CEB29E631C21B6D700F17804 /* HTContactsHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = CEB29E621C21B6D700F17804 /* HTContactsHeaderView.m */; };
+		CEB29E671C21B7C000F17804 /* HTDrawView.m in Sources */ = {isa = PBXBuildFile; fileRef = CEB29E661C21B7C000F17804 /* HTDrawView.m */; };
+		CEB29E731C21B8BE00F17804 /* ALView+PureLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = CEB29E6B1C21B8BE00F17804 /* ALView+PureLayout.m */; };
+		CEB29E741C21B8BE00F17804 /* NSArray+PureLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = CEB29E6D1C21B8BE00F17804 /* NSArray+PureLayout.m */; };
+		CEB29E751C21B8BE00F17804 /* NSLayoutConstraint+PureLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = CEB29E6F1C21B8BE00F17804 /* NSLayoutConstraint+PureLayout.m */; };
+		CEB29E791C21C01600F17804 /* STMusicSelectionCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CEB29E781C21C01600F17804 /* STMusicSelectionCell.m */; };
+		CEB29E7C1C230BA400F17804 /* UIViewController+ST.m in Sources */ = {isa = PBXBuildFile; fileRef = CEB29E7B1C230BA400F17804 /* UIViewController+ST.m */; };
 		CED003121C0B2766005146A4 /* UIButton+ZZ.m in Sources */ = {isa = PBXBuildFile; fileRef = CED003111C0B2766005146A4 /* UIButton+ZZ.m */; };
 		CED0D1051C1D3D7B00F5C0E3 /* STFileSelectionTabViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CED0D1041C1D3D7B00F5C0E3 /* STFileSelectionTabViewController.m */; };
 		CED0D1131C1D53ED00F5C0E3 /* Photos.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CED0D1121C1D53ED00F5C0E3 /* Photos.framework */; };
@@ -18,6 +26,9 @@
 		CED0D1261C1D57E000F5C0E3 /* STAlbumViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CED0D1251C1D57E000F5C0E3 /* STAlbumViewCell.m */; };
 		CED0D12D1C1D77DF00F5C0E3 /* HZAssetCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CED0D12C1C1D77DF00F5C0E3 /* HZAssetCollectionViewCell.m */; };
 		CED0D1331C1D959800F5C0E3 /* UITableViewCell+ST.m in Sources */ = {isa = PBXBuildFile; fileRef = CED0D1321C1D959800F5C0E3 /* UITableViewCell+ST.m */; };
+		CED0D1371C21A22100F5C0E3 /* STMusicInfoModel.m in Sources */ = {isa = PBXBuildFile; fileRef = CED0D1361C21A22100F5C0E3 /* STMusicInfoModel.m */; };
+		CED0D13A1C21A58800F5C0E3 /* NSString+Extension.m in Sources */ = {isa = PBXBuildFile; fileRef = CED0D1391C21A58800F5C0E3 /* NSString+Extension.m */; };
+		CED0D13D1C21A59200F5C0E3 /* AVURLAsset+Extension.m in Sources */ = {isa = PBXBuildFile; fileRef = CED0D13C1C21A59200F5C0E3 /* AVURLAsset+Extension.m */; };
 		CED62A321C094FDD00270EDB /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = CED62A311C094FDD00270EDB /* AppDelegate.m */; };
 		CED62A351C094FDD00270EDB /* STHomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CED62A341C094FDD00270EDB /* STHomeViewController.m */; };
 		CED62A481C09512100270EDB /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = CED62A461C09512100270EDB /* main.m */; };
@@ -30,6 +41,26 @@
 /* Begin PBXFileReference section */
 		43A35BB86492F999A43AE1F4 /* libPods-SpeedyTransfer.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-SpeedyTransfer.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		8EA48F6AD6EDCB7E537ACCBC /* Pods-SpeedyTransfer.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SpeedyTransfer.debug.xcconfig"; path = "Pods/Target Support Files/Pods-SpeedyTransfer/Pods-SpeedyTransfer.debug.xcconfig"; sourceTree = "<group>"; };
+		CEB29E5E1C21A9EB00F17804 /* NSDictionary+HT.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDictionary+HT.h"; sourceTree = "<group>"; };
+		CEB29E5F1C21A9EB00F17804 /* NSDictionary+HT.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDictionary+HT.m"; sourceTree = "<group>"; };
+		CEB29E611C21B6D700F17804 /* HTContactsHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HTContactsHeaderView.h; sourceTree = "<group>"; };
+		CEB29E621C21B6D700F17804 /* HTContactsHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HTContactsHeaderView.m; sourceTree = "<group>"; };
+		CEB29E651C21B7C000F17804 /* HTDrawView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HTDrawView.h; sourceTree = "<group>"; };
+		CEB29E661C21B7C000F17804 /* HTDrawView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HTDrawView.m; sourceTree = "<group>"; };
+		CEB29E6A1C21B8BE00F17804 /* ALView+PureLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ALView+PureLayout.h"; sourceTree = "<group>"; };
+		CEB29E6B1C21B8BE00F17804 /* ALView+PureLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "ALView+PureLayout.m"; sourceTree = "<group>"; };
+		CEB29E6C1C21B8BE00F17804 /* NSArray+PureLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSArray+PureLayout.h"; sourceTree = "<group>"; };
+		CEB29E6D1C21B8BE00F17804 /* NSArray+PureLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSArray+PureLayout.m"; sourceTree = "<group>"; };
+		CEB29E6E1C21B8BE00F17804 /* NSLayoutConstraint+PureLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSLayoutConstraint+PureLayout.h"; sourceTree = "<group>"; };
+		CEB29E6F1C21B8BE00F17804 /* NSLayoutConstraint+PureLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSLayoutConstraint+PureLayout.m"; sourceTree = "<group>"; };
+		CEB29E701C21B8BE00F17804 /* PureLayout+Internal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "PureLayout+Internal.h"; sourceTree = "<group>"; };
+		CEB29E711C21B8BE00F17804 /* PureLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PureLayout.h; sourceTree = "<group>"; };
+		CEB29E721C21B8BE00F17804 /* PureLayoutDefines.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PureLayoutDefines.h; sourceTree = "<group>"; };
+		CEB29E761C21B92300F17804 /* HTUIKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HTUIKit.h; sourceTree = "<group>"; };
+		CEB29E771C21C01600F17804 /* STMusicSelectionCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STMusicSelectionCell.h; sourceTree = "<group>"; };
+		CEB29E781C21C01600F17804 /* STMusicSelectionCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STMusicSelectionCell.m; sourceTree = "<group>"; };
+		CEB29E7A1C230BA400F17804 /* UIViewController+ST.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+ST.h"; sourceTree = "<group>"; };
+		CEB29E7B1C230BA400F17804 /* UIViewController+ST.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+ST.m"; sourceTree = "<group>"; };
 		CED003101C0B2766005146A4 /* UIButton+ZZ.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIButton+ZZ.h"; sourceTree = "<group>"; };
 		CED003111C0B2766005146A4 /* UIButton+ZZ.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIButton+ZZ.m"; sourceTree = "<group>"; };
 		CED0D1031C1D3D7B00F5C0E3 /* STFileSelectionTabViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STFileSelectionTabViewController.h; sourceTree = "<group>"; };
@@ -49,6 +80,12 @@
 		CED0D12C1C1D77DF00F5C0E3 /* HZAssetCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HZAssetCollectionViewCell.m; sourceTree = "<group>"; };
 		CED0D1311C1D959800F5C0E3 /* UITableViewCell+ST.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UITableViewCell+ST.h"; sourceTree = "<group>"; };
 		CED0D1321C1D959800F5C0E3 /* UITableViewCell+ST.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UITableViewCell+ST.m"; sourceTree = "<group>"; };
+		CED0D1351C21A22100F5C0E3 /* STMusicInfoModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STMusicInfoModel.h; sourceTree = "<group>"; };
+		CED0D1361C21A22100F5C0E3 /* STMusicInfoModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STMusicInfoModel.m; sourceTree = "<group>"; };
+		CED0D1381C21A58800F5C0E3 /* NSString+Extension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+Extension.h"; sourceTree = "<group>"; };
+		CED0D1391C21A58800F5C0E3 /* NSString+Extension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+Extension.m"; sourceTree = "<group>"; };
+		CED0D13B1C21A59200F5C0E3 /* AVURLAsset+Extension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "AVURLAsset+Extension.h"; sourceTree = "<group>"; };
+		CED0D13C1C21A59200F5C0E3 /* AVURLAsset+Extension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "AVURLAsset+Extension.m"; sourceTree = "<group>"; };
 		CED62A2A1C094FDD00270EDB /* SpeedyTransfer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SpeedyTransfer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CED62A301C094FDD00270EDB /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		CED62A311C094FDD00270EDB /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -100,6 +137,42 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		CEB29E641C21B73500F17804 /* ZZUIKit */ = {
+			isa = PBXGroup;
+			children = (
+				CEB29E761C21B92300F17804 /* HTUIKit.h */,
+				CEB29E651C21B7C000F17804 /* HTDrawView.h */,
+				CEB29E661C21B7C000F17804 /* HTDrawView.m */,
+			);
+			name = ZZUIKit;
+			path = SpeedyTransfer/ZZUIKit;
+			sourceTree = "<group>";
+		};
+		CEB29E681C21B88C00F17804 /* ThirdParty */ = {
+			isa = PBXGroup;
+			children = (
+				CEB29E691C21B8BE00F17804 /* UIView+AutoLayout */,
+			);
+			name = ThirdParty;
+			path = SpeedyTransfer/ThirdParty;
+			sourceTree = "<group>";
+		};
+		CEB29E691C21B8BE00F17804 /* UIView+AutoLayout */ = {
+			isa = PBXGroup;
+			children = (
+				CEB29E6A1C21B8BE00F17804 /* ALView+PureLayout.h */,
+				CEB29E6B1C21B8BE00F17804 /* ALView+PureLayout.m */,
+				CEB29E6C1C21B8BE00F17804 /* NSArray+PureLayout.h */,
+				CEB29E6D1C21B8BE00F17804 /* NSArray+PureLayout.m */,
+				CEB29E6E1C21B8BE00F17804 /* NSLayoutConstraint+PureLayout.h */,
+				CEB29E6F1C21B8BE00F17804 /* NSLayoutConstraint+PureLayout.m */,
+				CEB29E701C21B8BE00F17804 /* PureLayout+Internal.h */,
+				CEB29E711C21B8BE00F17804 /* PureLayout.h */,
+				CEB29E721C21B8BE00F17804 /* PureLayoutDefines.h */,
+			);
+			path = "UIView+AutoLayout";
+			sourceTree = "<group>";
+		};
 		CED0D1021C1D3C8B00F5C0E3 /* FileSelection */ = {
 			isa = PBXGroup;
 			children = (
@@ -125,8 +198,13 @@
 		CED0D1171C1D576D00F5C0E3 /* Music */ = {
 			isa = PBXGroup;
 			children = (
+				CED0D1341C21A1E600F5C0E3 /* Model */,
 				CED0D1181C1D576D00F5C0E3 /* STMusicSelectionViewController.h */,
 				CED0D1191C1D576D00F5C0E3 /* STMusicSelectionViewController.m */,
+				CEB29E611C21B6D700F17804 /* HTContactsHeaderView.h */,
+				CEB29E621C21B6D700F17804 /* HTContactsHeaderView.m */,
+				CEB29E771C21C01600F17804 /* STMusicSelectionCell.h */,
+				CEB29E781C21C01600F17804 /* STMusicSelectionCell.m */,
 			);
 			path = Music;
 			sourceTree = "<group>";
@@ -153,12 +231,23 @@
 			path = Video;
 			sourceTree = "<group>";
 		};
+		CED0D1341C21A1E600F5C0E3 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				CED0D1351C21A22100F5C0E3 /* STMusicInfoModel.h */,
+				CED0D1361C21A22100F5C0E3 /* STMusicInfoModel.m */,
+			);
+			name = Model;
+			sourceTree = "<group>";
+		};
 		CED62A211C094FDD00270EDB = {
 			isa = PBXGroup;
 			children = (
+				CEB29E681C21B88C00F17804 /* ThirdParty */,
 				CED62A601C09A52200270EDB /* Common */,
 				CED62A491C09514200270EDB /* Resource */,
 				CED62A501C09718600270EDB /* Category */,
+				CEB29E641C21B73500F17804 /* ZZUIKit */,
 				CED62A2C1C094FDD00270EDB /* SpeedyTransfer */,
 				CED62A2B1C094FDD00270EDB /* Products */,
 				37DD61B7600E78194ED4A9FD /* Pods */,
@@ -220,6 +309,14 @@
 				CED003111C0B2766005146A4 /* UIButton+ZZ.m */,
 				CED0D1311C1D959800F5C0E3 /* UITableViewCell+ST.h */,
 				CED0D1321C1D959800F5C0E3 /* UITableViewCell+ST.m */,
+				CED0D1381C21A58800F5C0E3 /* NSString+Extension.h */,
+				CED0D1391C21A58800F5C0E3 /* NSString+Extension.m */,
+				CED0D13B1C21A59200F5C0E3 /* AVURLAsset+Extension.h */,
+				CED0D13C1C21A59200F5C0E3 /* AVURLAsset+Extension.m */,
+				CEB29E5E1C21A9EB00F17804 /* NSDictionary+HT.h */,
+				CEB29E5F1C21A9EB00F17804 /* NSDictionary+HT.m */,
+				CEB29E7A1C230BA400F17804 /* UIViewController+ST.h */,
+				CEB29E7B1C230BA400F17804 /* UIViewController+ST.m */,
 			);
 			name = Category;
 			path = SpeedyTransfer/Category;
@@ -355,19 +452,30 @@
 			files = (
 				CED0D1051C1D3D7B00F5C0E3 /* STFileSelectionTabViewController.m in Sources */,
 				CED0D1221C1D576D00F5C0E3 /* STPictureSelectionViewController.m in Sources */,
+				CED0D1371C21A22100F5C0E3 /* STMusicInfoModel.m in Sources */,
+				CEB29E671C21B7C000F17804 /* HTDrawView.m in Sources */,
 				CED0D1201C1D576D00F5C0E3 /* STContactsSelectionViewController.m in Sources */,
+				CEB29E631C21B6D700F17804 /* HTContactsHeaderView.m in Sources */,
 				CED0D1331C1D959800F5C0E3 /* UITableViewCell+ST.m in Sources */,
 				CED62A351C094FDD00270EDB /* STHomeViewController.m in Sources */,
+				CEB29E791C21C01600F17804 /* STMusicSelectionCell.m in Sources */,
 				CED0D1231C1D576D00F5C0E3 /* STVideoSelectionViewController.m in Sources */,
 				CED62A561C09721F00270EDB /* UIDevice+ZZ.m in Sources */,
 				CED62A481C09512100270EDB /* main.m in Sources */,
+				CEB29E751C21B8BE00F17804 /* NSLayoutConstraint+PureLayout.m in Sources */,
+				CEB29E7C1C230BA400F17804 /* UIViewController+ST.m in Sources */,
 				CED62A5F1C099C6000270EDB /* UIColor+ZZ.m in Sources */,
+				CEB29E601C21A9EB00F17804 /* NSDictionary+HT.m in Sources */,
 				CED0D1261C1D57E000F5C0E3 /* STAlbumViewCell.m in Sources */,
+				CED0D13D1C21A59200F5C0E3 /* AVURLAsset+Extension.m in Sources */,
 				CED003121C0B2766005146A4 /* UIButton+ZZ.m in Sources */,
+				CED0D13A1C21A58800F5C0E3 /* NSString+Extension.m in Sources */,
 				CED62A531C09719500270EDB /* UIView+ZZ.m in Sources */,
 				CED0D12D1C1D77DF00F5C0E3 /* HZAssetCollectionViewCell.m in Sources */,
+				CEB29E741C21B8BE00F17804 /* NSArray+PureLayout.m in Sources */,
 				CED0D1211C1D576D00F5C0E3 /* STMusicSelectionViewController.m in Sources */,
 				CED62A321C094FDD00270EDB /* AppDelegate.m in Sources */,
+				CEB29E731C21B8BE00F17804 /* ALView+PureLayout.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

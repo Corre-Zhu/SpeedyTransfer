@@ -8,6 +8,7 @@
 
 #import "STFileSelectionTabViewController.h"
 #import <Photos/Photos.h>
+#import "STMusicInfoModel.h"
 
 @interface STFileSelectionTabViewController ()
 {
@@ -76,11 +77,14 @@
     
 }
 
+// 选中的总文件个数
 - (NSUInteger)selectedAssetsCount {
     NSUInteger count = 0;
     for (NSArray *arr in self.selectedAssetsDic.allValues) {
         count += arr.count;
     }
+    
+    count += _selectedMusicsArr.count;
     
     return count;
 }
@@ -147,6 +151,84 @@
     
     NSArray *arr = [_selectedAssetsDic objectForKey:fetchResults];
     return [arr containsObject:asset];
+}
+
+- (void)addMusic:(STMusicInfoModel *)music {
+    if (!music) {
+        return;
+    }
+    
+    @autoreleasepool {
+        if (!_selectedMusicsArr) {
+            _selectedMusicsArr = [NSArray arrayWithObject:music];
+        } else {
+            if (![_selectedMusicsArr containsObject:music]) {
+                _selectedMusicsArr = [_selectedMusicsArr arrayByAddingObject:music];
+            }
+        }
+    }
+    
+    [self configToolView];
+}
+
+- (void)addMusics:(NSArray *)musics {
+    if (!musics) {
+        return;
+    }
+    
+    @autoreleasepool {
+        if (!_selectedMusicsArr) {
+            _selectedMusicsArr = [NSArray arrayWithArray:musics];
+        } else {
+            _selectedMusicsArr = [_selectedMusicsArr arrayByAddingObjectsFromArray:musics];
+        }
+    }
+    
+    [self configToolView];
+}
+
+- (void)removeMusic:(STMusicInfoModel *)music {
+    if (!music) {
+        return;
+    }
+    
+    @autoreleasepool {
+        if ([_selectedMusicsArr containsObject:music]) {
+            NSMutableArray *tempArr = [NSMutableArray arrayWithArray:_selectedMusicsArr];
+            [tempArr removeObject:music];
+            _selectedMusicsArr = [NSArray arrayWithArray:tempArr];
+        }
+    }
+    
+    [self configToolView];
+}
+
+- (void)removeMusics:(NSArray *)musics {
+    if (!musics) {
+        return;
+    }
+    
+    @autoreleasepool {
+        NSMutableArray *tempArr = [NSMutableArray arrayWithArray:_selectedMusicsArr];
+        [tempArr removeObjectsInArray:musics];
+        _selectedMusicsArr = [NSArray arrayWithArray:tempArr];
+    }
+    
+    [self configToolView];
+}
+
+- (BOOL)isSelectedWithMusic:(STMusicInfoModel *)music {
+    return [_selectedMusicsArr containsObject:music];
+}
+
+- (BOOL)isSelectedWithMusics:(NSArray *)musics {
+    for (STMusicInfoModel *model in musics) {
+        if (![_selectedMusicsArr containsObject:model]) {
+            return NO;
+        }
+    }
+    
+    return YES;
 }
 
 @end

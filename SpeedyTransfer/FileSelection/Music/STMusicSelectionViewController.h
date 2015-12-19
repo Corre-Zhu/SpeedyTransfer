@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface STMusicSelectionViewController : UIViewController
+@interface STMusicSelectionViewController : UITableViewController
 
 @end
