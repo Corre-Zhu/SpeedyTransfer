@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		81B11DB05739291B2827F0AD /* libPods-SpeedyTransfer.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 43A35BB86492F999A43AE1F4 /* libPods-SpeedyTransfer.a */; };
 		CE8649131C25503B0072518B /* STPictureCollectionHeaderModel.m in Sources */ = {isa = PBXBuildFile; fileRef = CE8649121C25503B0072518B /* STPictureCollectionHeaderModel.m */; };
+		CE86491B1C2591D70072518B /* STContactModel.m in Sources */ = {isa = PBXBuildFile; fileRef = CE86491A1C2591D70072518B /* STContactModel.m */; };
+		CE86491D1C2592BE0072518B /* AddressBook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CE86491C1C2592BE0072518B /* AddressBook.framework */; };
 		CEB29E601C21A9EB00F17804 /* NSDictionary+HT.m in Sources */ = {isa = PBXBuildFile; fileRef = CEB29E5F1C21A9EB00F17804 /* NSDictionary+HT.m */; };
 		CEB29E631C21B6D700F17804 /* HTContactsHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = CEB29E621C21B6D700F17804 /* HTContactsHeaderView.m */; };
 		CEB29E671C21B7C000F17804 /* HTDrawView.m in Sources */ = {isa = PBXBuildFile; fileRef = CEB29E661C21B7C000F17804 /* HTDrawView.m */; };
@@ -44,6 +46,9 @@
 		8EA48F6AD6EDCB7E537ACCBC /* Pods-SpeedyTransfer.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SpeedyTransfer.debug.xcconfig"; path = "Pods/Target Support Files/Pods-SpeedyTransfer/Pods-SpeedyTransfer.debug.xcconfig"; sourceTree = "<group>"; };
 		CE8649111C25503B0072518B /* STPictureCollectionHeaderModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STPictureCollectionHeaderModel.h; sourceTree = "<group>"; };
 		CE8649121C25503B0072518B /* STPictureCollectionHeaderModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STPictureCollectionHeaderModel.m; sourceTree = "<group>"; };
+		CE8649191C2591D70072518B /* STContactModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STContactModel.h; sourceTree = "<group>"; };
+		CE86491A1C2591D70072518B /* STContactModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STContactModel.m; sourceTree = "<group>"; };
+		CE86491C1C2592BE0072518B /* AddressBook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBook.framework; path = System/Library/Frameworks/AddressBook.framework; sourceTree = SDKROOT; };
 		CEB29E5E1C21A9EB00F17804 /* NSDictionary+HT.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDictionary+HT.h"; sourceTree = "<group>"; };
 		CEB29E5F1C21A9EB00F17804 /* NSDictionary+HT.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDictionary+HT.m"; sourceTree = "<group>"; };
 		CEB29E611C21B6D700F17804 /* HTContactsHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HTContactsHeaderView.h; sourceTree = "<group>"; };
@@ -114,6 +119,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CE86491D1C2592BE0072518B /* AddressBook.framework in Frameworks */,
 				CED0D1131C1D53ED00F5C0E3 /* Photos.framework in Frameworks */,
 				81B11DB05739291B2827F0AD /* libPods-SpeedyTransfer.a in Frameworks */,
 			);
@@ -134,6 +140,7 @@
 		5AED4E2A6C934D663D247AEC /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				CE86491C1C2592BE0072518B /* AddressBook.framework */,
 				CED0D1121C1D53ED00F5C0E3 /* Photos.framework */,
 				43A35BB86492F999A43AE1F4 /* libPods-SpeedyTransfer.a */,
 			);
@@ -153,6 +160,15 @@
 		CE8649171C2577110072518B /* Model */ = {
 			isa = PBXGroup;
 			children = (
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		CE8649181C2591C40072518B /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				CE8649191C2591D70072518B /* STContactModel.h */,
+				CE86491A1C2591D70072518B /* STContactModel.m */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -209,6 +225,7 @@
 		CED0D1141C1D576D00F5C0E3 /* Contacts */ = {
 			isa = PBXGroup;
 			children = (
+				CE8649181C2591C40072518B /* Model */,
 				CED0D1151C1D576D00F5C0E3 /* STContactsSelectionViewController.h */,
 				CED0D1161C1D576D00F5C0E3 /* STContactsSelectionViewController.m */,
 			);
@@ -479,6 +496,7 @@
 				CED0D1201C1D576D00F5C0E3 /* STContactsSelectionViewController.m in Sources */,
 				CEB29E631C21B6D700F17804 /* HTContactsHeaderView.m in Sources */,
 				CED0D1331C1D959800F5C0E3 /* UITableViewCell+ST.m in Sources */,
+				CE86491B1C2591D70072518B /* STContactModel.m in Sources */,
 				CED62A351C094FDD00270EDB /* STHomeViewController.m in Sources */,
 				CEB29E791C21C01600F17804 /* STMusicSelectionCell.m in Sources */,
 				CED0D1231C1D576D00F5C0E3 /* STVideoSelectionViewController.m in Sources */,

@@ -14,6 +14,9 @@
 static NSString *headerIdentifier = @"ContactsHeaderView";
 
 @interface STMusicSelectionViewController ()
+{
+    UIActivityIndicatorView *activityIndicatorView;
+}
 
 @property (nonatomic, strong) NSArray *musicInfoModels;
 
@@ -29,7 +32,21 @@ static NSString *headerIdentifier = @"ContactsHeaderView";
     self.tableView.contentInset = UIEdgeInsetsMake(0.0f, 0.0f, 49.0f, 0.0f);
     self.tableView.scrollIndicatorInsets = UIEdgeInsetsMake(0.0f, 0.0f, 49.0f, 0.0f);
     [self.tableView registerClass:[HTContactsHeaderView class] forHeaderFooterViewReuseIdentifier:headerIdentifier];
-    _musicInfoModels = [STMusicInfoModel musicModelList];
+    
+    activityIndicatorView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+    [self.view addSubview:activityIndicatorView];
+    activityIndicatorView.centerX = IPHONE_WIDTH / 2.0f;
+    activityIndicatorView.centerY = (IPHONE_HEIGHT_WITHOUTTOPBAR - 49.0f) / 2.0f;
+    [activityIndicatorView startAnimating];
+    
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        _musicInfoModels = [STMusicInfoModel musicModelList];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [activityIndicatorView stopAnimating];
+            activityIndicatorView.hidden = YES;
+            [self.tableView reloadData];
+        });
+    });
     
 }
 
@@ -43,7 +60,7 @@ static NSString *headerIdentifier = @"ContactsHeaderView";
         [self.fileSelectionTabController removeMusics:dic.allValues.firstObject];
         sender.selected = NO;
     }
-    [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:section] withRowAnimation:UITableViewRowAnimationNone];
+    [self.tableView reloadData];
 }
 
 #pragma mark - Table view data source
@@ -124,7 +141,7 @@ static NSString *headerIdentifier = @"ContactsHeaderView";
     STMusicInfoModel *model = [dic.allValues.firstObject objectAtIndex:indexPath.row];
     [self.fileSelectionTabController addMusic:model];
     
-    [tableView reloadSections:[NSIndexSet indexSetWithIndex:indexPath.section] withRowAnimation:UITableViewRowAnimationNone];
+    [tableView reloadData];
 }
 
 - (void)tableView:(UITableView *)tableView didDeselectRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -132,7 +149,7 @@ static NSString *headerIdentifier = @"ContactsHeaderView";
     STMusicInfoModel *model = [dic.allValues.firstObject objectAtIndex:indexPath.row];
     [self.fileSelectionTabController removeMusic:model];
     
-    [tableView reloadSections:[NSIndexSet indexSetWithIndex:indexPath.section] withRowAnimation:UITableViewRowAnimationNone];
+    [tableView reloadData];
 }
 
 @end

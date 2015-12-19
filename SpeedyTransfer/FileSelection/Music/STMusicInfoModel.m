@@ -60,9 +60,15 @@
         STMusicInfoModel *model2 = obj2;
         if (model1.shortTitle.length == 0) {
             model1.shortTitle = [model1.title shortPinYin];
+            if (model1.shortTitle.length == 0) {
+                model1.shortTitle = model1.title;
+            }
         }
         if (model2.shortTitle.length == 0) {
             model2.shortTitle = [model2.title shortPinYin];
+            if (model2.shortTitle.length == 0) {
+                model2.shortTitle = model2.title;
+            }
         }
         
         return [model1.shortTitle compare:model2.shortTitle options:NSCaseInsensitiveSearch];
@@ -78,7 +84,7 @@
         }else{
             int unicode = [model.shortTitle characterAtIndex:0];
             if ((unicode>= 0x41 && unicode<= 0x5a) || (unicode>= 0x61 && unicode<= 0x7a)) { //english alphabet
-                letter = [model.shortTitle substringToIndex:1];
+                letter = [[model.shortTitle substringToIndex:1] uppercaseString];
             }else{
                 letter = @"#";
             }
@@ -101,7 +107,7 @@
     if (othersArray.count > 0) {
         [tempSectionArray addObject:@{@"#": othersArray}];
     }
-    
+
     return tempSectionArray;
 }
 

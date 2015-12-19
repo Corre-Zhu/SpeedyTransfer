@@ -88,6 +88,8 @@
     
     count += _selectedVideoAssetsArr.count;
     
+    count += _selectedContactsArr.count;
+
     return count;
 }
 
@@ -277,5 +279,82 @@
     return [_selectedVideoAssetsArr containsObject:asset];
 }
 
+- (void)addContact:(STContactModel *)contact {
+    if (!contact) {
+        return;
+    }
+    
+    @autoreleasepool {
+        if (!_selectedContactsArr) {
+            _selectedContactsArr = [NSArray arrayWithObject:contact];
+        } else {
+            if (![_selectedContactsArr containsObject:contact]) {
+                _selectedContactsArr = [_selectedContactsArr arrayByAddingObject:contact];
+            }
+        }
+    }
+    
+    [self configToolView];
+}
+
+- (void)addContacts:(NSArray *)contacts {
+    if (!contacts) {
+        return;
+    }
+    
+    @autoreleasepool {
+        if (!_selectedContactsArr) {
+            _selectedContactsArr = [NSArray arrayWithArray:contacts];
+        } else {
+            _selectedContactsArr = [_selectedContactsArr arrayByAddingObjectsFromArray:contacts];
+        }
+    }
+    
+    [self configToolView];
+}
+
+- (void)removeContact:(STContactModel *)contact {
+    if (!contact) {
+        return;
+    }
+    
+    @autoreleasepool {
+        if ([_selectedContactsArr containsObject:contact]) {
+            NSMutableArray *tempArr = [NSMutableArray arrayWithArray:_selectedContactsArr];
+            [tempArr removeObject:contact];
+            _selectedContactsArr = [NSArray arrayWithArray:tempArr];
+        }
+    }
+    
+    [self configToolView];
+}
+
+- (void)removeContacts:(NSArray *)contacts {
+    if (!contacts) {
+        return;
+    }
+    
+    @autoreleasepool {
+        NSMutableArray *tempArr = [NSMutableArray arrayWithArray:_selectedContactsArr];
+        [tempArr removeObjectsInArray:contacts];
+        _selectedContactsArr = [NSArray arrayWithArray:tempArr];
+    }
+    
+    [self configToolView];
+}
+
+- (BOOL)isSelectedWithContact:(STContactModel *)contact {
+    return [_selectedContactsArr containsObject:contact];
+}
+
+- (BOOL)isSelectedWithContacts:(NSArray *)contacts {
+    for (STContactModel *model in contacts) {
+        if (![_selectedContactsArr containsObject:model]) {
+            return NO;
+        }
+    }
+    
+    return YES;
+}
 
 @end

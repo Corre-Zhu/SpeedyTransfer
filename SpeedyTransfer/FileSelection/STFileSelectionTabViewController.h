@@ -11,6 +11,7 @@
 @class PHAsset;
 @class PHFetchResult;
 @class STMusicInfoModel;
+@class STContactModel;
 
 @interface STFileSelectionTabViewController : UITabBarController
 
@@ -38,5 +39,15 @@
 - (void)addVideoAsset:(PHAsset *)asset;
 - (void)removeVideoAsset:(PHAsset *)asset;
 - (BOOL)isSelectedWithVideoAsset:(PHAsset *)asset;
+
+// 联系人
+@property (nonatomic, strong, readonly) NSArray *selectedContactsArr;
+
+- (void)addContact:(STContactModel *)contact;
+- (void)addContacts:(NSArray *)contacts;
+- (void)removeContact:(STContactModel *)contact;
+- (void)removeContacts:(NSArray *)contacts;
+- (BOOL)isSelectedWithContact:(STContactModel *)contact;
+- (BOOL)isSelectedWithContacts:(NSArray *)contacts;
 
 @end

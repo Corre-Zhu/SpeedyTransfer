@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface STContactsSelectionViewController : UIViewController
+@interface STContactsSelectionViewController : UITableViewController
 
 @end
