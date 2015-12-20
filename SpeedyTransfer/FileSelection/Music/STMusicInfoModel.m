@@ -41,7 +41,12 @@
         NSString *title = [item valueForProperty:MPMediaItemPropertyTitle];
         NSString *artist = [item valueForProperty:MPMediaItemPropertyArtist];
         NSNumber *duration = [item valueForProperty:MPMediaItemPropertyPlaybackDuration];
+        AVURLAsset *songAsset = [AVURLAsset URLAssetWithURL:url options:nil];
         
+        AVAssetExportSession *exporter = [[AVAssetExportSession alloc] initWithAsset: songAsset
+                                                                          presetName: AVAssetExportPresetAppleM4A];
+        exporter.timeRange = CMTimeRangeMake(kCMTimeZero, songAsset.duration);
+
         if (!artist) {
             artist = NSLocalizedString(@"未知", nil);
         }
@@ -51,6 +56,7 @@
         model.url = url;
         model.artist = artist;
         model.duration = [NSString getDuration:duration.integerValue];
+        model.fileSize = exporter.estimatedOutputFileLength;
         [tempArray addObject:model];
     }
     

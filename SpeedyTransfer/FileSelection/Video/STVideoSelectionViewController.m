@@ -28,7 +28,7 @@ static NSString *VideoSelectionCellIdentifier = @"VideoSelectionCellIdentifier";
     
     PHFetchOptions *options = [[PHFetchOptions alloc] init];
     options.predicate = [NSPredicate predicateWithFormat:@"mediaType in %@", @[@(PHAssetMediaTypeVideo)]];
-    options.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"creationDate" ascending:YES]];
+    options.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"creationDate" ascending:NO]];
     
     // Smart collections
     for(PHCollection *collection in smartCollections) {

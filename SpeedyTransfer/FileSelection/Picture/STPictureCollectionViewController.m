@@ -11,6 +11,7 @@
 #import "STPictureCollectionHeaderModel.h"
 #import "HZAssetCollectionViewCell.h"
 #import <Photos/Photos.h>
+#import "MBProgressHUD.h"
 
 #define KItemPadding 5.0f
 #define ASSET_PER_ROW 4
@@ -64,7 +65,7 @@ static NSString * const CollectionViewCellReuseIdentifier = @"CollectionViewCell
     
     PHFetchOptions *options = [[PHFetchOptions alloc] init];
     options.predicate = [NSPredicate predicateWithFormat:@"mediaType in %@", @[@(PHAssetMediaTypeImage)]];
-    options.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"creationDate" ascending:YES]];
+    options.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"creationDate" ascending:NO]];
     
     // Smart collections
     for(PHCollection *collection in _smartCollections) {
@@ -206,6 +207,22 @@ static NSString * const CollectionViewCellReuseIdentifier = @"CollectionViewCell
         model.expand = !model.expand;
         [self.collectionView reloadData];
     }
+}
+
+#pragma mark - UIImagePickerControllerDelegate
+
+- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary<NSString *,id> *)info {
+    [self dismissViewControllerAnimated:YES completion:^{
+        [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    }];
+    UIImage *originalImage = [info objectForKey:UIImagePickerControllerOriginalImage];
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        UIImageWriteToSavedPhotosAlbum(originalImage, self, @selector(image:didFinishSavingWithError:contextInfo:), NULL);
+    });
+}
+
+- (void)image:(UIImage *)image didFinishSavingWithError:(NSError *)error contextInfo:(void *)contextInfo {
+    [MBProgressHUD hideHUDForView:self.view animated:YES];
 }
 
 #pragma mark - UICollectionViewDataSource

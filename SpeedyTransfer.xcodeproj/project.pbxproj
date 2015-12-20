@@ -11,6 +11,7 @@
 		CE8649131C25503B0072518B /* STPictureCollectionHeaderModel.m in Sources */ = {isa = PBXBuildFile; fileRef = CE8649121C25503B0072518B /* STPictureCollectionHeaderModel.m */; };
 		CE86491B1C2591D70072518B /* STContactModel.m in Sources */ = {isa = PBXBuildFile; fileRef = CE86491A1C2591D70072518B /* STContactModel.m */; };
 		CE86491D1C2592BE0072518B /* AddressBook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CE86491C1C2592BE0072518B /* AddressBook.framework */; };
+		CE8975631C26AE5B002E11F8 /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = CE8975621C26AE5B002E11F8 /* MBProgressHUD.m */; };
 		CEB29E601C21A9EB00F17804 /* NSDictionary+HT.m in Sources */ = {isa = PBXBuildFile; fileRef = CEB29E5F1C21A9EB00F17804 /* NSDictionary+HT.m */; };
 		CEB29E631C21B6D700F17804 /* HTContactsHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = CEB29E621C21B6D700F17804 /* HTContactsHeaderView.m */; };
 		CEB29E671C21B7C000F17804 /* HTDrawView.m in Sources */ = {isa = PBXBuildFile; fileRef = CEB29E661C21B7C000F17804 /* HTDrawView.m */; };
@@ -21,6 +22,7 @@
 		CEB29E7C1C230BA400F17804 /* UIViewController+ST.m in Sources */ = {isa = PBXBuildFile; fileRef = CEB29E7B1C230BA400F17804 /* UIViewController+ST.m */; };
 		CEB29E821C253C4D00F17804 /* STPictureCollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CEB29E811C253C4D00F17804 /* STPictureCollectionViewController.m */; };
 		CEB29E851C253F4800F17804 /* STPictureCollectionReusableView.m in Sources */ = {isa = PBXBuildFile; fileRef = CEB29E841C253F4800F17804 /* STPictureCollectionReusableView.m */; };
+		CECE97731C2653E900190AE2 /* STFileSelectionPopupView.m in Sources */ = {isa = PBXBuildFile; fileRef = CECE97721C2653E900190AE2 /* STFileSelectionPopupView.m */; };
 		CED003121C0B2766005146A4 /* UIButton+ZZ.m in Sources */ = {isa = PBXBuildFile; fileRef = CED003111C0B2766005146A4 /* UIButton+ZZ.m */; };
 		CED0D1051C1D3D7B00F5C0E3 /* STFileSelectionTabViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CED0D1041C1D3D7B00F5C0E3 /* STFileSelectionTabViewController.m */; };
 		CED0D1131C1D53ED00F5C0E3 /* Photos.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CED0D1121C1D53ED00F5C0E3 /* Photos.framework */; };
@@ -49,6 +51,8 @@
 		CE8649191C2591D70072518B /* STContactModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STContactModel.h; sourceTree = "<group>"; };
 		CE86491A1C2591D70072518B /* STContactModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STContactModel.m; sourceTree = "<group>"; };
 		CE86491C1C2592BE0072518B /* AddressBook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBook.framework; path = System/Library/Frameworks/AddressBook.framework; sourceTree = SDKROOT; };
+		CE8975611C26AE5B002E11F8 /* MBProgressHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBProgressHUD.h; sourceTree = "<group>"; };
+		CE8975621C26AE5B002E11F8 /* MBProgressHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBProgressHUD.m; sourceTree = "<group>"; };
 		CEB29E5E1C21A9EB00F17804 /* NSDictionary+HT.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDictionary+HT.h"; sourceTree = "<group>"; };
 		CEB29E5F1C21A9EB00F17804 /* NSDictionary+HT.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDictionary+HT.m"; sourceTree = "<group>"; };
 		CEB29E611C21B6D700F17804 /* HTContactsHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HTContactsHeaderView.h; sourceTree = "<group>"; };
@@ -73,6 +77,8 @@
 		CEB29E811C253C4D00F17804 /* STPictureCollectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STPictureCollectionViewController.m; sourceTree = "<group>"; };
 		CEB29E831C253F4800F17804 /* STPictureCollectionReusableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STPictureCollectionReusableView.h; sourceTree = "<group>"; };
 		CEB29E841C253F4800F17804 /* STPictureCollectionReusableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STPictureCollectionReusableView.m; sourceTree = "<group>"; };
+		CECE97711C2653E900190AE2 /* STFileSelectionPopupView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STFileSelectionPopupView.h; sourceTree = "<group>"; };
+		CECE97721C2653E900190AE2 /* STFileSelectionPopupView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STFileSelectionPopupView.m; sourceTree = "<group>"; };
 		CED003101C0B2766005146A4 /* UIButton+ZZ.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIButton+ZZ.h"; sourceTree = "<group>"; };
 		CED003111C0B2766005146A4 /* UIButton+ZZ.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIButton+ZZ.m"; sourceTree = "<group>"; };
 		CED0D1031C1D3D7B00F5C0E3 /* STFileSelectionTabViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STFileSelectionTabViewController.h; sourceTree = "<group>"; };
@@ -173,6 +179,15 @@
 			path = Model;
 			sourceTree = "<group>";
 		};
+		CE8975601C26AE5B002E11F8 /* MBProgressHUD */ = {
+			isa = PBXGroup;
+			children = (
+				CE8975611C26AE5B002E11F8 /* MBProgressHUD.h */,
+				CE8975621C26AE5B002E11F8 /* MBProgressHUD.m */,
+			);
+			path = MBProgressHUD;
+			sourceTree = "<group>";
+		};
 		CEB29E641C21B73500F17804 /* ZZUIKit */ = {
 			isa = PBXGroup;
 			children = (
@@ -187,6 +202,7 @@
 		CEB29E681C21B88C00F17804 /* ThirdParty */ = {
 			isa = PBXGroup;
 			children = (
+				CE8975601C26AE5B002E11F8 /* MBProgressHUD */,
 				CEB29E691C21B8BE00F17804 /* UIView+AutoLayout */,
 			);
 			name = ThirdParty;
@@ -214,6 +230,8 @@
 			children = (
 				CED0D1031C1D3D7B00F5C0E3 /* STFileSelectionTabViewController.h */,
 				CED0D1041C1D3D7B00F5C0E3 /* STFileSelectionTabViewController.m */,
+				CECE97711C2653E900190AE2 /* STFileSelectionPopupView.h */,
+				CECE97721C2653E900190AE2 /* STFileSelectionPopupView.m */,
 				CED0D11A1C1D576D00F5C0E3 /* Picture */,
 				CED0D1171C1D576D00F5C0E3 /* Music */,
 				CED0D11D1C1D576D00F5C0E3 /* Video */,
@@ -494,7 +512,9 @@
 				CEB29E851C253F4800F17804 /* STPictureCollectionReusableView.m in Sources */,
 				CEB29E671C21B7C000F17804 /* HTDrawView.m in Sources */,
 				CED0D1201C1D576D00F5C0E3 /* STContactsSelectionViewController.m in Sources */,
+				CECE97731C2653E900190AE2 /* STFileSelectionPopupView.m in Sources */,
 				CEB29E631C21B6D700F17804 /* HTContactsHeaderView.m in Sources */,
+				CE8975631C26AE5B002E11F8 /* MBProgressHUD.m in Sources */,
 				CED0D1331C1D959800F5C0E3 /* UITableViewCell+ST.m in Sources */,
 				CE86491B1C2591D70072518B /* STContactModel.m in Sources */,
 				CED62A351C094FDD00270EDB /* STHomeViewController.m in Sources */,

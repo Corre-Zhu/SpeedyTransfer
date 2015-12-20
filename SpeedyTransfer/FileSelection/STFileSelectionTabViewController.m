@@ -9,12 +9,14 @@
 #import "STFileSelectionTabViewController.h"
 #import <Photos/Photos.h>
 #import "STMusicInfoModel.h"
+#import "STFileSelectionPopupView.h"
 
 @interface STFileSelectionTabViewController ()
 {
     UIImageView *toolView;
     UIButton *deleteButton;
     UIButton *transferButton;
+    STFileSelectionPopupView *popupView;
 }
 
 @end
@@ -53,7 +55,7 @@
 }
 
 - (void)configToolView {
-    NSInteger count = [self selectedAssetsCount];
+    NSInteger count = [self selectedFilesCount];
     if (count > 0) {
         [transferButton setTitle:[NSString stringWithFormat:@"%@ (%@)", NSLocalizedString(@"全部传输", nil), @(count)] forState:UIControlStateNormal];
         toolView.hidden = NO;
@@ -74,11 +76,20 @@
 }
 
 - (void)deleteButtonClick {
-    
+    if (!popupView) {
+        popupView = [[STFileSelectionPopupView alloc] init];
+    }
+    popupView.dataSource = self.selectedFilesArray;
+    [popupView showInView:self.navigationController.view];
+}
+
+- (void)removeAllSelectedFiles {
+    _selectedFilesArray = nil;
+    [self configToolView];
 }
 
 // 选中的总文件个数
-- (NSUInteger)selectedAssetsCount {
+- (NSInteger)selectedFilesCount {
     NSUInteger count = 0;
     for (NSArray *arr in self.selectedAssetsDic.allValues) {
         count += arr.count;
@@ -91,6 +102,16 @@
     count += _selectedContactsArr.count;
 
     return count;
+}
+
+- (NSArray *)selectedFilesArray {
+    NSMutableArray *array = [NSMutableArray array];
+    [array addObjectsFromArray:[self selectedAssetsArr]];
+    [array addObjectsFromArray:self.selectedMusicsArr];
+    [array addObjectsFromArray:self.selectedVideoAssetsArr];
+    [array addObjectsFromArray:self.selectedContactsArr];
+    
+    return [NSArray arrayWithArray:array];
 }
 
 - (NSArray *)selectedAssetsArr {

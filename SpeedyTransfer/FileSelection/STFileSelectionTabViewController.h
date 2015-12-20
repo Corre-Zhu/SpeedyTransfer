@@ -15,6 +15,11 @@
 
 @interface STFileSelectionTabViewController : UITabBarController
 
+@property (nonatomic, strong) NSArray *selectedFilesArray;
+@property (nonatomic) NSInteger selectedFilesCount;
+
+- (void)removeAllSelectedFiles;
+
 // 图片
 @property (nonatomic, strong, readonly) NSDictionary *selectedAssetsDic;
 @property (nonatomic, strong, readonly) NSArray *selectedAssetsArr;
