@@ -33,12 +33,15 @@
     if (addressBook) {
         NSArray *allContacts = (__bridge_transfer NSArray*)ABAddressBookCopyArrayOfAllPeople(addressBook);
         NSMutableArray *mutableContacts = [NSMutableArray arrayWithCapacity:allContacts.count];
-        NSUInteger i = 0;
-        for (i = 0; i<[allContacts count]; i++)
+        for (id object in allContacts)
         {
             STContactModel *contact = [[STContactModel alloc] init];
-            ABRecordRef contactPerson = (__bridge ABRecordRef)allContacts[i];
+            ABRecordRef contactPerson = (__bridge ABRecordRef)object;
             
+            CFArrayRef cfArrayRef =  (__bridge CFArrayRef)@[object];
+            
+            CFDataRef vcards = (CFDataRef)ABPersonCreateVCardRepresentationWithPeople(cfArrayRef);
+            contact.vcardData = (__bridge NSData *)vcards;
             contact.recordId = ABRecordGetRecordID(contactPerson);
 
             // Get first and last names

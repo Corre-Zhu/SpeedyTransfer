@@ -106,6 +106,10 @@
 
 - (void)removeAllSelectedFiles {
     _selectedFilesArray = nil;
+    _selectedAssetsArr = nil;
+    _selectedMusicsArr = nil;
+    _selectedVideoAssetsArr = nil;
+    _selectedContactsArr = nil;
     [self configToolView];
 }
 

@@ -17,6 +17,7 @@ typedef void(^GetContactsCompletionHandler)(NSArray *array);
 @property (nonatomic, strong) NSString *shortName;
 @property (nonatomic, strong) NSString *phone;
 @property (nonatomic, strong) UIImage *image;
+@property (nonatomic, strong) NSData *vcardData;
 
 // 读取手机通讯录
 + (void)getContactsModelListWithCompletion:(GetContactsCompletionHandler)handler;

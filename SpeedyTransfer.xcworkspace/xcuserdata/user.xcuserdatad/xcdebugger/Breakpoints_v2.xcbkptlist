@@ -10,11 +10,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "SpeedyTransfer/FileSelection/STFileSelectionTabViewController.m"
-            timestampString = "472401372.093262"
+            timestampString = "472401621.50718"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "171"
-            endingLineNumber = "171"
+            startingLineNumber = "175"
+            endingLineNumber = "175"
             landmarkName = "-removeAsset:"
             landmarkType = "5">
          </BreakpointContent>

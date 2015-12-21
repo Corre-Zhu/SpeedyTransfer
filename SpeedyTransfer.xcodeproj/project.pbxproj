@@ -12,6 +12,7 @@
 		CE86491B1C2591D70072518B /* STContactModel.m in Sources */ = {isa = PBXBuildFile; fileRef = CE86491A1C2591D70072518B /* STContactModel.m */; };
 		CE86491D1C2592BE0072518B /* AddressBook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CE86491C1C2592BE0072518B /* AddressBook.framework */; };
 		CE8975631C26AE5B002E11F8 /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = CE8975621C26AE5B002E11F8 /* MBProgressHUD.m */; };
+		CE8975671C284D89002E11F8 /* AddressBookUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CE8975661C284D89002E11F8 /* AddressBookUI.framework */; };
 		CEB29E601C21A9EB00F17804 /* NSDictionary+HT.m in Sources */ = {isa = PBXBuildFile; fileRef = CEB29E5F1C21A9EB00F17804 /* NSDictionary+HT.m */; };
 		CEB29E631C21B6D700F17804 /* HTContactsHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = CEB29E621C21B6D700F17804 /* HTContactsHeaderView.m */; };
 		CEB29E671C21B7C000F17804 /* HTDrawView.m in Sources */ = {isa = PBXBuildFile; fileRef = CEB29E661C21B7C000F17804 /* HTDrawView.m */; };
@@ -53,6 +54,7 @@
 		CE86491C1C2592BE0072518B /* AddressBook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBook.framework; path = System/Library/Frameworks/AddressBook.framework; sourceTree = SDKROOT; };
 		CE8975611C26AE5B002E11F8 /* MBProgressHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBProgressHUD.h; sourceTree = "<group>"; };
 		CE8975621C26AE5B002E11F8 /* MBProgressHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBProgressHUD.m; sourceTree = "<group>"; };
+		CE8975661C284D89002E11F8 /* AddressBookUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBookUI.framework; path = System/Library/Frameworks/AddressBookUI.framework; sourceTree = SDKROOT; };
 		CEB29E5E1C21A9EB00F17804 /* NSDictionary+HT.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDictionary+HT.h"; sourceTree = "<group>"; };
 		CEB29E5F1C21A9EB00F17804 /* NSDictionary+HT.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDictionary+HT.m"; sourceTree = "<group>"; };
 		CEB29E611C21B6D700F17804 /* HTContactsHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HTContactsHeaderView.h; sourceTree = "<group>"; };
@@ -125,6 +127,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CE8975671C284D89002E11F8 /* AddressBookUI.framework in Frameworks */,
 				CE86491D1C2592BE0072518B /* AddressBook.framework in Frameworks */,
 				CED0D1131C1D53ED00F5C0E3 /* Photos.framework in Frameworks */,
 				81B11DB05739291B2827F0AD /* libPods-SpeedyTransfer.a in Frameworks */,
@@ -146,6 +149,7 @@
 		5AED4E2A6C934D663D247AEC /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				CE8975661C284D89002E11F8 /* AddressBookUI.framework */,
 				CE86491C1C2592BE0072518B /* AddressBook.framework */,
 				CED0D1121C1D53ED00F5C0E3 /* Photos.framework */,
 				43A35BB86492F999A43AE1F4 /* libPods-SpeedyTransfer.a */,

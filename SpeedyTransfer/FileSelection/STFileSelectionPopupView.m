@@ -176,6 +176,10 @@ static NSString *PopupCellIdentifier = @"PopupCellIdentifier";
 - (void)deleteButtonClick {
     [self.tabViewController removeAllSelectedFiles];
     _dataSource = nil;
+    [self.tabViewController reloadAssetsTableView];
+    [self.tabViewController reloadMusicsTableView];
+    [self.tabViewController reloadVideosTableView];
+    [self.tabViewController reloadContactsTableView];
     [self.tableView reloadData];
 }
 
@@ -259,6 +263,7 @@ static NSString *PopupCellIdentifier = @"PopupCellIdentifier";
         STContactModel *model = object;
         cell.title = model.name;
         cell.image = [UIImage imageNamed:@"phone_bg"];
+        cell.size = model.vcardData.length;
     }
     
     return cell;
