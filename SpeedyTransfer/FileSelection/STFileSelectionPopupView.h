@@ -12,7 +12,7 @@
 
 @interface STFileSelectionPopupView : UIView
 
-@property (nonatomic, strong) NSArray *dataSource;
+@property (nonatomic, strong) NSMutableArray *dataSource;
 @property (nonatomic, weak) STFileSelectionTabViewController *tabViewController;
 
 - (void)showInView:(UIView *)view;

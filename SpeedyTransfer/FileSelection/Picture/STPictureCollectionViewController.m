@@ -20,12 +20,28 @@ static NSString *collectionReusableViewIdenfifier = @"CollectionReusableViewIden
 static NSString * const CollectionViewCellReuseIdentifier = @"CollectionViewCellReuseIdentifier";
 
 @interface STPictureCollectionViewController ()<PHPhotoLibraryChangeObserver,UIImagePickerControllerDelegate,UINavigationControllerDelegate>
+{
+    BOOL inserting; //
+}
+
+@property (strong) PHFetchResult *smartCollections;
+@property (strong) NSMutableArray *smartFetchResults;
+@property (strong) NSMutableArray *smartFetchTitles;
 
 @property (strong) PHFetchResult *topLevelCollections;
-@property (strong) PHFetchResult *smartCollections;
+@property (strong) NSMutableArray *topLevelFetchResults;
+@property (strong) NSMutableArray *topLevelFetchTitles;
+
 @property (strong) PHFetchResult *photoStreamsCollections;
+@property (strong) NSMutableArray *photoStreamsFetchResults;
+@property (strong) NSMutableArray *photoStreamsFetchTitles;
+
 @property (strong) PHFetchResult *iCloudShareCollections;
+@property (strong) NSMutableArray *iCloudShareFetchResults;
+@property (strong) NSMutableArray *iCloudShareFetchTitles;
+
 @property (nonatomic, strong) NSArray *smartCollectionSubtypes;
+@property (nonatomic, strong) PHFetchOptions *fetchOptions;
 
 @property (strong) NSArray *fetchResultsArray;
 @property (strong) NSArray *fetchResultsTitles;
@@ -52,89 +68,147 @@ static NSString * const CollectionViewCellReuseIdentifier = @"CollectionViewCell
     return _smartCollectionSubtypes;
 }
 
-- (void)setupFetchResults {
-    [[PHPhotoLibrary sharedPhotoLibrary] registerChangeObserver:self];
+- (PHFetchOptions *)fetchOptions {
+    if (!_fetchOptions) {
+        PHFetchOptions *options = [[PHFetchOptions alloc] init];
+        options.predicate = [NSPredicate predicateWithFormat:@"mediaType in %@", @[@(PHAssetMediaTypeImage)]];
+        options.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"creationDate" ascending:NO]];
+        _fetchOptions = options;
+    }
     
-    _topLevelCollections = [PHCollectionList fetchTopLevelUserCollectionsWithOptions:nil];
-    _smartCollections = [PHAssetCollection fetchAssetCollectionsWithType:PHAssetCollectionTypeSmartAlbum subtype:PHAssetCollectionSubtypeAlbumRegular options:nil];
-    _photoStreamsCollections = [PHAssetCollection fetchAssetCollectionsWithType:PHAssetCollectionTypeAlbum subtype:PHAssetCollectionSubtypeAlbumMyPhotoStream options:nil];
-    _iCloudShareCollections = [PHAssetCollection fetchAssetCollectionsWithType:PHAssetCollectionTypeAlbum subtype:PHAssetCollectionSubtypeAlbumCloudShared options:nil];
+    return _fetchOptions;
+}
+
+- (void)setupSmartCollections {
+    if (!_smartCollections) {
+        _smartCollections = [PHAssetCollection fetchAssetCollectionsWithType:PHAssetCollectionTypeSmartAlbum subtype:PHAssetCollectionSubtypeAlbumRegular options:nil];
+        _smartFetchResults = [NSMutableArray array];
+        _smartFetchTitles = [NSMutableArray array];
+    }
     
-    NSMutableArray *tempFetchResultArray = [[NSMutableArray alloc] init];
-    NSMutableArray *tempFetchResultTitles = [[NSMutableArray alloc] init];
-    
-    PHFetchOptions *options = [[PHFetchOptions alloc] init];
-    options.predicate = [NSPredicate predicateWithFormat:@"mediaType in %@", @[@(PHAssetMediaTypeImage)]];
-    options.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"creationDate" ascending:NO]];
-    
+    [_smartFetchResults removeAllObjects];
+    [_smartFetchTitles removeAllObjects];
+   
     // Smart collections
     for(PHCollection *collection in _smartCollections) {
         if ([collection isKindOfClass:[PHAssetCollection class]]) {
             PHAssetCollection *assetCollection = (PHAssetCollection *)collection;
             if ([self.smartCollectionSubtypes containsObject:@(assetCollection.assetCollectionSubtype)]) {
-                PHFetchResult *assetsFetchResult = [PHAsset fetchAssetsInAssetCollection:assetCollection options:options];
+                PHFetchResult *assetsFetchResult = [PHAsset fetchAssetsInAssetCollection:assetCollection options:self.fetchOptions];
                 if(assetsFetchResult.count>0) {
                     if (assetCollection.assetCollectionSubtype == PHAssetCollectionSubtypeSmartAlbumUserLibrary) {
-                        [tempFetchResultArray insertObject:assetsFetchResult atIndex:0];
-                        [tempFetchResultTitles insertObject:collection.localizedTitle atIndex:0];
+                        [_smartFetchResults insertObject:assetsFetchResult atIndex:0];
+                        [_smartFetchTitles insertObject:collection.localizedTitle atIndex:0];
                     } else {
-                        [tempFetchResultArray addObject:assetsFetchResult];
-                        [tempFetchResultTitles addObject:collection.localizedTitle];
+                        [_smartFetchResults addObject:assetsFetchResult];
+                        [_smartFetchTitles addObject:collection.localizedTitle];
                     }
                 }
             }
         }
     }
+}
+
+- (void)setupPhotoStreamsCollections {
+    if (!_photoStreamsCollections) {
+        _photoStreamsCollections = [PHAssetCollection fetchAssetCollectionsWithType:PHAssetCollectionTypeAlbum subtype:PHAssetCollectionSubtypeAlbumMyPhotoStream options:nil];
+        _photoStreamsFetchResults = [NSMutableArray array];
+        _photoStreamsFetchTitles = [NSMutableArray array];
+    }
+    
+    [_photoStreamsFetchResults removeAllObjects];
+    [_photoStreamsFetchTitles removeAllObjects];
     
     // PhotoStreams
     for(PHCollection *collection in _photoStreamsCollections) {
         if ([collection isKindOfClass:[PHAssetCollection class]]) {
             PHAssetCollection *assetCollection = (PHAssetCollection *)collection;
-            PHFetchResult *assetsFetchResult = [PHAsset fetchAssetsInAssetCollection:assetCollection options:options];
+            PHFetchResult *assetsFetchResult = [PHAsset fetchAssetsInAssetCollection:assetCollection options:self.fetchOptions];
             if(assetsFetchResult.count > 0) {
-                if (tempFetchResultArray.count > 0) {
-                    [tempFetchResultArray insertObject:assetsFetchResult atIndex:1];
-                    [tempFetchResultTitles insertObject:collection.localizedTitle atIndex:1];
-                } else {
-                    [tempFetchResultArray insertObject:assetsFetchResult atIndex:0];
-                    [tempFetchResultTitles insertObject:collection.localizedTitle atIndex:0];
-                }
+                [_photoStreamsFetchResults addObject:assetsFetchResult];
+                [_photoStreamsFetchTitles addObject:collection.localizedTitle];
             }
         }
     }
+}
+
+- (void)setupTopLevelCollections {
+    if (!_topLevelCollections) {
+        _topLevelCollections = [PHCollectionList fetchTopLevelUserCollectionsWithOptions:nil];
+        _topLevelFetchResults = [NSMutableArray array];
+        _topLevelFetchTitles = [NSMutableArray array];
+    }
+    
+    [_topLevelFetchResults removeAllObjects];
+    [_topLevelFetchTitles removeAllObjects];
     
     // User Created Albums
     for(PHCollection *collection in _topLevelCollections) {
         if ([collection isKindOfClass:[PHAssetCollection class]]) {
             PHAssetCollection *assetCollection = (PHAssetCollection *)collection;
-            PHFetchResult *assetsFetchResult = [PHAsset fetchAssetsInAssetCollection:assetCollection options:options];
+            PHFetchResult *assetsFetchResult = [PHAsset fetchAssetsInAssetCollection:assetCollection options:self.fetchOptions];
             if (assetsFetchResult.count > 0) {
-                [tempFetchResultArray addObject:assetsFetchResult];
-                [tempFetchResultTitles addObject:collection.localizedTitle];
+                [_topLevelFetchResults addObject:assetsFetchResult];
+                [_topLevelFetchTitles addObject:collection.localizedTitle];
             }
         }
     }
+}
+
+- (void)setupiCloudShareCollections {
+    if (!_iCloudShareCollections) {
+        _iCloudShareCollections = [PHAssetCollection fetchAssetCollectionsWithType:PHAssetCollectionTypeAlbum subtype:PHAssetCollectionSubtypeAlbumCloudShared options:nil];
+        _iCloudShareFetchResults = [NSMutableArray array];
+        _iCloudShareFetchTitles = [NSMutableArray array];
+    }
+    
+    [_iCloudShareFetchResults removeAllObjects];
+    [_iCloudShareFetchTitles removeAllObjects];
     
     // iCloud Share Albums
     for(PHCollection *collection in _iCloudShareCollections) {
         if ([collection isKindOfClass:[PHAssetCollection class]]) {
             PHAssetCollection *assetCollection = (PHAssetCollection *)collection;
-            PHFetchResult *assetsFetchResult = [PHAsset fetchAssetsInAssetCollection:assetCollection options:options];
+            PHFetchResult *assetsFetchResult = [PHAsset fetchAssetsInAssetCollection:assetCollection options:self.fetchOptions];
             if(assetsFetchResult.count>0) {
-                [tempFetchResultArray addObject:assetsFetchResult];
-                [tempFetchResultTitles addObject:collection.localizedTitle];
+                [_iCloudShareFetchResults addObject:assetsFetchResult];
+                [_iCloudShareFetchTitles addObject:collection.localizedTitle];
             }
         }
     }
-    
-    self.fetchResultsArray = [NSArray arrayWithArray:tempFetchResultArray];
-    self.fetchResultsTitles = [NSArray arrayWithArray:tempFetchResultTitles];
+}
+
+- (void)setupFetchResults {
+    @autoreleasepool {
+        NSMutableArray *tempArr = [NSMutableArray array];
+        NSMutableArray *tempArr2 = [NSMutableArray array];
+        [tempArr addObjectsFromArray:_smartFetchResults];
+        [tempArr2 addObjectsFromArray:_smartFetchTitles];
+        if (_photoStreamsFetchResults.count > 0) {
+            if (tempArr.count > 0) {
+                [tempArr insertObject:_photoStreamsFetchResults.firstObject atIndex:1];
+                [tempArr2 insertObject:_photoStreamsFetchTitles.firstObject atIndex:1];
+            } else {
+                [tempArr addObject:_photoStreamsFetchResults.firstObject];
+                [tempArr2 addObject:_photoStreamsFetchTitles.firstObject];
+            }
+        }
+        [tempArr addObjectsFromArray:_topLevelFetchResults];
+        [tempArr2 addObjectsFromArray:_topLevelFetchTitles];
+        [tempArr addObjectsFromArray:_iCloudShareFetchResults];
+        [tempArr2 addObjectsFromArray:_iCloudShareFetchTitles];
+        
+        self.fetchResultsArray = [NSArray arrayWithArray:tempArr];
+        self.fetchResultsTitles = [NSArray arrayWithArray:tempArr2];
+    }
 }
 
 - (void)setupHeaderModel {
     if (!_cachedHeaderModels) {
         _cachedHeaderModels = [NSMutableArray array];
     }
+    
+    [_cachedHeaderModels removeAllObjects];
     
     for (PHFetchResult *result in self.fetchResultsArray) {
         NSInteger index = [self.fetchResultsArray indexOfObject:result];
@@ -150,7 +224,7 @@ static NSString * const CollectionViewCellReuseIdentifier = @"CollectionViewCell
         NSInteger currentTag = headerModel.tag + 1;
         headerModel.tag = currentTag;
         
-        PHAsset *asset = result.lastObject;
+        PHAsset *asset = result.firstObject;
         if (result.count > 0) {
             NSInteger scale = [UIScreen mainScreen].scale;
             CGSize size = CGSizeMake(72 * scale, 72 * scale);
@@ -183,9 +257,19 @@ static NSString * const CollectionViewCellReuseIdentifier = @"CollectionViewCell
     return self;
 }
 
+- (void)dealloc {
+    inserting = NO;
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
+    [[PHPhotoLibrary sharedPhotoLibrary] registerChangeObserver:self];
     _imageManager = [[PHCachingImageManager alloc] init];
+    [self setupSmartCollections];
+    [self setupPhotoStreamsCollections];
+    [self setupTopLevelCollections];
+    [self setupiCloudShareCollections];
     [self setupFetchResults];
     [self setupHeaderModel];
     self.collectionView.backgroundColor = [UIColor whiteColor];
@@ -194,11 +278,15 @@ static NSString * const CollectionViewCellReuseIdentifier = @"CollectionViewCell
     self.collectionView.scrollIndicatorInsets = UIEdgeInsetsMake(0.0f, 0.0f, 49.0f, 0.0f);
     [self.collectionView registerClass:[STPictureCollectionReusableView class] forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:collectionReusableViewIdenfifier];
     [self.collectionView registerClass:[HZAssetCollectionViewCell class] forCellWithReuseIdentifier:CollectionViewCellReuseIdentifier];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(didEnterBackgroundNotification:)
+                                                 name:UIApplicationDidEnterBackgroundNotification
+                                               object:nil];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
-    
 }
 
 - (void)expandButtonClick:(UIButton *)sender {
@@ -209,12 +297,18 @@ static NSString * const CollectionViewCellReuseIdentifier = @"CollectionViewCell
     }
 }
 
+- (void)didEnterBackgroundNotification:(NSNotification *)notification {
+    inserting = NO;
+}
+
 #pragma mark - UIImagePickerControllerDelegate
 
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary<NSString *,id> *)info {
+    NSLog(@"info: %@", info);
     [self dismissViewControllerAnimated:YES completion:^{
         [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     }];
+    inserting = YES;
     UIImage *originalImage = [info objectForKey:UIImagePickerControllerOriginalImage];
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         UIImageWriteToSavedPhotosAlbum(originalImage, self, @selector(image:didFinishSavingWithError:contextInfo:), NULL);
@@ -222,6 +316,9 @@ static NSString * const CollectionViewCellReuseIdentifier = @"CollectionViewCell
 }
 
 - (void)image:(UIImage *)image didFinishSavingWithError:(NSError *)error contextInfo:(void *)contextInfo {
+    if (error) {
+        inserting = NO;
+    }
     [MBProgressHUD hideHUDForView:self.view animated:YES];
 }
 
@@ -278,7 +375,7 @@ static NSString * const CollectionViewCellReuseIdentifier = @"CollectionViewCell
                                   }
                               }];
     
-    if ([self.fileSelectionTabController isSelectedWithAsset:asset inFetchResults:model.fetchResult]) {
+    if ([self.fileSelectionTabController isSelectedWithAsset:asset]) {
         cell.selected = YES;
         [collectionView selectItemAtIndexPath:indexPath animated:NO scrollPosition:UICollectionViewScrollPositionNone];
     } else {
@@ -334,7 +431,7 @@ static NSString * const CollectionViewCellReuseIdentifier = @"CollectionViewCell
     }
     
     PHAsset *asset = model.fetchResult[item];
-    [self.fileSelectionTabController addAsset:asset inFetchResults:model.fetchResult];
+    [self.fileSelectionTabController addAsset:asset];
 }
 
 - (void)collectionView:(UICollectionView *)collectionView didDeselectItemAtIndexPath:(NSIndexPath *)indexPath {
@@ -346,7 +443,7 @@ static NSString * const CollectionViewCellReuseIdentifier = @"CollectionViewCell
     }
     
     PHAsset *asset = model.fetchResult[item];
-    [self.fileSelectionTabController removeAsset:asset inFetchResults:model.fetchResult];
+    [self.fileSelectionTabController removeAsset:asset];
 }
 
 #pragma mark - UICollectionViewDelegateFlowLayout
@@ -359,7 +456,76 @@ static NSString * const CollectionViewCellReuseIdentifier = @"CollectionViewCell
 #pragma mark - PHPhotoLibraryChangeObserver
 
 - (void)photoLibraryDidChange:(PHChange *)changeInstance {
-    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        BOOL reloadRequired = NO;
+        PHFetchResultChangeDetails *changeDetails = [changeInstance changeDetailsForFetchResult:_smartCollections];
+        if (changeDetails != nil) {
+            _smartCollections = [changeDetails fetchResultAfterChanges];
+            [self setupSmartCollections];
+            reloadRequired = YES;
+        }
+        
+        changeDetails = [changeInstance changeDetailsForFetchResult:_photoStreamsCollections];
+        if (changeDetails != nil) {
+            _photoStreamsCollections = [changeDetails fetchResultAfterChanges];
+            [self setupPhotoStreamsCollections];
+            reloadRequired = YES;
+        }
+        
+        changeDetails = [changeInstance changeDetailsForFetchResult:_topLevelCollections];
+        if (changeDetails != nil) {
+            _topLevelCollections = [changeDetails fetchResultAfterChanges];
+            [self setupTopLevelCollections];
+            reloadRequired = YES;
+        }
+        
+        changeDetails = [changeInstance changeDetailsForFetchResult:_iCloudShareCollections];
+        if (changeDetails != nil) {
+            _iCloudShareCollections = [changeDetails fetchResultAfterChanges];
+            [self setupiCloudShareCollections];
+            reloadRequired = YES;
+        }
+     
+        if (reloadRequired) {
+            [self setupFetchResults];
+        }
+        
+        NSMutableArray *updatedFetchResultsArray = [self.fetchResultsArray mutableCopy];
+        
+        __block BOOL reloadRequired2 = NO;
+        [self.fetchResultsArray enumerateObjectsUsingBlock:^(PHFetchResult *collectionsFetchResult, NSUInteger index, BOOL *stop) {
+            PHFetchResultChangeDetails *collectionChanges = [changeInstance changeDetailsForFetchResult:collectionsFetchResult];
+            if (collectionChanges != nil) {
+                NSIndexSet *removedIndexes = [collectionChanges removedIndexes];
+                if ([removedIndexes count] > 0) {
+                    [removedIndexes enumerateIndexesUsingBlock:^(NSUInteger idx, BOOL *stop) {
+                        PHAsset *asset = collectionsFetchResult[idx];
+                        [self.fileSelectionTabController removeAsset:asset];
+                    }];
+                }
+                
+                PHFetchResult *newFetchResult = [collectionChanges fetchResultAfterChanges];
+                NSIndexSet *insertedIndexes = [collectionChanges insertedIndexes];
+                if ([insertedIndexes count] == 1 && index == 0 && inserting) {
+                    PHAsset *newAsset = [newFetchResult objectAtIndex:insertedIndexes.firstIndex];
+                    [self.fileSelectionTabController addAsset:newAsset];
+                }
+                inserting = NO;
+                [updatedFetchResultsArray replaceObjectAtIndex:index withObject:[collectionChanges fetchResultAfterChanges]];
+                reloadRequired2 = YES;
+            }
+            
+        }];
+        
+        if (reloadRequired2) {
+            self.fetchResultsArray = [NSArray arrayWithArray:updatedFetchResultsArray];
+        }
+        
+        if (reloadRequired || reloadRequired2) {
+            [self setupHeaderModel];
+            [self.collectionView reloadData];
+        }
+    });
 }
 
 @end

@@ -151,7 +151,7 @@ static NSString *PopupCellIdentifier = @"PopupCellIdentifier";
     return self;
 }
 
-- (void)setDataSource:(NSArray *)dataSource {
+- (void)setDataSource:(NSMutableArray *)dataSource {
     _dataSource = dataSource;
     [self.tableView reloadData];
 }
@@ -183,19 +183,25 @@ static NSString *PopupCellIdentifier = @"PopupCellIdentifier";
     NSInteger tag = sender.tag;
     if (_dataSource.count > tag) {
         id object = [_dataSource objectAtIndex:tag];
+        [self.dataSource removeObject:object];
         if ([object isKindOfClass:[PHAsset class]]) {
             PHAsset *asset = object;
             if (asset.mediaType == PHAssetMediaTypeImage) {
-                
+                [self.tabViewController removeAsset:asset];
+                [self.tabViewController reloadAssetsTableView];
             } else {
                 [self.tabViewController removeVideoAsset:asset];
+                [self.tabViewController reloadVideosTableView];
             }
         } else if ([object isKindOfClass:[STMusicInfoModel class]]) {
             [self.tabViewController removeMusic:object];
+            [self.tabViewController reloadMusicsTableView];
         } else if ([object isKindOfClass:[STContactModel class]]) {
             [self.tabViewController removeContact:object];
+            [self.tabViewController reloadContactsTableView];
         }
     }
+    [self.tableView reloadData];
 }
 
 #pragma mark - Table view data source
@@ -209,7 +215,7 @@ static NSString *PopupCellIdentifier = @"PopupCellIdentifier";
     if (![cell.deleteButton.allTargets containsObject:self]) {
         [cell.deleteButton addTarget:self action:@selector(rowDeleteButtonClick:) forControlEvents:UIControlEventTouchUpInside];
     }
-    cell.tag = indexPath.row;
+    cell.deleteButton.tag = indexPath.row;
     id object = [_dataSource objectAtIndex:indexPath.row];
     if ([object isKindOfClass:[PHAsset class]]) {
         PHAsset *asset = object;

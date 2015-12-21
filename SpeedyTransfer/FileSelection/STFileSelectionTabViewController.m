@@ -54,6 +54,26 @@
     [toolView addSubview:transferButton];
 }
 
+- (void)reloadAssetsTableView {
+    UICollectionViewController *viewC = self.viewControllers.firstObject;
+    [viewC.collectionView reloadData];
+}
+
+- (void)reloadMusicsTableView {
+    UITableViewController *viewC = self.viewControllers[1];
+    [viewC.tableView reloadData];
+}
+
+- (void)reloadVideosTableView {
+    UITableViewController *viewC = self.viewControllers[2];
+    [viewC.tableView reloadData];
+}
+
+- (void)reloadContactsTableView {
+    UITableViewController *viewC = self.viewControllers.lastObject;
+    [viewC.tableView reloadData];
+}
+
 - (void)configToolView {
     NSInteger count = [self selectedFilesCount];
     if (count > 0) {
@@ -78,8 +98,9 @@
 - (void)deleteButtonClick {
     if (!popupView) {
         popupView = [[STFileSelectionPopupView alloc] init];
+        popupView.tabViewController = self;
     }
-    popupView.dataSource = self.selectedFilesArray;
+    popupView.dataSource = [NSMutableArray arrayWithArray:self.selectedFilesArray];
     [popupView showInView:self.navigationController.view];
 }
 
@@ -91,9 +112,7 @@
 // 选中的总文件个数
 - (NSInteger)selectedFilesCount {
     NSUInteger count = 0;
-    for (NSArray *arr in self.selectedAssetsDic.allValues) {
-        count += arr.count;
-    }
+    count += _selectedAssetsArr.count;
     
     count += _selectedMusicsArr.count;
     
@@ -114,68 +133,72 @@
     return [NSArray arrayWithArray:array];
 }
 
-- (NSArray *)selectedAssetsArr {
-    NSMutableArray *mutableArr = [NSMutableArray array];
-    for (NSArray *arr in self.selectedAssetsDic.allValues) {
-        [mutableArr addObjectsFromArray:arr];
-    }
-    
-    return [NSArray arrayWithArray:mutableArr];
-}
-
-- (void)addAsset:(PHAsset *)asset inFetchResults:(PHFetchResult *)fetchResults {
-    if (!asset || !fetchResults) {
+- (void)addAsset:(PHAsset *)asset {
+    if (!asset) {
         return;
-    }
-    
-    if (!_selectedAssetsDic) {
-        _selectedAssetsDic = [NSDictionary dictionary];
     }
     
     @autoreleasepool {
-        NSMutableDictionary *tempDic = [NSMutableDictionary dictionaryWithDictionary:_selectedAssetsDic];
-        NSArray *tempArray = [tempDic objectForKey:fetchResults];
-        if (tempArray) {
-            if (![tempArray containsObject:asset]) {
-                [tempDic setObject:[tempArray arrayByAddingObject:asset] forKey:fetchResults];
-            }
+        if (!_selectedAssetsArr) {
+            _selectedAssetsArr = [NSArray arrayWithObject:asset];
         } else {
-            [tempDic setObject:[NSArray arrayWithObject:asset] forKey:fetchResults];
+            if (![_selectedAssetsArr containsObject:asset]) {
+                _selectedAssetsArr = [_selectedAssetsArr arrayByAddingObject:asset];
+            }
         }
-        _selectedAssetsDic = [NSDictionary dictionaryWithDictionary:tempDic];
     }
     
     [self configToolView];
 }
 
-- (void)removeAsset:(PHAsset *)asset inFetchResults:(PHFetchResult *)fetchResults {
-    if (!asset || !fetchResults) {
+- (void)addAssets:(NSArray *)assetss {
+    if (!assetss) {
         return;
     }
     
-    if (_selectedAssetsDic) {
-        @autoreleasepool {
-            NSMutableDictionary *tempDic = [NSMutableDictionary dictionaryWithDictionary:_selectedAssetsDic];
-            NSArray *tempArray = [tempDic objectForKey:fetchResults];
-            if (tempArray) {
-                NSMutableArray *tempMutableArray = [NSMutableArray arrayWithArray:tempArray];
-                [tempMutableArray removeObject:asset];
-                [tempDic setObject:[NSArray arrayWithArray:tempMutableArray] forKey:fetchResults];
-                _selectedAssetsDic = [NSDictionary dictionaryWithDictionary:tempDic];
-            }
+    @autoreleasepool {
+        if (!_selectedAssetsArr) {
+            _selectedAssetsArr = [NSArray arrayWithArray:assetss];
+        } else {
+            _selectedAssetsArr = [_selectedAssetsArr arrayByAddingObjectsFromArray:assetss];
         }
     }
     
     [self configToolView];
 }
 
-- (BOOL)isSelectedWithAsset:(PHAsset *)asset inFetchResults:(PHFetchResult *)fetchResults {
-    if (!asset || !fetchResults) {
-        return NO;
+- (void)removeAsset:(PHAsset *)asset {
+    if (!asset) {
+        return;
     }
     
-    NSArray *arr = [_selectedAssetsDic objectForKey:fetchResults];
-    return [arr containsObject:asset];
+    @autoreleasepool {
+        if ([_selectedAssetsArr containsObject:asset]) {
+            NSMutableArray *tempArr = [NSMutableArray arrayWithArray:_selectedAssetsArr];
+            [tempArr removeObject:asset];
+            _selectedAssetsArr = [NSArray arrayWithArray:tempArr];
+        }
+    }
+    
+    [self configToolView];
+}
+
+- (void)removeAssets:(NSArray *)assets {
+    if (!assets) {
+        return;
+    }
+    
+    @autoreleasepool {
+        NSMutableArray *tempArr = [NSMutableArray arrayWithArray:_selectedAssetsArr];
+        [tempArr removeObjectsInArray:assets];
+        _selectedAssetsArr = [NSArray arrayWithArray:tempArr];
+    }
+    
+    [self configToolView];
+}
+
+- (BOOL)isSelectedWithAsset:(PHAsset *)asset {
+    return [_selectedAssetsArr containsObject:asset];
 }
 
 - (void)addMusic:(STMusicInfoModel *)music {

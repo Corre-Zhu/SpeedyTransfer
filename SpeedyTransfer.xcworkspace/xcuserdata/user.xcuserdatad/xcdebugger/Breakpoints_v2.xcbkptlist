@@ -9,29 +9,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "SpeedyTransfer/Category/NSDictionary+HT.m"
-            timestampString = "472222032.701311"
+            filePath = "SpeedyTransfer/FileSelection/STFileSelectionTabViewController.m"
+            timestampString = "472401372.093262"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "22"
-            endingLineNumber = "22"
-            landmarkName = "-stringForKey:"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "SpeedyTransfer/FileSelection/STFileSelectionPopupView.m"
-            timestampString = "472296116.455753"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "170"
-            endingLineNumber = "170"
-            landmarkName = "-tap:"
+            startingLineNumber = "171"
+            endingLineNumber = "171"
+            landmarkName = "-removeAsset:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

@@ -90,12 +90,12 @@
 - (void)selectAllButtonClick {
     if (!_model.selectedAll) {
         for (PHAsset *asset in _model.fetchResult) {
-            [self.tabViewController addAsset:asset inFetchResults:_model.fetchResult];
+            [self.tabViewController addAsset:asset];
         }
         _model.selectedAll = YES;
     } else {
         for (PHAsset *asset in _model.fetchResult) {
-            [self.tabViewController removeAsset:asset inFetchResults:_model.fetchResult];
+            [self.tabViewController removeAsset:asset];
         }
         _model.selectedAll = NO;
     }

@@ -21,12 +21,15 @@
 - (void)removeAllSelectedFiles;
 
 // 图片
-@property (nonatomic, strong, readonly) NSDictionary *selectedAssetsDic;
 @property (nonatomic, strong, readonly) NSArray *selectedAssetsArr;
 
-- (void)addAsset:(PHAsset *)asset inFetchResults:(PHFetchResult *)fetchResults;
-- (void)removeAsset:(PHAsset *)asset inFetchResults:(PHFetchResult *)fetchResults;
-- (BOOL)isSelectedWithAsset:(PHAsset *)asset inFetchResults:(PHFetchResult *)fetchResults;
+- (void)addAsset:(PHAsset *)asset;
+- (void)addAssets:(NSArray *)assetss;
+- (void)removeAsset:(PHAsset *)asset;
+- (void)removeAssets:(NSArray *)assets;
+- (BOOL)isSelectedWithAsset:(PHAsset *)asset;
+
+- (void)reloadAssetsTableView;
 
 // 音乐
 @property (nonatomic, strong, readonly) NSArray *selectedMusicsArr;
@@ -38,12 +41,16 @@
 - (BOOL)isSelectedWithMusic:(STMusicInfoModel *)music;
 - (BOOL)isSelectedWithMusics:(NSArray *)musics;
 
+- (void)reloadMusicsTableView;
+
 // 视频
 @property (nonatomic, strong, readonly) NSArray *selectedVideoAssetsArr;
 
 - (void)addVideoAsset:(PHAsset *)asset;
 - (void)removeVideoAsset:(PHAsset *)asset;
 - (BOOL)isSelectedWithVideoAsset:(PHAsset *)asset;
+
+- (void)reloadVideosTableView;
 
 // 联系人
 @property (nonatomic, strong, readonly) NSArray *selectedContactsArr;
@@ -54,5 +61,7 @@
 - (void)removeContacts:(NSArray *)contacts;
 - (BOOL)isSelectedWithContact:(STContactModel *)contact;
 - (BOOL)isSelectedWithContacts:(NSArray *)contacts;
+
+- (void)reloadContactsTableView;
 
 @end
