@@ -23,6 +23,7 @@
 #include <dlfcn.h>
 #include <sys/param.h>
 #include <sys/mount.h>
+#include <SystemConfiguration/CaptiveNetwork.h>
 
 NSString *const UIStatusBarOrientationDidChangeNotification = @"UIStatusBarOrientationDidChangeNotification";
 
@@ -165,5 +166,71 @@ NSString *const UIStatusBarOrientationDidChangeNotification = @"UIStatusBarOrien
     return UIInterfaceOrientationIsLandscape([UIApplication sharedApplication].statusBarOrientation);
 }
 
++ (NSString *)getWifiName
+{
+    NSString *wifiName = nil;
+    
+    CFArrayRef wifiInterfaces = CNCopySupportedInterfaces();
+    
+    if (!wifiInterfaces) {
+        return nil;
+    }
+    
+    NSArray *interfaces = (__bridge NSArray *)wifiInterfaces;
+    
+    for (NSString *interfaceName in interfaces) {
+        CFDictionaryRef dictRef = CNCopyCurrentNetworkInfo((__bridge CFStringRef)(interfaceName));
+        
+        if (dictRef) {
+            NSDictionary *networkInfo = (__bridge NSDictionary *)dictRef;
+            NSLog(@"network info -> %@", networkInfo);
+            wifiName = [networkInfo objectForKey:(__bridge NSString *)kCNNetworkInfoKeySSID];
+            
+            CFRelease(dictRef);
+        }
+    }
+    
+    CFRelease(wifiInterfaces);
+    return wifiName;
+}
+
+// Get All ipv4 interface
++ (NSDictionary *)getIpAddresses {
+    NSMutableDictionary* addresses = [[NSMutableDictionary alloc] init];
+    struct ifaddrs *interfaces = NULL;
+    struct ifaddrs *temp_addr = NULL;
+    
+    @try {
+        // retrieve the current interfaces - returns 0 on success
+        NSInteger success = getifaddrs(&interfaces);
+        //NSLog(@"%@, success=%d", NSStringFromSelector(_cmd), success);
+        if (success == 0) {
+            // Loop through linked list of interfaces
+            temp_addr = interfaces;
+            while(temp_addr != NULL) {
+                if(temp_addr->ifa_addr->sa_family == AF_INET) {
+                    // Get NSString from C String
+                    NSString* ifaName = [NSString stringWithUTF8String:temp_addr->ifa_name];
+                    NSString* address = [NSString stringWithUTF8String:inet_ntoa(((struct sockaddr_in *) temp_addr->ifa_addr)->sin_addr)];
+                    NSString* mask = [NSString stringWithUTF8String:inet_ntoa(((struct sockaddr_in *) temp_addr->ifa_netmask)->sin_addr)];
+                    NSString* gateway = [NSString stringWithUTF8String:inet_ntoa(((struct sockaddr_in *) temp_addr->ifa_dstaddr)->sin_addr)];
+                    
+                    
+                   
+                    NSLog(@"netAddress=%@", address);
+                }
+                temp_addr = temp_addr->ifa_next;
+            }
+        }
+    }
+    @catch (NSException *exception) {
+        NSLog(@"Exception: %@", exception);
+    }
+    @finally {
+        // Free memory
+        freeifaddrs(interfaces);
+    }
+    return addresses;
+}
 
 @end

@@ -9,13 +9,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "SpeedyTransfer/FileSelection/STFileSelectionTabViewController.m"
-            timestampString = "472401621.50718"
+            filePath = "SpeedyTransfer/Category/UIDevice+ZZ.m"
+            timestampString = "472497016.855051"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "175"
-            endingLineNumber = "175"
-            landmarkName = "-removeAsset:"
+            startingLineNumber = "220"
+            endingLineNumber = "220"
+            landmarkName = "+getIpAddresses"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

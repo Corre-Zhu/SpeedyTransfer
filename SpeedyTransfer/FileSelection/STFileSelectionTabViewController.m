@@ -10,6 +10,9 @@
 #import <Photos/Photos.h>
 #import "STMusicInfoModel.h"
 #import "STFileSelectionPopupView.h"
+#import "STWifiNotConnectedPopupView.h"
+#import "STTransferInstructionViewController.h"
+#import "Reachability.h"
 
 @interface STFileSelectionTabViewController ()
 {
@@ -17,6 +20,8 @@
     UIButton *deleteButton;
     UIButton *transferButton;
     STFileSelectionPopupView *popupView;
+    STWifiNotConnectedPopupView *wifiNotConnectedPopupView;
+    Reachability *reachability;
 }
 
 @end
@@ -48,10 +53,39 @@
     transferButton = [UIButton buttonWithType:UIButtonTypeCustom];
     transferButton.frame = CGRectMake(73.0f, 3.0f, 82.0f, 34.0f);
     [transferButton setTitle:NSLocalizedString(@"全部传输", nil) forState:UIControlStateNormal];
-    [transferButton addTarget:self action:@selector(deleteButtonClick) forControlEvents:UIControlEventTouchUpInside];
+    [transferButton addTarget:self action:@selector(transferButtonClick) forControlEvents:UIControlEventTouchUpInside];
     [transferButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     transferButton.titleLabel.font = [UIFont systemFontOfSize:14.0f];
     [toolView addSubview:transferButton];
+}
+
+- (void)deleteButtonClick {
+    if (!popupView) {
+        popupView = [[STFileSelectionPopupView alloc] init];
+        popupView.tabViewController = self;
+    }
+    popupView.dataSource = [NSMutableArray arrayWithArray:self.selectedFilesArray];
+    [popupView showInView:self.navigationController.view];
+}
+
+- (void)transferButtonClick {
+    if (!reachability) {
+        reachability = [Reachability reachabilityForLocalWiFi];
+    }
+    if (reachability.currentReachabilityStatus != ReachableViaWiFi) {
+        if (!wifiNotConnectedPopupView) {
+            wifiNotConnectedPopupView = [[STWifiNotConnectedPopupView alloc] init];
+        }
+        [wifiNotConnectedPopupView showInView:self.navigationController.view];
+        
+    } else {
+        STTransferInstructionViewController *transferIns = [[STTransferInstructionViewController alloc] init];
+        [self.navigationController pushViewController:transferIns animated:YES];
+    }
+    
+    
+    [UIDevice getWifiName];
+    [UIDevice getIpAddresses];
 }
 
 - (void)reloadAssetsTableView {
@@ -93,15 +127,6 @@
 
 - (void)backBarButtonItemClick {
     [self.navigationController popViewControllerAnimated:YES];
-}
-
-- (void)deleteButtonClick {
-    if (!popupView) {
-        popupView = [[STFileSelectionPopupView alloc] init];
-        popupView.tabViewController = self;
-    }
-    popupView.dataSource = [NSMutableArray arrayWithArray:self.selectedFilesArray];
-    [popupView showInView:self.navigationController.view];
 }
 
 - (void)removeAllSelectedFiles {

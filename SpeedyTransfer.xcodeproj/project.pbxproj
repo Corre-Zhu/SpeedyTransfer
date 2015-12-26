@@ -13,6 +13,9 @@
 		CE86491D1C2592BE0072518B /* AddressBook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CE86491C1C2592BE0072518B /* AddressBook.framework */; };
 		CE8975631C26AE5B002E11F8 /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = CE8975621C26AE5B002E11F8 /* MBProgressHUD.m */; };
 		CE8975671C284D89002E11F8 /* AddressBookUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CE8975661C284D89002E11F8 /* AddressBookUI.framework */; };
+		CEA12C451C299D2400328CEF /* STWifiNotConnectedPopupView.m in Sources */ = {isa = PBXBuildFile; fileRef = CEA12C441C299D2400328CEF /* STWifiNotConnectedPopupView.m */; };
+		CEA12C491C29ABCB00328CEF /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = CEA12C481C29ABCB00328CEF /* Reachability.m */; };
+		CEA12C4C1C29B0E200328CEF /* STTransferInstructionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CEA12C4B1C29B0E200328CEF /* STTransferInstructionViewController.m */; };
 		CEB29E601C21A9EB00F17804 /* NSDictionary+HT.m in Sources */ = {isa = PBXBuildFile; fileRef = CEB29E5F1C21A9EB00F17804 /* NSDictionary+HT.m */; };
 		CEB29E631C21B6D700F17804 /* HTContactsHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = CEB29E621C21B6D700F17804 /* HTContactsHeaderView.m */; };
 		CEB29E671C21B7C000F17804 /* HTDrawView.m in Sources */ = {isa = PBXBuildFile; fileRef = CEB29E661C21B7C000F17804 /* HTDrawView.m */; };
@@ -55,6 +58,12 @@
 		CE8975611C26AE5B002E11F8 /* MBProgressHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBProgressHUD.h; sourceTree = "<group>"; };
 		CE8975621C26AE5B002E11F8 /* MBProgressHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBProgressHUD.m; sourceTree = "<group>"; };
 		CE8975661C284D89002E11F8 /* AddressBookUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBookUI.framework; path = System/Library/Frameworks/AddressBookUI.framework; sourceTree = SDKROOT; };
+		CEA12C431C299D2400328CEF /* STWifiNotConnectedPopupView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STWifiNotConnectedPopupView.h; sourceTree = "<group>"; };
+		CEA12C441C299D2400328CEF /* STWifiNotConnectedPopupView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STWifiNotConnectedPopupView.m; sourceTree = "<group>"; };
+		CEA12C471C29ABCB00328CEF /* Reachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Reachability.h; sourceTree = "<group>"; };
+		CEA12C481C29ABCB00328CEF /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Reachability.m; sourceTree = "<group>"; };
+		CEA12C4A1C29B0E200328CEF /* STTransferInstructionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "STTransfer\U0005InstructionViewController.h"; sourceTree = "<group>"; };
+		CEA12C4B1C29B0E200328CEF /* STTransferInstructionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "STTransfer\U0005InstructionViewController.m"; sourceTree = "<group>"; };
 		CEB29E5E1C21A9EB00F17804 /* NSDictionary+HT.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDictionary+HT.h"; sourceTree = "<group>"; };
 		CEB29E5F1C21A9EB00F17804 /* NSDictionary+HT.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDictionary+HT.m"; sourceTree = "<group>"; };
 		CEB29E611C21B6D700F17804 /* HTContactsHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HTContactsHeaderView.h; sourceTree = "<group>"; };
@@ -192,6 +201,26 @@
 			path = MBProgressHUD;
 			sourceTree = "<group>";
 		};
+		CEA12C421C299C0800328CEF /* FileTransfer */ = {
+			isa = PBXGroup;
+			children = (
+				CEA12C431C299D2400328CEF /* STWifiNotConnectedPopupView.h */,
+				CEA12C441C299D2400328CEF /* STWifiNotConnectedPopupView.m */,
+				CEA12C4A1C29B0E200328CEF /* STTransferInstructionViewController.h */,
+				CEA12C4B1C29B0E200328CEF /* STTransferInstructionViewController.m */,
+			);
+			path = FileTransfer;
+			sourceTree = "<group>";
+		};
+		CEA12C461C29ABCB00328CEF /* Reachability */ = {
+			isa = PBXGroup;
+			children = (
+				CEA12C471C29ABCB00328CEF /* Reachability.h */,
+				CEA12C481C29ABCB00328CEF /* Reachability.m */,
+			);
+			path = Reachability;
+			sourceTree = "<group>";
+		};
 		CEB29E641C21B73500F17804 /* ZZUIKit */ = {
 			isa = PBXGroup;
 			children = (
@@ -206,6 +235,7 @@
 		CEB29E681C21B88C00F17804 /* ThirdParty */ = {
 			isa = PBXGroup;
 			children = (
+				CEA12C461C29ABCB00328CEF /* Reachability */,
 				CE8975601C26AE5B002E11F8 /* MBProgressHUD */,
 				CEB29E691C21B8BE00F17804 /* UIView+AutoLayout */,
 			);
@@ -236,6 +266,7 @@
 				CED0D1041C1D3D7B00F5C0E3 /* STFileSelectionTabViewController.m */,
 				CECE97711C2653E900190AE2 /* STFileSelectionPopupView.h */,
 				CECE97721C2653E900190AE2 /* STFileSelectionPopupView.m */,
+				CEA12C421C299C0800328CEF /* FileTransfer */,
 				CED0D11A1C1D576D00F5C0E3 /* Picture */,
 				CED0D1171C1D576D00F5C0E3 /* Music */,
 				CED0D11D1C1D576D00F5C0E3 /* Video */,
@@ -514,6 +545,7 @@
 				CED0D1051C1D3D7B00F5C0E3 /* STFileSelectionTabViewController.m in Sources */,
 				CED0D1371C21A22100F5C0E3 /* STMusicInfoModel.m in Sources */,
 				CEB29E851C253F4800F17804 /* STPictureCollectionReusableView.m in Sources */,
+				CEA12C451C299D2400328CEF /* STWifiNotConnectedPopupView.m in Sources */,
 				CEB29E671C21B7C000F17804 /* HTDrawView.m in Sources */,
 				CED0D1201C1D576D00F5C0E3 /* STContactsSelectionViewController.m in Sources */,
 				CECE97731C2653E900190AE2 /* STFileSelectionPopupView.m in Sources */,
@@ -531,11 +563,13 @@
 				CED62A5F1C099C6000270EDB /* UIColor+ZZ.m in Sources */,
 				CEB29E601C21A9EB00F17804 /* NSDictionary+HT.m in Sources */,
 				CED0D13D1C21A59200F5C0E3 /* AVURLAsset+Extension.m in Sources */,
+				CEA12C4C1C29B0E200328CEF /* STTransferInstructionViewController.m in Sources */,
 				CED003121C0B2766005146A4 /* UIButton+ZZ.m in Sources */,
 				CEB29E821C253C4D00F17804 /* STPictureCollectionViewController.m in Sources */,
 				CED0D13A1C21A58800F5C0E3 /* NSString+Extension.m in Sources */,
 				CED62A531C09719500270EDB /* UIView+ZZ.m in Sources */,
 				CE8649131C25503B0072518B /* STPictureCollectionHeaderModel.m in Sources */,
+				CEA12C491C29ABCB00328CEF /* Reachability.m in Sources */,
 				CED0D12D1C1D77DF00F5C0E3 /* HZAssetCollectionViewCell.m in Sources */,
 				CEB29E741C21B8BE00F17804 /* NSArray+PureLayout.m in Sources */,
 				CED0D1211C1D576D00F5C0E3 /* STMusicSelectionViewController.m in Sources */,
