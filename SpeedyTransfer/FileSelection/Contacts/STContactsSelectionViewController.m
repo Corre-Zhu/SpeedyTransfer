@@ -9,7 +9,7 @@
 #import "STContactsSelectionViewController.h"
 #import "STMusicSelectionCell.h"
 #import "HTContactsHeaderView.h"
-#import "STContactModel.h"
+#import "STContactInfo.h"
 
 static NSString *headerIdentifier = @"ContactsHeaderView";
 
@@ -40,7 +40,7 @@ static NSString *headerIdentifier = @"ContactsHeaderView";
     [activityIndicatorView startAnimating];
     
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        [STContactModel getContactsModelListWithCompletion:^(NSArray *array) {
+        [STContactInfo getContactsModelListWithCompletion:^(NSArray *array) {
             dispatch_async(dispatch_get_main_queue(), ^{
                 [activityIndicatorView stopAnimating];
                 activityIndicatorView.hidden = YES;
@@ -84,7 +84,7 @@ static NSString *headerIdentifier = @"ContactsHeaderView";
     }
     
     NSDictionary *dic = [_contactModels objectAtIndex:indexPath.section];
-    STContactModel *model = [dic.allValues.firstObject objectAtIndex:indexPath.row];
+    STContactInfo *model = [dic.allValues.firstObject objectAtIndex:indexPath.row];
     cell.title = model.name;
     cell.subTitle = model.phone;
     cell.image = [UIImage imageNamed:@"phone_bg"];
@@ -141,7 +141,7 @@ static NSString *headerIdentifier = @"ContactsHeaderView";
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     NSDictionary *dic = [_contactModels objectAtIndex:indexPath.section];
-    STContactModel *model = [dic.allValues.firstObject objectAtIndex:indexPath.row];
+    STContactInfo *model = [dic.allValues.firstObject objectAtIndex:indexPath.row];
     [self.fileSelectionTabController addContact:model];
     
     [tableView reloadData];
@@ -149,7 +149,7 @@ static NSString *headerIdentifier = @"ContactsHeaderView";
 
 - (void)tableView:(UITableView *)tableView didDeselectRowAtIndexPath:(NSIndexPath *)indexPath {
     NSDictionary *dic = [_contactModels objectAtIndex:indexPath.section];
-    STContactModel *model = [dic.allValues.firstObject objectAtIndex:indexPath.row];
+    STContactInfo *model = [dic.allValues.firstObject objectAtIndex:indexPath.row];
     [self.fileSelectionTabController removeContact:model];
     
     [tableView reloadData];

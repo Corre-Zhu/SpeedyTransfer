@@ -10,13 +10,13 @@
 
 @class PHFetchResult;
 @class STFileSelectionTabViewController;
-@class STPictureCollectionHeaderModel;
+@class STPictureCollectionHeaderInfo;
 
 @interface STPictureCollectionReusableView : UICollectionReusableView
 
 @property (nonatomic, weak) UICollectionView *collectionView;
 @property (nonatomic, weak) STFileSelectionTabViewController *tabViewController;
-@property (nonatomic, strong) STPictureCollectionHeaderModel *model;
+@property (nonatomic, strong) STPictureCollectionHeaderInfo *model;
 @property (nonatomic, strong) UIButton *expandButton;
 
 - (void)reloadData;

@@ -6,16 +6,16 @@
 //  Copyright © 2015年 ZZ. All rights reserved.
 //
 
-#import "STMusicInfoModel.h"
+#import "STMusicInfo.h"
 #import <MediaPlayer/MediaPlayer.h>
 #import <AVFoundation/AVFoundation.h>
 
 #define LETTER	@"ABCDEFGHIJKLMNOPQRSTUVWXYZ#"
 
-@implementation STMusicInfoModel
+@implementation STMusicInfo
 
 + (instancetype)musicWithDictionary:(NSDictionary *)dic {
-    STMusicInfoModel *model = [[STMusicInfoModel alloc] init];
+    STMusicInfo *model = [[STMusicInfo alloc] init];
     model.format = [dic stringForKey:@"format"];
     model.albumName = [dic stringForKey:@"albumName"];
     model.duration = [dic stringForKey:@"duration"];
@@ -51,7 +51,7 @@
             artist = NSLocalizedString(@"未知", nil);
         }
         
-        STMusicInfoModel *model = [[STMusicInfoModel alloc] init];
+        STMusicInfo *model = [[STMusicInfo alloc] init];
         model.title = title;
         model.url = url;
         model.artist = artist;
@@ -62,8 +62,8 @@
     
     // 按备注名或者昵称的简拼
     [tempArray sortUsingComparator:^NSComparisonResult(id obj1, id obj2) {
-        STMusicInfoModel *model1 = obj1;
-        STMusicInfoModel *model2 = obj2;
+        STMusicInfo *model1 = obj1;
+        STMusicInfo *model2 = obj2;
         if (model1.shortTitle.length == 0) {
             model1.shortTitle = [model1.title shortPinYin];
             if (model1.shortTitle.length == 0) {
@@ -83,7 +83,7 @@
     NSMutableArray *othersArray = [NSMutableArray array];
     
     NSMutableArray *tempSectionArray = [NSMutableArray array];
-    for (STMusicInfoModel *model in tempArray) {
+    for (STMusicInfo *model in tempArray) {
          NSString *letter = nil;
         if ([model.shortTitle length] < 1) {
             letter = @"#";
@@ -118,11 +118,11 @@
 }
 
 - (BOOL)isEqual:(id)object {
-    if (![object isKindOfClass:[STMusicInfoModel class]]) {
+    if (![object isKindOfClass:[STMusicInfo class]]) {
         return NO;
     }
     
-    STMusicInfoModel *model = object;
+    STMusicInfo *model = object;
     return [model.url isEqual:self.url];
 }
 

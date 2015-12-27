@@ -6,9 +6,9 @@
 //  Copyright © 2015年 ZZ. All rights reserved.
 //
 
-#import "STPictureCollectionHeaderModel.h"
+#import "STPictureCollectionHeaderInfo.h"
 
-@implementation STPictureCollectionHeaderModel
+@implementation STPictureCollectionHeaderInfo
 
 - (CGFloat)height {
     return _expand ? 44.0f : 96.0f;

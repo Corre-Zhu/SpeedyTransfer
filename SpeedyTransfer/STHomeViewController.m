@@ -12,6 +12,8 @@
 #import "STMusicSelectionViewController.h"
 #import "STVideoSelectionViewController.h"
 #import "STContactsSelectionViewController.h"
+#import "STFileReceivingViewController.h"
+#import "STFileTransferViewController.h"
 
 @interface STHomeViewController ()
 
@@ -137,11 +139,17 @@
     [contactVC.tabBarItem setSelectedImage:[UIImage imageNamed:@"contact_block"]];
     
     fileSelectionVc.viewControllers = @[picVC,musicVC,videoVC,contactVC];
-    [self.navigationController pushViewController:fileSelectionVc animated:YES];
+    
+    if (self.navigationController.topViewController != self) {
+        [self.navigationController setViewControllers:@[self, fileSelectionVc] animated:YES];
+    } else {
+        [self.navigationController pushViewController:fileSelectionVc animated:YES];
+    }
 }
 
 - (void)receiveButtonClick {
-    
+    STFileReceivingViewController *receiveVc = [[STFileReceivingViewController alloc] init];
+    [self.navigationController pushViewController:receiveVc animated:YES];
 }
 
 - (void)inviteFriendButtonClick {
@@ -157,7 +165,8 @@
 }
 
 - (void)feedbackButtonClick {
-    
+    STFileTransferViewController *sdf = [[STFileTransferViewController alloc] init];
+    [self.navigationController pushViewController:sdf animated:YES];
 }
 
 @end

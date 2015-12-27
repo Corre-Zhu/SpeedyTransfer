@@ -7,8 +7,8 @@
 //
 
 #import "STFileSelectionPopupView.h"
-#import "STMusicInfoModel.h"
-#import "STContactModel.h"
+#import "STMusicInfo.h"
+#import "STContactInfo.h"
 #import "STFileSelectionTabViewController.h"
 #import <Photos/Photos.h>
 
@@ -66,15 +66,7 @@
 }
 
 - (void)setSize:(double)size {
-    if (size < 1024) {
-        subTitleLabel.text = [NSString stringWithFormat:@"%.0fB", size];
-    } else if (size < 1024 * 1024) {
-        subTitleLabel.text = [NSString stringWithFormat:@"%.2fKB", size / 1024.0f];
-    } else if (size < 1024 * 1024 * 1024) {
-        subTitleLabel.text = [NSString stringWithFormat:@"%.2fMB", size / (1024.0f * 1024.0f)];
-    } else {
-        subTitleLabel.text = [NSString stringWithFormat:@"%.2fGB", size / (1024.0f * 1024.0f * 1024)];
-    }
+    subTitleLabel.text = [NSString formatSize:size];
 }
 
 @end
@@ -197,10 +189,10 @@ static NSString *PopupCellIdentifier = @"PopupCellIdentifier";
                 [self.tabViewController removeVideoAsset:asset];
                 [self.tabViewController reloadVideosTableView];
             }
-        } else if ([object isKindOfClass:[STMusicInfoModel class]]) {
+        } else if ([object isKindOfClass:[STMusicInfo class]]) {
             [self.tabViewController removeMusic:object];
             [self.tabViewController reloadMusicsTableView];
-        } else if ([object isKindOfClass:[STContactModel class]]) {
+        } else if ([object isKindOfClass:[STContactInfo class]]) {
             [self.tabViewController removeContact:object];
             [self.tabViewController reloadContactsTableView];
         }
@@ -254,16 +246,16 @@ static NSString *PopupCellIdentifier = @"PopupCellIdentifier";
         }
         
         
-    } else if ([object isKindOfClass:[STMusicInfoModel class]]) {
-        STMusicInfoModel *model = object;
+    } else if ([object isKindOfClass:[STMusicInfo class]]) {
+        STMusicInfo *model = object;
         cell.title = model.title;
         cell.image = [UIImage imageNamed:@"music_bg"];
         cell.size = model.fileSize;
-    } else if ([object isKindOfClass:[STContactModel class]]) {
-        STContactModel *model = object;
+    } else if ([object isKindOfClass:[STContactInfo class]]) {
+        STContactInfo *model = object;
         cell.title = model.name;
         cell.image = [UIImage imageNamed:@"phone_bg"];
-        cell.size = model.vcardData.length;
+        cell.size = model.size;
     }
     
     return cell;

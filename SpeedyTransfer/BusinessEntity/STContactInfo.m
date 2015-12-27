@@ -1,15 +1,14 @@
 //
-//  STContactModel.m
+//  STContactInfo.m
 //  SpeedyTransfer
 //
 //  Created by zhuzhi on 15/12/19.
 //  Copyright © 2015年 ZZ. All rights reserved.
 //
 
-#import "STContactModel.h"
-#import <AddressBook/AddressBook.h>
+#import "STContactInfo.h"
 
-@implementation STContactModel
+@implementation STContactInfo
 
 + (void)getContactsModelListWithCompletion:(GetContactsCompletionHandler)handler {
     CFErrorRef error;
@@ -18,7 +17,7 @@
     ABAddressBookRequestAccessWithCompletion(addressBookRef, ^(bool granted, CFErrorRef error) {
         if (granted) {
             NSLog(@"2");
-            [STContactModel getContactsFromAddressBookWithCompletionHandler:handler];
+            [STContactInfo getContactsFromAddressBookWithCompletionHandler:handler];
         } else {
             handler(nil);
         }
@@ -35,13 +34,18 @@
         NSMutableArray *mutableContacts = [NSMutableArray arrayWithCapacity:allContacts.count];
         for (id object in allContacts)
         {
-            STContactModel *contact = [[STContactModel alloc] init];
+            STContactInfo *contact = [[STContactInfo alloc] init];
             ABRecordRef contactPerson = (__bridge ABRecordRef)object;
             
             CFArrayRef cfArrayRef =  (__bridge CFArrayRef)@[object];
             
             CFDataRef vcards = (CFDataRef)ABPersonCreateVCardRepresentationWithPeople(cfArrayRef);
-            contact.vcardData = (__bridge NSData *)vcards;
+            contact.size = CFDataGetLength(vcards);
+            if (contact.size <= 0) {
+                continue;
+            }
+            NSString *vcardString = [[NSString alloc] initWithData:(__bridge NSData *)vcards encoding:NSUTF8StringEncoding];
+            contact.vcardString = vcardString;
             contact.recordId = ABRecordGetRecordID(contactPerson);
 
             // Get first and last names
@@ -61,7 +65,7 @@
             
             // Get mobile number
             ABMultiValueRef phonesRef = ABRecordCopyValue(contactPerson, kABPersonPhoneProperty);
-            contact.phone = [STContactModel getMobilePhoneProperty:phonesRef];
+            contact.phone = [STContactInfo getMobilePhoneProperty:phonesRef];
             if(phonesRef) {
                 CFRelease(phonesRef);
             }
@@ -91,7 +95,7 @@
         NSLog(@"3");
 
         if (mutableContacts.count > 0) {
-            contacts = [STContactModel sortContacts:mutableContacts];
+            contacts = [STContactInfo sortContacts:mutableContacts];
             
         }
         NSLog(@"4");
@@ -130,8 +134,8 @@
     }
     
     [tempArray sortUsingComparator:^NSComparisonResult(id  _Nonnull obj1, id  _Nonnull obj2) {
-        STContactModel *model1 = obj1;
-        STContactModel *model2 = obj2;
+        STContactInfo *model1 = obj1;
+        STContactInfo *model2 = obj2;
         if (model1.shortName.length == 0) {
             model1.shortName = [model1.name shortPinYin];
             if (model1.shortName.length == 0) {
@@ -151,7 +155,7 @@
     NSMutableArray *othersArray = [NSMutableArray array];
     
     NSMutableArray *tempSectionArray = [NSMutableArray array];
-    for (STContactModel *model in tempArray) {
+    for (STContactInfo *model in tempArray) {
         NSString *letter = nil;
         if ([model.shortName length] < 1) {
             letter = @"#";
@@ -186,11 +190,11 @@
 }
 
 - (BOOL)isEqual:(id)object {
-    if (![object isKindOfClass:[STContactModel class]]) {
+    if (![object isKindOfClass:[STContactInfo class]]) {
         return NO;
     }
     
-    STContactModel *contact = object;
+    STContactInfo *contact = object;
     if (self.recordId == contact.recordId) {
         return YES;
     }

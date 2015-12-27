@@ -8,7 +8,7 @@
 
 #import "STFileSelectionTabViewController.h"
 #import <Photos/Photos.h>
-#import "STMusicInfoModel.h"
+#import "STMusicInfo.h"
 #import "STFileSelectionPopupView.h"
 #import "STWifiNotConnectedPopupView.h"
 #import "STTransferInstructionViewController.h"
@@ -82,10 +82,6 @@
         STTransferInstructionViewController *transferIns = [[STTransferInstructionViewController alloc] init];
         [self.navigationController pushViewController:transferIns animated:YES];
     }
-    
-    
-    [UIDevice getWifiName];
-    [UIDevice getIpAddresses];
 }
 
 - (void)reloadAssetsTableView {
@@ -230,7 +226,7 @@
     return [_selectedAssetsArr containsObject:asset];
 }
 
-- (void)addMusic:(STMusicInfoModel *)music {
+- (void)addMusic:(STMusicInfo *)music {
     if (!music) {
         return;
     }
@@ -264,7 +260,7 @@
     [self configToolView];
 }
 
-- (void)removeMusic:(STMusicInfoModel *)music {
+- (void)removeMusic:(STMusicInfo *)music {
     if (!music) {
         return;
     }
@@ -294,12 +290,12 @@
     [self configToolView];
 }
 
-- (BOOL)isSelectedWithMusic:(STMusicInfoModel *)music {
+- (BOOL)isSelectedWithMusic:(STMusicInfo *)music {
     return [_selectedMusicsArr containsObject:music];
 }
 
 - (BOOL)isSelectedWithMusics:(NSArray *)musics {
-    for (STMusicInfoModel *model in musics) {
+    for (STMusicInfo *model in musics) {
         if (![_selectedMusicsArr containsObject:model]) {
             return NO;
         }
@@ -352,7 +348,7 @@
     return [_selectedVideoAssetsArr containsObject:asset];
 }
 
-- (void)addContact:(STContactModel *)contact {
+- (void)addContact:(STContactInfo *)contact {
     if (!contact) {
         return;
     }
@@ -386,7 +382,7 @@
     [self configToolView];
 }
 
-- (void)removeContact:(STContactModel *)contact {
+- (void)removeContact:(STContactInfo *)contact {
     if (!contact) {
         return;
     }
@@ -416,12 +412,12 @@
     [self configToolView];
 }
 
-- (BOOL)isSelectedWithContact:(STContactModel *)contact {
+- (BOOL)isSelectedWithContact:(STContactInfo *)contact {
     return [_selectedContactsArr containsObject:contact];
 }
 
 - (BOOL)isSelectedWithContacts:(NSArray *)contacts {
-    for (STContactModel *model in contacts) {
+    for (STContactInfo *model in contacts) {
         if (![_selectedContactsArr containsObject:model]) {
             return NO;
         }

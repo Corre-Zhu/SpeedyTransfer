@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface STPictureCollectionHeaderModel : NSObject
+@interface STPictureCollectionHeaderInfo : NSObject
 
 @property (nonatomic, strong) NSString *title;
 @property (nonatomic, strong) UIImage *placeholdImage;

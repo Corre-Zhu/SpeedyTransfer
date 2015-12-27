@@ -15,6 +15,12 @@
         return (STFileSelectionTabViewController *)self.tabBarController;
     }
     
+    for (UIViewController *viewC in self.navigationController.viewControllers) {
+        if ([viewC isKindOfClass:[STFileSelectionTabViewController class]]) {
+            return (STFileSelectionTabViewController *)viewC;
+        }
+    }
+    
     return nil;
 }
 

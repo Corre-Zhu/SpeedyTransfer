@@ -10,8 +10,8 @@
 
 @class PHAsset;
 @class PHFetchResult;
-@class STMusicInfoModel;
-@class STContactModel;
+@class STMusicInfo;
+@class STContactInfo;
 
 @interface STFileSelectionTabViewController : UITabBarController
 
@@ -34,11 +34,11 @@
 // 音乐
 @property (nonatomic, strong, readonly) NSArray *selectedMusicsArr;
 
-- (void)addMusic:(STMusicInfoModel *)music;
+- (void)addMusic:(STMusicInfo *)music;
 - (void)addMusics:(NSArray *)musics;
-- (void)removeMusic:(STMusicInfoModel *)music;
+- (void)removeMusic:(STMusicInfo *)music;
 - (void)removeMusics:(NSArray *)musics;
-- (BOOL)isSelectedWithMusic:(STMusicInfoModel *)music;
+- (BOOL)isSelectedWithMusic:(STMusicInfo *)music;
 - (BOOL)isSelectedWithMusics:(NSArray *)musics;
 
 - (void)reloadMusicsTableView;
@@ -55,11 +55,11 @@
 // 联系人
 @property (nonatomic, strong, readonly) NSArray *selectedContactsArr;
 
-- (void)addContact:(STContactModel *)contact;
+- (void)addContact:(STContactInfo *)contact;
 - (void)addContacts:(NSArray *)contacts;
-- (void)removeContact:(STContactModel *)contact;
+- (void)removeContact:(STContactInfo *)contact;
 - (void)removeContacts:(NSArray *)contacts;
-- (BOOL)isSelectedWithContact:(STContactModel *)contact;
+- (BOOL)isSelectedWithContact:(STContactInfo *)contact;
 - (BOOL)isSelectedWithContacts:(NSArray *)contacts;
 
 - (void)reloadContactsTableView;

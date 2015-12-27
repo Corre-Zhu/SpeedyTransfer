@@ -8,6 +8,10 @@
 
 #import "AppDelegate.h"
 #import "STHomeViewController.h"
+#import "HTFMDatabase.h"
+#import <FMDatabaseAdditions.h>
+
+NSString * const dbName = @"FileTransfer.sqlite";
 
 @interface AppDelegate ()
 {
@@ -20,6 +24,7 @@
 
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+    NSLog(@"%@", [ZZPath documentPath]);
     
     STHomeViewController *vc = [[STHomeViewController alloc] init];
     UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:vc];
@@ -38,6 +43,7 @@
     
     [[UITabBar appearance] setTintColor:RGBFromHex(0xeb694a)];
 //    [self setupStartingView];
+    [self setupDatabase];
 
     return YES;
 }
@@ -82,6 +88,73 @@
         startingWindow.hidden = YES;
         startingWindow = nil;
     }];
+}
+
+- (void)setupDatabase {
+    NSString *defaultDbPath = [[ZZPath documentPath] stringByAppendingPathComponent:dbName];
+    if (![[NSFileManager defaultManager] fileExistsAtPath:defaultDbPath]) {
+        HTFMDatabase *defaultDatabase = [[HTFMDatabase alloc] initWithPath:defaultDbPath];
+        BOOL result = [self createDefaultTable:defaultDatabase];
+        if (result) {
+            if ([defaultDatabase open]) {
+                [defaultDatabase setUserVersion:1];
+                [defaultDatabase close];
+            }
+        }
+    } else {
+        HTFMDatabase *defaultDatabase = [[HTFMDatabase alloc] initWithPath:defaultDbPath];
+        BOOL databaseCreated = YES;
+        if ([defaultDatabase open]) {
+            int version = [defaultDatabase userVersion];
+            if (version != 1) {
+                databaseCreated = NO;
+            }
+        } else {
+            databaseCreated = NO;
+        }
+        
+        if (!databaseCreated) {
+            [[NSFileManager defaultManager] removeItemAtPath:defaultDbPath error:nil];
+            [self setupDatabase];
+        }
+        
+    }
+}
+
+- (BOOL)createDefaultTable:(HTFMDatabase *)database
+{
+    NSString *path = [[NSBundle mainBundle] pathForResource:@"defaultSql" ofType:@"sql"];
+    NSString *string = [NSString stringWithContentsOfFile:path encoding:NSUTF8StringEncoding error:nil];
+    NSArray *sqls = [string componentsSeparatedByString:@";"];
+    
+    BOOL succeed = NO;
+    int tryTimes = 3;
+    do {
+        if ([database open]) {
+            [database beginTransaction];
+            
+            succeed = YES;
+            
+            for (NSString *sql in sqls) {
+                NSString *trimSql = [sql trim];
+                if ([trimSql length] > 0) {
+                    succeed = succeed && [database executeUpdate:trimSql];
+                    if (!succeed) break;
+                }
+            }
+            if (succeed) {
+                succeed = succeed && [database commit];
+            }
+            else{
+                NSLog(@"create table error : %d \"%@\"",[database lastErrorCode], [database lastErrorMessage]);
+                [database rollback];
+            }
+            [database close];
+        }
+        tryTimes--;
+    } while (!succeed && tryTimes > 0);
+    
+    return succeed;
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application {

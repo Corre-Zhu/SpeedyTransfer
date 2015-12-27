@@ -1,14 +1,14 @@
 //
-//  STWifiNotConnectedPopupView.m
+//  STWifiNotConnectedPopupView2.m
 //  SpeedyTransfer
 //
-//  Created by zhuzhi on 15/12/22.
+//  Created by zhuzhi on 15/12/26.
 //  Copyright © 2015年 ZZ. All rights reserved.
 //
 
-#import "STWifiNotConnectedPopupView.h"
+#import "STWifiNotConnectedPopupView2.h"
 
-@interface STWifiNotConnectedPopupView ()
+@interface STWifiNotConnectedPopupView2 ()
 {
     UIImageView *backView;
     UILabel *titleLabel;
@@ -17,7 +17,7 @@
 
 @end
 
-@implementation STWifiNotConnectedPopupView
+@implementation STWifiNotConnectedPopupView2
 
 - (instancetype)init {
     self = [super initWithFrame:[[UIScreen mainScreen] bounds]];
@@ -29,7 +29,7 @@
         UIView *blackView = [[UIView alloc] init];
         blackView.backgroundColor = [UIColor blackColor];
         blackView.layer.cornerRadius = 4.0f;
-        blackView.frame = CGRectMake(52.0f, (IPHONE_HEIGHT - 273.0f) / 2.0f, IPHONE_WIDTH - 104.0f, 273.0f);
+        blackView.frame = CGRectMake((IPHONE_WIDTH - 270.0f) / 2.0f + 2.0f, (IPHONE_HEIGHT - 273.0f) / 2.0f, 266.0f, 273.0f);
         [self addSubview:blackView];
         
         UIImage *backImage = [[UIImage imageNamed:@"xuanze_bg"] resizableImageWithCapInsets:UIEdgeInsetsMake(7.0f, 7.0f, 7.0f, 7.0f)];
@@ -64,14 +64,13 @@
         [whiteView addSubview:lineView2];
         
         whiteView.drawBlock = ^(void) {
-            [NSLocalizedString(@"请按照以下步骤打开本机的个人热点", nil) drawAtPoint:CGPointMake(16.0f, 17.0f) withAttributes:@{NSFontAttributeName: [UIFont systemFontOfSize:14.0f], NSForegroundColorAttributeName: RGBFromHex(0x323232)}];
+            [NSLocalizedString(@"请按照以下步骤打开本机网络", nil) drawAtPoint:CGPointMake(16.0f, 17.0f) withAttributes:@{NSFontAttributeName: [UIFont systemFontOfSize:14.0f], NSForegroundColorAttributeName: RGBFromHex(0x323232)}];
             [[UIImage imageNamed:@"number1"] drawAtPoint:CGPointMake(16.0f, 50.0f)];
             [NSLocalizedString(@"打开  系统设置", nil) drawAtPoint:CGPointMake(58.0f, 53.0f) withAttributes:@{NSFontAttributeName: [UIFont systemFontOfSize:14.0f], NSForegroundColorAttributeName: RGBFromHex(0x323232)}];
             
             [[UIImage imageNamed:@"number2"] drawAtPoint:CGPointMake(16.0f, 102.0f)];
-            [NSLocalizedString(@"进入  移动蜂窝网络", nil) drawAtPoint:CGPointMake(58.0f, 105.0f) withAttributes:@{NSFontAttributeName: [UIFont systemFontOfSize:14.0f], NSForegroundColorAttributeName: RGBFromHex(0x323232)}];
-            [NSLocalizedString(@"（1）开启蜂窝网络", nil) drawAtPoint:CGPointMake(86.0f, 132.0f) withAttributes:@{NSFontAttributeName: [UIFont systemFontOfSize:12.0f], NSForegroundColorAttributeName: RGBFromHex(0x323232)}];
-            [NSLocalizedString(@"（2）打开“个人热点”", nil) drawAtPoint:CGPointMake(86.0f, 152.5f) withAttributes:@{NSFontAttributeName: [UIFont systemFontOfSize:12.0f], NSForegroundColorAttributeName: RGBFromHex(0x323232)}];
+            [NSLocalizedString(@"进入  Wi-Fi", nil) drawAtPoint:CGPointMake(58.0f, 105.0f) withAttributes:@{NSFontAttributeName: [UIFont systemFontOfSize:14.0f], NSForegroundColorAttributeName: RGBFromHex(0x323232)}];
+            [NSLocalizedString(@"（1）加入对方所示网络", nil) drawAtPoint:CGPointMake(86.0f, 132.0f) withAttributes:@{NSFontAttributeName: [UIFont systemFontOfSize:12.0f], NSForegroundColorAttributeName: RGBFromHex(0x323232)}];
             
             [[UIImage imageNamed:@"number3"] drawAtPoint:CGPointMake(16.0f, 195.0f)];
             [NSLocalizedString(@"返回  点传 > 我要接收", nil) drawAtPoint:CGPointMake(58.0f, 198.0f) withAttributes:@{NSFontAttributeName: [UIFont systemFontOfSize:14.0f], NSForegroundColorAttributeName: RGBFromHex(0x323232)}];

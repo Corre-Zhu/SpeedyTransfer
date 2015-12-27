@@ -8,7 +8,7 @@
 
 #import "STPictureCollectionViewController.h"
 #import "STPictureCollectionReusableView.h"
-#import "STPictureCollectionHeaderModel.h"
+#import "STPictureCollectionHeaderInfo.h"
 #import "HZAssetCollectionViewCell.h"
 #import <Photos/Photos.h>
 #import "MBProgressHUD.h"
@@ -213,7 +213,7 @@ static NSString * const CollectionViewCellReuseIdentifier = @"CollectionViewCell
     for (PHFetchResult *result in self.fetchResultsArray) {
         NSInteger index = [self.fetchResultsArray indexOfObject:result];
         
-        STPictureCollectionHeaderModel *headerModel = [[STPictureCollectionHeaderModel alloc] init];
+        STPictureCollectionHeaderInfo *headerModel = [[STPictureCollectionHeaderInfo alloc] init];
         headerModel.fetchResult = result;
         if (index == 0) {
             headerModel.isCameraRoll = YES;
@@ -291,7 +291,7 @@ static NSString * const CollectionViewCellReuseIdentifier = @"CollectionViewCell
 
 - (void)expandButtonClick:(UIButton *)sender {
     if (_cachedHeaderModels.count > sender.tag) {
-        STPictureCollectionHeaderModel *model = [_cachedHeaderModels objectAtIndex:sender.tag];
+        STPictureCollectionHeaderInfo *model = [_cachedHeaderModels objectAtIndex:sender.tag];
         model.expand = !model.expand;
         [self.collectionView reloadData];
     }
@@ -329,7 +329,7 @@ static NSString * const CollectionViewCellReuseIdentifier = @"CollectionViewCell
 }
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
-    STPictureCollectionHeaderModel *model = [self.cachedHeaderModels objectAtIndex:section];
+    STPictureCollectionHeaderInfo *model = [self.cachedHeaderModels objectAtIndex:section];
     if (model.expand) {
         return model.fetchResult.count + (model.isCameraRoll ? 1 : 0);
     }
@@ -340,7 +340,7 @@ static NSString * const CollectionViewCellReuseIdentifier = @"CollectionViewCell
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     
     NSInteger item = indexPath.item;
-    STPictureCollectionHeaderModel *model = [self.cachedHeaderModels objectAtIndex:indexPath.section];
+    STPictureCollectionHeaderInfo *model = [self.cachedHeaderModels objectAtIndex:indexPath.section];
 
     HZAssetCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:CollectionViewCellReuseIdentifier forIndexPath:indexPath];
     cell.isCameraRoll = NO;
@@ -406,7 +406,7 @@ static NSString * const CollectionViewCellReuseIdentifier = @"CollectionViewCell
 }
 
 - (BOOL)collectionView:(UICollectionView *)collectionView shouldSelectItemAtIndexPath:(NSIndexPath *)indexPath {
-    STPictureCollectionHeaderModel *model = [self.cachedHeaderModels objectAtIndex:indexPath.section];
+    STPictureCollectionHeaderInfo *model = [self.cachedHeaderModels objectAtIndex:indexPath.section];
 
     if (model.isCameraRoll && indexPath.item == 0) {
         if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
@@ -424,7 +424,7 @@ static NSString * const CollectionViewCellReuseIdentifier = @"CollectionViewCell
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
     NSInteger item = indexPath.item;
-    STPictureCollectionHeaderModel *model = [self.cachedHeaderModels objectAtIndex:indexPath.section];
+    STPictureCollectionHeaderInfo *model = [self.cachedHeaderModels objectAtIndex:indexPath.section];
 
     if (model.isCameraRoll) {
         item -= 1;
@@ -436,7 +436,7 @@ static NSString * const CollectionViewCellReuseIdentifier = @"CollectionViewCell
 
 - (void)collectionView:(UICollectionView *)collectionView didDeselectItemAtIndexPath:(NSIndexPath *)indexPath {
     NSInteger item = indexPath.item;
-    STPictureCollectionHeaderModel *model = [self.cachedHeaderModels objectAtIndex:indexPath.section];
+    STPictureCollectionHeaderInfo *model = [self.cachedHeaderModels objectAtIndex:indexPath.section];
 
     if (model.isCameraRoll) {
         item -= 1;
@@ -449,7 +449,7 @@ static NSString * const CollectionViewCellReuseIdentifier = @"CollectionViewCell
 #pragma mark - UICollectionViewDelegateFlowLayout
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout referenceSizeForHeaderInSection:(NSInteger)section {
-    STPictureCollectionHeaderModel *model = [self.cachedHeaderModels objectAtIndex:section];
+    STPictureCollectionHeaderInfo *model = [self.cachedHeaderModels objectAtIndex:section];
     return CGSizeMake(IPHONE_WIDTH, model.height);
 }
 

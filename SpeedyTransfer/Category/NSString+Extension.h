@@ -19,4 +19,10 @@
 // 音译,不带声标
 - (NSString *)transliterateString;
 
++ (NSString *)formatSize:(double)size;
+
+// 生成唯一ID
++ (NSString *)uniqueID;
+- (NSString *)trim;
+
 @end

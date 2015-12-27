@@ -10,6 +10,7 @@
 
 @interface STHomeViewController : UIViewController
 
+- (void)transferButtonClick;
 
 @end
 

@@ -7,7 +7,7 @@
 //
 
 #import "STPictureCollectionReusableView.h"
-#import "STPictureCollectionHeaderModel.h"
+#import "STPictureCollectionHeaderInfo.h"
 #import <Photos/Photos.h>
 
 @interface STPictureCollectionReusableView () {

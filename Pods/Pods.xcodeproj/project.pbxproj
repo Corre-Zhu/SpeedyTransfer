@@ -7,98 +7,133 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		008B532A7926FE08CB38E7D2366F7E4A /* UINib+StoryBoardSupport.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E9907C1B3AE3777A20D503F63EF287C /* UINib+StoryBoardSupport.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
+		008B532A7926FE08CB38E7D2366F7E4A /* UINib+StoryBoardSupport.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EA6868320D64745A542D1079BA19CB7 /* UINib+StoryBoardSupport.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
 		06262BDE10D2D76360ED852BB79B31FB /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3E4E89230EF59BC255123B67864ACF77 /* Foundation.framework */; };
-		0D6E65B978ACD1B8AC010D64C555982B /* SFFileWatcher.m in Sources */ = {isa = PBXBuildFile; fileRef = EC4FD450BAB7F33E360DF0FA28391B93 /* SFFileWatcher.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
-		0DF36D7C2E5532472B92F34DE114957B /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3E4E89230EF59BC255123B67864ACF77 /* Foundation.framework */; };
-		1C3E5CE7E8950002862A544209712A79 /* GCDSemaphore.m in Sources */ = {isa = PBXBuildFile; fileRef = 88E207C8DCCF6BB0F7BD9DFA903B836A /* GCDSemaphore.m */; };
-		1DA27084EC1A8E529BBDEA841ABAD733 /* GCDSemaphore.h in Headers */ = {isa = PBXBuildFile; fileRef = 7D3EE84BA57CADEB1624177D707C7E21 /* GCDSemaphore.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		1FCB914F9363FC32F4C86A9929199B32 /* GCDGroup.m in Sources */ = {isa = PBXBuildFile; fileRef = D34F13901924257698FE47C8E84B57A1 /* GCDGroup.m */; };
-		34F04D39748DB4AC9E4388142FDB923D /* SFDYCIDefines.h in Headers */ = {isa = PBXBuildFile; fileRef = 9D5DD4705BD713AB563693BA22CEDD81 /* SFDYCIDefines.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		3704C89B979A64CEED763E6F1F86B153 /* dyci-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 6CC2E5B34781F73475FF6DD1FFE8188E /* dyci-dummy.m */; };
-		4422B1FF58D349418F0BEE47DDB15CAD /* UIViewController+XIBSupport.h in Headers */ = {isa = PBXBuildFile; fileRef = EF2B60F336164CC4010AD4D3FA825352 /* UIViewController+XIBSupport.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		48B49A5EB05E5AADD266DB797E92FAD8 /* SFInjectionsNotificationsCenter.h in Headers */ = {isa = PBXBuildFile; fileRef = AA4322434E93B418AE511E907017C10C /* SFInjectionsNotificationsCenter.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		56FC7E79B9EFBA79583A1A95C4B5596B /* NSSet+ClassesList.m in Sources */ = {isa = PBXBuildFile; fileRef = AD4F9E03E4F4C5402F02C0AB919ED4B5 /* NSSet+ClassesList.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
-		5BC78A79147CE5CB0566C12E11E4D817 /* GCDQueue.h in Headers */ = {isa = PBXBuildFile; fileRef = A5AD8841B989008BC81C2132F6F203FA /* GCDQueue.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		625C9CD611508A222242CC66EC69D40C /* UINib+StoryBoardSupport.h in Headers */ = {isa = PBXBuildFile; fileRef = 8A51E4D068324BDA67D69FD151AE0204 /* UINib+StoryBoardSupport.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		79532C537AB2FF48D39C083E5DE407C4 /* SFDynamicCodeInjection.m in Sources */ = {isa = PBXBuildFile; fileRef = A49B381AE3CC1CB1848F28AA2F621803 /* SFDynamicCodeInjection.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
-		82E43BF7D0B144FFB44015A6732CE9D1 /* SFDynamicCodeInjection.h in Headers */ = {isa = PBXBuildFile; fileRef = 9CE01BAD8DC1EB9A8CDCAC8D5CB61395 /* SFDynamicCodeInjection.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		85B72C82A505A0597941F63B7BA3FD7E /* NSObject+DyCInjection.m in Sources */ = {isa = PBXBuildFile; fileRef = B8B73D719930C8C860AD450438AB21B1 /* NSObject+DyCInjection.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc -fno-objc-arc"; }; };
-		A5B9450BD2806C684C41B50EB899BD10 /* GCDQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = 738F507555F23F3714F60C5A888F662B /* GCDQueue.m */; };
-		AF3B9793F56813D0913E714B5F142B5C /* SFFileWatcherDelegate.h in Headers */ = {isa = PBXBuildFile; fileRef = AD1983C2B0EFDFBA27F10BB41F3A2856 /* SFFileWatcherDelegate.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		BC9624009BB9BFE9328C37822007464B /* NSObject+DyCInjection.h in Headers */ = {isa = PBXBuildFile; fileRef = 7F58C81FE763A837DDD1D89ACE5F2CF4 /* NSObject+DyCInjection.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0D6E65B978ACD1B8AC010D64C555982B /* SFFileWatcher.m in Sources */ = {isa = PBXBuildFile; fileRef = F871EB070A79246C637CCACD694E619C /* SFFileWatcher.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
+		0EF8E9AA652DBE2745A7D5C8CD2E3BDE /* FMDatabasePool.m in Sources */ = {isa = PBXBuildFile; fileRef = 83339BBA1FB5CFC8DDB325E233817A45 /* FMDatabasePool.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
+		0F8A8E0D6FAEBF758E0B4D620335F094 /* FMDatabasePool.h in Headers */ = {isa = PBXBuildFile; fileRef = CDA0DE8D02954E070189A8568B825F5D /* FMDatabasePool.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		1C3E5CE7E8950002862A544209712A79 /* GCDSemaphore.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C2C84D7272CAFA0C4E2E1775DA6393A /* GCDSemaphore.m */; };
+		1DA27084EC1A8E529BBDEA841ABAD733 /* GCDSemaphore.h in Headers */ = {isa = PBXBuildFile; fileRef = 8B1F5CDB4AD7AF7D7DE9A80D9799D9EF /* GCDSemaphore.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		1FCB914F9363FC32F4C86A9929199B32 /* GCDGroup.m in Sources */ = {isa = PBXBuildFile; fileRef = A69208DBB4B8F9DA3DF113425046123F /* GCDGroup.m */; };
+		282081E035E7A843068E8BCC2E07C217 /* FMDatabaseQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = C598AA9BA824EBF3A17C02CE794E2BBF /* FMDatabaseQueue.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
+		313531CEDA0294311D87B4F4C3F073F4 /* FMDB.h in Headers */ = {isa = PBXBuildFile; fileRef = D22CD08749C3BB4298312B1856261007 /* FMDB.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		34F04D39748DB4AC9E4388142FDB923D /* SFDYCIDefines.h in Headers */ = {isa = PBXBuildFile; fileRef = 3655ED3EA55BBE807723A109EDDBAEAA /* SFDYCIDefines.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		3704C89B979A64CEED763E6F1F86B153 /* dyci-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = B1468C7F1A49BBA077CE173F1AF78E73 /* dyci-dummy.m */; };
+		3B93C5443F805BEAABB78237BC2499B0 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3E4E89230EF59BC255123B67864ACF77 /* Foundation.framework */; };
+		3D0F69C4CA35EB6A1F686BA88B19B4F6 /* FMDB-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = E73514ACFDD1C6C6E27DE7C0D84820B0 /* FMDB-dummy.m */; };
+		4422B1FF58D349418F0BEE47DDB15CAD /* UIViewController+XIBSupport.h in Headers */ = {isa = PBXBuildFile; fileRef = D5E3AE231634700AB707191DE68B34CD /* UIViewController+XIBSupport.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		48B49A5EB05E5AADD266DB797E92FAD8 /* SFInjectionsNotificationsCenter.h in Headers */ = {isa = PBXBuildFile; fileRef = 1BC991011162F30A4518FCBB4BE2A5C8 /* SFInjectionsNotificationsCenter.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		56FC7E79B9EFBA79583A1A95C4B5596B /* NSSet+ClassesList.m in Sources */ = {isa = PBXBuildFile; fileRef = 62C0707C6B8856624540EFBC2E901A30 /* NSSet+ClassesList.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
+		587B76A3E381AF7C3EFFDF6754D39288 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3E4E89230EF59BC255123B67864ACF77 /* Foundation.framework */; };
+		5BC78A79147CE5CB0566C12E11E4D817 /* GCDQueue.h in Headers */ = {isa = PBXBuildFile; fileRef = 8ACD827586BAB0A962A1F1223465E29B /* GCDQueue.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		625C9CD611508A222242CC66EC69D40C /* UINib+StoryBoardSupport.h in Headers */ = {isa = PBXBuildFile; fileRef = 8D754A545A3C6D1B86FD934C4B41C847 /* UINib+StoryBoardSupport.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		79532C537AB2FF48D39C083E5DE407C4 /* SFDynamicCodeInjection.m in Sources */ = {isa = PBXBuildFile; fileRef = AE4361DCB1E5737F9304BDEA34D6D7ED /* SFDynamicCodeInjection.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
+		82E43BF7D0B144FFB44015A6732CE9D1 /* SFDynamicCodeInjection.h in Headers */ = {isa = PBXBuildFile; fileRef = 6F83F72F916FACDCCD7AAA072D480F5F /* SFDynamicCodeInjection.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		85B72C82A505A0597941F63B7BA3FD7E /* NSObject+DyCInjection.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C22AD0812DB298EB5DAB652C64E638A /* NSObject+DyCInjection.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc -fno-objc-arc"; }; };
+		A350C5704A1F233DAD830E081E00F8C1 /* FMDatabaseAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 7401ABF563E4833F72B6E678536455D6 /* FMDatabaseAdditions.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
+		A5B9450BD2806C684C41B50EB899BD10 /* GCDQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = B4921417C839BF33DF0394EB8A4841B3 /* GCDQueue.m */; };
+		AF3B9793F56813D0913E714B5F142B5C /* SFFileWatcherDelegate.h in Headers */ = {isa = PBXBuildFile; fileRef = 20B98D516FBA567978D31BF6F5A5EE0C /* SFFileWatcherDelegate.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		B418C9BDCF8C6BAC2E3942F157BB6D4C /* FMDatabaseAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = 17F8F5B8AA9031AFEE030960C0A287D8 /* FMDatabaseAdditions.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		BC9624009BB9BFE9328C37822007464B /* NSObject+DyCInjection.h in Headers */ = {isa = PBXBuildFile; fileRef = 3F6CD12A6C07763FD9DD759324DB9995 /* NSObject+DyCInjection.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		C3A7CB6D11B9FDF1EC860D39E30D8A3C /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3E4E89230EF59BC255123B67864ACF77 /* Foundation.framework */; };
-		CDD0FA434E11CB21A99E331626D142B6 /* GCDGroup.h in Headers */ = {isa = PBXBuildFile; fileRef = B2BEB07DFF4C021101B7BFDB59CF67DA /* GCDGroup.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		CE56D3A006B6AE23797EAB5870B4C01D /* NSSet+ClassesList.h in Headers */ = {isa = PBXBuildFile; fileRef = C1A562A5F0E3B4C8945B8C3DF3824354 /* NSSet+ClassesList.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		D81FD8CD2CC047642A6856869AC02143 /* UIViewController+XIBSupport.m in Sources */ = {isa = PBXBuildFile; fileRef = 6550EE85DD217EE70D7E58282C928C41 /* UIViewController+XIBSupport.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
-		DA8C4BA0A182110215A8151098F174A9 /* SFFileWatcher.h in Headers */ = {isa = PBXBuildFile; fileRef = 389CC6091DD348D62DE2D04A9F18AF83 /* SFFileWatcher.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		E3C68901427C4400E23B021F9C631628 /* SFInjectionsNotificationsCenter.m in Sources */ = {isa = PBXBuildFile; fileRef = 21595B22970782CCC232A863FE9A3CB5 /* SFInjectionsNotificationsCenter.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
-		E7AFA210075A69F20C0C5A013ACCBFD7 /* Pods-SpeedyTransfer-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = B4E98B6C0EC082337CE380FE4B521773 /* Pods-SpeedyTransfer-dummy.m */; };
-		EC812E043CE7B162797525F39A981B18 /* GCDObjC.h in Headers */ = {isa = PBXBuildFile; fileRef = EE61FD05C832DD946CEADFEE3CB6CAC3 /* GCDObjC.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		EE27B8E80E51A0444881F9FABB0A255E /* GCDObjC-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = A55E2BFC9C40A4B46C44876F929ABF09 /* GCDObjC-dummy.m */; };
-		F0A5544103319D4CB547816A479347E5 /* GCDMacros.h in Headers */ = {isa = PBXBuildFile; fileRef = 83628EC3883716E9C0BD3FC6E46A1417 /* GCDMacros.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		CA027706DD6805766F1F4EC548E72440 /* FMDatabase.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C805C6EF86D46906EA68962FBC38533 /* FMDatabase.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
+		CDD0FA434E11CB21A99E331626D142B6 /* GCDGroup.h in Headers */ = {isa = PBXBuildFile; fileRef = 9F6F49888FFC32F1EA4BDB7D5742A635 /* GCDGroup.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		CE56D3A006B6AE23797EAB5870B4C01D /* NSSet+ClassesList.h in Headers */ = {isa = PBXBuildFile; fileRef = 4A408D46E7D8796BEB39B66612D144FA /* NSSet+ClassesList.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		D0C5FF5485EAA2CDA03E9796B407697A /* FMDatabaseQueue.h in Headers */ = {isa = PBXBuildFile; fileRef = 11EAD70613E26CB8569BC33E22B7EAC9 /* FMDatabaseQueue.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		D0D5FFE53407F16C9CD3D0ECF43ACE93 /* FMDatabase.h in Headers */ = {isa = PBXBuildFile; fileRef = 833016165EB49330CC0BEAA89984EB7C /* FMDatabase.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		D81FD8CD2CC047642A6856869AC02143 /* UIViewController+XIBSupport.m in Sources */ = {isa = PBXBuildFile; fileRef = EAD7179D91B96DE459448CA4967FE3E5 /* UIViewController+XIBSupport.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
+		DA8C4BA0A182110215A8151098F174A9 /* SFFileWatcher.h in Headers */ = {isa = PBXBuildFile; fileRef = 62565CCF01FB0517847FE97FBD3442E8 /* SFFileWatcher.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		DEFA3504695E9DFDE1177DAB22884470 /* FMResultSet.m in Sources */ = {isa = PBXBuildFile; fileRef = DE37B0D0435BE8F6A8AD57A55124E2B3 /* FMResultSet.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
+		E3C68901427C4400E23B021F9C631628 /* SFInjectionsNotificationsCenter.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A5156CF9B67785E9CDCAA316DF8657F /* SFInjectionsNotificationsCenter.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
+		EC812E043CE7B162797525F39A981B18 /* GCDObjC.h in Headers */ = {isa = PBXBuildFile; fileRef = D4CC03AAC72E9C01059D8F79925E54C4 /* GCDObjC.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		EDBFF21CABF92BFF2271A184543FE54B /* Pods-SpeedyTransfer-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = B4E98B6C0EC082337CE380FE4B521773 /* Pods-SpeedyTransfer-dummy.m */; };
+		EE27B8E80E51A0444881F9FABB0A255E /* GCDObjC-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = F14A7C6E6A08DC61284BF1556EAC49B8 /* GCDObjC-dummy.m */; };
+		F0A5544103319D4CB547816A479347E5 /* GCDMacros.h in Headers */ = {isa = PBXBuildFile; fileRef = 373CFE8E0A2AACFEBDDD7FE3739D8308 /* GCDMacros.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		F977B243321331B58666E9284634101A /* FMResultSet.h in Headers */ = {isa = PBXBuildFile; fileRef = 1F8B0638EBEEDE592E0F28A385A54133 /* FMResultSet.h */; settings = {ATTRIBUTES = (Public, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		042B3697DAF57732833A39529F3313D5 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = D41D8CD98F00B204E9800998ECF8427E /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 64538076362B64A72AE20CC6B0836BA5;
-			remoteInfo = GCDObjC;
-		};
-		CC46B74D0041EB5CBCBB081242B0BC12 /* PBXContainerItemProxy */ = {
+		D6757CB2EB26294153ECEC5A993F4DE2 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = D41D8CD98F00B204E9800998ECF8427E /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = 2238ED435F11B8CB0A049DBD16A5ED63;
 			remoteInfo = dyci;
 		};
+		E7B865F679C30BD4C528AC205640000A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D41D8CD98F00B204E9800998ECF8427E /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 9F12FB4A63E20F601CFB2E64A65B57C1;
+			remoteInfo = FMDB;
+		};
+		F8D73C431F69E802711B7E3FBB1D3974 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D41D8CD98F00B204E9800998ECF8427E /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 64538076362B64A72AE20CC6B0836BA5;
+			remoteInfo = GCDObjC;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		1629444CF54965AEBF1387CC2D60491E /* GCDObjC-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "GCDObjC-prefix.pch"; sourceTree = "<group>"; };
-		21595B22970782CCC232A863FE9A3CB5 /* SFInjectionsNotificationsCenter.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = SFInjectionsNotificationsCenter.m; path = "Dynamic Code Injection/dyci/Classes/Notifications/SFInjectionsNotificationsCenter.m"; sourceTree = "<group>"; };
-		389CC6091DD348D62DE2D04A9F18AF83 /* SFFileWatcher.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = SFFileWatcher.h; path = "Dynamic Code Injection/dyci/Classes/FileWatcher/SFFileWatcher.h"; sourceTree = "<group>"; };
+		0C2C84D7272CAFA0C4E2E1775DA6393A /* GCDSemaphore.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = GCDSemaphore.m; path = GCDObjC/GCDSemaphore.m; sourceTree = "<group>"; };
+		0D822F45A3C2E6A97532EBCD88E60128 /* dyci.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = dyci.xcconfig; sourceTree = "<group>"; };
+		0EA6868320D64745A542D1079BA19CB7 /* UINib+StoryBoardSupport.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = "UINib+StoryBoardSupport.m"; path = "Dynamic Code Injection/dyci/Classes/Injections/UINib+StoryBoardSupport.m"; sourceTree = "<group>"; };
+		11EAD70613E26CB8569BC33E22B7EAC9 /* FMDatabaseQueue.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = FMDatabaseQueue.h; path = src/fmdb/FMDatabaseQueue.h; sourceTree = "<group>"; };
+		17F8F5B8AA9031AFEE030960C0A287D8 /* FMDatabaseAdditions.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = FMDatabaseAdditions.h; path = src/fmdb/FMDatabaseAdditions.h; sourceTree = "<group>"; };
+		1BC991011162F30A4518FCBB4BE2A5C8 /* SFInjectionsNotificationsCenter.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = SFInjectionsNotificationsCenter.h; path = "Dynamic Code Injection/dyci/Classes/Notifications/SFInjectionsNotificationsCenter.h"; sourceTree = "<group>"; };
+		1F8B0638EBEEDE592E0F28A385A54133 /* FMResultSet.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = FMResultSet.h; path = src/fmdb/FMResultSet.h; sourceTree = "<group>"; };
+		20B98D516FBA567978D31BF6F5A5EE0C /* SFFileWatcherDelegate.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = SFFileWatcherDelegate.h; path = "Dynamic Code Injection/dyci/Classes/FileWatcher/SFFileWatcherDelegate.h"; sourceTree = "<group>"; };
+		270C99FB501E1E785D94E97F4135F93C /* dyci-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "dyci-prefix.pch"; sourceTree = "<group>"; };
+		3655ED3EA55BBE807723A109EDDBAEAA /* SFDYCIDefines.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = SFDYCIDefines.h; path = "Dynamic Code Injection/dyci/Classes/SFDYCIDefines.h"; sourceTree = "<group>"; };
+		36736166CE41E27EF5C2015B88452F11 /* FMDB.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = FMDB.xcconfig; sourceTree = "<group>"; };
+		373CFE8E0A2AACFEBDDD7FE3739D8308 /* GCDMacros.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = GCDMacros.h; path = GCDObjC/GCDMacros.h; sourceTree = "<group>"; };
+		3A5156CF9B67785E9CDCAA316DF8657F /* SFInjectionsNotificationsCenter.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = SFInjectionsNotificationsCenter.m; path = "Dynamic Code Injection/dyci/Classes/Notifications/SFInjectionsNotificationsCenter.m"; sourceTree = "<group>"; };
+		3C805C6EF86D46906EA68962FBC38533 /* FMDatabase.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = FMDatabase.m; path = src/fmdb/FMDatabase.m; sourceTree = "<group>"; };
 		3E4E89230EF59BC255123B67864ACF77 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS9.0.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
+		3F6CD12A6C07763FD9DD759324DB9995 /* NSObject+DyCInjection.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "NSObject+DyCInjection.h"; path = "Dynamic Code Injection/dyci/Classes/Injections/NSObject+DyCInjection.h"; sourceTree = "<group>"; };
 		485A61B68D931D04873BE249BD719A6E /* Pods-SpeedyTransfer-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-SpeedyTransfer-acknowledgements.markdown"; sourceTree = "<group>"; };
+		49B1E8AF544B3F0274159F011EDE7F2C /* GCDObjC-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "GCDObjC-prefix.pch"; sourceTree = "<group>"; };
+		4A408D46E7D8796BEB39B66612D144FA /* NSSet+ClassesList.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "NSSet+ClassesList.h"; path = "Dynamic Code Injection/dyci/Classes/Categories/NSSet+ClassesList.h"; sourceTree = "<group>"; };
 		59498D518A454A974469D6494689EE1E /* Pods-SpeedyTransfer-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-SpeedyTransfer-acknowledgements.plist"; sourceTree = "<group>"; };
-		6550EE85DD217EE70D7E58282C928C41 /* UIViewController+XIBSupport.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = "UIViewController+XIBSupport.m"; path = "Dynamic Code Injection/dyci/Classes/Injections/UIViewController+XIBSupport.m"; sourceTree = "<group>"; };
+		62565CCF01FB0517847FE97FBD3442E8 /* SFFileWatcher.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = SFFileWatcher.h; path = "Dynamic Code Injection/dyci/Classes/FileWatcher/SFFileWatcher.h"; sourceTree = "<group>"; };
+		62C0707C6B8856624540EFBC2E901A30 /* NSSet+ClassesList.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = "NSSet+ClassesList.m"; path = "Dynamic Code Injection/dyci/Classes/Categories/NSSet+ClassesList.m"; sourceTree = "<group>"; };
 		6578C25E2E21AA6341258FDBF357E2C7 /* Pods-SpeedyTransfer-frameworks.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-SpeedyTransfer-frameworks.sh"; sourceTree = "<group>"; };
-		6CC2E5B34781F73475FF6DD1FFE8188E /* dyci-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "dyci-dummy.m"; sourceTree = "<group>"; };
-		738F507555F23F3714F60C5A888F662B /* GCDQueue.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = GCDQueue.m; path = GCDObjC/GCDQueue.m; sourceTree = "<group>"; };
-		7435E61B8F48A59D8A937DB7C630B0BE /* GCDObjC.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = GCDObjC.xcconfig; sourceTree = "<group>"; };
-		7D3EE84BA57CADEB1624177D707C7E21 /* GCDSemaphore.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = GCDSemaphore.h; path = GCDObjC/GCDSemaphore.h; sourceTree = "<group>"; };
-		7F58C81FE763A837DDD1D89ACE5F2CF4 /* NSObject+DyCInjection.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "NSObject+DyCInjection.h"; path = "Dynamic Code Injection/dyci/Classes/Injections/NSObject+DyCInjection.h"; sourceTree = "<group>"; };
-		83628EC3883716E9C0BD3FC6E46A1417 /* GCDMacros.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = GCDMacros.h; path = GCDObjC/GCDMacros.h; sourceTree = "<group>"; };
-		88E207C8DCCF6BB0F7BD9DFA903B836A /* GCDSemaphore.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = GCDSemaphore.m; path = GCDObjC/GCDSemaphore.m; sourceTree = "<group>"; };
-		8A51E4D068324BDA67D69FD151AE0204 /* UINib+StoryBoardSupport.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "UINib+StoryBoardSupport.h"; path = "Dynamic Code Injection/dyci/Classes/Injections/UINib+StoryBoardSupport.h"; sourceTree = "<group>"; };
-		8BB8128A81CC26790760D17BA7DE7DC3 /* dyci.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = dyci.xcconfig; sourceTree = "<group>"; };
-		8C2ADC7C5C9DECCBCEE1EBD13CCC5785 /* libdyci.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libdyci.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		8E9907C1B3AE3777A20D503F63EF287C /* UINib+StoryBoardSupport.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = "UINib+StoryBoardSupport.m"; path = "Dynamic Code Injection/dyci/Classes/Injections/UINib+StoryBoardSupport.m"; sourceTree = "<group>"; };
+		6D9AE084AC5BD79411F0807A559C4C46 /* libFMDB.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libFMDB.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		6F83F72F916FACDCCD7AAA072D480F5F /* SFDynamicCodeInjection.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = SFDynamicCodeInjection.h; path = "Dynamic Code Injection/dyci/Classes/SFDynamicCodeInjection.h"; sourceTree = "<group>"; };
+		7184D3FBBB7E04B6201D12AA30BD28CE /* libGCDObjC.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libGCDObjC.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		7401ABF563E4833F72B6E678536455D6 /* FMDatabaseAdditions.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = FMDatabaseAdditions.m; path = src/fmdb/FMDatabaseAdditions.m; sourceTree = "<group>"; };
+		833016165EB49330CC0BEAA89984EB7C /* FMDatabase.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = FMDatabase.h; path = src/fmdb/FMDatabase.h; sourceTree = "<group>"; };
+		83339BBA1FB5CFC8DDB325E233817A45 /* FMDatabasePool.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = FMDatabasePool.m; path = src/fmdb/FMDatabasePool.m; sourceTree = "<group>"; };
+		88EBDC5E54A00523DD351E456AFFE049 /* libdyci.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libdyci.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		8ACD827586BAB0A962A1F1223465E29B /* GCDQueue.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = GCDQueue.h; path = GCDObjC/GCDQueue.h; sourceTree = "<group>"; };
+		8B1F5CDB4AD7AF7D7DE9A80D9799D9EF /* GCDSemaphore.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = GCDSemaphore.h; path = GCDObjC/GCDSemaphore.h; sourceTree = "<group>"; };
+		8C22AD0812DB298EB5DAB652C64E638A /* NSObject+DyCInjection.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = "NSObject+DyCInjection.m"; path = "Dynamic Code Injection/dyci/Classes/Injections/NSObject+DyCInjection.m"; sourceTree = "<group>"; };
+		8D754A545A3C6D1B86FD934C4B41C847 /* UINib+StoryBoardSupport.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "UINib+StoryBoardSupport.h"; path = "Dynamic Code Injection/dyci/Classes/Injections/UINib+StoryBoardSupport.h"; sourceTree = "<group>"; };
 		97A3B52DCF04E7601824803762ED9A34 /* Pods-SpeedyTransfer.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-SpeedyTransfer.release.xcconfig"; sourceTree = "<group>"; };
-		9CE01BAD8DC1EB9A8CDCAC8D5CB61395 /* SFDynamicCodeInjection.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = SFDynamicCodeInjection.h; path = "Dynamic Code Injection/dyci/Classes/SFDynamicCodeInjection.h"; sourceTree = "<group>"; };
-		9D5DD4705BD713AB563693BA22CEDD81 /* SFDYCIDefines.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = SFDYCIDefines.h; path = "Dynamic Code Injection/dyci/Classes/SFDYCIDefines.h"; sourceTree = "<group>"; };
-		A49B381AE3CC1CB1848F28AA2F621803 /* SFDynamicCodeInjection.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = SFDynamicCodeInjection.m; path = "Dynamic Code Injection/dyci/Classes/SFDynamicCodeInjection.m"; sourceTree = "<group>"; };
-		A55E2BFC9C40A4B46C44876F929ABF09 /* GCDObjC-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "GCDObjC-dummy.m"; sourceTree = "<group>"; };
-		A5AD8841B989008BC81C2132F6F203FA /* GCDQueue.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = GCDQueue.h; path = GCDObjC/GCDQueue.h; sourceTree = "<group>"; };
-		AA4322434E93B418AE511E907017C10C /* SFInjectionsNotificationsCenter.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = SFInjectionsNotificationsCenter.h; path = "Dynamic Code Injection/dyci/Classes/Notifications/SFInjectionsNotificationsCenter.h"; sourceTree = "<group>"; };
-		AD1983C2B0EFDFBA27F10BB41F3A2856 /* SFFileWatcherDelegate.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = SFFileWatcherDelegate.h; path = "Dynamic Code Injection/dyci/Classes/FileWatcher/SFFileWatcherDelegate.h"; sourceTree = "<group>"; };
-		AD4F9E03E4F4C5402F02C0AB919ED4B5 /* NSSet+ClassesList.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = "NSSet+ClassesList.m"; path = "Dynamic Code Injection/dyci/Classes/Categories/NSSet+ClassesList.m"; sourceTree = "<group>"; };
-		AFE5C831FC5CD99AED28E1E82B10BE85 /* libGCDObjC.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libGCDObjC.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		B2BEB07DFF4C021101B7BFDB59CF67DA /* GCDGroup.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = GCDGroup.h; path = GCDObjC/GCDGroup.h; sourceTree = "<group>"; };
+		9F6F49888FFC32F1EA4BDB7D5742A635 /* GCDGroup.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = GCDGroup.h; path = GCDObjC/GCDGroup.h; sourceTree = "<group>"; };
+		A69208DBB4B8F9DA3DF113425046123F /* GCDGroup.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = GCDGroup.m; path = GCDObjC/GCDGroup.m; sourceTree = "<group>"; };
+		AE4361DCB1E5737F9304BDEA34D6D7ED /* SFDynamicCodeInjection.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = SFDynamicCodeInjection.m; path = "Dynamic Code Injection/dyci/Classes/SFDynamicCodeInjection.m"; sourceTree = "<group>"; };
+		B1468C7F1A49BBA077CE173F1AF78E73 /* dyci-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "dyci-dummy.m"; sourceTree = "<group>"; };
+		B4921417C839BF33DF0394EB8A4841B3 /* GCDQueue.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = GCDQueue.m; path = GCDObjC/GCDQueue.m; sourceTree = "<group>"; };
 		B4E98B6C0EC082337CE380FE4B521773 /* Pods-SpeedyTransfer-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-SpeedyTransfer-dummy.m"; sourceTree = "<group>"; };
+		B5EDA25A47ABE87CA7E7BFE67985EB40 /* FMDB-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "FMDB-prefix.pch"; sourceTree = "<group>"; };
 		B622D9715DC58363558D31534B942169 /* Pods-SpeedyTransfer.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-SpeedyTransfer.debug.xcconfig"; sourceTree = "<group>"; };
-		B8B73D719930C8C860AD450438AB21B1 /* NSObject+DyCInjection.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = "NSObject+DyCInjection.m"; path = "Dynamic Code Injection/dyci/Classes/Injections/NSObject+DyCInjection.m"; sourceTree = "<group>"; };
 		BA6428E9F66FD5A23C0A2E06ED26CD2F /* Podfile */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
-		C1A2E37706E412CD40907E7535BA4FF4 /* dyci-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "dyci-prefix.pch"; sourceTree = "<group>"; };
-		C1A562A5F0E3B4C8945B8C3DF3824354 /* NSSet+ClassesList.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "NSSet+ClassesList.h"; path = "Dynamic Code Injection/dyci/Classes/Categories/NSSet+ClassesList.h"; sourceTree = "<group>"; };
+		C598AA9BA824EBF3A17C02CE794E2BBF /* FMDatabaseQueue.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = FMDatabaseQueue.m; path = src/fmdb/FMDatabaseQueue.m; sourceTree = "<group>"; };
+		CDA0DE8D02954E070189A8568B825F5D /* FMDatabasePool.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = FMDatabasePool.h; path = src/fmdb/FMDatabasePool.h; sourceTree = "<group>"; };
 		CFE0864FE03F9C351DE31EFC9E882844 /* Pods-SpeedyTransfer-resources.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-SpeedyTransfer-resources.sh"; sourceTree = "<group>"; };
-		D34F13901924257698FE47C8E84B57A1 /* GCDGroup.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = GCDGroup.m; path = GCDObjC/GCDGroup.m; sourceTree = "<group>"; };
-		EC4FD450BAB7F33E360DF0FA28391B93 /* SFFileWatcher.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = SFFileWatcher.m; path = "Dynamic Code Injection/dyci/Classes/FileWatcher/SFFileWatcher.m"; sourceTree = "<group>"; };
-		EE61FD05C832DD946CEADFEE3CB6CAC3 /* GCDObjC.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = GCDObjC.h; path = GCDObjC/GCDObjC.h; sourceTree = "<group>"; };
-		EF2B60F336164CC4010AD4D3FA825352 /* UIViewController+XIBSupport.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "UIViewController+XIBSupport.h"; path = "Dynamic Code Injection/dyci/Classes/Injections/UIViewController+XIBSupport.h"; sourceTree = "<group>"; };
-		FE1F363AEF71AB898C6E89172B665A7F /* libPods-SpeedyTransfer.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-SpeedyTransfer.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		D22CD08749C3BB4298312B1856261007 /* FMDB.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = FMDB.h; path = src/fmdb/FMDB.h; sourceTree = "<group>"; };
+		D4CC03AAC72E9C01059D8F79925E54C4 /* GCDObjC.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = GCDObjC.h; path = GCDObjC/GCDObjC.h; sourceTree = "<group>"; };
+		D5490B7288E40683637383835B427529 /* GCDObjC.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = GCDObjC.xcconfig; sourceTree = "<group>"; };
+		D5E3AE231634700AB707191DE68B34CD /* UIViewController+XIBSupport.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "UIViewController+XIBSupport.h"; path = "Dynamic Code Injection/dyci/Classes/Injections/UIViewController+XIBSupport.h"; sourceTree = "<group>"; };
+		DE37B0D0435BE8F6A8AD57A55124E2B3 /* FMResultSet.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = FMResultSet.m; path = src/fmdb/FMResultSet.m; sourceTree = "<group>"; };
+		E730DBDCF337B0845A572E90DC6998C4 /* libPods-SpeedyTransfer.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-SpeedyTransfer.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		E73514ACFDD1C6C6E27DE7C0D84820B0 /* FMDB-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "FMDB-dummy.m"; sourceTree = "<group>"; };
+		EAD7179D91B96DE459448CA4967FE3E5 /* UIViewController+XIBSupport.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = "UIViewController+XIBSupport.m"; path = "Dynamic Code Injection/dyci/Classes/Injections/UIViewController+XIBSupport.m"; sourceTree = "<group>"; };
+		F14A7C6E6A08DC61284BF1556EAC49B8 /* GCDObjC-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "GCDObjC-dummy.m"; sourceTree = "<group>"; };
+		F871EB070A79246C637CCACD694E619C /* SFFileWatcher.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = SFFileWatcher.m; path = "Dynamic Code Injection/dyci/Classes/FileWatcher/SFFileWatcher.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -118,25 +153,34 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		8ACFC60438EEA3F6971FC54386041A14 /* Frameworks */ = {
+		4F1A94891442FE7A6FAFBDF69810200F /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0DF36D7C2E5532472B92F34DE114957B /* Foundation.framework in Frameworks */,
+				3B93C5443F805BEAABB78237BC2499B0 /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		84AF63084FFE4472EFC6131BD113B13D /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				587B76A3E381AF7C3EFFDF6754D39288 /* Foundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		1305A6BE881031BD6A11AC71E302D60E /* Products */ = {
+		0F40048487E20C2B0FBD5C95EAB3F54F /* Support Files */ = {
 			isa = PBXGroup;
 			children = (
-				8C2ADC7C5C9DECCBCEE1EBD13CCC5785 /* libdyci.a */,
-				AFE5C831FC5CD99AED28E1E82B10BE85 /* libGCDObjC.a */,
-				FE1F363AEF71AB898C6E89172B665A7F /* libPods-SpeedyTransfer.a */,
+				0D822F45A3C2E6A97532EBCD88E60128 /* dyci.xcconfig */,
+				B1468C7F1A49BBA077CE173F1AF78E73 /* dyci-dummy.m */,
+				270C99FB501E1E785D94E97F4135F93C /* dyci-prefix.pch */,
 			);
-			name = Products;
+			name = "Support Files";
+			path = "../Target Support Files/dyci";
 			sourceTree = "<group>";
 		};
 		1CA05F776C183C55C28DB6AD9A86E269 /* Pods-SpeedyTransfer */ = {
@@ -154,29 +198,33 @@
 			path = "Target Support Files/Pods-SpeedyTransfer";
 			sourceTree = "<group>";
 		};
-		27BE52757939742FAE204EC351C0260B /* Injections */ = {
+		311B661AD0504178D358197E849FBAD5 /* common */ = {
 			isa = PBXGroup;
 			children = (
-				7F58C81FE763A837DDD1D89ACE5F2CF4 /* NSObject+DyCInjection.h */,
-				B8B73D719930C8C860AD450438AB21B1 /* NSObject+DyCInjection.m */,
+				833016165EB49330CC0BEAA89984EB7C /* FMDatabase.h */,
+				3C805C6EF86D46906EA68962FBC38533 /* FMDatabase.m */,
+				17F8F5B8AA9031AFEE030960C0A287D8 /* FMDatabaseAdditions.h */,
+				7401ABF563E4833F72B6E678536455D6 /* FMDatabaseAdditions.m */,
+				CDA0DE8D02954E070189A8568B825F5D /* FMDatabasePool.h */,
+				83339BBA1FB5CFC8DDB325E233817A45 /* FMDatabasePool.m */,
+				11EAD70613E26CB8569BC33E22B7EAC9 /* FMDatabaseQueue.h */,
+				C598AA9BA824EBF3A17C02CE794E2BBF /* FMDatabaseQueue.m */,
+				D22CD08749C3BB4298312B1856261007 /* FMDB.h */,
+				1F8B0638EBEEDE592E0F28A385A54133 /* FMResultSet.h */,
+				DE37B0D0435BE8F6A8AD57A55124E2B3 /* FMResultSet.m */,
 			);
-			name = Injections;
+			name = common;
 			sourceTree = "<group>";
 		};
-		287ED8EB5A4605A610A9E1D5ED4C0A17 /* GCDObjC */ = {
+		332058664FA38F9027A7C78EBD71195E /* Support Files */ = {
 			isa = PBXGroup;
 			children = (
-				B2BEB07DFF4C021101B7BFDB59CF67DA /* GCDGroup.h */,
-				D34F13901924257698FE47C8E84B57A1 /* GCDGroup.m */,
-				83628EC3883716E9C0BD3FC6E46A1417 /* GCDMacros.h */,
-				EE61FD05C832DD946CEADFEE3CB6CAC3 /* GCDObjC.h */,
-				A5AD8841B989008BC81C2132F6F203FA /* GCDQueue.h */,
-				738F507555F23F3714F60C5A888F662B /* GCDQueue.m */,
-				7D3EE84BA57CADEB1624177D707C7E21 /* GCDSemaphore.h */,
-				88E207C8DCCF6BB0F7BD9DFA903B836A /* GCDSemaphore.m */,
-				B183B0475746EB56A611377B680783C9 /* Support Files */,
+				36736166CE41E27EF5C2015B88452F11 /* FMDB.xcconfig */,
+				E73514ACFDD1C6C6E27DE7C0D84820B0 /* FMDB-dummy.m */,
+				B5EDA25A47ABE87CA7E7BFE67985EB40 /* FMDB-prefix.pch */,
 			);
-			path = GCDObjC;
+			name = "Support Files";
+			path = "../Target Support Files/FMDB";
 			sourceTree = "<group>";
 		};
 		36A799A527542504452B857F6BF778B5 /* Targets Support Files */ = {
@@ -187,11 +235,57 @@
 			name = "Targets Support Files";
 			sourceTree = "<group>";
 		};
-		5B1CDEE1E01B3F8976095F0862B30589 /* Pods */ = {
+		379BA3598C0ADBC5B67C7E417E8CF6CA /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				F0FDF781161D08E4B53930366C06E9D4 /* dyci */,
-				287ED8EB5A4605A610A9E1D5ED4C0A17 /* GCDObjC */,
+				88EBDC5E54A00523DD351E456AFFE049 /* libdyci.a */,
+				6D9AE084AC5BD79411F0807A559C4C46 /* libFMDB.a */,
+				7184D3FBBB7E04B6201D12AA30BD28CE /* libGCDObjC.a */,
+				E730DBDCF337B0845A572E90DC6998C4 /* libPods-SpeedyTransfer.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		5983459F445D7F78C19D29BE36B880C5 /* dyci */ = {
+			isa = PBXGroup;
+			children = (
+				4A408D46E7D8796BEB39B66612D144FA /* NSSet+ClassesList.h */,
+				62C0707C6B8856624540EFBC2E901A30 /* NSSet+ClassesList.m */,
+				3655ED3EA55BBE807723A109EDDBAEAA /* SFDYCIDefines.h */,
+				6F83F72F916FACDCCD7AAA072D480F5F /* SFDynamicCodeInjection.h */,
+				AE4361DCB1E5737F9304BDEA34D6D7ED /* SFDynamicCodeInjection.m */,
+				62565CCF01FB0517847FE97FBD3442E8 /* SFFileWatcher.h */,
+				F871EB070A79246C637CCACD694E619C /* SFFileWatcher.m */,
+				20B98D516FBA567978D31BF6F5A5EE0C /* SFFileWatcherDelegate.h */,
+				1BC991011162F30A4518FCBB4BE2A5C8 /* SFInjectionsNotificationsCenter.h */,
+				3A5156CF9B67785E9CDCAA316DF8657F /* SFInjectionsNotificationsCenter.m */,
+				8D754A545A3C6D1B86FD934C4B41C847 /* UINib+StoryBoardSupport.h */,
+				0EA6868320D64745A542D1079BA19CB7 /* UINib+StoryBoardSupport.m */,
+				D5E3AE231634700AB707191DE68B34CD /* UIViewController+XIBSupport.h */,
+				EAD7179D91B96DE459448CA4967FE3E5 /* UIViewController+XIBSupport.m */,
+				7E694A1F1268C5319C777A2F4CE340FD /* Injections */,
+				0F40048487E20C2B0FBD5C95EAB3F54F /* Support Files */,
+			);
+			path = dyci;
+			sourceTree = "<group>";
+		};
+		6BE5EBF5F83ED57096573B1FDC67D010 /* Support Files */ = {
+			isa = PBXGroup;
+			children = (
+				D5490B7288E40683637383835B427529 /* GCDObjC.xcconfig */,
+				F14A7C6E6A08DC61284BF1556EAC49B8 /* GCDObjC-dummy.m */,
+				49B1E8AF544B3F0274159F011EDE7F2C /* GCDObjC-prefix.pch */,
+			);
+			name = "Support Files";
+			path = "../Target Support Files/GCDObjC";
+			sourceTree = "<group>";
+		};
+		769863AD99CD7341439D7F8C86B95D9F /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				5983459F445D7F78C19D29BE36B880C5 /* dyci */,
+				BD436D2B2BC24793B08BEEEBB44A8A46 /* FMDB */,
+				DC76127BECEC98F1546CE6CB7A7A4A14 /* GCDObjC */,
 			);
 			name = Pods;
 			sourceTree = "<group>";
@@ -201,32 +295,19 @@
 			children = (
 				BA6428E9F66FD5A23C0A2E06ED26CD2F /* Podfile */,
 				BC3CA7F9E30CC8F7E2DD044DD34432FC /* Frameworks */,
-				5B1CDEE1E01B3F8976095F0862B30589 /* Pods */,
-				1305A6BE881031BD6A11AC71E302D60E /* Products */,
+				769863AD99CD7341439D7F8C86B95D9F /* Pods */,
+				379BA3598C0ADBC5B67C7E417E8CF6CA /* Products */,
 				36A799A527542504452B857F6BF778B5 /* Targets Support Files */,
 			);
 			sourceTree = "<group>";
 		};
-		8C6F977276C1C512BC05C1DFA104397F /* Support Files */ = {
+		7E694A1F1268C5319C777A2F4CE340FD /* Injections */ = {
 			isa = PBXGroup;
 			children = (
-				8BB8128A81CC26790760D17BA7DE7DC3 /* dyci.xcconfig */,
-				6CC2E5B34781F73475FF6DD1FFE8188E /* dyci-dummy.m */,
-				C1A2E37706E412CD40907E7535BA4FF4 /* dyci-prefix.pch */,
+				3F6CD12A6C07763FD9DD759324DB9995 /* NSObject+DyCInjection.h */,
+				8C22AD0812DB298EB5DAB652C64E638A /* NSObject+DyCInjection.m */,
 			);
-			name = "Support Files";
-			path = "../Target Support Files/dyci";
-			sourceTree = "<group>";
-		};
-		B183B0475746EB56A611377B680783C9 /* Support Files */ = {
-			isa = PBXGroup;
-			children = (
-				7435E61B8F48A59D8A937DB7C630B0BE /* GCDObjC.xcconfig */,
-				A55E2BFC9C40A4B46C44876F929ABF09 /* GCDObjC-dummy.m */,
-				1629444CF54965AEBF1387CC2D60491E /* GCDObjC-prefix.pch */,
-			);
-			name = "Support Files";
-			path = "../Target Support Files/GCDObjC";
+			name = Injections;
 			sourceTree = "<group>";
 		};
 		BC3CA7F9E30CC8F7E2DD044DD34432FC /* Frameworks */ = {
@@ -237,6 +318,15 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		BD436D2B2BC24793B08BEEEBB44A8A46 /* FMDB */ = {
+			isa = PBXGroup;
+			children = (
+				311B661AD0504178D358197E849FBAD5 /* common */,
+				332058664FA38F9027A7C78EBD71195E /* Support Files */,
+			);
+			path = FMDB;
+			sourceTree = "<group>";
+		};
 		BF6342C8B29F4CEEA088EFF7AB4DE362 /* iOS */ = {
 			isa = PBXGroup;
 			children = (
@@ -245,27 +335,20 @@
 			name = iOS;
 			sourceTree = "<group>";
 		};
-		F0FDF781161D08E4B53930366C06E9D4 /* dyci */ = {
+		DC76127BECEC98F1546CE6CB7A7A4A14 /* GCDObjC */ = {
 			isa = PBXGroup;
 			children = (
-				C1A562A5F0E3B4C8945B8C3DF3824354 /* NSSet+ClassesList.h */,
-				AD4F9E03E4F4C5402F02C0AB919ED4B5 /* NSSet+ClassesList.m */,
-				9D5DD4705BD713AB563693BA22CEDD81 /* SFDYCIDefines.h */,
-				9CE01BAD8DC1EB9A8CDCAC8D5CB61395 /* SFDynamicCodeInjection.h */,
-				A49B381AE3CC1CB1848F28AA2F621803 /* SFDynamicCodeInjection.m */,
-				389CC6091DD348D62DE2D04A9F18AF83 /* SFFileWatcher.h */,
-				EC4FD450BAB7F33E360DF0FA28391B93 /* SFFileWatcher.m */,
-				AD1983C2B0EFDFBA27F10BB41F3A2856 /* SFFileWatcherDelegate.h */,
-				AA4322434E93B418AE511E907017C10C /* SFInjectionsNotificationsCenter.h */,
-				21595B22970782CCC232A863FE9A3CB5 /* SFInjectionsNotificationsCenter.m */,
-				8A51E4D068324BDA67D69FD151AE0204 /* UINib+StoryBoardSupport.h */,
-				8E9907C1B3AE3777A20D503F63EF287C /* UINib+StoryBoardSupport.m */,
-				EF2B60F336164CC4010AD4D3FA825352 /* UIViewController+XIBSupport.h */,
-				6550EE85DD217EE70D7E58282C928C41 /* UIViewController+XIBSupport.m */,
-				27BE52757939742FAE204EC351C0260B /* Injections */,
-				8C6F977276C1C512BC05C1DFA104397F /* Support Files */,
+				9F6F49888FFC32F1EA4BDB7D5742A635 /* GCDGroup.h */,
+				A69208DBB4B8F9DA3DF113425046123F /* GCDGroup.m */,
+				373CFE8E0A2AACFEBDDD7FE3739D8308 /* GCDMacros.h */,
+				D4CC03AAC72E9C01059D8F79925E54C4 /* GCDObjC.h */,
+				8ACD827586BAB0A962A1F1223465E29B /* GCDQueue.h */,
+				B4921417C839BF33DF0394EB8A4841B3 /* GCDQueue.m */,
+				8B1F5CDB4AD7AF7D7DE9A80D9799D9EF /* GCDSemaphore.h */,
+				0C2C84D7272CAFA0C4E2E1775DA6393A /* GCDSemaphore.m */,
+				6BE5EBF5F83ED57096573B1FDC67D010 /* Support Files */,
 			);
-			path = dyci;
+			path = GCDObjC;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -280,6 +363,19 @@
 				EC812E043CE7B162797525F39A981B18 /* GCDObjC.h in Headers */,
 				5BC78A79147CE5CB0566C12E11E4D817 /* GCDQueue.h in Headers */,
 				1DA27084EC1A8E529BBDEA841ABAD733 /* GCDSemaphore.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		8B2D82357BE4C2A10AB2CD4724B8E654 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D0D5FFE53407F16C9CD3D0ECF43ACE93 /* FMDatabase.h in Headers */,
+				B418C9BDCF8C6BAC2E3942F157BB6D4C /* FMDatabaseAdditions.h in Headers */,
+				0F8A8E0D6FAEBF758E0B4D620335F094 /* FMDatabasePool.h in Headers */,
+				D0C5FF5485EAA2CDA03E9796B407697A /* FMDatabaseQueue.h in Headers */,
+				313531CEDA0294311D87B4F4C3F073F4 /* FMDB.h in Headers */,
+				F977B243321331B58666E9284634101A /* FMResultSet.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -316,7 +412,26 @@
 			);
 			name = dyci;
 			productName = dyci;
-			productReference = 8C2ADC7C5C9DECCBCEE1EBD13CCC5785 /* libdyci.a */;
+			productReference = 88EBDC5E54A00523DD351E456AFFE049 /* libdyci.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+		25B1B0233FEEFC4F9AC07F1B7842A43B /* Pods-SpeedyTransfer */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 8DE9F28D28428D369761547058787E6A /* Build configuration list for PBXNativeTarget "Pods-SpeedyTransfer" */;
+			buildPhases = (
+				02F7215B96E280D9CC5B8E8E06425378 /* Sources */,
+				4F1A94891442FE7A6FAFBDF69810200F /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				CA63B133E675ABA67042776AE49DBFB2 /* PBXTargetDependency */,
+				AB2D93849EC075EE3157AF67B3D0CFE1 /* PBXTargetDependency */,
+				16F0670FCF030407C0800C18CA6D6740 /* PBXTargetDependency */,
+			);
+			name = "Pods-SpeedyTransfer";
+			productName = "Pods-SpeedyTransfer";
+			productReference = E730DBDCF337B0845A572E90DC6998C4 /* libPods-SpeedyTransfer.a */;
 			productType = "com.apple.product-type.library.static";
 		};
 		64538076362B64A72AE20CC6B0836BA5 /* GCDObjC */ = {
@@ -333,25 +448,24 @@
 			);
 			name = GCDObjC;
 			productName = GCDObjC;
-			productReference = AFE5C831FC5CD99AED28E1E82B10BE85 /* libGCDObjC.a */;
+			productReference = 7184D3FBBB7E04B6201D12AA30BD28CE /* libGCDObjC.a */;
 			productType = "com.apple.product-type.library.static";
 		};
-		EB06A2A056BFB86B9004E856A369C515 /* Pods-SpeedyTransfer */ = {
+		9F12FB4A63E20F601CFB2E64A65B57C1 /* FMDB */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 3D0AD81BFF0C4A471D91B3AC15577086 /* Build configuration list for PBXNativeTarget "Pods-SpeedyTransfer" */;
+			buildConfigurationList = 3AC899FD215914230EB9D8B57AD910D0 /* Build configuration list for PBXNativeTarget "FMDB" */;
 			buildPhases = (
-				EFF72F4A77E9861A99A656E4885C2F29 /* Sources */,
-				8ACFC60438EEA3F6971FC54386041A14 /* Frameworks */,
+				050B66E154969A68944942A22BD9B314 /* Sources */,
+				84AF63084FFE4472EFC6131BD113B13D /* Frameworks */,
+				8B2D82357BE4C2A10AB2CD4724B8E654 /* Headers */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				DEB1AA128B21401828330B154DCEB6F2 /* PBXTargetDependency */,
-				775B18EA344EC26FE2C37DC4B47F9079 /* PBXTargetDependency */,
 			);
-			name = "Pods-SpeedyTransfer";
-			productName = "Pods-SpeedyTransfer";
-			productReference = FE1F363AEF71AB898C6E89172B665A7F /* libPods-SpeedyTransfer.a */;
+			name = FMDB;
+			productName = FMDB;
+			productReference = 6D9AE084AC5BD79411F0807A559C4C46 /* libFMDB.a */;
 			productType = "com.apple.product-type.library.static";
 		};
 /* End PBXNativeTarget section */
@@ -371,18 +485,40 @@
 				en,
 			);
 			mainGroup = 7DB346D0F39D3F0E887471402A8071AB;
-			productRefGroup = 1305A6BE881031BD6A11AC71E302D60E /* Products */;
+			productRefGroup = 379BA3598C0ADBC5B67C7E417E8CF6CA /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
 				2238ED435F11B8CB0A049DBD16A5ED63 /* dyci */,
+				9F12FB4A63E20F601CFB2E64A65B57C1 /* FMDB */,
 				64538076362B64A72AE20CC6B0836BA5 /* GCDObjC */,
-				EB06A2A056BFB86B9004E856A369C515 /* Pods-SpeedyTransfer */,
+				25B1B0233FEEFC4F9AC07F1B7842A43B /* Pods-SpeedyTransfer */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXSourcesBuildPhase section */
+		02F7215B96E280D9CC5B8E8E06425378 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				EDBFF21CABF92BFF2271A184543FE54B /* Pods-SpeedyTransfer-dummy.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		050B66E154969A68944942A22BD9B314 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CA027706DD6805766F1F4EC548E72440 /* FMDatabase.m in Sources */,
+				A350C5704A1F233DAD830E081E00F8C1 /* FMDatabaseAdditions.m in Sources */,
+				0EF8E9AA652DBE2745A7D5C8CD2E3BDE /* FMDatabasePool.m in Sources */,
+				282081E035E7A843068E8BCC2E07C217 /* FMDatabaseQueue.m in Sources */,
+				3D0F69C4CA35EB6A1F686BA88B19B4F6 /* FMDB-dummy.m in Sources */,
+				DEFA3504695E9DFDE1177DAB22884470 /* FMResultSet.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		1FABC53D59E7661C003E3F8C3CEBF6A0 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -409,35 +545,33 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		EFF72F4A77E9861A99A656E4885C2F29 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				E7AFA210075A69F20C0C5A013ACCBFD7 /* Pods-SpeedyTransfer-dummy.m in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		775B18EA344EC26FE2C37DC4B47F9079 /* PBXTargetDependency */ = {
+		16F0670FCF030407C0800C18CA6D6740 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = dyci;
 			target = 2238ED435F11B8CB0A049DBD16A5ED63 /* dyci */;
-			targetProxy = CC46B74D0041EB5CBCBB081242B0BC12 /* PBXContainerItemProxy */;
+			targetProxy = D6757CB2EB26294153ECEC5A993F4DE2 /* PBXContainerItemProxy */;
 		};
-		DEB1AA128B21401828330B154DCEB6F2 /* PBXTargetDependency */ = {
+		AB2D93849EC075EE3157AF67B3D0CFE1 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = GCDObjC;
 			target = 64538076362B64A72AE20CC6B0836BA5 /* GCDObjC */;
-			targetProxy = 042B3697DAF57732833A39529F3313D5 /* PBXContainerItemProxy */;
+			targetProxy = F8D73C431F69E802711B7E3FBB1D3974 /* PBXContainerItemProxy */;
+		};
+		CA63B133E675ABA67042776AE49DBFB2 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = FMDB;
+			target = 9F12FB4A63E20F601CFB2E64A65B57C1 /* FMDB */;
+			targetProxy = E7B865F679C30BD4C528AC205640000A /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		0153C6157B816627300CBF3990E9C359 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 7435E61B8F48A59D8A937DB7C630B0BE /* GCDObjC.xcconfig */;
+			baseConfigurationReference = D5490B7288E40683637383835B427529 /* GCDObjC.xcconfig */;
 			buildSettings = {
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_PREFIX_HEADER = "Target Support Files/GCDObjC/GCDObjC-prefix.pch";
@@ -453,9 +587,44 @@
 			};
 			name = Release;
 		};
+		114F4AEB5094C93D27BD52CD67A2F127 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = B622D9715DC58363558D31534B942169 /* Pods-SpeedyTransfer.debug.xcconfig */;
+			buildSettings = {
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				MACH_O_TYPE = staticlib;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
+		32508CD71389B6557800253ED79045E6 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 36736166CE41E27EF5C2015B88452F11 /* FMDB.xcconfig */;
+			buildSettings = {
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_PREFIX_HEADER = "Target Support Files/FMDB/FMDB-prefix.pch";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PRIVATE_HEADERS_FOLDER_PATH = "";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PUBLIC_HEADERS_FOLDER_PATH = "";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
 		3B6D4A2A0F85375F79FF8AFCBA41F570 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 8BB8128A81CC26790760D17BA7DE7DC3 /* dyci.xcconfig */;
+			baseConfigurationReference = 0D822F45A3C2E6A97532EBCD88E60128 /* dyci.xcconfig */;
 			buildSettings = {
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_PREFIX_HEADER = "Target Support Files/dyci/dyci-prefix.pch";
@@ -473,7 +642,7 @@
 		};
 		514DE611B8C72F48AE11295AC53E371A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 7435E61B8F48A59D8A937DB7C630B0BE /* GCDObjC.xcconfig */;
+			baseConfigurationReference = D5490B7288E40683637383835B427529 /* GCDObjC.xcconfig */;
 			buildSettings = {
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_PREFIX_HEADER = "Target Support Files/GCDObjC/GCDObjC-prefix.pch";
@@ -530,7 +699,7 @@
 		};
 		B5134B83C43C8AB3F98C82502499F72F /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 8BB8128A81CC26790760D17BA7DE7DC3 /* dyci.xcconfig */;
+			baseConfigurationReference = 0D822F45A3C2E6A97532EBCD88E60128 /* dyci.xcconfig */;
 			buildSettings = {
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_PREFIX_HEADER = "Target Support Files/dyci/dyci-prefix.pch";
@@ -546,24 +715,7 @@
 			};
 			name = Debug;
 		};
-		CEFC40C354D713C1555A055EB86215A2 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = B622D9715DC58363558D31534B942169 /* Pods-SpeedyTransfer.debug.xcconfig */;
-			buildSettings = {
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
-				MACH_O_TYPE = staticlib;
-				MTL_ENABLE_DEBUG_INFO = YES;
-				OTHER_LDFLAGS = "";
-				OTHER_LIBTOOLFLAGS = "";
-				PODS_ROOT = "$(SRCROOT)";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-			};
-			name = Debug;
-		};
-		F65F0C7939026DE1E24103F9B4CE27B3 /* Release */ = {
+		DDB4F79DF916B3D43046F559C7590531 /* Release */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 97A3B52DCF04E7601824803762ED9A34 /* Pods-SpeedyTransfer.release.xcconfig */;
 			buildSettings = {
@@ -575,6 +727,24 @@
 				OTHER_LIBTOOLFLAGS = "";
 				PODS_ROOT = "$(SRCROOT)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+			};
+			name = Release;
+		};
+		DE39928A2ABC2213A0C10FA1E1CB52B3 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 36736166CE41E27EF5C2015B88452F11 /* FMDB.xcconfig */;
+			buildSettings = {
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_PREFIX_HEADER = "Target Support Files/FMDB/FMDB-prefix.pch";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PRIVATE_HEADERS_FOLDER_PATH = "";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PUBLIC_HEADERS_FOLDER_PATH = "";
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
 			};
@@ -626,11 +796,11 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		3D0AD81BFF0C4A471D91B3AC15577086 /* Build configuration list for PBXNativeTarget "Pods-SpeedyTransfer" */ = {
+		3AC899FD215914230EB9D8B57AD910D0 /* Build configuration list for PBXNativeTarget "FMDB" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				CEFC40C354D713C1555A055EB86215A2 /* Debug */,
-				F65F0C7939026DE1E24103F9B4CE27B3 /* Release */,
+				32508CD71389B6557800253ED79045E6 /* Debug */,
+				DE39928A2ABC2213A0C10FA1E1CB52B3 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -640,6 +810,15 @@
 			buildConfigurations = (
 				B5134B83C43C8AB3F98C82502499F72F /* Debug */,
 				3B6D4A2A0F85375F79FF8AFCBA41F570 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		8DE9F28D28428D369761547058787E6A /* Build configuration list for PBXNativeTarget "Pods-SpeedyTransfer" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				114F4AEB5094C93D27BD52CD67A2F127 /* Debug */,
+				DDB4F79DF916B3D43046F559C7590531 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

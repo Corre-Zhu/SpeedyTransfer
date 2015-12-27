@@ -7,21 +7,29 @@
 //
 
 #import "STTransferInstructionViewController.h"
+#import "STFileTransferViewController.h"
+#import "MCTransceiver.h"
 
-@interface STTransferInstructionViewController ()
+@interface STTransferInstructionViewController ()<MCTransceiverDelegate>
 {
     UIScrollView *scrollView;
     UIView *topContainerView;
+    UIImageView *wifiBgView;
     UILabel *wifiLabel;
     UIView *bottomContainerView;
+    
+    STFileTransferViewController *fileTransferViewController;
 }
+
+@property (nonatomic) BOOL connected;
+@property (strong, nonatomic) MCTransceiver *transceiver;
 
 @end
 
 @implementation STTransferInstructionViewController
 
-- (void)viewDidLoad {
-    [super viewDidLoad];
+- (void)setupUI {
+    
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"left_white"] style:UIBarButtonItemStylePlain target:self action:@selector(backBarButtonItemClick)];
     self.navigationItem.title = NSLocalizedString(@"我要发送", nil);
     self.view.backgroundColor = RGBFromHex(0xf0f0f0);
@@ -58,12 +66,18 @@
     iconView2.centerX = whiteView.width / 2.0f;
     [whiteView addSubview:iconView2];
     
-    UIImageView *iconView3 = [[UIImageView alloc] initWithImage:[[UIImage imageNamed:@"wifi_bg0"] resizableImageWithCapInsets:UIEdgeInsetsMake(6.0f, 12.0f, 6.0f, 12.0f)]];
-    iconView3.top = iconView2.bottom;
-    iconView3.width = 120.0f;
-    iconView3.height = 40.0f;
-    iconView3.centerX = whiteView.width / 2.0f;
-    [whiteView addSubview:iconView3];
+    wifiBgView = [[UIImageView alloc] initWithImage:[[UIImage imageNamed:@"wifi_bg0"] resizableImageWithCapInsets:UIEdgeInsetsMake(6.0f, 12.0f, 6.0f, 12.0f)]];
+    wifiBgView.top = iconView2.bottom;
+    wifiBgView.width = 120.0f;
+    wifiBgView.height = 40.0f;
+    wifiBgView.centerX = whiteView.width / 2.0f;
+    [whiteView addSubview:wifiBgView];
+    
+    wifiLabel = [[UILabel alloc] init];
+    wifiLabel.textColor = [UIColor whiteColor];
+    wifiLabel.font = [UIFont systemFontOfSize:17.0f];
+    wifiLabel.textAlignment = NSTextAlignmentCenter;
+    [wifiBgView addSubview:wifiLabel];
     
     bottomContainerView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, topContainerView.bottom, IPHONE_WIDTH, 180.0f)];
     [scrollView addSubview:bottomContainerView];
@@ -99,10 +113,114 @@
     descLabel5.attributedText = string2;
     descLabel5.font = [UIFont systemFontOfSize:13.0f];
     [whiteView2 addSubview:descLabel5];
+    
+    [self reloadWifiName];
+}
+
+- (void)reloadWifiName {
+    NSString *wifiname = [UIDevice getWifiName];
+    if (wifiname.length > 0) {
+        wifiLabel.text = wifiname;
+        [wifiLabel sizeToFit];
+        wifiBgView.width = MIN(IPHONE_WIDTH - 40.0f, wifiLabel.width + 40.0f);
+        wifiBgView.centerX = (IPHONE_WIDTH - 32.0f) / 2.0f;
+        wifiLabel.frame = CGRectMake(0.0f, 0.0f, wifiBgView.width, wifiBgView.height);
+    }
+}
+
+-(void)configureTransceiver
+{
+    _transceiver = [[MCTransceiver alloc] initWithDelegate:self
+                                                  peerName:[UIDevice currentDevice].name
+                                                      mode:MCTransceiverModeBrowser];
+}
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    [self setupUI];
+    [self configureTransceiver];
+}
+
+-(void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    [self.transceiver startBrowsing];
 }
 
 - (void)backBarButtonItemClick {
     [self.navigationController popViewControllerAnimated:YES];
 }
+
+#pragma mark - MCTransceiverDelegate
+
+-(void)didFindPeer:(MCPeerID *)peerID
+{
+    NSLog(@"----> did find peer %@", peerID);
+}
+
+-(void)didLosePeer:(MCPeerID *)peerID
+{
+    NSLog(@"<---- did lose peer %@", peerID);
+}
+
+- (BOOL)connectWithPeer:(MCPeerID *)peerId {
+    return !_connected;
+}
+
+-(void)didReceiveInvitationFromPeer:(MCPeerID *)peerID
+{
+    NSLog(@"!!!!! did get invite from peer %@", peerID);
+}
+
+-(void)didConnectToPeer:(MCPeerID *)peerID
+{
+    NSLog(@">>>>> did connect to peer %@", peerID);
+    _connected = YES;
+    [self.transceiver stopBrowsing];
+
+    dispatch_async(dispatch_get_main_queue(), ^{
+        if (!fileTransferViewController) {
+            fileTransferViewController = [[STFileTransferViewController alloc] init];
+        }
+        
+        if (![self.navigationController.viewControllers containsObject:fileTransferViewController]) {
+            fileTransferViewController.transceiver = self.transceiver;
+            [self.navigationController pushViewController:fileTransferViewController animated:YES];
+        }
+    });
+}
+
+-(void)didDisconnectFromPeer:(MCPeerID *)peerID
+{
+    NSLog(@"<<<<< did disconnect from peer %@", peerID);
+    _connected = NO;
+    [self.transceiver startBrowsing];
+}
+
+-(void)didReceiveData:(NSData *)data fromPeer:(MCPeerID *)peerID
+{
+    NSLog(@"##### did receive data %@", peerID);
+}
+
+-(void)didStartAdvertising
+{
+    NSLog(@"+++++ did start advertising");
+}
+
+-(void)didStopAdvertising
+{
+    NSLog(@"----- did stop advertising");
+}
+
+-(void)didStartBrowsing
+{
+    NSLog(@"((((( did start browsing");
+}
+
+-(void)didStopBrowsing
+{
+    NSLog(@"))))) did stop browsing");
+}
+
 
 @end

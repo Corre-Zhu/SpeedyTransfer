@@ -9,7 +9,7 @@
 #import "STMusicSelectionViewController.h"
 #import "HTContactsHeaderView.h"
 #import "STMusicSelectionCell.h"
-#import "STMusicInfoModel.h"
+#import "STMusicInfo.h"
 
 static NSString *headerIdentifier = @"ContactsHeaderView";
 
@@ -40,7 +40,7 @@ static NSString *headerIdentifier = @"ContactsHeaderView";
     [activityIndicatorView startAnimating];
     
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        _musicInfoModels = [STMusicInfoModel musicModelList];
+        _musicInfoModels = [STMusicInfo musicModelList];
         dispatch_async(dispatch_get_main_queue(), ^{
             [activityIndicatorView stopAnimating];
             activityIndicatorView.hidden = YES;
@@ -82,7 +82,7 @@ static NSString *headerIdentifier = @"ContactsHeaderView";
     }
     
     NSDictionary *dic = [_musicInfoModels objectAtIndex:indexPath.section];
-    STMusicInfoModel *model = [dic.allValues.firstObject objectAtIndex:indexPath.row];
+    STMusicInfo *model = [dic.allValues.firstObject objectAtIndex:indexPath.row];
     cell.title = model.title;
     cell.subTitle = model.artist;
     if ([self.fileSelectionTabController isSelectedWithMusic:model]) {
@@ -138,7 +138,7 @@ static NSString *headerIdentifier = @"ContactsHeaderView";
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     NSDictionary *dic = [_musicInfoModels objectAtIndex:indexPath.section];
-    STMusicInfoModel *model = [dic.allValues.firstObject objectAtIndex:indexPath.row];
+    STMusicInfo *model = [dic.allValues.firstObject objectAtIndex:indexPath.row];
     [self.fileSelectionTabController addMusic:model];
     
     [tableView reloadData];
@@ -146,7 +146,7 @@ static NSString *headerIdentifier = @"ContactsHeaderView";
 
 - (void)tableView:(UITableView *)tableView didDeselectRowAtIndexPath:(NSIndexPath *)indexPath {
     NSDictionary *dic = [_musicInfoModels objectAtIndex:indexPath.section];
-    STMusicInfoModel *model = [dic.allValues.firstObject objectAtIndex:indexPath.row];
+    STMusicInfo *model = [dic.allValues.firstObject objectAtIndex:indexPath.row];
     [self.fileSelectionTabController removeMusic:model];
     
     [tableView reloadData];

@@ -354,4 +354,38 @@ static char firstLetterArray[HANZI_COUNT] =
     return [result uppercaseString];
 }
 
++ (NSString *)formatSize:(double)size {
+    NSString *sizeString = nil;
+    if (size < 1024) {
+        sizeString = [NSString stringWithFormat:@"%.0fB", size];
+    } else if (size < 1024 * 1024) {
+        sizeString = [NSString stringWithFormat:@"%.2fKB", size / 1024.0f];
+    } else if (size < 1024 * 1024 * 1024) {
+        sizeString = [NSString stringWithFormat:@"%.2fMB", size / (1024.0f * 1024.0f)];
+    } else {
+        sizeString = [NSString stringWithFormat:@"%.2fGB", size / (1024.0f * 1024.0f * 1024)];
+    }
+    
+    return sizeString;
+}
+
++ (NSString *)uniqueID {
+    long long  uniqueNumber = [[NSDate date] timeIntervalSince1970] * 1000000;
+    int random1 = (arc4random() % 100) + 1; // 获得1-100之间的随机数
+    int random2 = (arc4random() % 100) + 1;
+    int random3 = (arc4random() % 100) + 1;
+    
+    NSString *char1 = [NSString stringWithFormat:@"%c", arc4random_uniform(26) + 'a']; // 获得'a' - 'z'之间的随机字母
+    NSString *char2 = [NSString stringWithFormat:@"%c", arc4random_uniform(26) + 'a'];
+    NSString *char3 = [NSString stringWithFormat:@"%c", arc4random_uniform(26) + 'a'];
+    NSString *char4 = [NSString stringWithFormat:@"%c", arc4random_uniform(26) + 'a'];
+    
+    NSString *messageId = [NSString stringWithFormat:@"%@%i%@%i%@%i%@%lld", char1, random1, char2, random2, char3, random3, char4 , uniqueNumber];
+    return messageId;
+}
+
+- (NSString *)trim {
+    return [self stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+}
+
 @end
