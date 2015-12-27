@@ -57,7 +57,6 @@
         rateLabel.textColor = RGBFromHex(0x929292);
         rateLabel.font = [UIFont systemFontOfSize:12.0f];
         [self.contentView addSubview:rateLabel];
-        rateLabel.hidden = YES;
         
         succeedImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"check_green"]];
         succeedImageView.left = IPHONE_WIDTH - 38.0f;
@@ -95,7 +94,13 @@
     
     fileNameLabel.text = _transferInfo.fileName;
     dateLabel.text = _transferInfo.dateString;
-    sizeLabel.text = _transferInfo.fileSizeString;
+    
+    if (_transferInfo.fileSize == 0.0f) {
+        sizeLabel.hidden = YES;
+    } else {
+        sizeLabel.text = _transferInfo.fileSizeString;
+    }
+    
     rateLabel.text = _transferInfo.rateString;
     progressView.progress = _transferInfo.progress;
     

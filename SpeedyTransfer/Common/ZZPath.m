@@ -19,4 +19,17 @@
     return documentPath;
 }
 
++ (NSString *)picturePath {
+    static NSString *picturePath;
+    if (!picturePath) {
+        picturePath = [[ZZPath documentPath] stringByAppendingPathComponent:@"Picture"];
+    }
+    
+    if (![[NSFileManager defaultManager] fileExistsAtPath:picturePath]) {
+        [[NSFileManager defaultManager] createDirectoryAtPath:picturePath withIntermediateDirectories:YES attributes:NULL error:NULL];
+    }
+    
+    return picturePath;
+}
+
 @end

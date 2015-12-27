@@ -25,6 +25,10 @@ static NSString *ReceiveCellIdentifier = @"ReceiveCellIdentifier";
     UIButton *continueSendButton;
     Reachability *reachability;
     STFileReceiveModel *model;
+    
+    STFileReceiveInfo *currentReceiveInfo;
+    NSTimeInterval lastTimeInterval;
+    NSProgress *currentProgress;
 }
 
 @property (nonatomic) BOOL connected;
@@ -55,7 +59,7 @@ static NSString *ReceiveCellIdentifier = @"ReceiveCellIdentifier";
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"left_white"] style:UIBarButtonItemStylePlain target:self action:@selector(backBarButtonItemClick)];
+    self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"left_white"] style:UIBarButtonItemStylePlain target:self action:@selector(backBarButtonItemClick)];
     self.navigationItem.title = NSLocalizedString(@"接收文件", nil);
     self.view.backgroundColor = [UIColor whiteColor];
     
@@ -106,6 +110,28 @@ static NSString *ReceiveCellIdentifier = @"ReceiveCellIdentifier";
 - (void)continueSendButtonClick {
     STHomeViewController *homeViewC = self.navigationController.viewControllers.firstObject;
     [homeViewC transferButtonClick];
+}
+
+#pragma mark - Kvo
+
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSString *,id> *)change context:(void *)context {
+    if ([keyPath isEqualToString:@"fractionCompleted"]) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            float newProgress = [change floatForKey:NSKeyValueChangeNewKey];
+            if (newProgress - currentReceiveInfo.progress > 0.02f || newProgress == 1.0f) {
+                NSTimeInterval now = [[NSDate date] timeIntervalSince1970];
+                NSTimeInterval timeInterval = now - lastTimeInterval;
+                if (timeInterval != 0.0f) {
+                    currentReceiveInfo.sizePerSecond = 1 / timeInterval * (newProgress - currentReceiveInfo.progress) * currentReceiveInfo.fileSize;
+                }
+                currentReceiveInfo.progress = newProgress;
+                lastTimeInterval = now;
+                NSInteger index = [model.receiveFiles indexOfObject:currentReceiveInfo];
+                [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:index inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
+                NSLog(@"%f", currentReceiveInfo.progress);
+            }
+        });
+    }
 }
 
 #pragma mark - Table view data source
@@ -186,6 +212,41 @@ static NSString *ReceiveCellIdentifier = @"ReceiveCellIdentifier";
     dispatch_async(dispatch_get_main_queue(), ^{
         [model saveContactInfo:data];
         [self.tableView reloadData];
+    });
+}
+
+- (void)session:(MCSession *)session didStartReceivingResourceWithName:(NSString *)resourceName fromPeer:(MCPeerID *)peerID withProgress:(NSProgress *)progress {
+    dispatch_async(dispatch_get_main_queue(), ^{
+        currentReceiveInfo = [model savePicture:resourceName size:progress.totalUnitCount];
+        [self.tableView reloadData];
+        
+        currentProgress = progress;
+        [currentProgress addObserver:self forKeyPath:@"fractionCompleted" options:NSKeyValueObservingOptionNew context:NULL];
+    });
+}
+
+- (void)session:(MCSession *)session didFinishReceivingResourceWithName:(NSString *)resourceName fromPeer:(MCPeerID *)peerID atURL:(NSURL *)localURL withError:(NSError *)error {
+    NSString *destinationPath = [[ZZPath picturePath] stringByAppendingPathComponent:resourceName];
+    NSURL *destinationURL = [NSURL fileURLWithPath:destinationPath];
+    
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    NSError *copyError;
+    [fileManager copyItemAtURL:localURL toURL:destinationURL error:&copyError];
+    if (error) {
+        NSLog(@"%@", [error localizedDescription]);
+    }
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [currentProgress addObserver:self forKeyPath:@"fractionCompleted" options:NSKeyValueObservingOptionNew context:NULL];
+        if (!error) {
+            [model updateStatus:STFileReceiveStatusReceived rate:currentReceiveInfo.sizePerSecond withIdentifier:currentReceiveInfo.identifier];
+            currentReceiveInfo.status = STFileReceiveStatusReceived;
+            [self.tableView reloadData];
+        } else {
+           [model updateStatus:STFileReceiveStatusReceiveFailed rate:currentReceiveInfo.sizePerSecond withIdentifier:currentReceiveInfo.identifier];
+            currentReceiveInfo.status = STFileReceiveStatusReceiveFailed;
+            [self.tableView reloadData];
+        }
     });
 }
 

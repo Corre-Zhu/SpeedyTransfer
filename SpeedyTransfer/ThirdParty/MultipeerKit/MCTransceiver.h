@@ -23,7 +23,6 @@ MCTransceiverModeBrowser
 
 NSString *NSStringFromMCTransceiverMode(MCTransceiverMode mode);
 
-
 @protocol MCTransceiverDelegate <NSObject>
 -(void)didFindPeer:(MCPeerID *)peerID;
 -(void)didLosePeer:(MCPeerID *)peerID;
@@ -31,6 +30,14 @@ NSString *NSStringFromMCTransceiverMode(MCTransceiverMode mode);
 -(void)didConnectToPeer:(MCPeerID *)peerID;
 -(void)didDisconnectFromPeer:(MCPeerID *)peerID;
 -(void)didReceiveData:(NSData *)data fromPeer:(MCPeerID *)peerID;
+-(void)session:(MCSession *)session
+didStartReceivingResourceWithName:(NSString *)resourceName
+      fromPeer:(MCPeerID *)peerID
+  withProgress:(NSProgress *)progress;
+-(void)session:(MCSession *)session
+didFinishReceivingResourceWithName:(NSString *)resourceName
+      fromPeer:(MCPeerID *)peerID atURL:(NSURL *)localURL
+     withError:(NSError *)error;
 
 @optional
 -(void)didStartAdvertising;
@@ -58,4 +65,8 @@ NSString *NSStringFromMCTransceiverMode(MCTransceiverMode mode);
 -(void)sendUnreliableData:(NSData *)data
                   toPeers:(NSArray *)peers
                completion:(MCSendDataCompletion)completion;
+-(NSProgress *)sendResourceAtURL:(NSURL *)resourceURL
+                        withName:(NSString *)resourceName
+                          toPeer:(MCPeerID *)peerID
+           withCompletionHandler:(nullable void (^)(NSError * __nullable error))completionHandler;
 @end

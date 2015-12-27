@@ -17,5 +17,7 @@
  保存到数据库
  */
 - (STFileReceiveInfo *)saveContactInfo:(NSData *)vcardData;
+- (STFileReceiveInfo *)savePicture:(NSString *)pictureName size:(double)size;
 
+- (void)updateStatus:(STFileReceiveStatus)status rate:(double)rate withIdentifier:(NSString *)identifier;
 @end

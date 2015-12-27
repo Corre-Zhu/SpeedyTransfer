@@ -9,14 +9,46 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "SpeedyTransfer/FileReceive/STFileReceiveModel.m"
-            timestampString = "472900384.904065"
+            filePath = "SpeedyTransfer/FileReceive/STFileReceivingViewController.m"
+            timestampString = "472927157.791796"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "132"
-            endingLineNumber = "132"
-            landmarkName = "-saveContactInfo:"
+            startingLineNumber = "239"
+            endingLineNumber = "239"
+            landmarkName = "-session:didFinishReceivingResourceWithName:fromPeer:atURL:withError:"
             landmarkType = "5">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "-[STFileReceivingViewController session:didFinishReceivingResourceWithName:fromPeer:atURL:withError:]"
+                  moduleName = "SpeedyTransfer"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/user/Desktop/SpeedyTransfer/SpeedyTransfer/FileReceive/STFileReceivingViewController.m"
+                  timestampString = "472927927.696973"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "239"
+                  endingLineNumber = "239"
+                  offsetFromSymbolStart = "490">
+               </Location>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "__101-[STFileReceivingViewController session:didFinishReceivingResourceWithName:fromPeer:atURL:withError:]_block_invoke"
+                  moduleName = "SpeedyTransfer"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/user/Desktop/SpeedyTransfer/SpeedyTransfer/FileReceive/STFileReceivingViewController.m"
+                  timestampString = "472927927.69729"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "239"
+                  endingLineNumber = "239"
+                  offsetFromSymbolStart = "64">
+               </Location>
+            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -26,12 +58,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "SpeedyTransfer/FileReceive/STFileReceivingViewController.m"
-            timestampString = "472903019.15595"
+            timestampString = "472927169.376032"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "189"
-            endingLineNumber = "189"
-            landmarkName = "-didReceiveData:fromPeer:"
+            startingLineNumber = "230"
+            endingLineNumber = "230"
+            landmarkName = "-session:didFinishReceivingResourceWithName:fromPeer:atURL:withError:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

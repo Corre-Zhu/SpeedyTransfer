@@ -12,16 +12,19 @@
 #import "STFileTransferModel.h"
 #import <AddressBook/AddressBook.h>
 #import <AddressBookUI/AddressBookUI.h>
+#import <Photos/Photos.h>
 
 static NSString *cellIdentifier = @"CellIdentifier";
 
 @interface STFileTransferViewController ()<UITableViewDataSource,UITableViewDelegate>
 {
     UIButton *continueSendButton;
-    STFileTransferModel *model;
+    STFileTransferInfo *currentTransferInfo;
+    NSTimeInterval lastTimeInterval;
 }
 
-@property (nonatomic,strong) UITableView *tableView;
+@property (nonatomic, strong) UITableView *tableView;
+@property (nonatomic, strong) STFileTransferModel *model;
 
 @end
 
@@ -41,7 +44,7 @@ static NSString *cellIdentifier = @"CellIdentifier";
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"left_white"] style:UIBarButtonItemStylePlain target:self action:@selector(backBarButtonItemClick)];
+    self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"left_white"] style:UIBarButtonItemStylePlain target:self action:@selector(backBarButtonItemClick)];
     self.navigationItem.title = NSLocalizedString(@"发送文件", nil);
     self.view.backgroundColor = [UIColor whiteColor];
     
@@ -65,7 +68,7 @@ static NSString *cellIdentifier = @"CellIdentifier";
     [continueSendButton addTarget:self action:@selector(continueSendButtonClick) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:continueSendButton];
     
-    model = [[STFileTransferModel alloc] init];
+    _model = [[STFileTransferModel alloc] init];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -74,26 +77,84 @@ static NSString *cellIdentifier = @"CellIdentifier";
     [self startSendFile];
 }
 
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSString *,id> *)change context:(void *)context {
+    if ([keyPath isEqualToString:@"fractionCompleted"]) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            float newProgress = [change floatForKey:NSKeyValueChangeNewKey];
+            if (newProgress - currentTransferInfo.progress > 0.02f || newProgress == 1.0f) {
+                NSTimeInterval now = [[NSDate date] timeIntervalSince1970];
+                NSTimeInterval timeInterval = now - lastTimeInterval;
+                if (timeInterval != 0.0f) {
+                    currentTransferInfo.sizePerSecond = 1 / timeInterval * (newProgress - currentTransferInfo.progress) * currentTransferInfo.fileSize;
+                }
+                currentTransferInfo.progress = newProgress;
+                lastTimeInterval = now;
+                NSInteger index = [_model.transferFiles indexOfObject:currentTransferInfo];
+                [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:index inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
+                NSLog(@"%f", currentTransferInfo.progress);
+            }
+           
+        });
+    }
+}
+
 - (void)startSendFile {
+    // 发送图片
+    if (self.fileSelectionTabController.selectedAssetsArr.count > 0) {
+        PHAsset *sendAsset = self.fileSelectionTabController.selectedAssetsArr.firstObject;
+        [self.fileSelectionTabController removeAsset:sendAsset];
+        [self.fileSelectionTabController reloadAssetsTableView];
+        [[PHImageManager defaultManager] requestImageDataForAsset:sendAsset options:nil resultHandler:^(NSData * _Nullable imageData, NSString * _Nullable dataUTI, UIImageOrientation orientation, NSDictionary * _Nullable info) {
+            NSURL *url = [info objectForKey:@"PHImageFileURLKey"];
+            NSString *path = [[ZZPath picturePath] stringByAppendingPathComponent:[url.absoluteString lastPathComponent]];
+            [imageData writeToFile:path atomically:YES];
+            currentTransferInfo = [_model saveAssetWithIdentifier:sendAsset.localIdentifier fileName:[url.absoluteString lastPathComponent] length:imageData.length forKey:nil];
+            [self.tableView reloadData];
+            
+            __weak typeof(self) weakSelf = self;
+            __weak typeof(currentTransferInfo) weakInfo = currentTransferInfo;
+            
+            lastTimeInterval = [[NSDate date] timeIntervalSince1970];
+            NSProgress *progress = [self.transceiver sendResourceAtURL:[NSURL fileURLWithPath:path] withName:[url.absoluteString lastPathComponent] toPeer:self.transceiver.connectedPeers.firstObject withCompletionHandler:^(NSError * _Nullable error) {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [progress removeObserver:self forKeyPath:@"fractionCompleted" context:NULL];
+                    if (!error) {
+                        weakInfo.status = STFileTransferStatusSucceed;
+                        [weakSelf.model updateStatus:STFileTransferStatusSucceed rate:weakInfo.sizePerSecond withIdentifier:weakInfo.identifier];
+                        [weakSelf.tableView reloadData];
+                    } else {
+                        weakInfo.status = STFileTransferStatusFailed;
+                        [weakSelf.model updateStatus:STFileTransferStatusFailed rate:weakInfo.sizePerSecond withIdentifier:weakInfo.identifier];
+                        [weakSelf.tableView reloadData];
+                    }
+                    
+                    [self startSendFile];
+                });
+            }];
+            
+            [progress addObserver:self forKeyPath:@"fractionCompleted" options:NSKeyValueObservingOptionNew context:NULL];
+        }];
+    }
+    
     // 发送联系人
     if (self.fileSelectionTabController.selectedContactsArr.count > 0) {
         STContactInfo *contact = self.fileSelectionTabController.selectedContactsArr.firstObject;
         NSData *data = [contact.vcardString dataUsingEncoding:NSUTF8StringEncoding];
         if (data.length > 0) {
-            STFileTransferInfo *info = [model setContactInfo:contact forKey:nil];
+            STFileTransferInfo *info = [_model setContactInfo:contact forKey:nil];
             [self.tableView reloadData];
             NSTimeInterval start = [[NSDate date] timeIntervalSince1970];
             [self.transceiver sendUnreliableData:data toPeers:self.transceiver.connectedPeers completion:^(NSError *error) {
                 if (error) {
                     NSLog(@"%@", error);
                     info.status = STFileTransferStatusFailed;
-                    [model updateStatus:info.status rate:0 withIdentifier:info.identifier];
+                    [_model updateStatus:info.status rate:0 withIdentifier:info.identifier];
                 } else {
                     NSTimeInterval end = [[NSDate date] timeIntervalSince1970];
                     info.sizePerSecond = 1 / (end - start) * data.length;
                     info.status = STFileTransferStatusSucceed;
                     info.progress = 1.0f;
-                    [model updateStatus:info.status rate:info.sizePerSecond withIdentifier:info.identifier];
+                    [_model updateStatus:info.status rate:info.sizePerSecond withIdentifier:info.identifier];
                 }
                 [self.tableView reloadData];
                 [self.fileSelectionTabController removeContact:contact];
@@ -115,12 +176,12 @@ static NSString *cellIdentifier = @"CellIdentifier";
 #pragma mark - Table view data source
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return model.transferFiles.count;
+    return _model.transferFiles.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     STFileTransferCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier forIndexPath:indexPath];
-    cell.transferInfo = [model.transferFiles objectAtIndex:indexPath.row];
+    cell.transferInfo = [_model.transferFiles objectAtIndex:indexPath.row];
     [cell configCell];
     return cell;
 }
@@ -130,7 +191,7 @@ static NSString *cellIdentifier = @"CellIdentifier";
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    STFileTransferInfo *info = [model.transferFiles objectAtIndex:indexPath.row];
+    STFileTransferInfo *info = [_model.transferFiles objectAtIndex:indexPath.row];
     if (info.type == STFileTransferTypeContact) {
         NSData *vcard = [info.vcardString dataUsingEncoding:NSUTF8StringEncoding];
         CFDataRef vCardData = CFDataCreate(NULL, [vcard bytes], [vcard length]);

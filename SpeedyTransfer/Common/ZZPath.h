@@ -12,4 +12,6 @@
 
 + (NSString *)documentPath;
 
++ (NSString *)picturePath;
+
 @end

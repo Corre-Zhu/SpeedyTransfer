@@ -30,7 +30,7 @@
 
 - (void)setupUI {
     
-    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"left_white"] style:UIBarButtonItemStylePlain target:self action:@selector(backBarButtonItemClick)];
+    self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"left_white"] style:UIBarButtonItemStylePlain target:self action:@selector(backBarButtonItemClick)];
     self.navigationItem.title = NSLocalizedString(@"我要发送", nil);
     self.view.backgroundColor = RGBFromHex(0xf0f0f0);
     

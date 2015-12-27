@@ -45,7 +45,7 @@
     
     UIView *customView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 45.0f, 36.0f)];
     customView.backgroundColor = [UIColor clearColor];
-    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:customView];
+    self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:customView];
     
     UIImageView *dotImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"ic_overflow_light"]];
     dotImageView.top = 10.0f;

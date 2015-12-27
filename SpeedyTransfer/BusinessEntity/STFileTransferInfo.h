@@ -42,6 +42,7 @@ HT_AS_SINGLETON(STFileTransferInfo, shareInstant)
 @property (nonatomic, strong) UIImage *image;
 @property (nonatomic, strong) NSString *fileSizeString;
 @property (nonatomic, strong) NSString *rateString;
+@property (nonatomic) NSInteger tag;
 
 - (instancetype)initWithDictionary:(NSDictionary *)dic;
 

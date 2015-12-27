@@ -102,6 +102,9 @@ NSString *NSStringFromMCSessionState(MCSessionState state)
     });
 }
 
+- (NSProgress *)sendResourceAtURL:(NSURL *)resourceURL withName:(NSString *)resourceName toPeer:(MCPeerID *)peerID withCompletionHandler:(void (^)(NSError * _Nullable))completionHandler {
+    return [self.session sendResourceAtURL:resourceURL withName:resourceName toPeer:peerID withCompletionHandler:completionHandler];
+}
 
 #pragma mark - MCSessionDelegate
 
@@ -148,6 +151,7 @@ didStartReceivingResourceWithName:(NSString *)resourceName
   withProgress:(NSProgress *)progress
 {
     NSLog(@"didStartReceivingResourceWithName: %@ from %@", resourceName, peerID.displayName);
+    [self.delegate session:session didStartReceivingResourceWithName:resourceName fromPeer:peerID withProgress:progress];
 }
 
 -(void)session:(MCSession *)session
@@ -156,6 +160,7 @@ didFinishReceivingResourceWithName:(NSString *)resourceName
      withError:(NSError *)error
 {
     NSLog(@"didFinishReceivingResourceWithName: %@ from %@", resourceName, peerID.displayName);
+    [self.delegate session:session didFinishReceivingResourceWithName:resourceName fromPeer:peerID atURL:localURL withError:error];
 }
 
 - (void) session:(MCSession *)session

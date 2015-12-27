@@ -19,6 +19,8 @@
  保存到数据库
  */
 - (STFileTransferInfo *)setContactInfo:(STContactInfo *)object forKey:(NSString *)key;
+- (STFileTransferInfo *)saveAssetWithIdentifier:(NSString *)identifier fileName:(NSString *)fileName length:(double)length forKey:(NSString *)key;
+
 - (void)updateStatus:(STFileTransferStatus)status rate:(double)rate withIdentifier:(NSString *)identifier;
 
 @end

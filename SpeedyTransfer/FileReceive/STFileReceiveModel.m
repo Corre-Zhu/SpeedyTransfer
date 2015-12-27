@@ -138,4 +138,44 @@
     return entity;
 }
 
+- (STFileReceiveInfo *)savePicture:(NSString *)pictureName size:(double)size {
+    STFileReceiveInfo *entity = [[STFileReceiveInfo alloc] init];
+    entity.identifier = [NSString uniqueID];
+    entity.type = STFileTransferTypePicture;
+    entity.status = STFileReceiveStatusReceiving;
+    entity.url = @"";
+    entity.fileName = pictureName;
+    entity.fileSize = size;
+    entity.dateString = [[NSDate date] dateString];
+    
+    HTSQLBuffer *sql = [[HTSQLBuffer alloc] init];
+    sql.INSERT(DBFileReceive._tableName)
+    .SET(DBFileReceive._identifier, entity.identifier)
+    .SET(DBFileReceive._type, @(entity.type))
+    .SET(DBFileReceive._status , @(entity.status))
+    .SET(DBFileReceive._fileName, entity.fileName)
+    .SET(DBFileReceive._fileSize, @(entity.fileSize))
+    .SET(DBFileReceive._date, entity.dateString);
+    
+    if (![database executeUpdate:sql.sql]) {
+        NSLog(@"%@", database.lastError);
+    }
+    
+    [self addTransferFile:entity];
+    
+    return entity;
+}
+
+- (void)updateStatus:(STFileReceiveStatus)status rate:(double)rate withIdentifier:(NSString *)identifier {
+    HTSQLBuffer *sql = [[HTSQLBuffer alloc] init];
+    sql.UPDATE(DBFileReceive._tableName)
+    .SET(DBFileReceive._status , @(status))
+    .SET(DBFileReceive._sizePerSencond, @(rate))
+    .WHERE(SQLStringEqual(DBFileReceive._identifier, identifier));
+    
+    if (![database executeUpdate:sql.sql]) {
+        NSLog(@"%@", database.lastError);
+    }
+}
+
 @end
