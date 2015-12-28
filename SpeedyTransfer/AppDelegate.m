@@ -27,7 +27,7 @@ NSString * const dbName = @"FileTransfer.sqlite";
     NSLog(@"%@", [ZZPath documentPath]);
     
     STHomeViewController *vc = [[STHomeViewController alloc] init];
-    UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:vc];
+    ZZNavigationController *nav = [[ZZNavigationController alloc] initWithRootViewController:vc];
     UIWindow *window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     window.rootViewController = nav;
     self.window = window;

@@ -28,6 +28,7 @@
 		CE6536F31C2FD53600C1E8A3 /* STFileReceiveModel.m in Sources */ = {isa = PBXBuildFile; fileRef = CE6536F21C2FD53600C1E8A3 /* STFileReceiveModel.m */; };
 		CE6536F61C2FD5FA00C1E8A3 /* STFileReceiveInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = CE6536F51C2FD5FA00C1E8A3 /* STFileReceiveInfo.m */; };
 		CE6536F91C2FDD3200C1E8A3 /* STFileReceiveCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CE6536F81C2FDD3200C1E8A3 /* STFileReceiveCell.m */; };
+		CE6536FC1C31955000C1E8A3 /* ZZNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE6536FB1C31955000C1E8A3 /* ZZNavigationController.m */; };
 		CE86491D1C2592BE0072518B /* AddressBook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CE86491C1C2592BE0072518B /* AddressBook.framework */; };
 		CE8975631C26AE5B002E11F8 /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = CE8975621C26AE5B002E11F8 /* MBProgressHUD.m */; };
 		CE8975671C284D89002E11F8 /* AddressBookUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CE8975661C284D89002E11F8 /* AddressBookUI.framework */; };
@@ -105,6 +106,8 @@
 		CE6536F51C2FD5FA00C1E8A3 /* STFileReceiveInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STFileReceiveInfo.m; sourceTree = "<group>"; };
 		CE6536F71C2FDD3200C1E8A3 /* STFileReceiveCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STFileReceiveCell.h; sourceTree = "<group>"; };
 		CE6536F81C2FDD3200C1E8A3 /* STFileReceiveCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STFileReceiveCell.m; sourceTree = "<group>"; };
+		CE6536FA1C31955000C1E8A3 /* ZZNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZZNavigationController.h; sourceTree = "<group>"; };
+		CE6536FB1C31955000C1E8A3 /* ZZNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZZNavigationController.m; sourceTree = "<group>"; };
 		CE86491C1C2592BE0072518B /* AddressBook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBook.framework; path = System/Library/Frameworks/AddressBook.framework; sourceTree = SDKROOT; };
 		CE8975611C26AE5B002E11F8 /* MBProgressHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBProgressHUD.h; sourceTree = "<group>"; };
 		CE8975621C26AE5B002E11F8 /* MBProgressHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBProgressHUD.m; sourceTree = "<group>"; };
@@ -322,6 +325,8 @@
 				CEB29E761C21B92300F17804 /* HTUIKit.h */,
 				CEB29E651C21B7C000F17804 /* HTDrawView.h */,
 				CEB29E661C21B7C000F17804 /* HTDrawView.m */,
+				CE6536FA1C31955000C1E8A3 /* ZZNavigationController.h */,
+				CE6536FB1C31955000C1E8A3 /* ZZNavigationController.m */,
 			);
 			name = ZZUIKit;
 			path = SpeedyTransfer/ZZUIKit;
@@ -678,6 +683,7 @@
 				CE6536F91C2FDD3200C1E8A3 /* STFileReceiveCell.m in Sources */,
 				CED0D1211C1D576D00F5C0E3 /* STMusicSelectionViewController.m in Sources */,
 				CE6536CB1C2ECD3400C1E8A3 /* STWifiNotConnectedPopupView.m in Sources */,
+				CE6536FC1C31955000C1E8A3 /* ZZNavigationController.m in Sources */,
 				CE6536F01C2FBB2300C1E8A3 /* NSDate+ZZ.m in Sources */,
 				CED62A321C094FDD00270EDB /* AppDelegate.m in Sources */,
 				CEB29E731C21B8BE00F17804 /* ALView+PureLayout.m in Sources */,

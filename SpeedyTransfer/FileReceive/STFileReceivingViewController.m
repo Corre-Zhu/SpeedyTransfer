@@ -50,7 +50,7 @@ static NSString *ReceiveCellIdentifier = @"ReceiveCellIdentifier";
                                                       mode:MCTransceiverModeAdvertiser];
 }
 
-- (void)backBarButtonItemClick {
+- (void)leftBarButtonItemClick {
     UIAlertController *alertController = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"不再接收其他文件，确认退出？", nil) message:nil preferredStyle: UIAlertControllerStyleAlert];
     UIAlertAction *action1 = [UIAlertAction actionWithTitle:NSLocalizedString(@"确认", nil) style:UIAlertActionStyleDestructive handler:^(UIAlertAction * _Nonnull action) {
         [self.navigationController popToRootViewControllerAnimated:YES];
@@ -64,7 +64,7 @@ static NSString *ReceiveCellIdentifier = @"ReceiveCellIdentifier";
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"left_white"] style:UIBarButtonItemStylePlain target:self action:@selector(backBarButtonItemClick)];
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"left_white"] style:UIBarButtonItemStylePlain target:self action:@selector(leftBarButtonItemClick)];
     self.navigationItem.title = NSLocalizedString(@"接收文件", nil);
     self.view.backgroundColor = [UIColor whiteColor];
     

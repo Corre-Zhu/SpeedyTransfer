@@ -30,7 +30,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"left_white"] style:UIBarButtonItemStylePlain target:self action:@selector(backBarButtonItemClick)];
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"left_white"] style:UIBarButtonItemStylePlain target:self action:@selector(leftBarButtonItemClick)];
     self.navigationItem.title = NSLocalizedString(@"选择文件", nil);
     self.view.backgroundColor = [UIColor whiteColor];
     
@@ -121,7 +121,7 @@
     transferButton.width = width;
 }
 
-- (void)backBarButtonItemClick {
+- (void)leftBarButtonItemClick {
     [self.navigationController popViewControllerAnimated:YES];
 }
 
