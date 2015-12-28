@@ -20,4 +20,6 @@
 - (STFileReceiveInfo *)savePicture:(NSString *)pictureName size:(double)size;
 
 - (void)updateStatus:(STFileReceiveStatus)status rate:(double)rate withIdentifier:(NSString *)identifier;
+- (void)updateWithUrl:(NSString *)url identifier:(NSString *)identifier;
+
 @end

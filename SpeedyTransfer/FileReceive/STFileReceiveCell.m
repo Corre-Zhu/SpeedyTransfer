@@ -7,6 +7,7 @@
 //
 
 #import "STFileReceiveCell.h"
+#import <Photos/Photos.h>
 
 @interface STFileReceiveCell ()
 {
@@ -79,6 +80,29 @@
 - (void)configCell {
     if (_transferInfo.type == STFileTransferTypeContact) {
         coverImageView.image = [UIImage imageNamed:@"phone_bg"];
+    } else if (_transferInfo.type == STFileTransferTypePicture) {
+        if (self.transferInfo.url.length > 0) {
+            PHFetchResult *savedAssets = [PHAsset fetchAssetsWithLocalIdentifiers:@[_transferInfo.url] options:nil];
+            if (savedAssets.count > 0) {
+                PHAsset *asset = savedAssets.firstObject;
+                NSInteger currentTag = _transferInfo.tag + 1;
+                _transferInfo.tag = currentTag;
+                
+                PHImageRequestOptions *options = [[PHImageRequestOptions alloc] init];
+                options.resizeMode = PHImageRequestOptionsResizeModeExact;
+                options.deliveryMode = PHImageRequestOptionsDeliveryModeOpportunistic;
+                [[PHImageManager defaultManager] requestImageForAsset:asset
+                                                           targetSize:CGSizeMake([UIScreen mainScreen].scale * 72.0f, [UIScreen mainScreen].scale * 72.0f)
+                                                          contentMode:PHImageContentModeAspectFill
+                                                              options:options
+                                                        resultHandler:^(UIImage *result, NSDictionary *info) {
+                                                            if (_transferInfo.tag == currentTag) {
+                                                                coverImageView.image = result;
+                                                            }}];
+            }
+        } else {
+            coverImageView.image = [UIImage imageNamed:@"picture"];
+        }
     }
     
     if (_transferInfo.status == STFileReceiveStatusReceiving) {

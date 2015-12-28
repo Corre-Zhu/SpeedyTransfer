@@ -16,8 +16,11 @@
 #import <AddressBook/AddressBook.h>
 #import <AddressBookUI/AddressBookUI.h>
 #import "STHomeViewController.h"
+#import <Photos/Photos.h>
 
 static NSString *ReceiveCellIdentifier = @"ReceiveCellIdentifier";
+
+#define ALBUM_TITLE @"点传"
 
 @interface STFileReceivingViewController ()<MCTransceiverDelegate,UITableViewDataSource,UITableViewDelegate>
 {
@@ -29,6 +32,8 @@ static NSString *ReceiveCellIdentifier = @"ReceiveCellIdentifier";
     STFileReceiveInfo *currentReceiveInfo;
     NSTimeInterval lastTimeInterval;
     NSProgress *currentProgress;
+    
+    __block PHAssetCollection *collection;
 }
 
 @property (nonatomic) BOOL connected;
@@ -228,12 +233,62 @@ static NSString *ReceiveCellIdentifier = @"ReceiveCellIdentifier";
 - (void)session:(MCSession *)session didFinishReceivingResourceWithName:(NSString *)resourceName fromPeer:(MCPeerID *)peerID atURL:(NSURL *)localURL withError:(NSError *)error {
     NSString *destinationPath = [[ZZPath picturePath] stringByAppendingPathComponent:resourceName];
     NSURL *destinationURL = [NSURL fileURLWithPath:destinationPath];
-    
     NSFileManager *fileManager = [NSFileManager defaultManager];
     NSError *copyError;
     [fileManager copyItemAtURL:localURL toURL:destinationURL error:&copyError];
     if (error) {
         NSLog(@"%@", [error localizedDescription]);
+    }
+    
+    __block PHFetchResult *photosAsset;
+    __block PHObjectPlaceholder *placeholder;
+    
+    dispatch_block_t block = ^ {
+        // Save to the album
+        [[PHPhotoLibrary sharedPhotoLibrary] performChanges:^{
+            PHAssetChangeRequest *assetRequest = [PHAssetChangeRequest creationRequestForAssetFromImageAtFileURL:destinationURL];
+            placeholder = [assetRequest placeholderForCreatedAsset];
+            photosAsset = [PHAsset fetchAssetsInAssetCollection:collection options:nil];
+            PHAssetCollectionChangeRequest *albumChangeRequest = [PHAssetCollectionChangeRequest changeRequestForAssetCollection:collection
+                                                                                                                          assets:photosAsset];
+            [albumChangeRequest addAssets:@[placeholder]];
+        } completionHandler:^(BOOL success, NSError *error) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                if (success) {
+                    currentReceiveInfo.url = placeholder.localIdentifier;
+                    [model updateWithUrl:placeholder.localIdentifier identifier:currentReceiveInfo.identifier];
+                    [self.tableView reloadData];
+                    NSLog(@"%@", placeholder.localIdentifier);
+                } else {
+                    NSLog(@"%@", error);
+                }
+            });
+        }];
+    };
+    
+    // Find the album
+    PHFetchOptions *fetchOptions = [[PHFetchOptions alloc] init];
+    fetchOptions.predicate = [NSPredicate predicateWithFormat:@"title = %@", ALBUM_TITLE];
+    collection = [PHAssetCollection fetchAssetCollectionsWithType:PHAssetCollectionTypeAlbum
+                                                          subtype:PHAssetCollectionSubtypeAny
+                                                          options:fetchOptions].firstObject;
+    // Create the album
+    if (!collection)
+    {
+        [[PHPhotoLibrary sharedPhotoLibrary] performChanges:^{
+            PHAssetCollectionChangeRequest *createAlbum = [PHAssetCollectionChangeRequest creationRequestForAssetCollectionWithTitle:ALBUM_TITLE];
+            placeholder = [createAlbum placeholderForCreatedAssetCollection];
+        } completionHandler:^(BOOL success, NSError *error) {
+            if (success)
+            {
+                PHFetchResult *collectionFetchResult = [PHAssetCollection fetchAssetCollectionsWithLocalIdentifiers:@[placeholder.localIdentifier]
+                                                                                                            options:nil];
+                collection = collectionFetchResult.firstObject;
+                block();
+            }
+        }];
+    } else {
+        block();
     }
     
     dispatch_async(dispatch_get_main_queue(), ^{

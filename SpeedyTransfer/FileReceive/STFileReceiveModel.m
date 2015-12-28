@@ -178,4 +178,15 @@
     }
 }
 
+- (void)updateWithUrl:(NSString *)url identifier:(NSString *)identifier {
+    HTSQLBuffer *sql = [[HTSQLBuffer alloc] init];
+    sql.UPDATE(DBFileReceive._tableName)
+    .SET(DBFileReceive._url, url)
+    .WHERE(SQLStringEqual(DBFileReceive._identifier, identifier));
+    
+    if (![database executeUpdate:sql.sql]) {
+        NSLog(@"%@", database.lastError);
+    }
+}
+
 @end
