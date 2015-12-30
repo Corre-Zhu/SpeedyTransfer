@@ -43,6 +43,8 @@
 		CEB29E7C1C230BA400F17804 /* UIViewController+ST.m in Sources */ = {isa = PBXBuildFile; fileRef = CEB29E7B1C230BA400F17804 /* UIViewController+ST.m */; };
 		CEB29E821C253C4D00F17804 /* STPictureCollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CEB29E811C253C4D00F17804 /* STPictureCollectionViewController.m */; };
 		CEB29E851C253F4800F17804 /* STPictureCollectionReusableView.m in Sources */ = {isa = PBXBuildFile; fileRef = CEB29E841C253F4800F17804 /* STPictureCollectionReusableView.m */; };
+		CEBB14731C33CCD300874142 /* STSettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CEBB14721C33CCD300874142 /* STSettingViewController.m */; };
+		CEBB14761C33DB5C00874142 /* STAboutViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CEBB14751C33DB5C00874142 /* STAboutViewController.m */; };
 		CECE97731C2653E900190AE2 /* STFileSelectionPopupView.m in Sources */ = {isa = PBXBuildFile; fileRef = CECE97721C2653E900190AE2 /* STFileSelectionPopupView.m */; };
 		CED003121C0B2766005146A4 /* UIButton+ZZ.m in Sources */ = {isa = PBXBuildFile; fileRef = CED003111C0B2766005146A4 /* UIButton+ZZ.m */; };
 		CED0D1051C1D3D7B00F5C0E3 /* STFileSelectionTabViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CED0D1041C1D3D7B00F5C0E3 /* STFileSelectionTabViewController.m */; };
@@ -139,6 +141,10 @@
 		CEB29E811C253C4D00F17804 /* STPictureCollectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STPictureCollectionViewController.m; sourceTree = "<group>"; };
 		CEB29E831C253F4800F17804 /* STPictureCollectionReusableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STPictureCollectionReusableView.h; sourceTree = "<group>"; };
 		CEB29E841C253F4800F17804 /* STPictureCollectionReusableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STPictureCollectionReusableView.m; sourceTree = "<group>"; };
+		CEBB14711C33CCD300874142 /* STSettingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STSettingViewController.h; sourceTree = "<group>"; };
+		CEBB14721C33CCD300874142 /* STSettingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STSettingViewController.m; sourceTree = "<group>"; };
+		CEBB14741C33DB5C00874142 /* STAboutViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STAboutViewController.h; sourceTree = "<group>"; };
+		CEBB14751C33DB5C00874142 /* STAboutViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STAboutViewController.m; sourceTree = "<group>"; };
 		CECE97711C2653E900190AE2 /* STFileSelectionPopupView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STFileSelectionPopupView.h; sourceTree = "<group>"; };
 		CECE97721C2653E900190AE2 /* STFileSelectionPopupView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STFileSelectionPopupView.m; sourceTree = "<group>"; };
 		CED003101C0B2766005146A4 /* UIButton+ZZ.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIButton+ZZ.h"; sourceTree = "<group>"; };
@@ -362,6 +368,17 @@
 			path = "UIView+AutoLayout";
 			sourceTree = "<group>";
 		};
+		CEBB14701C33CC7200874142 /* Setting */ = {
+			isa = PBXGroup;
+			children = (
+				CEBB14711C33CCD300874142 /* STSettingViewController.h */,
+				CEBB14721C33CCD300874142 /* STSettingViewController.m */,
+				CEBB14741C33DB5C00874142 /* STAboutViewController.h */,
+				CEBB14751C33DB5C00874142 /* STAboutViewController.m */,
+			);
+			path = Setting;
+			sourceTree = "<group>";
+		};
 		CED0D1021C1D3C8B00F5C0E3 /* FileSelection */ = {
 			isa = PBXGroup;
 			children = (
@@ -456,6 +473,7 @@
 				CED0D1021C1D3C8B00F5C0E3 /* FileSelection */,
 				CE6536BB1C2ECD3400C1E8A3 /* FileTransfer */,
 				CE6536A61C2E8AB400C1E8A3 /* FileReceive */,
+				CEBB14701C33CC7200874142 /* Setting */,
 				CED62A441C09512100270EDB /* Supporting Files */,
 			);
 			path = SpeedyTransfer;
@@ -659,6 +677,7 @@
 				CED62A561C09721F00270EDB /* UIDevice+ZZ.m in Sources */,
 				CE6536EC1C2F099A00C1E8A3 /* HTSQLBuffer.m in Sources */,
 				CE6536DF1C2ED74600C1E8A3 /* ZZPath.m in Sources */,
+				CEBB14761C33DB5C00874142 /* STAboutViewController.m in Sources */,
 				CE6536F31C2FD53600C1E8A3 /* STFileReceiveModel.m in Sources */,
 				CE6536D71C2ECEC300C1E8A3 /* STMusicInfo.m in Sources */,
 				CE6536B01C2E92C200C1E8A3 /* MCTransceiver.m in Sources */,
@@ -676,6 +695,7 @@
 				CED62A531C09719500270EDB /* UIView+ZZ.m in Sources */,
 				CE6536DC1C2ED0AF00C1E8A3 /* STFileTransferModel.m in Sources */,
 				CE6536C81C2ECD3400C1E8A3 /* STFileTransferCell.m in Sources */,
+				CEBB14731C33CCD300874142 /* STSettingViewController.m in Sources */,
 				CE6536AC1C2E8D1B00C1E8A3 /* STWifiNotConnectedPopupView2.m in Sources */,
 				CE6536E91C2F096600C1E8A3 /* HTFMDatabase.m in Sources */,
 				CE6536F61C2FD5FA00C1E8A3 /* STFileReceiveInfo.m in Sources */,

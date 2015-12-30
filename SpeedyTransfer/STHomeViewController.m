@@ -14,6 +14,7 @@
 #import "STContactsSelectionViewController.h"
 #import "STFileReceivingViewController.h"
 #import "STFileTransferViewController.h"
+#import "STSettingViewController.h"
 
 @interface STHomeViewController ()
 
@@ -161,7 +162,8 @@
 }
 
 - (void)settingButtonClick {
-    
+    STSettingViewController *settingVc = [[STSettingViewController alloc] init];
+    [self.navigationController pushViewController:settingVc animated:YES];
 }
 
 - (void)feedbackButtonClick {
