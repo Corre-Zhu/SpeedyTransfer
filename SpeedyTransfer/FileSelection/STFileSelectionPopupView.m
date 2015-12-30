@@ -77,6 +77,9 @@
     UILabel *titleLabel;
     UIButton *deleteButton;
 
+    BOOL caculating;
+    double totalSize;
+    GCDQueue *caculatingQueue;
 }
 
 @property (nonatomic, strong) UITableView *tableView;
@@ -138,14 +141,84 @@ static NSString *PopupCellIdentifier = @"PopupCellIdentifier";
         [whiteView addSubview:_tableView];
         
         _imageManager = [[PHCachingImageManager alloc] init];
+        caculatingQueue = [[GCDQueue alloc] initSerial];
     }
     
     return self;
 }
 
+- (void)reloadTitle {
+    if (_dataSource.count > 0) {
+        titleLabel.text = [NSString stringWithFormat:@"已选择%ld个文件，共%@", _dataSource.count, [NSString formatSize:totalSize]];
+    } else {
+        titleLabel.text = [NSString stringWithFormat:@"已选择0个文件"];
+    }
+}
+
+- (void)caculateCompleted {
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self reloadTitle];
+    });
+}
+
+- (double)caculateSize {
+    caculating = YES;
+    __block NSInteger caculatingIndex = 0;
+    __block double size = 0.0f;
+    NSArray *tempDataSource = [NSArray arrayWithArray:_dataSource];
+    for (id object in tempDataSource) {
+        if ([object isKindOfClass:[PHAsset class]]) {
+            PHAsset *asset = object;
+            [[PHImageManager defaultManager] requestImageDataForAsset:asset options:nil resultHandler:^(NSData * _Nullable imageData, NSString * _Nullable dataUTI, UIImageOrientation orientation, NSDictionary * _Nullable info) {
+                [caculatingQueue queueBlock:^{
+                    size += imageData.length;
+                    caculatingIndex++;
+                    if (caculatingIndex == tempDataSource.count) {
+                        caculating = NO;
+                        totalSize = size;
+                        [self caculateCompleted];
+                    }
+                }];
+            }];
+        } else if ([object isKindOfClass:[STMusicInfo class]]) {
+            STMusicInfo *model = object;
+            size += model.fileSize;
+            caculatingIndex++;
+            if (caculatingIndex == tempDataSource.count) {
+                caculating = NO;
+                totalSize = size;
+                [self caculateCompleted];
+            }
+        } else if ([object isKindOfClass:[STContactInfo class]]) {
+            STContactInfo *model = object;
+            size += model.size;
+            caculatingIndex++;
+            if (caculatingIndex == tempDataSource.count) {
+                caculating = NO;
+                totalSize = size;
+                [self caculateCompleted];
+            }
+        }
+    }
+    
+    return size;
+}
+
+- (void)removeAsset:(PHAsset *)asset {
+    [self.imageManager requestImageDataForAsset:asset options:nil resultHandler:^(NSData * _Nullable imageData, NSString * _Nullable dataUTI, UIImageOrientation orientation, NSDictionary * _Nullable info) {
+        totalSize -= imageData.length;
+        [self reloadTitle];
+    }];
+}
+
 - (void)setDataSource:(NSMutableArray *)dataSource {
     _dataSource = dataSource;
+    titleLabel.text = [NSString stringWithFormat:@"已选择%ld个文件", _dataSource.count];
     [self.tableView reloadData];
+    
+    [caculatingQueue queueBlock:^{
+        [self caculateSize];
+    }];
 }
 
 - (void)showInView:(UIView *)view {
@@ -166,6 +239,10 @@ static NSString *PopupCellIdentifier = @"PopupCellIdentifier";
 }
 
 - (void)deleteButtonClick {
+    if (caculating) {
+        return;
+    }
+    
     [self.tabViewController removeAllSelectedFiles];
     _dataSource = nil;
     [self.tabViewController reloadAssetsTableView];
@@ -173,9 +250,15 @@ static NSString *PopupCellIdentifier = @"PopupCellIdentifier";
     [self.tabViewController reloadVideosTableView];
     [self.tabViewController reloadContactsTableView];
     [self.tableView reloadData];
+    totalSize = 0.0f;
+    [self reloadTitle];
 }
 
 - (void)rowDeleteButtonClick:(UIButton *)sender {
+    if (caculating) {
+        return;
+    }
+    
     NSInteger tag = sender.tag;
     if (_dataSource.count > tag) {
         id object = [_dataSource objectAtIndex:tag];
@@ -189,12 +272,17 @@ static NSString *PopupCellIdentifier = @"PopupCellIdentifier";
                 [self.tabViewController removeVideoAsset:asset];
                 [self.tabViewController reloadVideosTableView];
             }
+            [self removeAsset:asset];
         } else if ([object isKindOfClass:[STMusicInfo class]]) {
             [self.tabViewController removeMusic:object];
             [self.tabViewController reloadMusicsTableView];
+            totalSize -= ((STMusicInfo *)object).fileSize;
+            [self reloadTitle];
         } else if ([object isKindOfClass:[STContactInfo class]]) {
             [self.tabViewController removeContact:object];
             [self.tabViewController reloadContactsTableView];
+            totalSize -= ((STContactInfo *)object).size;
+            [self reloadTitle];
         }
     }
     [self.tableView reloadData];

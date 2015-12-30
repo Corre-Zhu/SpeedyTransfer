@@ -9,6 +9,7 @@
 #import "STFileTransferViewController.h"
 #import "STFileTransferCell.h"
 #import "STContactInfo.h"
+#import "STMusicInfo.h"
 #import "STFileTransferModel.h"
 #import <AddressBook/AddressBook.h>
 #import <AddressBookUI/AddressBookUI.h>
@@ -133,6 +134,21 @@ static NSString *cellIdentifier = @"CellIdentifier";
             }];
             
             [progress addObserver:self forKeyPath:@"fractionCompleted" options:NSKeyValueObservingOptionNew context:NULL];
+        }];
+    }
+    
+    // 发送音乐
+    if (self.fileSelectionTabController.selectedMusicsArr.count > 0) {
+        STMusicInfo *musicInfo = self.fileSelectionTabController.selectedMusicsArr.firstObject;
+        [self.fileSelectionTabController removeMusic:musicInfo];
+        [self.fileSelectionTabController reloadMusicsTableView];
+        
+        [self.transceiver sendResourceAtURL:musicInfo.url withName:@"sdfsdfsdf.sdf" toPeer:self.transceiver.connectedPeers.firstObject withCompletionHandler:^(NSError * _Nullable error) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                
+                
+                [self startSendFile];
+            });
         }];
     }
     

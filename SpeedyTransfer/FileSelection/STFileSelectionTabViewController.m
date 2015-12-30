@@ -60,10 +60,8 @@
 }
 
 - (void)deleteButtonClick {
-    if (!popupView) {
-        popupView = [[STFileSelectionPopupView alloc] init];
-        popupView.tabViewController = self;
-    }
+    popupView = [[STFileSelectionPopupView alloc] init];
+    popupView.tabViewController = self;
     popupView.dataSource = [NSMutableArray arrayWithArray:self.selectedFilesArray];
     [popupView showInView:self.navigationController.view];
 }
