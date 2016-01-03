@@ -26,7 +26,7 @@
     [self.view addSubview:_webView];
     [_webView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero];
     
-    NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:@"www.apple.com"]];
+    NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:@"http://www.apple.com"]];
     [_webView loadRequest:request];
 }
 

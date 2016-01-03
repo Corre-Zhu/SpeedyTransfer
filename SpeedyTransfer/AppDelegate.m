@@ -26,7 +26,7 @@ NSString * const dbName = @"FileTransfer.sqlite";
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     NSLog(@"%@", [ZZPath documentPath]);
     
-    [[NSUserDefaults standardUserDefaults] registerDefaults:@{AutoImportPhoto: @YES, AutoImportVideo: @YES}];
+    [[NSUserDefaults standardUserDefaults] registerDefaults:@{AutoImportPhoto: @YES, AutoImportVideo: @YES, HeadImage: @"龙"}];
     
     STHomeViewController *vc = [[STHomeViewController alloc] init];
     ZZNavigationController *nav = [[ZZNavigationController alloc] initWithRootViewController:vc];

@@ -21,6 +21,8 @@
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
+        self.selectionStyle = UITableViewCellSelectionStyleNone;
+        
         UIImage *bubble = [[UIImage imageNamed:@"text_bg"] resizableImageWithCapInsets:UIEdgeInsetsMake(15.0f, 17.0f, 15.0f, 27.0f)];
         bubbleView = [[UIImageView alloc] initWithImage:bubble];
         [self.contentView addSubview:bubbleView];

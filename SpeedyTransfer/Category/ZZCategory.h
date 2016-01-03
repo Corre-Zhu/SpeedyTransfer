@@ -18,5 +18,6 @@
 #import "NSDictionary+HT.h"
 #import "UIViewController+ST.h"
 #import "NSDate+ZZ.h"
+#import "UIImage+ZZ.h"
 
 #endif

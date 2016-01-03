@@ -22,16 +22,31 @@
                   shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
+                  symbolName = "__101-[STFileReceivingViewController session:didFinishReceivingResourceWithName:fromPeer:atURL:withError:]_block_invoke_2284"
+                  moduleName = "SpeedyTransfer"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/user/Desktop/SpeedyTransfer/SpeedyTransfer/FileReceive/STFileReceivingViewController.m"
+                  timestampString = "473530908.782881"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "265"
+                  endingLineNumber = "265"
+                  offsetFromSymbolStart = "528">
+               </Location>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
                   symbolName = "__copy_helper_block_293"
                   moduleName = "SpeedyTransfer"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/user/Desktop/SpeedyTransfer/SpeedyTransfer/FileReceive/STFileReceivingViewController.m"
-                  timestampString = "473523008.825167"
+                  timestampString = "473530908.783195"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "0"
                   endingLineNumber = "0"
-                  offsetFromSymbolStart = "16">
+                  offsetFromSymbolStart = "24">
                </Location>
                <Location
                   shouldBeEnabled = "Yes"
@@ -41,12 +56,12 @@
                   moduleName = "SpeedyTransfer"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/user/Desktop/SpeedyTransfer/SpeedyTransfer/FileReceive/STFileReceivingViewController.m"
-                  timestampString = "473523008.825361"
+                  timestampString = "473530908.78345"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "0"
                   endingLineNumber = "0"
-                  offsetFromSymbolStart = "16">
+                  offsetFromSymbolStart = "20">
                </Location>
             </Locations>
          </BreakpointContent>

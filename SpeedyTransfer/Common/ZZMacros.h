@@ -31,5 +31,7 @@
 
 #define AutoImportPhoto @"AutoImportPhoto"
 #define AutoImportVideo @"AutoImportVideo"
+#define HeadImage @"HeadImage"
+#define CustomHeadImage @"CustomHeadImage"
 
 #endif

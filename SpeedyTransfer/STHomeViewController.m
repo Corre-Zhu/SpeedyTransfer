@@ -18,6 +18,7 @@
 #import "STInviteFriendViewController.h"
 #import "STFindViewController.h"
 #import "STFeedBackViewController.h"
+#import "STPersonalSettingViewController.h"
 
 @interface STHomeViewController ()
 
@@ -47,8 +48,9 @@
     self.navigationItem.title = NSLocalizedString(@"点传", nil);
     self.view.backgroundColor = [UIColor whiteColor];
     
-    UIView *customView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 45.0f, 36.0f)];
+    UIButton *customView = [[UIButton alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 45.0f, 36.0f)];
     customView.backgroundColor = [UIColor clearColor];
+    [customView addTarget:self action:@selector(personalSettingClick) forControlEvents:UIControlEventTouchUpInside];
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:customView];
     
     UIImageView *dotImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"ic_overflow_light"]];
@@ -116,6 +118,11 @@
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     NSLog(@"%@", NSStringFromCGSize([[UIScreen mainScreen] currentMode].size));
+}
+
+- (void)personalSettingClick {
+    STPersonalSettingViewController *personalSettingVc = [[STPersonalSettingViewController alloc] init];
+    [self.navigationController pushViewController:personalSettingVc animated:YES];
 }
 
 - (void)transferButtonClick {

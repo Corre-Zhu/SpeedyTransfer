@@ -39,6 +39,9 @@
 		CE9C91A91C39414D0075CB06 /* STFeedbackInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = CE9C91A81C39414D0075CB06 /* STFeedbackInfo.m */; };
 		CE9C91AC1C3951D20075CB06 /* STFeedbackModel.m in Sources */ = {isa = PBXBuildFile; fileRef = CE9C91AB1C3951D20075CB06 /* STFeedbackModel.m */; };
 		CE9C91AF1C39537C0075CB06 /* STFeedbackCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CE9C91AE1C39537C0075CB06 /* STFeedbackCell.m */; };
+		CE9C91B21C39697D0075CB06 /* STPersonalSettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE9C91B11C39697D0075CB06 /* STPersonalSettingViewController.m */; };
+		CE9C91B51C3970D60075CB06 /* STPersonalSettingCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CE9C91B41C3970D60075CB06 /* STPersonalSettingCell.m */; };
+		CE9C91B81C397C210075CB06 /* UIImage+ZZ.m in Sources */ = {isa = PBXBuildFile; fileRef = CE9C91B71C397C210075CB06 /* UIImage+ZZ.m */; };
 		CEA12C491C29ABCB00328CEF /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = CEA12C481C29ABCB00328CEF /* Reachability.m */; };
 		CEB29E601C21A9EB00F17804 /* NSDictionary+HT.m in Sources */ = {isa = PBXBuildFile; fileRef = CEB29E5F1C21A9EB00F17804 /* NSDictionary+HT.m */; };
 		CEB29E631C21B6D700F17804 /* HTContactsHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = CEB29E621C21B6D700F17804 /* HTContactsHeaderView.m */; };
@@ -136,6 +139,12 @@
 		CE9C91AB1C3951D20075CB06 /* STFeedbackModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STFeedbackModel.m; sourceTree = "<group>"; };
 		CE9C91AD1C39537C0075CB06 /* STFeedbackCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STFeedbackCell.h; sourceTree = "<group>"; };
 		CE9C91AE1C39537C0075CB06 /* STFeedbackCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STFeedbackCell.m; sourceTree = "<group>"; };
+		CE9C91B01C39697D0075CB06 /* STPersonalSettingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STPersonalSettingViewController.h; sourceTree = "<group>"; };
+		CE9C91B11C39697D0075CB06 /* STPersonalSettingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STPersonalSettingViewController.m; sourceTree = "<group>"; };
+		CE9C91B31C3970D60075CB06 /* STPersonalSettingCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STPersonalSettingCell.h; sourceTree = "<group>"; };
+		CE9C91B41C3970D60075CB06 /* STPersonalSettingCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STPersonalSettingCell.m; sourceTree = "<group>"; };
+		CE9C91B61C397C210075CB06 /* UIImage+ZZ.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+ZZ.h"; sourceTree = "<group>"; };
+		CE9C91B71C397C210075CB06 /* UIImage+ZZ.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+ZZ.m"; sourceTree = "<group>"; };
 		CEA12C471C29ABCB00328CEF /* Reachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Reachability.h; sourceTree = "<group>"; };
 		CEA12C481C29ABCB00328CEF /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Reachability.m; sourceTree = "<group>"; };
 		CEB29E5E1C21A9EB00F17804 /* NSDictionary+HT.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDictionary+HT.h"; sourceTree = "<group>"; };
@@ -431,6 +440,10 @@
 				CEBB14721C33CCD300874142 /* STSettingViewController.m */,
 				CEBB14741C33DB5C00874142 /* STAboutViewController.h */,
 				CEBB14751C33DB5C00874142 /* STAboutViewController.m */,
+				CE9C91B01C39697D0075CB06 /* STPersonalSettingViewController.h */,
+				CE9C91B11C39697D0075CB06 /* STPersonalSettingViewController.m */,
+				CE9C91B31C3970D60075CB06 /* STPersonalSettingCell.h */,
+				CE9C91B41C3970D60075CB06 /* STPersonalSettingCell.m */,
 			);
 			path = Setting;
 			sourceTree = "<group>";
@@ -582,6 +595,8 @@
 				CEB29E7B1C230BA400F17804 /* UIViewController+ST.m */,
 				CE6536EE1C2FBB2300C1E8A3 /* NSDate+ZZ.h */,
 				CE6536EF1C2FBB2300C1E8A3 /* NSDate+ZZ.m */,
+				CE9C91B61C397C210075CB06 /* UIImage+ZZ.h */,
+				CE9C91B71C397C210075CB06 /* UIImage+ZZ.m */,
 			);
 			name = Category;
 			path = SpeedyTransfer/Category;
@@ -748,7 +763,9 @@
 				CE6536C91C2ECD3400C1E8A3 /* STFileTransferViewController.m in Sources */,
 				CE6536D61C2ECEC300C1E8A3 /* STFileTransferInfo.m in Sources */,
 				CED62A5F1C099C6000270EDB /* UIColor+ZZ.m in Sources */,
+				CE9C91B51C3970D60075CB06 /* STPersonalSettingCell.m in Sources */,
 				CEB29E601C21A9EB00F17804 /* NSDictionary+HT.m in Sources */,
+				CE9C91B81C397C210075CB06 /* UIImage+ZZ.m in Sources */,
 				CED0D13D1C21A59200F5C0E3 /* AVURLAsset+Extension.m in Sources */,
 				CE9C91AF1C39537C0075CB06 /* STFeedbackCell.m in Sources */,
 				CED003121C0B2766005146A4 /* UIButton+ZZ.m in Sources */,
@@ -767,6 +784,7 @@
 				CE9C91A31C390DAB0075CB06 /* STFeedBackViewController.m in Sources */,
 				CED0D12D1C1D77DF00F5C0E3 /* HZAssetCollectionViewCell.m in Sources */,
 				CEB29E741C21B8BE00F17804 /* NSArray+PureLayout.m in Sources */,
+				CE9C91B21C39697D0075CB06 /* STPersonalSettingViewController.m in Sources */,
 				CE6536F91C2FDD3200C1E8A3 /* STFileReceiveCell.m in Sources */,
 				CED0D1211C1D576D00F5C0E3 /* STMusicSelectionViewController.m in Sources */,
 				CE6536CB1C2ECD3400C1E8A3 /* STWifiNotConnectedPopupView.m in Sources */,
