@@ -16,6 +16,8 @@
 #import "STFileTransferViewController.h"
 #import "STSettingViewController.h"
 #import "STInviteFriendViewController.h"
+#import "STFindViewController.h"
+#import "STFeedBackViewController.h"
 
 @interface STHomeViewController ()
 
@@ -160,7 +162,8 @@
 }
 
 - (void)discoverButtonClick {
-    
+    STFindViewController *findViewc = [[STFindViewController alloc] init];
+    [self.navigationController pushViewController:findViewc animated:YES];
 }
 
 - (void)settingButtonClick {
@@ -169,8 +172,10 @@
 }
 
 - (void)feedbackButtonClick {
-    STFileTransferViewController *sdf = [[STFileTransferViewController alloc] init];
-    [self.navigationController pushViewController:sdf animated:YES];
+//    STFileTransferViewController *sdf = [[STFileTransferViewController alloc] init];
+//    [self.navigationController pushViewController:sdf animated:YES];
+    STFeedBackViewController *feedBackVc = [[STFeedBackViewController alloc] init];
+    [self.navigationController pushViewController:feedBackVc animated:YES];
 }
 
 @end

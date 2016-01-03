@@ -33,6 +33,12 @@
 		CE8975631C26AE5B002E11F8 /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = CE8975621C26AE5B002E11F8 /* MBProgressHUD.m */; };
 		CE8975671C284D89002E11F8 /* AddressBookUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CE8975661C284D89002E11F8 /* AddressBookUI.framework */; };
 		CE9C919D1C38FBE10075CB06 /* STInviteFriendViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE9C919C1C38FBE10075CB06 /* STInviteFriendViewController.m */; };
+		CE9C91A01C390AD60075CB06 /* STFindViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE9C919F1C390AD60075CB06 /* STFindViewController.m */; };
+		CE9C91A31C390DAB0075CB06 /* STFeedBackViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE9C91A21C390DAB0075CB06 /* STFeedBackViewController.m */; };
+		CE9C91A61C390EAA0075CB06 /* STFeedBackInputView.m in Sources */ = {isa = PBXBuildFile; fileRef = CE9C91A51C390EAA0075CB06 /* STFeedBackInputView.m */; };
+		CE9C91A91C39414D0075CB06 /* STFeedbackInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = CE9C91A81C39414D0075CB06 /* STFeedbackInfo.m */; };
+		CE9C91AC1C3951D20075CB06 /* STFeedbackModel.m in Sources */ = {isa = PBXBuildFile; fileRef = CE9C91AB1C3951D20075CB06 /* STFeedbackModel.m */; };
+		CE9C91AF1C39537C0075CB06 /* STFeedbackCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CE9C91AE1C39537C0075CB06 /* STFeedbackCell.m */; };
 		CEA12C491C29ABCB00328CEF /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = CEA12C481C29ABCB00328CEF /* Reachability.m */; };
 		CEB29E601C21A9EB00F17804 /* NSDictionary+HT.m in Sources */ = {isa = PBXBuildFile; fileRef = CEB29E5F1C21A9EB00F17804 /* NSDictionary+HT.m */; };
 		CEB29E631C21B6D700F17804 /* HTContactsHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = CEB29E621C21B6D700F17804 /* HTContactsHeaderView.m */; };
@@ -118,6 +124,18 @@
 		CE8975661C284D89002E11F8 /* AddressBookUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBookUI.framework; path = System/Library/Frameworks/AddressBookUI.framework; sourceTree = SDKROOT; };
 		CE9C919B1C38FBE10075CB06 /* STInviteFriendViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STInviteFriendViewController.h; sourceTree = "<group>"; };
 		CE9C919C1C38FBE10075CB06 /* STInviteFriendViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STInviteFriendViewController.m; sourceTree = "<group>"; };
+		CE9C919E1C390AD60075CB06 /* STFindViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STFindViewController.h; sourceTree = "<group>"; };
+		CE9C919F1C390AD60075CB06 /* STFindViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STFindViewController.m; sourceTree = "<group>"; };
+		CE9C91A11C390DAB0075CB06 /* STFeedBackViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STFeedBackViewController.h; sourceTree = "<group>"; };
+		CE9C91A21C390DAB0075CB06 /* STFeedBackViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STFeedBackViewController.m; sourceTree = "<group>"; };
+		CE9C91A41C390EAA0075CB06 /* STFeedBackInputView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STFeedBackInputView.h; sourceTree = "<group>"; };
+		CE9C91A51C390EAA0075CB06 /* STFeedBackInputView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STFeedBackInputView.m; sourceTree = "<group>"; };
+		CE9C91A71C39414D0075CB06 /* STFeedbackInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STFeedbackInfo.h; sourceTree = "<group>"; };
+		CE9C91A81C39414D0075CB06 /* STFeedbackInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STFeedbackInfo.m; sourceTree = "<group>"; };
+		CE9C91AA1C3951D20075CB06 /* STFeedbackModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STFeedbackModel.h; sourceTree = "<group>"; };
+		CE9C91AB1C3951D20075CB06 /* STFeedbackModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STFeedbackModel.m; sourceTree = "<group>"; };
+		CE9C91AD1C39537C0075CB06 /* STFeedbackCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STFeedbackCell.h; sourceTree = "<group>"; };
+		CE9C91AE1C39537C0075CB06 /* STFeedbackCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STFeedbackCell.m; sourceTree = "<group>"; };
 		CEA12C471C29ABCB00328CEF /* Reachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Reachability.h; sourceTree = "<group>"; };
 		CEA12C481C29ABCB00328CEF /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Reachability.m; sourceTree = "<group>"; };
 		CEB29E5E1C21A9EB00F17804 /* NSDictionary+HT.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDictionary+HT.h"; sourceTree = "<group>"; };
@@ -278,6 +296,8 @@
 				CE6536D01C2ECEC200C1E8A3 /* STFileTransferInfo.m */,
 				CE6536F41C2FD5FA00C1E8A3 /* STFileReceiveInfo.h */,
 				CE6536F51C2FD5FA00C1E8A3 /* STFileReceiveInfo.m */,
+				CE9C91A71C39414D0075CB06 /* STFeedbackInfo.h */,
+				CE9C91A81C39414D0075CB06 /* STFeedbackInfo.m */,
 			);
 			name = BusinessEntity;
 			path = SpeedyTransfer/BusinessEntity;
@@ -324,6 +344,14 @@
 		CE9C91981C38FB480075CB06 /* FeedBack */ = {
 			isa = PBXGroup;
 			children = (
+				CE9C91AA1C3951D20075CB06 /* STFeedbackModel.h */,
+				CE9C91AB1C3951D20075CB06 /* STFeedbackModel.m */,
+				CE9C91A11C390DAB0075CB06 /* STFeedBackViewController.h */,
+				CE9C91A21C390DAB0075CB06 /* STFeedBackViewController.m */,
+				CE9C91A41C390EAA0075CB06 /* STFeedBackInputView.h */,
+				CE9C91A51C390EAA0075CB06 /* STFeedBackInputView.m */,
+				CE9C91AD1C39537C0075CB06 /* STFeedbackCell.h */,
+				CE9C91AE1C39537C0075CB06 /* STFeedbackCell.m */,
 			);
 			path = FeedBack;
 			sourceTree = "<group>";
@@ -331,6 +359,8 @@
 		CE9C91991C38FB480075CB06 /* Find */ = {
 			isa = PBXGroup;
 			children = (
+				CE9C919E1C390AD60075CB06 /* STFindViewController.h */,
+				CE9C919F1C390AD60075CB06 /* STFindViewController.m */,
 			);
 			path = Find;
 			sourceTree = "<group>";
@@ -698,9 +728,11 @@
 				CECE97731C2653E900190AE2 /* STFileSelectionPopupView.m in Sources */,
 				CEB29E631C21B6D700F17804 /* HTContactsHeaderView.m in Sources */,
 				CE8975631C26AE5B002E11F8 /* MBProgressHUD.m in Sources */,
+				CE9C91A91C39414D0075CB06 /* STFeedbackInfo.m in Sources */,
 				CED0D1331C1D959800F5C0E3 /* UITableViewCell+ST.m in Sources */,
 				CED62A351C094FDD00270EDB /* STHomeViewController.m in Sources */,
 				CEB29E791C21C01600F17804 /* STMusicSelectionCell.m in Sources */,
+				CE9C91A01C390AD60075CB06 /* STFindViewController.m in Sources */,
 				CED0D1231C1D576D00F5C0E3 /* STVideoSelectionViewController.m in Sources */,
 				CE6536D81C2ECEC300C1E8A3 /* STPictureCollectionHeaderInfo.m in Sources */,
 				CED62A561C09721F00270EDB /* UIDevice+ZZ.m in Sources */,
@@ -718,7 +750,10 @@
 				CED62A5F1C099C6000270EDB /* UIColor+ZZ.m in Sources */,
 				CEB29E601C21A9EB00F17804 /* NSDictionary+HT.m in Sources */,
 				CED0D13D1C21A59200F5C0E3 /* AVURLAsset+Extension.m in Sources */,
+				CE9C91AF1C39537C0075CB06 /* STFeedbackCell.m in Sources */,
 				CED003121C0B2766005146A4 /* UIButton+ZZ.m in Sources */,
+				CE9C91A61C390EAA0075CB06 /* STFeedBackInputView.m in Sources */,
+				CE9C91AC1C3951D20075CB06 /* STFeedbackModel.m in Sources */,
 				CEB29E821C253C4D00F17804 /* STPictureCollectionViewController.m in Sources */,
 				CED0D13A1C21A58800F5C0E3 /* NSString+Extension.m in Sources */,
 				CED62A531C09719500270EDB /* UIView+ZZ.m in Sources */,
@@ -729,6 +764,7 @@
 				CE6536E91C2F096600C1E8A3 /* HTFMDatabase.m in Sources */,
 				CE6536F61C2FD5FA00C1E8A3 /* STFileReceiveInfo.m in Sources */,
 				CEA12C491C29ABCB00328CEF /* Reachability.m in Sources */,
+				CE9C91A31C390DAB0075CB06 /* STFeedBackViewController.m in Sources */,
 				CED0D12D1C1D77DF00F5C0E3 /* HZAssetCollectionViewCell.m in Sources */,
 				CEB29E741C21B8BE00F17804 /* NSArray+PureLayout.m in Sources */,
 				CE6536F91C2FDD3200C1E8A3 /* STFileReceiveCell.m in Sources */,

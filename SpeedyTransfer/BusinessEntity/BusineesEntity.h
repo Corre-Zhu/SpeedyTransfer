@@ -9,5 +9,6 @@
 #ifndef BusineesEntity_h
 #define BusineesEntity_h
 
+#import "STFeedbackInfo.h"
 
 #endif /* BusineesEntity_h */
