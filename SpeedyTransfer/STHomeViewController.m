@@ -15,6 +15,7 @@
 #import "STFileReceivingViewController.h"
 #import "STFileTransferViewController.h"
 #import "STSettingViewController.h"
+#import "STInviteFriendViewController.h"
 
 @interface STHomeViewController ()
 
@@ -154,7 +155,8 @@
 }
 
 - (void)inviteFriendButtonClick {
-    
+    STInviteFriendViewController *inviteVc = [[STInviteFriendViewController alloc] init];
+    [self.navigationController pushViewController:inviteVc animated:YES];
 }
 
 - (void)discoverButtonClick {

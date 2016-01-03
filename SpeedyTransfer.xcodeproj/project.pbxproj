@@ -32,6 +32,7 @@
 		CE86491D1C2592BE0072518B /* AddressBook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CE86491C1C2592BE0072518B /* AddressBook.framework */; };
 		CE8975631C26AE5B002E11F8 /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = CE8975621C26AE5B002E11F8 /* MBProgressHUD.m */; };
 		CE8975671C284D89002E11F8 /* AddressBookUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CE8975661C284D89002E11F8 /* AddressBookUI.framework */; };
+		CE9C919D1C38FBE10075CB06 /* STInviteFriendViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE9C919C1C38FBE10075CB06 /* STInviteFriendViewController.m */; };
 		CEA12C491C29ABCB00328CEF /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = CEA12C481C29ABCB00328CEF /* Reachability.m */; };
 		CEB29E601C21A9EB00F17804 /* NSDictionary+HT.m in Sources */ = {isa = PBXBuildFile; fileRef = CEB29E5F1C21A9EB00F17804 /* NSDictionary+HT.m */; };
 		CEB29E631C21B6D700F17804 /* HTContactsHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = CEB29E621C21B6D700F17804 /* HTContactsHeaderView.m */; };
@@ -115,6 +116,8 @@
 		CE8975611C26AE5B002E11F8 /* MBProgressHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBProgressHUD.h; sourceTree = "<group>"; };
 		CE8975621C26AE5B002E11F8 /* MBProgressHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBProgressHUD.m; sourceTree = "<group>"; };
 		CE8975661C284D89002E11F8 /* AddressBookUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBookUI.framework; path = System/Library/Frameworks/AddressBookUI.framework; sourceTree = SDKROOT; };
+		CE9C919B1C38FBE10075CB06 /* STInviteFriendViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STInviteFriendViewController.h; sourceTree = "<group>"; };
+		CE9C919C1C38FBE10075CB06 /* STInviteFriendViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STInviteFriendViewController.m; sourceTree = "<group>"; };
 		CEA12C471C29ABCB00328CEF /* Reachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Reachability.h; sourceTree = "<group>"; };
 		CEA12C481C29ABCB00328CEF /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Reachability.m; sourceTree = "<group>"; };
 		CEB29E5E1C21A9EB00F17804 /* NSDictionary+HT.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDictionary+HT.h"; sourceTree = "<group>"; };
@@ -318,6 +321,29 @@
 			path = MBProgressHUD;
 			sourceTree = "<group>";
 		};
+		CE9C91981C38FB480075CB06 /* FeedBack */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = FeedBack;
+			sourceTree = "<group>";
+		};
+		CE9C91991C38FB480075CB06 /* Find */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Find;
+			sourceTree = "<group>";
+		};
+		CE9C919A1C38FB480075CB06 /* InviteFriend */ = {
+			isa = PBXGroup;
+			children = (
+				CE9C919B1C38FBE10075CB06 /* STInviteFriendViewController.h */,
+				CE9C919C1C38FBE10075CB06 /* STInviteFriendViewController.m */,
+			);
+			path = InviteFriend;
+			sourceTree = "<group>";
+		};
 		CEA12C461C29ABCB00328CEF /* Reachability */ = {
 			isa = PBXGroup;
 			children = (
@@ -473,6 +499,9 @@
 				CED0D1021C1D3C8B00F5C0E3 /* FileSelection */,
 				CE6536BB1C2ECD3400C1E8A3 /* FileTransfer */,
 				CE6536A61C2E8AB400C1E8A3 /* FileReceive */,
+				CE9C91981C38FB480075CB06 /* FeedBack */,
+				CE9C91991C38FB480075CB06 /* Find */,
+				CE9C919A1C38FB480075CB06 /* InviteFriend */,
 				CEBB14701C33CC7200874142 /* Setting */,
 				CED62A441C09512100270EDB /* Supporting Files */,
 			);
@@ -708,6 +737,7 @@
 				CE6536FC1C31955000C1E8A3 /* ZZNavigationController.m in Sources */,
 				CE6536F01C2FBB2300C1E8A3 /* NSDate+ZZ.m in Sources */,
 				CED62A321C094FDD00270EDB /* AppDelegate.m in Sources */,
+				CE9C919D1C38FBE10075CB06 /* STInviteFriendViewController.m in Sources */,
 				CEB29E731C21B8BE00F17804 /* ALView+PureLayout.m in Sources */,
 				CE6536D51C2ECEC300C1E8A3 /* STContactInfo.m in Sources */,
 			);
