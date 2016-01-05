@@ -231,6 +231,10 @@ static NSString *ReceiveCellIdentifier = @"ReceiveCellIdentifier";
 }
 
 - (void)session:(MCSession *)session didFinishReceivingResourceWithName:(NSString *)resourceName fromPeer:(MCPeerID *)peerID atURL:(NSURL *)localURL withError:(NSError *)error {
+    if (!localURL) {
+        return;
+    }
+    
     NSString *destinationPath = [[ZZPath picturePath] stringByAppendingPathComponent:resourceName];
     NSURL *destinationURL = [NSURL fileURLWithPath:destinationPath];
     NSFileManager *fileManager = [NSFileManager defaultManager];
