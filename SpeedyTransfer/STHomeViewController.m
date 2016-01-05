@@ -21,7 +21,9 @@
 #import "STPersonalSettingViewController.h"
 
 @interface STHomeViewController ()
-
+{
+    UIImageView *headImageView;
+}
 @end
 
 @implementation STHomeViewController
@@ -57,7 +59,7 @@
     dotImageView.top = 10.0f;
     [customView addSubview:dotImageView];
     
-    UIImageView *headImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"head2"]];
+    headImageView = [[UIImageView alloc] init];
     headImageView.left = 9.0f;
     headImageView.top = 4.0f;
     headImageView.width = 28.0f;
@@ -65,8 +67,10 @@
     headImageView.layer.cornerRadius = 14.0f;
     headImageView.layer.borderWidth = 1.5f;
     headImageView.layer.borderColor = [UIColor whiteColor].CGColor;
+    headImageView.contentMode = UIViewContentModeScaleAspectFill;
+    headImageView.layer.masksToBounds = YES;
+    headImageView.clipsToBounds = YES;
     [customView addSubview:headImageView];
-    
     
     UIView *backView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, IPHONE_WIDTH, 240.0f)];
     backView.backgroundColor = RGBFromHex(0xeb694a);//RGB(233, 105, 79)
@@ -108,6 +112,16 @@
     [self addButtonWithImage:@"home4" title:NSLocalizedString(@"发现", nil) frame:CGRectMake(IPHONE_WIDTH / 2.0f - 90.0f - inset, backView.bottom + 123.0f, 60.0f, 90.0f) selector:@selector(discoverButtonClick)];
     [self addButtonWithImage:@"home6" title:NSLocalizedString(@"反馈", nil) frame:CGRectMake(IPHONE_WIDTH / 2.0f + 30.0f + inset, backView.bottom + 123.0f, 60.0f, 90.0f) selector:@selector(feedbackButtonClick)];
     
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    NSString *headImage = [[NSUserDefaults standardUserDefaults] stringForKey:HeadImage];
+    if ([headImage isEqualToString:CustomHeadImage]) {
+        headImageView.image = [[UIImage alloc] initWithContentsOfFile:[[ZZPath documentPath] stringByAppendingPathComponent:CustomHeadImage]];
+    } else {
+        headImageView.image = [UIImage imageNamed:headImage];
+    }
 }
 
 - (void)didReceiveMemoryWarning {

@@ -15,8 +15,9 @@ static NSString *PersonalSetttingIdentifier = @"PersonalSetttingIdentifier";
 @interface STPersonalSettingViewController ()<UICollectionViewDataSource, UICollectionViewDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate>
 {
     UIImageView *headImageView;
-    NSArray *images;
+    NSArray *cellImages;
     NSArray *titles;
+    NSArray *headImages;
     NSString *selectedImage;
 }
 
@@ -85,8 +86,9 @@ static NSString *PersonalSetttingIdentifier = @"PersonalSetttingIdentifier";
     collectionView.backgroundColor = [UIColor whiteColor];
     [self.view addSubview:collectionView];
     
-    images = @[@"head1", @"head2", @"head3", @"head4", @"head5", @"head6", @"head7", @"head8", @"head9", @"head10", @"head11", @"head12"];
+    cellImages = @[@"head1", @"head2", @"head3", @"head4", @"head5", @"head6", @"head7", @"head8", @"head9", @"head10", @"head11", @"head12"];
     titles = @[NSLocalizedString(@"老鼠", nil), NSLocalizedString(@"牛", nil), NSLocalizedString(@"虎", nil), NSLocalizedString(@"兔子", nil), NSLocalizedString(@"龙", nil), NSLocalizedString(@"蛇", nil), NSLocalizedString(@"马", nil), NSLocalizedString(@"羊", nil), NSLocalizedString(@"猴子", nil), NSLocalizedString(@"鸡", nil), NSLocalizedString(@"狗", nil), NSLocalizedString(@"猪", nil)];
+    headImages = @[@"鼠", @"牛", @"虎", @"兔", @"龙", @"蛇", @"马", @"羊", @"猴", @"鸡", @"狗", @"猪"];
 }
 
 - (void)leftBarButtonItemClick {
@@ -156,14 +158,14 @@ static NSString *PersonalSetttingIdentifier = @"PersonalSetttingIdentifier";
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     STPersonalSettingCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:PersonalSetttingIdentifier forIndexPath:indexPath];
-    cell.image = [UIImage imageNamed:images[indexPath.row]];
+    cell.image = [UIImage imageNamed:cellImages[indexPath.row]];
     cell.title = titles[indexPath.row];
     return cell;
 }
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
-    headImageView.image = [UIImage imageNamed:images[indexPath.row]];
-    selectedImage = images[indexPath.row];
+    headImageView.image = [UIImage imageNamed:headImages[indexPath.row]];
+    selectedImage = headImages[indexPath.row];
 }
 
 @end
