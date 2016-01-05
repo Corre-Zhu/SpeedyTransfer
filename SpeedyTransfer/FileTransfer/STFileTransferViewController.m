@@ -143,13 +143,95 @@ static NSString *cellIdentifier = @"CellIdentifier";
         [self.fileSelectionTabController removeMusic:musicInfo];
         [self.fileSelectionTabController reloadMusicsTableView];
         
-        [self.transceiver sendResourceAtURL:musicInfo.url withName:@"sdfsdfsdf.sdf" toPeer:self.transceiver.connectedPeers.firstObject withCompletionHandler:^(NSError * _Nullable error) {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                
-                
-                [self startSendFile];
-            });
-        }];
+        
+        
+        NSURL *url = musicInfo.url;
+        AVURLAsset *songAsset = [AVURLAsset URLAssetWithURL:url options:nil];
+        
+        AVAssetExportSession *exporter = [[AVAssetExportSession alloc]
+                                          initWithAsset: songAsset
+                                          presetName: AVAssetExportPresetAppleM4A];
+        
+        exporter.outputFileType = @"com.apple.m4a-audio";
+        
+        NSString *exportFile = [[ZZPath documentPath] stringByAppendingPathComponent:@"31412313.m4a"];
+        
+        NSError *error1;
+        
+        if([[NSFileManager defaultManager] fileExistsAtPath:exportFile])
+        {
+            [[NSFileManager defaultManager] removeItemAtPath:exportFile error:&error1];
+        }
+        
+        NSURL* exportURL = [NSURL fileURLWithPath:exportFile];
+        
+        exporter.outputURL = exportURL;
+        
+        // do the export
+        [exporter exportAsynchronouslyWithCompletionHandler:^
+         {
+             NSData *data1 = [NSData dataWithContentsOfFile:exportFile];
+             //NSLog(@"==================data1:%@",data1);
+             
+             
+             int exportStatus = exporter.status;
+             
+             switch (exportStatus) {
+                     
+                 case AVAssetExportSessionStatusFailed: {
+                     
+                     // log error to text view
+                     NSError *exportError = exporter.error;
+                     
+                     NSLog (@"AVAssetExportSessionStatusFailed: %@", exportError);
+                     
+                     
+                     
+                     break;
+                 }
+                     
+                 case AVAssetExportSessionStatusCompleted: {
+                     
+                     NSLog (@"AVAssetExportSessionStatusCompleted");
+                     
+                     [self.transceiver sendResourceAtURL:exportURL withName:@"sdfsdfsdf.sdf" toPeer:self.transceiver.connectedPeers.firstObject withCompletionHandler:^(NSError * _Nullable error) {
+                         dispatch_async(dispatch_get_main_queue(), ^{
+                             
+                             
+                             [self startSendFile];
+                         });
+                     }];
+                     break;
+                 }
+                     
+                 case AVAssetExportSessionStatusUnknown: {
+                     NSLog (@"AVAssetExportSessionStatusUnknown");
+                     break;
+                 }
+                 case AVAssetExportSessionStatusExporting: {
+                     NSLog (@"AVAssetExportSessionStatusExporting");
+                     break;
+                 }
+                     
+                 case AVAssetExportSessionStatusCancelled: {
+                     NSLog (@"AVAssetExportSessionStatusCancelled");
+                     break;
+                 }
+                     
+                 case AVAssetExportSessionStatusWaiting: {
+                     NSLog (@"AVAssetExportSessionStatusWaiting");
+                     break;  
+                 }  
+                     
+                 default:   
+                 { NSLog (@"didn't get export status");   
+                     break;  
+                 }  
+             }  
+             
+         }];
+        
+        
     }
     
     // 发送联系人
