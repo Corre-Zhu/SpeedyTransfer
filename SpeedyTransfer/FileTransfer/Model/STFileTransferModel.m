@@ -21,6 +21,8 @@
 
 @implementation STFileTransferModel
 
+HT_DEF_SINGLETON(STFileTransferModel, shareInstant);
+
 - (void)dealloc {
     [database close];
 }

@@ -8,10 +8,13 @@
 
 #import <Foundation/Foundation.h>
 #import "STFileTransferInfo.h"
+#import "HTSingleton.h"
 
 @class STContactInfo;
 
 @interface STFileTransferModel : NSObject
+
+HT_AS_SINGLETON(STFileTransferModel, shareInstant);
 
 @property (nonatomic, strong) NSArray *transferFiles; // 发送的文件
 

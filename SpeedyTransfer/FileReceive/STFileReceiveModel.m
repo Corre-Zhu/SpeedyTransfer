@@ -13,7 +13,8 @@
 #import "AppDelegate.h"
 #import <AddressBook/AddressBook.h>
 
-@interface STFileReceiveModel ()
+
+@interface STFileReceiveModel ()<MCTransceiverDelegate>
 {
     HTFMDatabase *database;
 }
@@ -21,6 +22,8 @@
 @end
 
 @implementation STFileReceiveModel
+
+HT_DEF_SINGLETON(STFileReceiveModel, shareInstant);
 
 - (void)dealloc {
     [database close];
@@ -45,6 +48,12 @@
             }
             _receiveFiles = [NSArray arrayWithArray:tempArr];
         }
+        
+        _transceiver = [[MCTransceiver alloc] initWithDelegate:self
+                                                      peerName:[UIDevice currentDevice].name
+                                                          mode:MCTransceiverModeAdvertiser];
+        
+        _reachability = [Reachability reachabilityForLocalWiFi];
     }
     
     return self;

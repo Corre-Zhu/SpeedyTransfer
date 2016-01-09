@@ -7,7 +7,6 @@
 //
 
 #import "STFileReceivingViewController.h"
-#import "MCTransceiver.h"
 #import "STWifiNotConnectedPopupView2.h"
 #import "Reachability.h"
 #import "STFileReceiveModel.h"
@@ -22,11 +21,10 @@ static NSString *ReceiveCellIdentifier = @"ReceiveCellIdentifier";
 
 #define ALBUM_TITLE @"点传"
 
-@interface STFileReceivingViewController ()<MCTransceiverDelegate,UITableViewDataSource,UITableViewDelegate>
+@interface STFileReceivingViewController ()<UITableViewDataSource,UITableViewDelegate>
 {
     STWifiNotConnectedPopupView2 *popupView;
     UIButton *continueSendButton;
-    Reachability *reachability;
     STFileReceiveModel *model;
     
     STFileReceiveInfo *currentReceiveInfo;
@@ -43,12 +41,6 @@ static NSString *ReceiveCellIdentifier = @"ReceiveCellIdentifier";
 @end
 
 @implementation STFileReceivingViewController
-
--(void)configureTransceiver {
-    _transceiver = [[MCTransceiver alloc] initWithDelegate:self
-                                                  peerName:[UIDevice currentDevice].name
-                                                      mode:MCTransceiverModeAdvertiser];
-}
 
 - (void)leftBarButtonItemClick {
     UIAlertController *alertController = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"不再接收其他文件，确认退出？", nil) message:nil preferredStyle: UIAlertControllerStyleAlert];
@@ -88,23 +80,16 @@ static NSString *ReceiveCellIdentifier = @"ReceiveCellIdentifier";
     [continueSendButton addTarget:self action:@selector(continueSendButtonClick) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:continueSendButton];
     
-    if (!reachability) {
-        reachability = [Reachability reachabilityForLocalWiFi];
-    }
-    if (reachability.currentReachabilityStatus != ReachableViaWiFi) {
+    model = [STFileReceiveModel shareInstant];
+    
+    if (model.reachability.currentReachabilityStatus != ReachableViaWiFi) {
         if (!popupView) {
             popupView = [[STWifiNotConnectedPopupView2 alloc] init];
         }
         [popupView showInView:self.navigationController.view];
-        
     } else {
-        [self configureTransceiver];
+        [model.transceiver startAdvertising];
     }
-    
-    [UIDevice getWifiName];
-    [UIDevice getIpAddresses];
-    
-    model = [[STFileReceiveModel alloc] init];
 }
 
 -(void)viewDidAppear:(BOOL)animated {
