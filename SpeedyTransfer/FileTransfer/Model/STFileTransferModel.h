@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "STFileTransferInfo.h"
 #import "HTSingleton.h"
+#import "MCTransceiver.h"
 
 @class STContactInfo;
 
@@ -17,6 +18,8 @@
 HT_AS_SINGLETON(STFileTransferModel, shareInstant);
 
 @property (nonatomic, strong) NSArray *transferFiles; // 发送的文件
+@property (strong, nonatomic) MCTransceiver *transceiver;
+@property (nonatomic) MCPeerConnnectStatus connectStatus;
 
 /**
  保存到数据库

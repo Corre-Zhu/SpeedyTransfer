@@ -12,7 +12,6 @@
 #import "STFileSelectionPopupView.h"
 #import "STWifiNotConnectedPopupView.h"
 #import "STTransferInstructionViewController.h"
-#import "Reachability.h"
 
 @interface STFileSelectionTabViewController ()
 {
@@ -21,12 +20,15 @@
     UIButton *transferButton;
     STFileSelectionPopupView *popupView;
     STWifiNotConnectedPopupView *wifiNotConnectedPopupView;
-    Reachability *reachability;
 }
 
 @end
 
 @implementation STFileSelectionTabViewController
+
+- (void)dealloc {
+	[[NSNotificationCenter defaultCenter] removeObserver:self];
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -57,6 +59,8 @@
     [transferButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     transferButton.titleLabel.font = [UIFont systemFontOfSize:14.0f];
     [toolView addSubview:transferButton];
+	
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reachabilityStatusChange:) name:kHTReachabilityChangedNotification object:nil];
 }
 
 - (void)deleteButtonClick {
@@ -66,11 +70,28 @@
     [popupView showInView:self.navigationController.view];
 }
 
+- (void)reachabilityStatusChange:(NSNotification *)notification {
+	NetworkStatus status = [ZZReachability shareInstance].currentReachabilityStatus;
+	switch (status) {
+		case NotReachable:
+			break;
+		case ReachableViaWiFi: {
+			if ([wifiNotConnectedPopupView isShow]) {
+				[wifiNotConnectedPopupView removeFromSuperview];
+				
+				STTransferInstructionViewController *transferIns = [[STTransferInstructionViewController alloc] init];
+				[self.navigationController pushViewController:transferIns animated:YES];
+			}
+		}
+			break;
+		
+		default:
+			return;
+	}
+}
+
 - (void)transferButtonClick {
-    if (!reachability) {
-        reachability = [Reachability reachabilityForLocalWiFi];
-    }
-    if (reachability.currentReachabilityStatus != ReachableViaWiFi) {
+	if ([ZZReachability shareInstance].currentReachabilityStatus != ReachableViaWiFi) {
         if (!wifiNotConnectedPopupView) {
             wifiNotConnectedPopupView = [[STWifiNotConnectedPopupView alloc] init];
         }

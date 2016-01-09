@@ -34,4 +34,11 @@
 #define HeadImage @"HeadImage"
 #define CustomHeadImage @"CustomHeadImage"
 
+typedef NS_ENUM(NSInteger, MCPeerConnnectStatus) {
+	MCPeerConnnectStatusNormal          = 0,
+	MCPeerConnnectStatusConnecting      = 1,
+	MCPeerConnnectStatusConnected       = 2,
+	MCPeerConnnectStatusDisconnecting   = 3,
+};
+
 #endif

@@ -8,7 +8,6 @@
 
 #import "STFileReceivingViewController.h"
 #import "STWifiNotConnectedPopupView2.h"
-#import "Reachability.h"
 #import "STFileReceiveModel.h"
 #import "STFileReceiveCell.h"
 #import "STContactInfo.h"
@@ -82,7 +81,7 @@ static NSString *ReceiveCellIdentifier = @"ReceiveCellIdentifier";
     
     model = [STFileReceiveModel shareInstant];
     
-    if (model.reachability.currentReachabilityStatus != ReachableViaWiFi) {
+    if ([ZZReachability shareInstance].currentReachabilityStatus != ReachableViaWiFi) {
         if (!popupView) {
             popupView = [[STWifiNotConnectedPopupView2 alloc] init];
         }

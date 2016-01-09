@@ -92,6 +92,10 @@
     }];
 }
 
+- (BOOL)isShow {
+	return self.superview ? YES : NO;
+}
+
 - (void)tap:(UITapGestureRecognizer *)tap {
     CGPoint point = [tap locationInView:self];
     if (!CGRectContainsPoint(backView.frame, point)) {

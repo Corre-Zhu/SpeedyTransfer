@@ -11,6 +11,4 @@
 
 @interface STFileTransferViewController : UIViewController
 
-@property (weak, nonatomic) MCTransceiver *transceiver;
-
 @end

@@ -11,5 +11,6 @@
 @interface STWifiNotConnectedPopupView : UIView
 
 - (void)showInView:(UIView *)view;
+- (BOOL)isShow;
 
 @end

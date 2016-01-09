@@ -12,7 +12,7 @@
 #import "HTFMDatabase.h"
 #import "AppDelegate.h"
 
-@interface STFileTransferModel ()
+@interface STFileTransferModel ()<MCTransceiverDelegate>
 {
     HTFMDatabase *database;
 }
@@ -46,8 +46,12 @@ HT_DEF_SINGLETON(STFileTransferModel, shareInstant);
             }
             _transferFiles = [NSArray arrayWithArray:tempArr];
         }
+		
+		_transceiver = [[MCTransceiver alloc] initWithDelegate:self
+													  peerName:[UIDevice currentDevice].name
+														  mode:MCTransceiverModeBrowser];
     }
-    
+	
     return self;
 }
 
@@ -144,6 +148,77 @@ HT_DEF_SINGLETON(STFileTransferModel, shareInstant);
     if (![database executeUpdate:sql.sql]) {
         NSLog(@"%@", database.lastError);
     }
+}
+
+#pragma mark - MCTransceiverDelegate
+
+-(void)didFindPeer:(MCPeerID *)peerID
+{
+	NSLog(@"----> did find peer %@", peerID);
+}
+
+-(void)didLosePeer:(MCPeerID *)peerID
+{
+	NSLog(@"<---- did lose peer %@", peerID);
+}
+
+- (BOOL)connectWithPeer:(MCPeerID *)peerId {
+	if (_connectStatus == MCPeerConnnectStatusNormal) {
+		_connectStatus = MCPeerConnnectStatusConnecting;
+		return YES;
+	}
+	
+	return NO;
+}
+
+-(void)didReceiveInvitationFromPeer:(MCPeerID *)peerID
+{
+	NSLog(@"!!!!! did get invite from peer %@", peerID);
+}
+
+-(void)didConnectToPeer:(MCPeerID *)peerID
+{
+	NSLog(@">>>>> did connect to peer %@", peerID);
+	_connectStatus = MCPeerConnnectStatusConnected;
+	[self.transceiver stopBrowsing];
+}
+
+-(void)didDisconnectFromPeer:(MCPeerID *)peerID
+{
+	NSLog(@"<<<<< did disconnect from peer %@", peerID);
+	_connectStatus = MCPeerConnnectStatusNormal;
+	[self.transceiver startBrowsing];
+}
+
+-(void)didReceiveData:(NSData *)data fromPeer:(MCPeerID *)peerID
+{
+	NSLog(@"##### did receive data %@", peerID);
+}
+
+- (void)session:(MCSession *)session didStartReceivingResourceWithName:(NSString *)resourceName fromPeer:(MCPeerID *)peerID withProgress:(NSProgress *)progress {
+}
+
+- (void)session:(MCSession *)session didFinishReceivingResourceWithName:(NSString *)resourceName fromPeer:(MCPeerID *)peerID atURL:(NSURL *)localURL withError:(NSError *)error {
+}
+
+-(void)didStartAdvertising
+{
+	NSLog(@"+++++ did start advertising");
+}
+
+-(void)didStopAdvertising
+{
+	NSLog(@"----- did stop advertising");
+}
+
+-(void)didStartBrowsing
+{
+	NSLog(@"((((( did start browsing");
+}
+
+-(void)didStopBrowsing
+{
+	NSLog(@"))))) did stop browsing");
 }
 
 @end

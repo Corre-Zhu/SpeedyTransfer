@@ -9,6 +9,7 @@
 #import "STTransferInstructionViewController.h"
 #import "STFileTransferViewController.h"
 #import "MCTransceiver.h"
+#import "STFileTransferModel.h"
 
 @interface STTransferInstructionViewController ()<MCTransceiverDelegate>
 {
@@ -17,16 +18,15 @@
     UIImageView *wifiBgView;
     UILabel *wifiLabel;
     UIView *bottomContainerView;
-    
-    STFileTransferViewController *fileTransferViewController;
 }
-
-@property (nonatomic) BOOL connected;
-@property (strong, nonatomic) MCTransceiver *transceiver;
 
 @end
 
 @implementation STTransferInstructionViewController
+
+- (void)dealloc {
+	
+}
 
 - (void)setupUI {
     
@@ -128,27 +128,37 @@
     }
 }
 
--(void)configureTransceiver
-{
-    _transceiver = [[MCTransceiver alloc] initWithDelegate:self
-                                                  peerName:[UIDevice currentDevice].name
-                                                      mode:MCTransceiverModeBrowser];
-}
-
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self setupUI];
-    [self configureTransceiver];
 }
 
--(void)viewDidAppear:(BOOL)animated
-{
+- (void)viewWillDisappear:(BOOL)animated {
+	[[STFileTransferModel shareInstant] removeObserver:self forKeyPath:@"connectStatus"];
+}
+
+- (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
-    [self.transceiver startBrowsing];
+	[[STFileTransferModel shareInstant] addObserver:self forKeyPath:@"connectStatus" options:NSKeyValueObservingOptionNew context:NULL];
+    [[STFileTransferModel shareInstant].transceiver startBrowsing];
 }
 
 - (void)leftBarButtonItemClick {
     [self.navigationController popViewControllerAnimated:YES];
+}
+
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSString *,id> *)change context:(void *)context {
+	if ([keyPath isEqualToString:@"connectStatus"]) {
+		dispatch_async(dispatch_get_main_queue(), ^{
+			if ([STFileTransferModel shareInstant].connectStatus == MCPeerConnnectStatusConnected) {
+				if (self.navigationController.topViewController != self) {
+					STFileTransferViewController *fileTransferViewController = [[STFileTransferViewController alloc] init];
+					[self.navigationController pushViewController:fileTransferViewController animated:YES];
+				}
+			}
+		});
+		
+	}
 }
 
 #pragma mark - MCTransceiverDelegate

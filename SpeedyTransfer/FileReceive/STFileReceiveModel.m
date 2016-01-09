@@ -53,7 +53,6 @@ HT_DEF_SINGLETON(STFileReceiveModel, shareInstant);
                                                       peerName:[UIDevice currentDevice].name
                                                           mode:MCTransceiverModeAdvertiser];
         
-        _reachability = [Reachability reachabilityForLocalWiFi];
     }
     
     return self;

@@ -69,7 +69,7 @@ static NSString *cellIdentifier = @"CellIdentifier";
     [continueSendButton addTarget:self action:@selector(continueSendButtonClick) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:continueSendButton];
     
-    _model = [[STFileTransferModel alloc] init];
+    _model = [STFileTransferModel shareInstant];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
