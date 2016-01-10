@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "STFileTransferInfo.h"
 
 @class PHAsset;
 @class PHFetchResult;
@@ -19,6 +20,11 @@
 @property (nonatomic) NSInteger selectedFilesCount;
 
 - (void)removeAllSelectedFiles;
+
+// 开始发送选择好的文件
+- (void)startSendFile;
+@property (nonatomic, strong) STFileTransferInfo *currentTransferInfo;
+@property (nonatomic) BOOL sendingFile;
 
 // 图片
 @property (nonatomic, strong, readonly) NSArray *selectedAssetsArr;

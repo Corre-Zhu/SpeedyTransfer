@@ -12,6 +12,8 @@
 #import "STFileSelectionPopupView.h"
 #import "STWifiNotConnectedPopupView.h"
 #import "STTransferInstructionViewController.h"
+#import "STFileTransferModel.h"
+#import "STContactInfo.h"
 
 @interface STFileSelectionTabViewController ()
 {
@@ -20,6 +22,8 @@
     UIButton *transferButton;
     STFileSelectionPopupView *popupView;
     STWifiNotConnectedPopupView *wifiNotConnectedPopupView;
+    
+    NSTimeInterval lastTimeInterval;
 }
 
 @end
@@ -101,6 +105,146 @@
         STTransferInstructionViewController *transferIns = [[STTransferInstructionViewController alloc] init];
         [self.navigationController pushViewController:transferIns animated:YES];
     }
+}
+
+#pragma mark - Send file
+
+- (void)startSendFile {
+    self.sendingFile = YES;
+    
+    // 发送图片
+    if (self.selectedAssetsArr.count > 0) {
+        PHAsset *sendAsset = self.fileSelectionTabController.selectedAssetsArr.firstObject;
+        [self.fileSelectionTabController removeAsset:sendAsset];
+        [self.fileSelectionTabController reloadAssetsTableView];
+        [[PHImageManager defaultManager] requestImageDataForAsset:sendAsset options:nil resultHandler:^(NSData * _Nullable imageData, NSString * _Nullable dataUTI, UIImageOrientation orientation, NSDictionary * _Nullable info) {
+            NSURL *url = [info objectForKey:@"PHImageFileURLKey"];
+            NSString *path = [[ZZPath picturePath] stringByAppendingPathComponent:[url.absoluteString lastPathComponent]];
+            [imageData writeToFile:path atomically:YES];
+            self.currentTransferInfo = [[STFileTransferModel shareInstant] saveAssetWithIdentifier:sendAsset.localIdentifier fileName:[url.absoluteString lastPathComponent] length:imageData.length forKey:nil];
+            
+            __weak STFileTransferInfo *weakInfo = _currentTransferInfo;
+            
+            lastTimeInterval = [[NSDate date] timeIntervalSince1970];
+            NSProgress *progress = [[STFileTransferModel shareInstant].transceiver sendResourceAtURL:[NSURL fileURLWithPath:path] withName:[url.absoluteString lastPathComponent] toPeer:[STFileTransferModel shareInstant].transceiver.connectedPeers.firstObject withCompletionHandler:^(NSError * _Nullable error) {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [progress removeObserver:self forKeyPath:@"fractionCompleted" context:NULL];
+                    if (!error) {
+                        weakInfo.status = STFileTransferStatusSucceed;
+                        [[STFileTransferModel shareInstant] updateStatus:STFileTransferStatusSucceed rate:weakInfo.sizePerSecond withIdentifier:weakInfo.identifier];
+                    } else {
+                        weakInfo.status = STFileTransferStatusFailed;
+                        [[STFileTransferModel shareInstant] updateStatus:STFileTransferStatusFailed rate:weakInfo.sizePerSecond withIdentifier:weakInfo.identifier];
+                    }
+                    
+                    [self startSendFile];
+                });
+            }];
+            
+            [progress addObserver:self forKeyPath:@"fractionCompleted" options:NSKeyValueObservingOptionNew context:NULL];
+        }];
+        return;
+    }
+    
+    // 发送音乐
+    if (self.fileSelectionTabController.selectedMusicsArr.count > 0) {
+        STMusicInfo *musicInfo = self.fileSelectionTabController.selectedMusicsArr.firstObject;
+        [self.fileSelectionTabController removeMusic:musicInfo];
+        [self.fileSelectionTabController reloadMusicsTableView];
+        
+        NSURL *url = musicInfo.url;
+        AVURLAsset *songAsset = [AVURLAsset URLAssetWithURL:url options:nil];
+        
+        AVAssetExportSession *exporter = [[AVAssetExportSession alloc]
+                                          initWithAsset: songAsset
+                                          presetName: AVAssetExportPresetAppleM4A];
+        
+        exporter.outputFileType = @"com.apple.m4a-audio";
+        
+        NSString *exportFile = [[ZZPath documentPath] stringByAppendingPathComponent:@"31412313.m4a"];
+        
+        NSError *error1;
+        
+        if([[NSFileManager defaultManager] fileExistsAtPath:exportFile])
+        {
+            [[NSFileManager defaultManager] removeItemAtPath:exportFile error:&error1];
+        }
+        
+        NSURL* exportURL = [NSURL fileURLWithPath:exportFile];
+        
+        exporter.outputURL = exportURL;
+        
+        // do the export
+        [exporter exportAsynchronouslyWithCompletionHandler:^
+         {
+             NSData *data1 = [NSData dataWithContentsOfFile:exportFile];
+             int exportStatus = exporter.status;
+             
+             switch (exportStatus) {
+                     
+                 case AVAssetExportSessionStatusFailed: {
+                     // log error to text view
+                     NSError *exportError = exporter.error;
+                     
+                     NSLog (@"AVAssetExportSessionStatusFailed: %@", exportError);
+                     break;
+                 }
+                     
+                 case AVAssetExportSessionStatusCompleted: {
+                     
+                     NSLog (@"AVAssetExportSessionStatusCompleted");
+                     
+                     [[STFileTransferModel shareInstant].transceiver sendResourceAtURL:exportURL withName:@"sdfsdfsdf.sdf" toPeer:[STFileTransferModel shareInstant].transceiver.connectedPeers.firstObject withCompletionHandler:^(NSError * _Nullable error) {
+                         dispatch_async(dispatch_get_main_queue(), ^{
+                             [self startSendFile];
+                         });
+                     }];
+                     break;
+                 }
+                 default:
+                 { NSLog (@"didn't get export status");
+                     break;
+                 }
+             }
+             
+         }];
+        
+        return;
+    }
+    
+    // 发送联系人
+    if (self.fileSelectionTabController.selectedContactsArr.count > 0) {
+        STContactInfo *contact = self.fileSelectionTabController.selectedContactsArr.firstObject;
+        NSData *data = [contact.vcardString dataUsingEncoding:NSUTF8StringEncoding];
+        if (data.length > 0) {
+            STFileTransferInfo *info = [[STFileTransferModel shareInstant] setContactInfo:contact forKey:nil];
+            NSTimeInterval start = [[NSDate date] timeIntervalSince1970];
+            [[STFileTransferModel shareInstant].transceiver sendUnreliableData:data toPeers:[STFileTransferModel shareInstant].transceiver.connectedPeers completion:^(NSError *error) {
+                if (error) {
+                    NSLog(@"%@", error);
+                    info.status = STFileTransferStatusFailed;
+                    [[STFileTransferModel shareInstant] updateStatus:info.status rate:0 withIdentifier:info.identifier];
+                } else {
+                    NSTimeInterval end = [[NSDate date] timeIntervalSince1970];
+                    info.sizePerSecond = 1 / (end - start) * data.length;
+                    info.status = STFileTransferStatusSucceed;
+                    info.progress = 1.0f;
+                    [[STFileTransferModel shareInstant] updateStatus:info.status rate:info.sizePerSecond withIdentifier:info.identifier];
+                }
+                [self.fileSelectionTabController removeContact:contact];
+                [self.fileSelectionTabController reloadContactsTableView];
+                [self startSendFile];
+            }];
+        } else {
+            [self.fileSelectionTabController removeContact:contact];
+            [self.fileSelectionTabController reloadContactsTableView];
+            [self startSendFile];
+        }
+        
+        return;
+    }
+    
+    self.sendingFile = NO;
 }
 
 - (void)reloadAssetsTableView {

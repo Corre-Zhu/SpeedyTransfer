@@ -151,7 +151,7 @@
 	if ([keyPath isEqualToString:@"connectStatus"]) {
 		dispatch_async(dispatch_get_main_queue(), ^{
 			if ([STFileTransferModel shareInstant].connectStatus == MCPeerConnnectStatusConnected) {
-				if (self.navigationController.topViewController != self) {
+				if (self.navigationController.topViewController == self) {
 					STFileTransferViewController *fileTransferViewController = [[STFileTransferViewController alloc] init];
 					[self.navigationController pushViewController:fileTransferViewController animated:YES];
 				}
@@ -160,77 +160,5 @@
 		
 	}
 }
-
-#pragma mark - MCTransceiverDelegate
-
--(void)didFindPeer:(MCPeerID *)peerID
-{
-    NSLog(@"----> did find peer %@", peerID);
-}
-
--(void)didLosePeer:(MCPeerID *)peerID
-{
-    NSLog(@"<---- did lose peer %@", peerID);
-}
-
-- (BOOL)connectWithPeer:(MCPeerID *)peerId {
-    return !_connected;
-}
-
--(void)didReceiveInvitationFromPeer:(MCPeerID *)peerID
-{
-    NSLog(@"!!!!! did get invite from peer %@", peerID);
-}
-
--(void)didConnectToPeer:(MCPeerID *)peerID
-{
-    NSLog(@">>>>> did connect to peer %@", peerID);
-    _connected = YES;
-    [self.transceiver stopBrowsing];
-
-    dispatch_async(dispatch_get_main_queue(), ^{
-        if (!fileTransferViewController) {
-            fileTransferViewController = [[STFileTransferViewController alloc] init];
-        }
-        
-        if (![self.navigationController.viewControllers containsObject:fileTransferViewController]) {
-            fileTransferViewController.transceiver = self.transceiver;
-            [self.navigationController pushViewController:fileTransferViewController animated:YES];
-        }
-    });
-}
-
--(void)didDisconnectFromPeer:(MCPeerID *)peerID
-{
-    NSLog(@"<<<<< did disconnect from peer %@", peerID);
-    _connected = NO;
-    [self.transceiver startBrowsing];
-}
-
--(void)didReceiveData:(NSData *)data fromPeer:(MCPeerID *)peerID
-{
-    NSLog(@"##### did receive data %@", peerID);
-}
-
--(void)didStartAdvertising
-{
-    NSLog(@"+++++ did start advertising");
-}
-
--(void)didStopAdvertising
-{
-    NSLog(@"----- did stop advertising");
-}
-
--(void)didStartBrowsing
-{
-    NSLog(@"((((( did start browsing");
-}
-
--(void)didStopBrowsing
-{
-    NSLog(@"))))) did stop browsing");
-}
-
 
 @end
