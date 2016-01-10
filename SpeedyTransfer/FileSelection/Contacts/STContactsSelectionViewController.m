@@ -56,6 +56,7 @@ static NSString *headerIdentifier = @"ContactsHeaderView";
     NSInteger section = sender.tag;
     NSDictionary *dic = [_contactModels objectAtIndex:section];
     if (!sender.selected) {
+        [self.fileSelectionTabController removeContacts:dic.allValues.firstObject];
         [self.fileSelectionTabController addContacts:dic.allValues.firstObject];
         sender.selected = YES;
     } else {
