@@ -148,8 +148,13 @@ static NSString *PopupCellIdentifier = @"PopupCellIdentifier";
 }
 
 - (void)reloadTitle {
-    if (_dataSource.count > 0) {
-        titleLabel.text = [NSString stringWithFormat:@"已选择%ld个文件，共%@", _dataSource.count, [NSString formatSize:totalSize]];
+    NSInteger count = 0;
+    for (NSArray *arr in _dataSource) {
+        count += arr.count;
+    }
+    
+    if (count > 0) {
+        titleLabel.text = [NSString stringWithFormat:@"已选择%ld个文件，共%@", count, [NSString formatSize:totalSize]];
     } else {
         titleLabel.text = [NSString stringWithFormat:@"已选择0个文件"];
     }
@@ -165,7 +170,10 @@ static NSString *PopupCellIdentifier = @"PopupCellIdentifier";
     caculating = YES;
     __block NSInteger caculatingIndex = 0;
     __block double size = 0.0f;
-    NSArray *tempDataSource = [NSArray arrayWithArray:_dataSource];
+    NSMutableArray *tempDataSource = [NSMutableArray array];
+    for (NSArray *arr in self.dataSource) {
+        [tempDataSource addObjectsFromArray:arr];
+    }
     for (id object in tempDataSource) {
         if ([object isKindOfClass:[PHAsset class]]) {
             PHAsset *asset = object;
@@ -213,7 +221,11 @@ static NSString *PopupCellIdentifier = @"PopupCellIdentifier";
 
 - (void)setDataSource:(NSMutableArray *)dataSource {
     _dataSource = dataSource;
-    titleLabel.text = [NSString stringWithFormat:@"已选择%ld个文件", _dataSource.count];
+    NSInteger count = 0;
+    for (NSArray *arr in _dataSource) {
+        count += arr.count;
+    }
+    titleLabel.text = [NSString stringWithFormat:@"已选择%ld个文件", count];
     [self.tableView reloadData];
     
     [caculatingQueue queueBlock:^{
@@ -254,32 +266,40 @@ static NSString *PopupCellIdentifier = @"PopupCellIdentifier";
     [self reloadTitle];
 }
 
-- (void)rowDeleteButtonClick:(UIButton *)sender {
+- (NSIndexPath *)indexPathForEvent:(id)event{
+    NSSet *touches = [event allTouches];
+    UITouch *touch = [touches anyObject];
+    CGPoint currentTouchPosition = [touch locationInView:self.tableView];
+    return [self.tableView indexPathForRowAtPoint:currentTouchPosition];
+}
+
+- (void)rowDeleteButtonClick:(UIButton *)sender event:(UIEvent *)event {
     if (caculating) {
         return;
     }
     
-    NSInteger tag = sender.tag;
-    if (_dataSource.count > tag) {
-        id object = [_dataSource objectAtIndex:tag];
-        [self.dataSource removeObject:object];
+    NSIndexPath *indexPath = [self indexPathForEvent:event];
+    if (_dataSource.count > indexPath.section) {
+        NSMutableArray *mutableArr = _dataSource[indexPath.section];
+        id object = [mutableArr objectAtIndex:indexPath.row];
+        [mutableArr removeObject:object];
         if ([object isKindOfClass:[PHAsset class]]) {
             PHAsset *asset = object;
             if (asset.mediaType == PHAssetMediaTypeImage) {
-                [self.tabViewController removeAsset:asset];
+                [self.tabViewController configToolView];
                 [self.tabViewController reloadAssetsTableView];
             } else {
-                [self.tabViewController removeVideoAsset:asset];
+                [self.tabViewController configToolView];
                 [self.tabViewController reloadVideosTableView];
             }
             [self removeAsset:asset];
         } else if ([object isKindOfClass:[STMusicInfo class]]) {
-            [self.tabViewController removeMusic:object];
+            [self.tabViewController configToolView];
             [self.tabViewController reloadMusicsTableView];
             totalSize -= ((STMusicInfo *)object).fileSize;
             [self reloadTitle];
         } else if ([object isKindOfClass:[STContactInfo class]]) {
-            [self.tabViewController removeContact:object];
+            [self.tabViewController configToolView];
             [self.tabViewController reloadContactsTableView];
             totalSize -= ((STContactInfo *)object).size;
             [self reloadTitle];
@@ -290,17 +310,20 @@ static NSString *PopupCellIdentifier = @"PopupCellIdentifier";
 
 #pragma mark - Table view data source
 
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     return _dataSource.count;
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    return [_dataSource[section] count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     STFileSelectionPopupCell *cell = [tableView dequeueReusableCellWithIdentifier:PopupCellIdentifier forIndexPath:indexPath];
     if (![cell.deleteButton.allTargets containsObject:self]) {
-        [cell.deleteButton addTarget:self action:@selector(rowDeleteButtonClick:) forControlEvents:UIControlEventTouchUpInside];
+        [cell.deleteButton addTarget:self action:@selector(rowDeleteButtonClick: event:) forControlEvents:UIControlEventTouchUpInside];
     }
-    cell.deleteButton.tag = indexPath.row;
-    id object = [_dataSource objectAtIndex:indexPath.row];
+    id object = [_dataSource[indexPath.section] objectAtIndex:indexPath.row];
     if ([object isKindOfClass:[PHAsset class]]) {
         PHAsset *asset = object;
         NSInteger currentTag = cell.tag + 1;

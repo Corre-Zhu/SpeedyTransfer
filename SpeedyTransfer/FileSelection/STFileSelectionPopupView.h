@@ -16,5 +16,6 @@
 @property (nonatomic, weak) STFileSelectionTabViewController *tabViewController;
 
 - (void)showInView:(UIView *)view;
+- (void)reloadData;
 
 @end

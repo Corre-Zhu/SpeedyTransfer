@@ -10,6 +10,7 @@
 
 @interface STPictureCollectionHeaderInfo : NSObject
 
+@property (nonatomic, strong) NSString *localIdentifier; // collection的唯一标识
 @property (nonatomic, strong) NSString *title;
 @property (nonatomic, strong) UIImage *placeholdImage;
 @property (nonatomic, strong) PHFetchResult *fetchResult;

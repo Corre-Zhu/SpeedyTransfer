@@ -26,6 +26,8 @@
     NSTimeInterval lastTimeInterval;
 }
 
+@property (nonatomic) NSInteger selectedFilesCount;
+
 @end
 
 @implementation STFileSelectionTabViewController
@@ -67,10 +69,57 @@
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reachabilityStatusChange:) name:kHTReachabilityChangedNotification object:nil];
 }
 
+- (void)configToolView {
+    NSInteger count = [self selectedFilesCount];
+    if (count > 0) {
+        [transferButton setTitle:[NSString stringWithFormat:@"%@ (%@)", NSLocalizedString(@"全部传输", nil), @(count)] forState:UIControlStateNormal];
+        toolView.hidden = NO;
+    } else {
+        [transferButton setTitle:NSLocalizedString(@"全部传输", nil) forState:UIControlStateNormal];
+        toolView.hidden = YES;
+    }
+    
+    [transferButton sizeToFit];
+    CGFloat width = MAX(82.0f, transferButton.width);
+    toolView.width = 93.0f + width;
+    toolView.left = (IPHONE_WIDTH - toolView.width) / 2.0f;
+    transferButton.width = width;
+}
+
+- (void)photoLibraryDidChange {
+    if (popupView.superview) {
+        [popupView removeFromSuperview];
+    }
+}
+
+- (void)leftBarButtonItemClick {
+    [self.navigationController popViewControllerAnimated:YES];
+}
+
 - (void)deleteButtonClick {
+    NSMutableArray *array = [NSMutableArray array];
+    
+    for (NSDictionary *dic in self.selectedAssetsArr) {
+        if ([dic.allValues.firstObject count] > 0) {
+            [array addObject:dic.allValues.firstObject];
+        }
+    }
+    
+    if (self.selectedMusicsArr.count > 0) {
+        [array addObject:self.selectedMusicsArr];
+    }
+    
+    if (self.selectedVideoAssetsArr.count > 0) {
+        [array addObject:self.selectedVideoAssetsArr];
+    }
+    
+    if (self.selectedContactsArr.count > 0) {
+        [array addObject:self.selectedContactsArr];
+    }
+    
     popupView = [[STFileSelectionPopupView alloc] init];
     popupView.tabViewController = self;
-    popupView.dataSource = [NSMutableArray arrayWithArray:self.selectedFilesArray];
+    popupView.dataSource = array;
     [popupView showInView:self.navigationController.view];
 }
 
@@ -109,19 +158,31 @@
 
 #pragma mark - Send file
 
+- (PHAsset *)firstPhotoAsset {
+    for (NSDictionary *dic in _selectedAssetsArr) {
+        NSMutableArray *arr = [dic.allValues firstObject];
+        if (arr.count > 0) {
+            PHAsset *asset = arr.firstObject;
+            [arr removeObject:asset];
+            return asset;
+        }
+    }
+    
+    return nil;
+}
+
 - (void)startSendFile {
     self.sendingFile = YES;
     
     // 发送图片
-    if (self.selectedAssetsArr.count > 0) {
-        PHAsset *sendAsset = self.fileSelectionTabController.selectedAssetsArr.firstObject;
-        [self.fileSelectionTabController removeAsset:sendAsset];
+    PHAsset *photoAsset = [self firstPhotoAsset];
+    if (photoAsset) {
         [self.fileSelectionTabController reloadAssetsTableView];
-        [[PHImageManager defaultManager] requestImageDataForAsset:sendAsset options:nil resultHandler:^(NSData * _Nullable imageData, NSString * _Nullable dataUTI, UIImageOrientation orientation, NSDictionary * _Nullable info) {
+        [[PHImageManager defaultManager] requestImageDataForAsset:photoAsset options:nil resultHandler:^(NSData * _Nullable imageData, NSString * _Nullable dataUTI, UIImageOrientation orientation, NSDictionary * _Nullable info) {
             NSURL *url = [info objectForKey:@"PHImageFileURLKey"];
             NSString *path = [[ZZPath picturePath] stringByAppendingPathComponent:[url.absoluteString lastPathComponent]];
             [imageData writeToFile:path atomically:YES];
-            self.currentTransferInfo = [[STFileTransferModel shareInstant] saveAssetWithIdentifier:sendAsset.localIdentifier fileName:[url.absoluteString lastPathComponent] length:imageData.length forKey:nil];
+            self.currentTransferInfo = [[STFileTransferModel shareInstant] saveAssetWithIdentifier:photoAsset.localIdentifier fileName:[url.absoluteString lastPathComponent] length:imageData.length forKey:nil];
             
             __weak STFileTransferInfo *weakInfo = _currentTransferInfo;
             
@@ -247,6 +308,8 @@
     self.sendingFile = NO;
 }
 
+#pragma mark - Reload table view
+
 - (void)reloadAssetsTableView {
     UICollectionViewController *viewC = self.viewControllers.firstObject;
     [viewC.collectionView reloadData];
@@ -267,29 +330,7 @@
     [viewC.tableView reloadData];
 }
 
-- (void)configToolView {
-    NSInteger count = [self selectedFilesCount];
-    if (count > 0) {
-        [transferButton setTitle:[NSString stringWithFormat:@"%@ (%@)", NSLocalizedString(@"全部传输", nil), @(count)] forState:UIControlStateNormal];
-        toolView.hidden = NO;
-    } else {
-        [transferButton setTitle:NSLocalizedString(@"全部传输", nil) forState:UIControlStateNormal];
-        toolView.hidden = YES;
-    }
-    
-    [transferButton sizeToFit];
-    CGFloat width = MAX(82.0f, transferButton.width);
-    toolView.width = 93.0f + width;
-    toolView.left = (IPHONE_WIDTH - toolView.width) / 2.0f;
-    transferButton.width = width;
-}
-
-- (void)leftBarButtonItemClick {
-    [self.navigationController popViewControllerAnimated:YES];
-}
-
 - (void)removeAllSelectedFiles {
-    _selectedFilesArray = nil;
     _selectedAssetsArr = nil;
     _selectedMusicsArr = nil;
     _selectedVideoAssetsArr = nil;
@@ -300,7 +341,7 @@
 // 选中的总文件个数
 - (NSInteger)selectedFilesCount {
     NSUInteger count = 0;
-    count += _selectedAssetsArr.count;
+    count += [self selectedPhotosCount];
     
     count += _selectedMusicsArr.count;
     
@@ -311,97 +352,159 @@
     return count;
 }
 
-- (NSArray *)selectedFilesArray {
-    NSMutableArray *array = [NSMutableArray array];
-    [array addObjectsFromArray:[self selectedAssetsArr]];
-    [array addObjectsFromArray:self.selectedMusicsArr];
-    [array addObjectsFromArray:self.selectedVideoAssetsArr];
-    [array addObjectsFromArray:self.selectedContactsArr];
-    
-    return [NSArray arrayWithArray:array];
-}
+#pragma mark - Picture
 
-- (void)addAsset:(PHAsset *)asset {
-    if (!asset) {
+- (void)addAsset:(PHAsset *)asset inCollection:(NSString *)collection {
+    if (!asset || !collection) {
         return;
     }
     
-    @autoreleasepool {
-        if (!_selectedAssetsArr) {
-            _selectedAssetsArr = [NSArray arrayWithObject:asset];
-        } else {
-            if (![_selectedAssetsArr containsObject:asset]) {
-                _selectedAssetsArr = [_selectedAssetsArr arrayByAddingObject:asset];
+    if (!_selectedAssetsArr) {
+        _selectedAssetsArr = [NSMutableArray array];
+    }
+    
+    BOOL collectionExist = NO;
+    for (NSDictionary *dic in _selectedAssetsArr) {
+        if ([dic.allKeys.firstObject isEqualToString:collection]) {
+            NSMutableArray *arr = dic.allValues.firstObject;
+            if (![arr containsObject:asset]) {
+                [arr addObject:asset];
             }
+            collectionExist = YES;
+            break;
         }
     }
     
+    if (!collectionExist) {
+        [_selectedAssetsArr addObject:@{collection: [NSMutableArray arrayWithObject:asset]}];
+    }
+    
+    
     [self configToolView];
 }
 
-- (void)addAssets:(NSArray *)assetss {
-    if (!assetss) {
+- (void)addAssets:(NSArray *)assets inCollection:(NSString *)collection {
+    if (!assets || !collection) {
         return;
     }
     
-    @autoreleasepool {
-        if (!_selectedAssetsArr) {
-            _selectedAssetsArr = [NSArray arrayWithArray:assetss];
-        } else {
-            _selectedAssetsArr = [_selectedAssetsArr arrayByAddingObjectsFromArray:assetss];
+    if (!_selectedAssetsArr) {
+        _selectedAssetsArr = [NSMutableArray array];
+    }
+    
+    BOOL collectionExist = NO;
+    for (NSDictionary *dic in _selectedAssetsArr) {
+        if ([dic.allKeys.firstObject isEqualToString:collection]) {
+            NSMutableArray *arr = dic.allValues.firstObject;
+            [arr addObjectsFromArray:assets];
+            collectionExist = YES;
+            break;
         }
     }
     
+    if (!collectionExist) {
+        [_selectedAssetsArr addObject:@{collection: [NSMutableArray arrayWithArray:assets]}];
+    }
+    
+    
     [self configToolView];
 }
 
-- (void)removeAsset:(PHAsset *)asset {
-    if (!asset) {
+- (void)removeAsset:(PHAsset *)asset inCollection:(NSString *)collection {
+    if (!asset || !collection) {
         return;
     }
     
-    @autoreleasepool {
-        if ([_selectedAssetsArr containsObject:asset]) {
-            NSMutableArray *tempArr = [NSMutableArray arrayWithArray:_selectedAssetsArr];
-            [tempArr removeObject:asset];
-            _selectedAssetsArr = [NSArray arrayWithArray:tempArr];
+    for (NSDictionary *dic in _selectedAssetsArr) {
+        if ([dic.allKeys.firstObject isEqualToString:collection]) {
+            NSMutableArray *arr = dic.allValues.firstObject;
+            [arr removeObject:asset];
+            [self configToolView];
+            return;
         }
     }
     
-    [self configToolView];
 }
 
-- (void)removeAssets:(NSArray *)assets {
-    if (!assets) {
+- (void)removeAssets:(NSArray *)assets inCollection:(NSString *)collection {
+    if (!assets || !collection) {
         return;
     }
     
-    @autoreleasepool {
-        NSMutableArray *tempArr = [NSMutableArray arrayWithArray:_selectedAssetsArr];
-        [tempArr removeObjectsInArray:assets];
-        _selectedAssetsArr = [NSArray arrayWithArray:tempArr];
+    for (NSDictionary *dic in _selectedAssetsArr) {
+        if ([dic.allKeys.firstObject isEqualToString:collection]) {
+            NSMutableArray *arr = dic.allValues.firstObject;
+            [arr removeObjectsInArray:assets];
+            [self configToolView];
+            return;
+        }
     }
-    
-    [self configToolView];
 }
 
-- (BOOL)isSelectedWithAsset:(PHAsset *)asset {
-    return [_selectedAssetsArr containsObject:asset];
+- (void)removeAllAssetsInCollection:(NSString *)collection {
+    if (!collection) {
+        return;
+    }
+    
+    for (NSDictionary *dic in _selectedAssetsArr) {
+        if ([dic.allKeys.firstObject isEqualToString:collection]) {
+            NSMutableArray *arr = dic.allValues.firstObject;
+            [arr removeAllObjects];
+            [self configToolView];
+            return;
+        }
+    }
 }
+
+- (BOOL)isSelectedWithAsset:(PHAsset *)asset inCollection:(NSString *)collection{
+    if (!asset || !collection) {
+        return NO;
+    }
+    
+    for (NSDictionary *dic in _selectedAssetsArr) {
+        if ([dic.allKeys.firstObject isEqualToString:collection]) {
+            NSMutableArray *arr = dic.allValues.firstObject;
+            return [arr containsObject:asset];
+        }
+    }
+    
+    return NO;
+}
+
+- (NSInteger)selectedPhotosCount {
+    NSInteger count = 0;
+    for (NSDictionary *dic in _selectedAssetsArr) {
+        count += [dic.allValues.firstObject count];
+    }
+    
+    return count;
+}
+
+- (NSInteger)selectedPhotosCountInCollection:(NSString *)collection {
+    NSInteger count = 0;
+    for (NSDictionary *dic in _selectedAssetsArr) {
+        if ([dic.allKeys.firstObject isEqualToString:collection]) {
+            count += [dic.allValues.firstObject count];
+            break;
+        }
+    }
+    
+    return count;
+}
+
+#pragma mark - Music
 
 - (void)addMusic:(STMusicInfo *)music {
     if (!music) {
         return;
     }
     
-    @autoreleasepool {
-        if (!_selectedMusicsArr) {
-            _selectedMusicsArr = [NSArray arrayWithObject:music];
-        } else {
-            if (![_selectedMusicsArr containsObject:music]) {
-                _selectedMusicsArr = [_selectedMusicsArr arrayByAddingObject:music];
-            }
-        }
+    if (!_selectedMusicsArr) {
+        _selectedMusicsArr = [NSMutableArray array];
+    }
+    
+    if (![_selectedMusicsArr containsObject:music]) {
+        [_selectedMusicsArr addObject:music];
     }
     
     [self configToolView];
@@ -412,13 +515,11 @@
         return;
     }
     
-    @autoreleasepool {
-        if (!_selectedMusicsArr) {
-            _selectedMusicsArr = [NSArray arrayWithArray:musics];
-        } else {
-            _selectedMusicsArr = [_selectedMusicsArr arrayByAddingObjectsFromArray:musics];
-        }
+    if (!_selectedMusicsArr) {
+        _selectedMusicsArr = [NSMutableArray array];
     }
+    
+    [_selectedMusicsArr addObjectsFromArray:musics];
     
     [self configToolView];
 }
@@ -428,12 +529,8 @@
         return;
     }
     
-    @autoreleasepool {
-        if ([_selectedMusicsArr containsObject:music]) {
-            NSMutableArray *tempArr = [NSMutableArray arrayWithArray:_selectedMusicsArr];
-            [tempArr removeObject:music];
-            _selectedMusicsArr = [NSArray arrayWithArray:tempArr];
-        }
+    if ([_selectedMusicsArr containsObject:music]) {
+        [_selectedMusicsArr removeObject:music];
     }
     
     [self configToolView];
@@ -444,11 +541,7 @@
         return;
     }
     
-    @autoreleasepool {
-        NSMutableArray *tempArr = [NSMutableArray arrayWithArray:_selectedMusicsArr];
-        [tempArr removeObjectsInArray:musics];
-        _selectedMusicsArr = [NSArray arrayWithArray:tempArr];
-    }
+    [_selectedMusicsArr removeObjectsInArray:musics];
     
     [self configToolView];
 }
@@ -472,17 +565,12 @@
         return;
     }
     
-    @autoreleasepool {
-        if (!_selectedVideoAssetsArr) {
-            _selectedVideoAssetsArr = [NSArray arrayWithObject:asset];
-        } else {
-            NSMutableArray *tempArr = [NSMutableArray arrayWithArray:_selectedVideoAssetsArr];
-            if (![tempArr containsObject:asset]) {
-                [tempArr addObject:asset];
-                _selectedVideoAssetsArr = [NSArray arrayWithArray:tempArr];
-            }
-        }
-       
+    if (!_selectedVideoAssetsArr) {
+        _selectedVideoAssetsArr = [NSMutableArray array];
+    }
+    
+    if (![_selectedVideoAssetsArr containsObject:asset]) {
+        [_selectedVideoAssetsArr addObject:asset];
     }
     
     [self configToolView];
@@ -493,16 +581,7 @@
         return;
     }
     
-    @autoreleasepool {
-        if (_selectedVideoAssetsArr) {
-            NSMutableArray *tempArr = [NSMutableArray arrayWithArray:_selectedVideoAssetsArr];
-            if ([tempArr containsObject:asset]) {
-                [tempArr removeObject:asset];
-                _selectedVideoAssetsArr = [NSArray arrayWithArray:tempArr];
-            }
-        }
-        
-    }
+    [_selectedVideoAssetsArr removeObject:asset];
     
     [self configToolView];
 }
@@ -516,14 +595,12 @@
         return;
     }
     
-    @autoreleasepool {
-        if (!_selectedContactsArr) {
-            _selectedContactsArr = [NSArray arrayWithObject:contact];
-        } else {
-            if (![_selectedContactsArr containsObject:contact]) {
-                _selectedContactsArr = [_selectedContactsArr arrayByAddingObject:contact];
-            }
-        }
+    if (!_selectedContactsArr) {
+        _selectedContactsArr = [NSMutableArray array];
+    }
+    
+    if (![_selectedContactsArr containsObject:contact]) {
+        [_selectedContactsArr addObject:contact];
     }
     
     [self configToolView];
@@ -534,13 +611,11 @@
         return;
     }
     
-    @autoreleasepool {
-        if (!_selectedContactsArr) {
-            _selectedContactsArr = [NSArray arrayWithArray:contacts];
-        } else {
-            _selectedContactsArr = [_selectedContactsArr arrayByAddingObjectsFromArray:contacts];
-        }
+    if (!_selectedContactsArr) {
+        _selectedContactsArr = [NSMutableArray array];
     }
+    
+    [_selectedContactsArr addObjectsFromArray:contacts];
     
     [self configToolView];
 }
@@ -550,13 +625,7 @@
         return;
     }
     
-    @autoreleasepool {
-        if ([_selectedContactsArr containsObject:contact]) {
-            NSMutableArray *tempArr = [NSMutableArray arrayWithArray:_selectedContactsArr];
-            [tempArr removeObject:contact];
-            _selectedContactsArr = [NSArray arrayWithArray:tempArr];
-        }
-    }
+    [_selectedContactsArr removeObject:contact];
     
     [self configToolView];
 }
@@ -566,11 +635,7 @@
         return;
     }
     
-    @autoreleasepool {
-        NSMutableArray *tempArr = [NSMutableArray arrayWithArray:_selectedContactsArr];
-        [tempArr removeObjectsInArray:contacts];
-        _selectedContactsArr = [NSArray arrayWithArray:tempArr];
-    }
+    [_selectedContactsArr removeObjectsInArray:contacts];
     
     [self configToolView];
 }

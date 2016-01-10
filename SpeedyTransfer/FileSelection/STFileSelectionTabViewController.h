@@ -16,9 +16,6 @@
 
 @interface STFileSelectionTabViewController : UITabBarController
 
-@property (nonatomic, strong) NSArray *selectedFilesArray;
-@property (nonatomic) NSInteger selectedFilesCount;
-
 - (void)removeAllSelectedFiles;
 
 // 开始发送选择好的文件
@@ -27,18 +24,19 @@
 @property (nonatomic) BOOL sendingFile;
 
 // 图片
-@property (nonatomic, strong, readonly) NSArray *selectedAssetsArr;
+@property (nonatomic, strong, readonly) NSMutableArray *selectedAssetsArr;
+@property (nonatomic) NSInteger selectedPhotosCount;
+- (NSInteger)selectedPhotosCountInCollection:(NSString *)collection;
 
-- (void)addAsset:(PHAsset *)asset;
-- (void)addAssets:(NSArray *)assetss;
-- (void)removeAsset:(PHAsset *)asset;
-- (void)removeAssets:(NSArray *)assets;
-- (BOOL)isSelectedWithAsset:(PHAsset *)asset;
-
-- (void)reloadAssetsTableView;
+- (void)addAsset:(PHAsset *)asset inCollection:(NSString *)collection;
+- (void)addAssets:(NSArray *)assets inCollection:(NSString *)collection;
+- (void)removeAsset:(PHAsset *)asset inCollection:(NSString *)collection;
+- (void)removeAssets:(NSArray *)assets inCollection:(NSString *)collection;
+- (void)removeAllAssetsInCollection:(NSString *)collection;
+- (BOOL)isSelectedWithAsset:(PHAsset *)asset inCollection:(NSString *)collection;
 
 // 音乐
-@property (nonatomic, strong, readonly) NSArray *selectedMusicsArr;
+@property (nonatomic, strong, readonly) NSMutableArray *selectedMusicsArr;
 
 - (void)addMusic:(STMusicInfo *)music;
 - (void)addMusics:(NSArray *)musics;
@@ -47,19 +45,15 @@
 - (BOOL)isSelectedWithMusic:(STMusicInfo *)music;
 - (BOOL)isSelectedWithMusics:(NSArray *)musics;
 
-- (void)reloadMusicsTableView;
-
 // 视频
-@property (nonatomic, strong, readonly) NSArray *selectedVideoAssetsArr;
+@property (nonatomic, strong, readonly) NSMutableArray *selectedVideoAssetsArr;
 
 - (void)addVideoAsset:(PHAsset *)asset;
 - (void)removeVideoAsset:(PHAsset *)asset;
 - (BOOL)isSelectedWithVideoAsset:(PHAsset *)asset;
 
-- (void)reloadVideosTableView;
-
 // 联系人
-@property (nonatomic, strong, readonly) NSArray *selectedContactsArr;
+@property (nonatomic, strong, readonly) NSMutableArray *selectedContactsArr;
 
 - (void)addContact:(STContactInfo *)contact;
 - (void)addContacts:(NSArray *)contacts;
@@ -68,6 +62,12 @@
 - (BOOL)isSelectedWithContact:(STContactInfo *)contact;
 - (BOOL)isSelectedWithContacts:(NSArray *)contacts;
 
+// 界面刷新
+- (void)reloadAssetsTableView;
+- (void)reloadMusicsTableView;
+- (void)reloadVideosTableView;
 - (void)reloadContactsTableView;
+- (void)configToolView;
+- (void)photoLibraryDidChange;
 
 @end
