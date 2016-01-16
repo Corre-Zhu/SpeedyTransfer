@@ -6,6 +6,7 @@ target 'SpeedyTransfer' do
 pod "GCDObjC"
 pod 'dyci', :git => 'https://github.com/DyCI/dyci-main.git'
 pod 'FMDB'
+pod 'GCDWebServer', '~> 3.3'
 
 end
 

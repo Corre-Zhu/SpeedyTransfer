@@ -8,11 +8,15 @@ PODS:
   - FMDB/standard (2.5):
     - FMDB/common
   - GCDObjC (0.2.0)
+  - GCDWebServer (3.3):
+    - GCDWebServer/Core (= 3.3)
+  - GCDWebServer/Core (3.3)
 
 DEPENDENCIES:
   - dyci (from `https://github.com/DyCI/dyci-main.git`)
   - FMDB
   - GCDObjC
+  - GCDWebServer (~> 3.3)
 
 EXTERNAL SOURCES:
   dyci:
@@ -27,5 +31,6 @@ SPEC CHECKSUMS:
   dyci: 099c2e6dc98abb8f21b370cabbf1443ff700608a
   FMDB: 96e8f1bcc1329e269330f99770ad4285d9003e52
   GCDObjC: adcd9941029e3628de539347d3a6777470a65998
+  GCDWebServer: 106463756391d814b6f506927bee0d6a75a0b427
 
 COCOAPODS: 0.39.0
