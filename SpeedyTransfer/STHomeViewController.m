@@ -19,10 +19,12 @@
 #import "STFindViewController.h"
 #import "STFeedBackViewController.h"
 #import "STPersonalSettingViewController.h"
+#import "STWebServerModel.h"
 
 @interface STHomeViewController ()
 {
     UIImageView *headImageView;
+    STWebServerModel *webServerModel;
 }
 @end
 
@@ -112,6 +114,8 @@
     [self addButtonWithImage:@"home4" title:NSLocalizedString(@"发现", nil) frame:CGRectMake(IPHONE_WIDTH / 2.0f - 90.0f - inset, backView.bottom + 123.0f, 60.0f, 90.0f) selector:@selector(discoverButtonClick)];
     [self addButtonWithImage:@"home6" title:NSLocalizedString(@"反馈", nil) frame:CGRectMake(IPHONE_WIDTH / 2.0f + 30.0f + inset, backView.bottom + 123.0f, 60.0f, 90.0f) selector:@selector(feedbackButtonClick)];
     
+    webServerModel = [[STWebServerModel alloc] init];
+    [webServerModel startWebServer];
 }
 
 - (void)viewWillAppear:(BOOL)animated {

@@ -19,5 +19,6 @@
 #import "UIViewController+ST.h"
 #import "NSDate+ZZ.h"
 #import "UIImage+ZZ.h"
+#import "HTJSONAdapter.h"
 
 #endif

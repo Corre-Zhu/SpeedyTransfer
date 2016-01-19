@@ -9,6 +9,9 @@
 #ifndef ZZ_Macros_h
 #define ZZ_Macros_h
 
+#define DECLARE_WEAK_SELF __typeof(&*self) __weak weakSelf = self
+#define DECLARE_STRONG_SELF __typeof(&*self) __strong strongSelf = weakSelf
+
 #define IPHONE5 ([UIScreen instancesRespondToSelector:@selector(currentMode)] ? CGSizeEqualToSize(CGSizeMake(640.0f, 1136.0f), [[UIScreen mainScreen] currentMode].size) : NO)
 #define iPhone6 ([UIScreen instancesRespondToSelector:@selector(currentMode)] ? CGSizeEqualToSize(CGSizeMake(750.0f, 1334), [[UIScreen mainScreen] currentMode].size) : NO)
 #define iPhone6Plus ([UIScreen instancesRespondToSelector:@selector(currentMode)] ? CGSizeEqualToSize(CGSizeMake(1242.0f, 2208.0f), [[UIScreen mainScreen] currentMode].size) : NO)
