@@ -34,7 +34,7 @@
     self.navigationItem.title = NSLocalizedString(@"我要发送", nil);
     self.view.backgroundColor = RGBFromHex(0xf0f0f0);
     
-    scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, IPHONE_WIDTH, IPHONE_HEIGHT)];
+    scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, IPHONE_WIDTH, IPHONE_HEIGHT_WITHOUTTOPBAR)];
     scrollView.contentSize = CGSizeMake(IPHONE_WIDTH, 550.0f);
     [self.view addSubview:scrollView];
     

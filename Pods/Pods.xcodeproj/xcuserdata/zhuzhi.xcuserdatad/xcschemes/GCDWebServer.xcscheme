@@ -14,10 +14,10 @@
             buildForArchiving = "YES">
             <BuildableReference
                BuildableIdentifier = 'primary'
-               BlueprintIdentifier = '7CA183F1D33F23D21A2A6AFD'
-               BlueprintName = 'FMDB'
+               BlueprintIdentifier = '8DE36CDD84F4783AE25A80AF'
+               BlueprintName = 'GCDWebServer'
                ReferencedContainer = 'container:Pods.xcodeproj'
-               BuildableName = 'libFMDB.a'>
+               BuildableName = 'libGCDWebServer.a'>
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
