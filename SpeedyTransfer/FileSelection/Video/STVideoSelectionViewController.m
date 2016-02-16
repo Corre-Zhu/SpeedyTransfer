@@ -7,7 +7,7 @@
 //
 
 #import "STVideoSelectionViewController.h"
-#import "STMusicSelectionCell.h"
+#import "STVideoSelectionCell.h"
 #import <Photos/Photos.h>
 
 static NSString *VideoSelectionCellIdentifier = @"VideoSelectionCellIdentifier";
@@ -51,7 +51,7 @@ static NSString *VideoSelectionCellIdentifier = @"VideoSelectionCellIdentifier";
     self.tableView.tableFooterView = [UIView new];
     self.tableView.contentInset = UIEdgeInsetsMake(0.0f, 0.0f, 49.0f, 0.0f);
     self.tableView.scrollIndicatorInsets = UIEdgeInsetsMake(0.0f, 0.0f, 49.0f, 0.0f);
-    [self.tableView registerClass:[STMusicSelectionCell class] forCellReuseIdentifier:VideoSelectionCellIdentifier];
+    [self.tableView registerClass:[STVideoSelectionCell class] forCellReuseIdentifier:VideoSelectionCellIdentifier];
     _imageManager = [[PHCachingImageManager alloc] init];
 }
 
@@ -62,25 +62,26 @@ static NSString *VideoSelectionCellIdentifier = @"VideoSelectionCellIdentifier";
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    STMusicSelectionCell *cell = [tableView dequeueReusableCellWithIdentifier:VideoSelectionCellIdentifier forIndexPath:indexPath];
+    STVideoSelectionCell *cell = [tableView dequeueReusableCellWithIdentifier:VideoSelectionCellIdentifier forIndexPath:indexPath];
    
     PHAsset *asset = _fetchResult[indexPath.item];
-    
-    cell.image = [UIImage imageNamed:@"video_bg"];
     
     NSInteger currentTag = cell.tag + 1;
     cell.tag = currentTag;
 
-//    [_imageManager requestImageForAsset:asset
-//                                 targetSize:CGSizeMake(96.0f, 96.0f)
-//                                contentMode:PHImageContentModeAspectFill
-//                                    options:nil
-//                              resultHandler:^(UIImage *result, NSDictionary *info) {
-//                                  if (cell.tag == currentTag) {
-//                                      cell.image = result;
-//                                  }
-//                              }];
-    
+	PHImageRequestOptions *options = [[PHImageRequestOptions alloc] init];
+	options.resizeMode = PHImageRequestOptionsResizeModeExact;
+	options.deliveryMode = PHImageRequestOptionsDeliveryModeOpportunistic;
+    [_imageManager requestImageForAsset:asset
+                                 targetSize:CGSizeMake([UIScreen mainScreen].scale * 68.0f, [UIScreen mainScreen].scale * 52.0f)
+                                contentMode:PHImageContentModeAspectFill
+                                    options:options
+                              resultHandler:^(UIImage *result, NSDictionary *info) {
+                                  if (cell.tag == currentTag) {
+                                      cell.image = result;
+                                  }
+                              }];
+	
     [[PHImageManager defaultManager] requestImageDataForAsset:asset options:nil resultHandler:^(NSData *imageData, NSString *dataUTI, UIImageOrientation orientation, NSDictionary *info) {
         if (cell.tag == currentTag) {
             float imageSize = imageData.length;
@@ -103,7 +104,7 @@ static NSString *VideoSelectionCellIdentifier = @"VideoSelectionCellIdentifier";
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return 66.0f;
+    return 72.0f;
 }
 
 #pragma mark - Table view delegate
@@ -111,14 +112,14 @@ static NSString *VideoSelectionCellIdentifier = @"VideoSelectionCellIdentifier";
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     PHAsset *asset = _fetchResult[indexPath.item];
     [self.fileSelectionTabController addVideoAsset:asset];
-    STMusicSelectionCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+    STVideoSelectionCell *cell = [tableView cellForRowAtIndexPath:indexPath];
     cell.checked = YES;
 }
 
 - (void)tableView:(UITableView *)tableView didDeselectRowAtIndexPath:(NSIndexPath *)indexPath {
     PHAsset *asset = _fetchResult[indexPath.item];
     [self.fileSelectionTabController removeVideoAsset:asset];
-    STMusicSelectionCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+    STVideoSelectionCell *cell = [tableView cellForRowAtIndexPath:indexPath];
     cell.checked = NO;
 }
 
