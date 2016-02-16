@@ -14,7 +14,7 @@
             buildForArchiving = "YES">
             <BuildableReference
                BuildableIdentifier = 'primary'
-               BlueprintIdentifier = '948CC99F7C866B803A881C21'
+               BlueprintIdentifier = '1A653F765FA8CDFDC95A0FAE'
                BlueprintName = 'GCDObjC'
                ReferencedContainer = 'container:Pods.xcodeproj'
                BuildableName = 'libGCDObjC.a'>

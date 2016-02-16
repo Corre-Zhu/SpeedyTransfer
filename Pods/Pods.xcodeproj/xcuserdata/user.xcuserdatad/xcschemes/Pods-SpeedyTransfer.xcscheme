@@ -14,7 +14,7 @@
             buildForArchiving = "YES">
             <BuildableReference
                BuildableIdentifier = 'primary'
-               BlueprintIdentifier = '749AC1D522221F5013E3B96A'
+               BlueprintIdentifier = '056026582F555160F656B121'
                BlueprintName = 'Pods-SpeedyTransfer'
                ReferencedContainer = 'container:Pods.xcodeproj'
                BuildableName = 'libPods-SpeedyTransfer.a'>
