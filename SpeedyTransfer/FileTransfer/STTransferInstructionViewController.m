@@ -18,6 +18,9 @@
     UIImageView *wifiBgView;
     UILabel *wifiLabel;
     UIView *bottomContainerView;
+    
+    UIView *devicesView;
+    UIButton *sendButton;
 }
 
 @end
@@ -28,10 +31,35 @@
 	
 }
 
+- (void)setupDeviceView {
+    devicesView = [[UIView alloc] init];
+    devicesView.backgroundColor = [UIColor whiteColor];
+    [self.view addSubview:devicesView];
+    [devicesView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero];
+    
+    UIImageView *imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"我要发送"]];
+    imageView.frame = CGRectMake(0.0f, 0.0f, IPHONE_WIDTH, 460.0f);
+    [devicesView addSubview:imageView];
+    
+    sendButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    [sendButton setTitle:NSLocalizedString(@"发送", nil) forState:UIControlStateNormal];
+    sendButton.titleLabel.font = [UIFont systemFontOfSize:16.0f];
+    sendButton.backgroundColor = RGBFromHex(0xeb684b);
+    sendButton.frame= CGRectMake((IPHONE_WIDTH - 103.0f) / 2.0f, IPHONE_HEIGHT_WITHOUTTOPBAR - 177.0f, 104.0f, 104.0f);
+    sendButton.layer.cornerRadius = 52.0f;
+    sendButton.layer.masksToBounds = YES;
+    [devicesView addSubview:sendButton];
+    
+    
+    
+    
+    
+}
+
 - (void)setupUI {
     
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"left_white"] style:UIBarButtonItemStylePlain target:self action:@selector(leftBarButtonItemClick)];
-    self.navigationItem.title = NSLocalizedString(@"我要发送", nil);
+    self.navigationItem.title = NSLocalizedString(@"建立连接", nil);
     self.view.backgroundColor = RGBFromHex(0xf0f0f0);
     
     scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, IPHONE_WIDTH, IPHONE_HEIGHT_WITHOUTTOPBAR)];
@@ -115,6 +143,8 @@
     [whiteView2 addSubview:descLabel5];
     
     [self reloadWifiName];
+    
+    [self setupDeviceView];
 }
 
 - (void)reloadWifiName {
