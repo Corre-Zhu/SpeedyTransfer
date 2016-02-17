@@ -12,13 +12,13 @@
 		4558BFC81C7453F1002F5718 /* HTSFHFKeychainUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 4558BFC71C7453F1002F5718 /* HTSFHFKeychainUtils.m */; };
 		4558BFCC1C745903002F5718 /* OpenUDID.m in Sources */ = {isa = PBXBuildFile; fileRef = 4558BFCB1C745903002F5718 /* OpenUDID.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		4558BFCF1C746862002F5718 /* STUserInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 4558BFCE1C746862002F5718 /* STUserInfo.m */; };
+		4558BFD41C747483002F5718 /* STWebServerConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = 4558BFD11C747483002F5718 /* STWebServerConnection.m */; };
+		4558BFD51C747483002F5718 /* STWebServerModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 4558BFD31C747483002F5718 /* STWebServerModel.m */; };
 		4569CB391C41264C00A97D2A /* ZZReachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 4569CB381C41264C00A97D2A /* ZZReachability.m */; };
 		81B11DB05739291B2827F0AD /* libPods-SpeedyTransfer.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 43A35BB86492F999A43AE1F4 /* libPods-SpeedyTransfer.a */; };
 		CE2AD7AB1C4A340D00C67D1D /* HTJSONAdapter.m in Sources */ = {isa = PBXBuildFile; fileRef = CE2AD7AA1C4A340D00C67D1D /* HTJSONAdapter.m */; };
 		CE2AD7AD1C4A985F00C67D1D /* test.png in Resources */ = {isa = PBXBuildFile; fileRef = CE2AD7AC1C4A985F00C67D1D /* test.png */; };
 		CE2AD7AF1C4AA15D00C67D1D /* IMG_7551.JPG in Resources */ = {isa = PBXBuildFile; fileRef = CE2AD7AE1C4AA15D00C67D1D /* IMG_7551.JPG */; };
-		CE2AD7B31C4AAD1700C67D1D /* STWebServerModel.m in Sources */ = {isa = PBXBuildFile; fileRef = CE2AD7B21C4AAD1700C67D1D /* STWebServerModel.m */; };
-		CE2AD7B61C4AAE3300C67D1D /* STWebServerConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = CE2AD7B51C4AAE3300C67D1D /* STWebServerConnection.m */; };
 		CE6536A91C2E8AF400C1E8A3 /* STFileReceivingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE6536A81C2E8AF400C1E8A3 /* STFileReceivingViewController.m */; };
 		CE6536AC1C2E8D1B00C1E8A3 /* STWifiNotConnectedPopupView2.m in Sources */ = {isa = PBXBuildFile; fileRef = CE6536AB1C2E8D1B00C1E8A3 /* STWifiNotConnectedPopupView2.m */; };
 		CE6536B01C2E92C200C1E8A3 /* MCTransceiver.m in Sources */ = {isa = PBXBuildFile; fileRef = CE6536AF1C2E92C200C1E8A3 /* MCTransceiver.m */; };
@@ -97,6 +97,10 @@
 		4558BFCB1C745903002F5718 /* OpenUDID.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OpenUDID.m; sourceTree = "<group>"; };
 		4558BFCD1C746862002F5718 /* STUserInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STUserInfo.h; sourceTree = "<group>"; };
 		4558BFCE1C746862002F5718 /* STUserInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STUserInfo.m; sourceTree = "<group>"; };
+		4558BFD01C747483002F5718 /* STWebServerConnection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STWebServerConnection.h; sourceTree = "<group>"; };
+		4558BFD11C747483002F5718 /* STWebServerConnection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STWebServerConnection.m; sourceTree = "<group>"; };
+		4558BFD21C747483002F5718 /* STWebServerModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STWebServerModel.h; sourceTree = "<group>"; };
+		4558BFD31C747483002F5718 /* STWebServerModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STWebServerModel.m; sourceTree = "<group>"; };
 		4569CB371C41264C00A97D2A /* ZZReachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZZReachability.h; sourceTree = "<group>"; };
 		4569CB381C41264C00A97D2A /* ZZReachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZZReachability.m; sourceTree = "<group>"; };
 		8EA48F6AD6EDCB7E537ACCBC /* Pods-SpeedyTransfer.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SpeedyTransfer.debug.xcconfig"; path = "Pods/Target Support Files/Pods-SpeedyTransfer/Pods-SpeedyTransfer.debug.xcconfig"; sourceTree = "<group>"; };
@@ -104,10 +108,6 @@
 		CE2AD7AA1C4A340D00C67D1D /* HTJSONAdapter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HTJSONAdapter.m; sourceTree = "<group>"; };
 		CE2AD7AC1C4A985F00C67D1D /* test.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = test.png; sourceTree = "<group>"; };
 		CE2AD7AE1C4AA15D00C67D1D /* IMG_7551.JPG */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = IMG_7551.JPG; sourceTree = "<group>"; };
-		CE2AD7B11C4AAD1700C67D1D /* STWebServerModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STWebServerModel.h; sourceTree = "<group>"; };
-		CE2AD7B21C4AAD1700C67D1D /* STWebServerModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STWebServerModel.m; sourceTree = "<group>"; };
-		CE2AD7B41C4AAE3300C67D1D /* STWebServerConnection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STWebServerConnection.h; sourceTree = "<group>"; };
-		CE2AD7B51C4AAE3300C67D1D /* STWebServerConnection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STWebServerConnection.m; sourceTree = "<group>"; };
 		CE6536A71C2E8AF400C1E8A3 /* STFileReceivingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STFileReceivingViewController.h; sourceTree = "<group>"; };
 		CE6536A81C2E8AF400C1E8A3 /* STFileReceivingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STFileReceivingViewController.m; sourceTree = "<group>"; };
 		CE6536AA1C2E8D1B00C1E8A3 /* STWifiNotConnectedPopupView2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STWifiNotConnectedPopupView2.h; sourceTree = "<group>"; };
@@ -309,17 +309,6 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		CE2AD7B01C4AACE500C67D1D /* WebServer */ = {
-			isa = PBXGroup;
-			children = (
-				CE2AD7B11C4AAD1700C67D1D /* STWebServerModel.h */,
-				CE2AD7B21C4AAD1700C67D1D /* STWebServerModel.m */,
-				CE2AD7B41C4AAE3300C67D1D /* STWebServerConnection.h */,
-				CE2AD7B51C4AAE3300C67D1D /* STWebServerConnection.m */,
-			);
-			name = WebServer;
-			sourceTree = "<group>";
-		};
 		CE6536A61C2E8AB400C1E8A3 /* FileReceive */ = {
 			isa = PBXGroup;
 			children = (
@@ -384,6 +373,10 @@
 		CE6536D91C2ED09100C1E8A3 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				4558BFD01C747483002F5718 /* STWebServerConnection.h */,
+				4558BFD11C747483002F5718 /* STWebServerConnection.m */,
+				4558BFD21C747483002F5718 /* STWebServerModel.h */,
+				4558BFD31C747483002F5718 /* STWebServerModel.m */,
 				CE6536DA1C2ED0AF00C1E8A3 /* STFileTransferModel.h */,
 				CE6536DB1C2ED0AF00C1E8A3 /* STFileTransferModel.m */,
 			);
@@ -609,7 +602,6 @@
 		CED62A2C1C094FDD00270EDB /* SpeedyTransfer */ = {
 			isa = PBXGroup;
 			children = (
-				CE2AD7B01C4AACE500C67D1D /* WebServer */,
 				CED62A301C094FDD00270EDB /* AppDelegate.h */,
 				CED62A311C094FDD00270EDB /* AppDelegate.m */,
 				CED62A331C094FDD00270EDB /* STHomeViewController.h */,
@@ -845,7 +837,6 @@
 				CE6536D71C2ECEC300C1E8A3 /* STMusicInfo.m in Sources */,
 				CE6536B01C2E92C200C1E8A3 /* MCTransceiver.m in Sources */,
 				CED62A481C09512100270EDB /* main.m in Sources */,
-				CE2AD7B31C4AAD1700C67D1D /* STWebServerModel.m in Sources */,
 				CEB29E751C21B8BE00F17804 /* NSLayoutConstraint+PureLayout.m in Sources */,
 				CEB29E7C1C230BA400F17804 /* UIViewController+ST.m in Sources */,
 				CE6536C91C2ECD3400C1E8A3 /* STFileTransferViewController.m in Sources */,
@@ -857,6 +848,7 @@
 				CED0D13D1C21A59200F5C0E3 /* AVURLAsset+Extension.m in Sources */,
 				CE9C91AF1C39537C0075CB06 /* STFeedbackCell.m in Sources */,
 				CED003121C0B2766005146A4 /* UIButton+ZZ.m in Sources */,
+				4558BFD41C747483002F5718 /* STWebServerConnection.m in Sources */,
 				CE9C91A61C390EAA0075CB06 /* STFeedBackInputView.m in Sources */,
 				CE9C91AC1C3951D20075CB06 /* STFeedbackModel.m in Sources */,
 				CEB29E821C253C4D00F17804 /* STPictureCollectionViewController.m in Sources */,
@@ -870,6 +862,7 @@
 				CEA12C491C29ABCB00328CEF /* Reachability.m in Sources */,
 				CE9C91A31C390DAB0075CB06 /* STFeedBackViewController.m in Sources */,
 				CED0D12D1C1D77DF00F5C0E3 /* HZAssetCollectionViewCell.m in Sources */,
+				4558BFD51C747483002F5718 /* STWebServerModel.m in Sources */,
 				CEB29E741C21B8BE00F17804 /* NSArray+PureLayout.m in Sources */,
 				CE9C91B21C39697D0075CB06 /* STPersonalSettingViewController.m in Sources */,
 				CE6536F91C2FDD3200C1E8A3 /* STFileReceiveCell.m in Sources */,
@@ -882,7 +875,6 @@
 				CED62A321C094FDD00270EDB /* AppDelegate.m in Sources */,
 				CE9C919D1C38FBE10075CB06 /* STInviteFriendViewController.m in Sources */,
 				CEB29E731C21B8BE00F17804 /* ALView+PureLayout.m in Sources */,
-				CE2AD7B61C4AAE3300C67D1D /* STWebServerConnection.m in Sources */,
 				CE6536D51C2ECEC300C1E8A3 /* STContactInfo.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
