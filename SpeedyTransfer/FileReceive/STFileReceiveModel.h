@@ -16,7 +16,6 @@
 HT_AS_SINGLETON(STFileReceiveModel, shareInstant)
 
 @property (nonatomic, strong) NSArray *receiveFiles; // 接收的文件
-@property (strong, nonatomic) MCTransceiver *transceiver;
 
 /**
  保存到数据库

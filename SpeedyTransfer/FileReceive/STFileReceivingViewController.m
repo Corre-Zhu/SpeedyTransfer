@@ -87,7 +87,7 @@ static NSString *ReceiveCellIdentifier = @"ReceiveCellIdentifier";
         }
         [popupView showInView:self.navigationController.view];
     } else {
-        [model.transceiver startAdvertising];
+		
     }
 }
 

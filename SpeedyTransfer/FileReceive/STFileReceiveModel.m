@@ -14,7 +14,7 @@
 #import <AddressBook/AddressBook.h>
 
 
-@interface STFileReceiveModel ()<MCTransceiverDelegate>
+@interface STFileReceiveModel ()
 {
     HTFMDatabase *database;
 }
@@ -48,10 +48,7 @@ HT_DEF_SINGLETON(STFileReceiveModel, shareInstant);
             }
             _receiveFiles = [NSArray arrayWithArray:tempArr];
         }
-        
-        _transceiver = [[MCTransceiver alloc] initWithDelegate:self
-                                                      peerName:[UIDevice currentDevice].name
-                                                          mode:MCTransceiverModeAdvertiser];
+		
         
     }
     
