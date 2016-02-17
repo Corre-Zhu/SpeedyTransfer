@@ -75,8 +75,8 @@ HT_DEF_SINGLETON(STFileTransferModel, shareInstant);
     } else {
         entity.identifier = [NSString uniqueID];
     }
-    entity.type = STFileTransferTypeContact;
-    entity.status = STFileTransferStatusSending;
+    entity.fileType = STFileTypeContact;
+    entity.transferStatus = STFileTransferStatusSending;
     entity.url = @"";
     entity.fileName = object.name;
     entity.dateString = [[NSDate date] dateString];
@@ -86,8 +86,8 @@ HT_DEF_SINGLETON(STFileTransferModel, shareInstant);
     HTSQLBuffer *sql = [[HTSQLBuffer alloc] init];
     sql.INSERT(DBFileTransfer._tableName)
     .SET(DBFileTransfer._identifier, entity.identifier)
-    .SET(DBFileTransfer._type, @(entity.type))
-    .SET(DBFileTransfer._status , @(entity.status))
+    .SET(DBFileTransfer._fileType, @(entity.fileType))
+    .SET(DBFileTransfer._transferStatus , @(entity.transferStatus))
     .SET(DBFileTransfer._fileName, entity.fileName)
     .SET(DBFileTransfer._fileSize, @(entity.fileSize))
     .SET(DBFileTransfer._date, entity.dateString)
@@ -109,8 +109,8 @@ HT_DEF_SINGLETON(STFileTransferModel, shareInstant);
     } else {
         entity.identifier = [NSString uniqueID];
     }
-    entity.type = STFileTransferTypePicture;
-    entity.status = STFileTransferStatusSending;
+    entity.fileType = STFileTypePicture;
+    entity.transferStatus = STFileTransferStatusSending;
     entity.url = identifier;
     entity.fileName = fileName;
     entity.dateString = [[NSDate date] dateString];
@@ -119,8 +119,8 @@ HT_DEF_SINGLETON(STFileTransferModel, shareInstant);
     HTSQLBuffer *sql = [[HTSQLBuffer alloc] init];
     sql.INSERT(DBFileTransfer._tableName)
     .SET(DBFileTransfer._identifier, entity.identifier)
-    .SET(DBFileTransfer._type, @(entity.type))
-    .SET(DBFileTransfer._status , @(entity.status))
+    .SET(DBFileTransfer._fileType, @(entity.fileType))
+    .SET(DBFileTransfer._transferStatus , @(entity.transferStatus))
     .SET(DBFileTransfer._fileName, entity.fileName)
     .SET(DBFileTransfer._fileSize, @(entity.fileSize))
     .SET(DBFileTransfer._date, entity.dateString)
@@ -138,8 +138,8 @@ HT_DEF_SINGLETON(STFileTransferModel, shareInstant);
 - (void)updateStatus:(STFileTransferStatus)status rate:(double)rate withIdentifier:(NSString *)identifier {
     HTSQLBuffer *sql = [[HTSQLBuffer alloc] init];
     sql.UPDATE(DBFileTransfer._tableName)
-    .SET(DBFileTransfer._status , @(status))
-    .SET(DBFileTransfer._sizePerSencond, @(rate))
+    .SET(DBFileTransfer._transferStatus , @(status))
+    .SET(DBFileTransfer._downloadSpeed, @(rate))
     .WHERE(SQLStringEqual(DBFileTransfer._identifier, identifier));
     
     if (![database executeUpdate:sql.sql]) {

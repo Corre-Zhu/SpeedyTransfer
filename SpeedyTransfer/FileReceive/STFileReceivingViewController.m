@@ -26,7 +26,7 @@ static NSString *ReceiveCellIdentifier = @"ReceiveCellIdentifier";
     UIButton *continueSendButton;
     STFileReceiveModel *model;
     
-    STFileReceiveInfo *currentReceiveInfo;
+    STFileTransferInfo *currentReceiveInfo;
     NSTimeInterval lastTimeInterval;
     NSProgress *currentProgress;
     
@@ -111,7 +111,7 @@ static NSString *ReceiveCellIdentifier = @"ReceiveCellIdentifier";
                 NSTimeInterval now = [[NSDate date] timeIntervalSince1970];
                 NSTimeInterval timeInterval = now - lastTimeInterval;
                 if (timeInterval != 0.0f) {
-                    currentReceiveInfo.sizePerSecond = 1 / timeInterval * (newProgress - currentReceiveInfo.progress) * currentReceiveInfo.fileSize;
+                    currentReceiveInfo.downloadSpeed = 1 / timeInterval * (newProgress - currentReceiveInfo.progress) * currentReceiveInfo.fileSize;
                 }
                 currentReceiveInfo.progress = newProgress;
                 lastTimeInterval = now;
@@ -142,7 +142,7 @@ static NSString *ReceiveCellIdentifier = @"ReceiveCellIdentifier";
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     STFileTransferInfo *info = [model.receiveFiles objectAtIndex:indexPath.row];
-    if (info.type == STFileTransferTypeContact) {
+    if (info.fileType == STFileTypeContact) {
         NSData *vcard = [info.vcardString dataUsingEncoding:NSUTF8StringEncoding];
         CFDataRef vCardData = CFDataCreate(NULL, [vcard bytes], [vcard length]);
         ABAddressBookRef book = ABAddressBookCreate();
@@ -159,59 +159,6 @@ static NSString *ReceiveCellIdentifier = @"ReceiveCellIdentifier";
     }
     
     
-}
-
-#pragma mark - MCTransceiverDelegate
-
--(void)didFindPeer:(MCPeerID *)peerID
-{
-    NSLog(@"----> did find peer %@", peerID);
-}
-
--(void)didLosePeer:(MCPeerID *)peerID
-{
-    NSLog(@"<---- did lose peer %@", peerID);
-}
-
-- (BOOL)connectWithPeer:(MCPeerID *)peerId {
-    return !_connected;
-}
-
--(void)didReceiveInvitationFromPeer:(MCPeerID *)peerID
-{
-    NSLog(@"!!!!! did get invite from peer %@", peerID);
-}
-
--(void)didConnectToPeer:(MCPeerID *)peerID
-{
-    NSLog(@">>>>> did connect to peer %@", peerID);
-    _connected = YES;
-    [self.transceiver stopAdvertising];
-}
-
--(void)didDisconnectFromPeer:(MCPeerID *)peerID
-{
-    NSLog(@"<<<<< did disconnect from peer %@", peerID);
-    _connected = NO;
-    [self.transceiver startAdvertising];
-}
-
--(void)didReceiveData:(NSData *)data fromPeer:(MCPeerID *)peerID
-{
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [model saveContactInfo:data];
-        [self.tableView reloadData];
-    });
-}
-
-- (void)session:(MCSession *)session didStartReceivingResourceWithName:(NSString *)resourceName fromPeer:(MCPeerID *)peerID withProgress:(NSProgress *)progress {
-    dispatch_async(dispatch_get_main_queue(), ^{
-        currentReceiveInfo = [model savePicture:resourceName size:progress.totalUnitCount];
-        [self.tableView reloadData];
-        
-        currentProgress = progress;
-        [currentProgress addObserver:self forKeyPath:@"fractionCompleted" options:NSKeyValueObservingOptionNew context:NULL];
-    });
 }
 
 - (void)session:(MCSession *)session didFinishReceivingResourceWithName:(NSString *)resourceName fromPeer:(MCPeerID *)peerID atURL:(NSURL *)localURL withError:(NSError *)error {
@@ -278,39 +225,7 @@ static NSString *ReceiveCellIdentifier = @"ReceiveCellIdentifier";
     } else {
         block();
     }
-    
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [currentProgress addObserver:self forKeyPath:@"fractionCompleted" options:NSKeyValueObservingOptionNew context:NULL];
-        if (!error) {
-            [model updateStatus:STFileReceiveStatusReceived rate:currentReceiveInfo.sizePerSecond withIdentifier:currentReceiveInfo.identifier];
-            currentReceiveInfo.status = STFileReceiveStatusReceived;
-            [self.tableView reloadData];
-        } else {
-           [model updateStatus:STFileReceiveStatusReceiveFailed rate:currentReceiveInfo.sizePerSecond withIdentifier:currentReceiveInfo.identifier];
-            currentReceiveInfo.status = STFileReceiveStatusReceiveFailed;
-            [self.tableView reloadData];
-        }
-    });
-}
-
--(void)didStartAdvertising
-{
-    NSLog(@"+++++ did start advertising");
-}
-
--(void)didStopAdvertising
-{
-    NSLog(@"----- did stop advertising");
-}
-
--(void)didStartBrowsing
-{
-    NSLog(@"((((( did start browsing");
-}
-
--(void)didStopBrowsing
-{
-    NSLog(@"))))) did stop browsing");
+	
 }
 
 

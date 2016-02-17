@@ -8,6 +8,10 @@
 
 /* Begin PBXBuildFile section */
 		453C462A1C434330003A7267 /* STVideoSelectionCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 453C46291C434330003A7267 /* STVideoSelectionCell.m */; };
+		4558BFC41C74538B002F5718 /* HTKeychainUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 4558BFC31C74538B002F5718 /* HTKeychainUtil.m */; };
+		4558BFC81C7453F1002F5718 /* HTSFHFKeychainUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 4558BFC71C7453F1002F5718 /* HTSFHFKeychainUtils.m */; };
+		4558BFCC1C745903002F5718 /* OpenUDID.m in Sources */ = {isa = PBXBuildFile; fileRef = 4558BFCB1C745903002F5718 /* OpenUDID.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		4558BFCF1C746862002F5718 /* STUserInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 4558BFCE1C746862002F5718 /* STUserInfo.m */; };
 		4569CB391C41264C00A97D2A /* ZZReachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 4569CB381C41264C00A97D2A /* ZZReachability.m */; };
 		81B11DB05739291B2827F0AD /* libPods-SpeedyTransfer.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 43A35BB86492F999A43AE1F4 /* libPods-SpeedyTransfer.a */; };
 		CE2AD7AB1C4A340D00C67D1D /* HTJSONAdapter.m in Sources */ = {isa = PBXBuildFile; fileRef = CE2AD7AA1C4A340D00C67D1D /* HTJSONAdapter.m */; };
@@ -33,7 +37,6 @@
 		CE6536EC1C2F099A00C1E8A3 /* HTSQLBuffer.m in Sources */ = {isa = PBXBuildFile; fileRef = CE6536EB1C2F099A00C1E8A3 /* HTSQLBuffer.m */; };
 		CE6536F01C2FBB2300C1E8A3 /* NSDate+ZZ.m in Sources */ = {isa = PBXBuildFile; fileRef = CE6536EF1C2FBB2300C1E8A3 /* NSDate+ZZ.m */; };
 		CE6536F31C2FD53600C1E8A3 /* STFileReceiveModel.m in Sources */ = {isa = PBXBuildFile; fileRef = CE6536F21C2FD53600C1E8A3 /* STFileReceiveModel.m */; };
-		CE6536F61C2FD5FA00C1E8A3 /* STFileReceiveInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = CE6536F51C2FD5FA00C1E8A3 /* STFileReceiveInfo.m */; };
 		CE6536F91C2FDD3200C1E8A3 /* STFileReceiveCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CE6536F81C2FDD3200C1E8A3 /* STFileReceiveCell.m */; };
 		CE6536FC1C31955000C1E8A3 /* ZZNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE6536FB1C31955000C1E8A3 /* ZZNavigationController.m */; };
 		CE86491D1C2592BE0072518B /* AddressBook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CE86491C1C2592BE0072518B /* AddressBook.framework */; };
@@ -86,6 +89,14 @@
 		43A35BB86492F999A43AE1F4 /* libPods-SpeedyTransfer.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-SpeedyTransfer.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		453C46281C434330003A7267 /* STVideoSelectionCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STVideoSelectionCell.h; sourceTree = "<group>"; };
 		453C46291C434330003A7267 /* STVideoSelectionCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STVideoSelectionCell.m; sourceTree = "<group>"; };
+		4558BFC21C74538B002F5718 /* HTKeychainUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HTKeychainUtil.h; sourceTree = "<group>"; };
+		4558BFC31C74538B002F5718 /* HTKeychainUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HTKeychainUtil.m; sourceTree = "<group>"; };
+		4558BFC61C7453F1002F5718 /* HTSFHFKeychainUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HTSFHFKeychainUtils.h; sourceTree = "<group>"; };
+		4558BFC71C7453F1002F5718 /* HTSFHFKeychainUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HTSFHFKeychainUtils.m; sourceTree = "<group>"; };
+		4558BFCA1C745903002F5718 /* OpenUDID.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OpenUDID.h; sourceTree = "<group>"; };
+		4558BFCB1C745903002F5718 /* OpenUDID.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OpenUDID.m; sourceTree = "<group>"; };
+		4558BFCD1C746862002F5718 /* STUserInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STUserInfo.h; sourceTree = "<group>"; };
+		4558BFCE1C746862002F5718 /* STUserInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STUserInfo.m; sourceTree = "<group>"; };
 		4569CB371C41264C00A97D2A /* ZZReachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZZReachability.h; sourceTree = "<group>"; };
 		4569CB381C41264C00A97D2A /* ZZReachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZZReachability.m; sourceTree = "<group>"; };
 		8EA48F6AD6EDCB7E537ACCBC /* Pods-SpeedyTransfer.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SpeedyTransfer.debug.xcconfig"; path = "Pods/Target Support Files/Pods-SpeedyTransfer/Pods-SpeedyTransfer.debug.xcconfig"; sourceTree = "<group>"; };
@@ -133,8 +144,6 @@
 		CE6536EF1C2FBB2300C1E8A3 /* NSDate+ZZ.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDate+ZZ.m"; sourceTree = "<group>"; };
 		CE6536F11C2FD53600C1E8A3 /* STFileReceiveModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STFileReceiveModel.h; sourceTree = "<group>"; };
 		CE6536F21C2FD53600C1E8A3 /* STFileReceiveModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STFileReceiveModel.m; sourceTree = "<group>"; };
-		CE6536F41C2FD5FA00C1E8A3 /* STFileReceiveInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STFileReceiveInfo.h; sourceTree = "<group>"; };
-		CE6536F51C2FD5FA00C1E8A3 /* STFileReceiveInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STFileReceiveInfo.m; sourceTree = "<group>"; };
 		CE6536F71C2FDD3200C1E8A3 /* STFileReceiveCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STFileReceiveCell.h; sourceTree = "<group>"; };
 		CE6536F81C2FDD3200C1E8A3 /* STFileReceiveCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STFileReceiveCell.m; sourceTree = "<group>"; };
 		CE6536FA1C31955000C1E8A3 /* ZZNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZZNavigationController.h; sourceTree = "<group>"; };
@@ -259,11 +268,31 @@
 			name = Pods;
 			sourceTree = "<group>";
 		};
+		4558BFC51C7453DD002F5718 /* KeychainUtils */ = {
+			isa = PBXGroup;
+			children = (
+				4558BFC61C7453F1002F5718 /* HTSFHFKeychainUtils.h */,
+				4558BFC71C7453F1002F5718 /* HTSFHFKeychainUtils.m */,
+			);
+			path = KeychainUtils;
+			sourceTree = "<group>";
+		};
+		4558BFC91C7458FB002F5718 /* OpenUDID */ = {
+			isa = PBXGroup;
+			children = (
+				4558BFCA1C745903002F5718 /* OpenUDID.h */,
+				4558BFCB1C745903002F5718 /* OpenUDID.m */,
+			);
+			path = OpenUDID;
+			sourceTree = "<group>";
+		};
 		4569CB361C41262C00A97D2A /* ZZFoundation */ = {
 			isa = PBXGroup;
 			children = (
 				4569CB371C41264C00A97D2A /* ZZReachability.h */,
 				4569CB381C41264C00A97D2A /* ZZReachability.m */,
+				4558BFC21C74538B002F5718 /* HTKeychainUtil.h */,
+				4558BFC31C74538B002F5718 /* HTKeychainUtil.m */,
 			);
 			name = ZZFoundation;
 			path = SpeedyTransfer/ZZFoundation;
@@ -343,10 +372,10 @@
 				CE6536D41C2ECEC300C1E8A3 /* STPictureCollectionHeaderInfo.m */,
 				CE6536CF1C2ECEC200C1E8A3 /* STFileTransferInfo.h */,
 				CE6536D01C2ECEC200C1E8A3 /* STFileTransferInfo.m */,
-				CE6536F41C2FD5FA00C1E8A3 /* STFileReceiveInfo.h */,
-				CE6536F51C2FD5FA00C1E8A3 /* STFileReceiveInfo.m */,
 				CE9C91A71C39414D0075CB06 /* STFeedbackInfo.h */,
 				CE9C91A81C39414D0075CB06 /* STFeedbackInfo.m */,
+				4558BFCD1C746862002F5718 /* STUserInfo.h */,
+				4558BFCE1C746862002F5718 /* STUserInfo.m */,
 			);
 			name = BusinessEntity;
 			path = SpeedyTransfer/BusinessEntity;
@@ -448,6 +477,8 @@
 		CEB29E681C21B88C00F17804 /* ThirdParty */ = {
 			isa = PBXGroup;
 			children = (
+				4558BFC91C7458FB002F5718 /* OpenUDID */,
+				4558BFC51C7453DD002F5718 /* KeychainUtils */,
 				CE6536AD1C2E92C200C1E8A3 /* MultipeerKit */,
 				CEA12C461C29ABCB00328CEF /* Reachability */,
 				CE8975601C26AE5B002E11F8 /* MBProgressHUD */,
@@ -790,6 +821,7 @@
 				CE6536CA1C2ECD3400C1E8A3 /* STTransferInstructionViewController.m in Sources */,
 				CEB29E671C21B7C000F17804 /* HTDrawView.m in Sources */,
 				CE6536A91C2E8AF400C1E8A3 /* STFileReceivingViewController.m in Sources */,
+				4558BFC41C74538B002F5718 /* HTKeychainUtil.m in Sources */,
 				CED0D1201C1D576D00F5C0E3 /* STContactsSelectionViewController.m in Sources */,
 				CECE97731C2653E900190AE2 /* STFileSelectionPopupView.m in Sources */,
 				CEB29E631C21B6D700F17804 /* HTContactsHeaderView.m in Sources */,
@@ -805,6 +837,7 @@
 				CED62A561C09721F00270EDB /* UIDevice+ZZ.m in Sources */,
 				453C462A1C434330003A7267 /* STVideoSelectionCell.m in Sources */,
 				CE6536EC1C2F099A00C1E8A3 /* HTSQLBuffer.m in Sources */,
+				4558BFCC1C745903002F5718 /* OpenUDID.m in Sources */,
 				CE6536DF1C2ED74600C1E8A3 /* ZZPath.m in Sources */,
 				CEBB14761C33DB5C00874142 /* STAboutViewController.m in Sources */,
 				4569CB391C41264C00A97D2A /* ZZReachability.m in Sources */,
@@ -834,14 +867,15 @@
 				CEBB14731C33CCD300874142 /* STSettingViewController.m in Sources */,
 				CE6536AC1C2E8D1B00C1E8A3 /* STWifiNotConnectedPopupView2.m in Sources */,
 				CE6536E91C2F096600C1E8A3 /* HTFMDatabase.m in Sources */,
-				CE6536F61C2FD5FA00C1E8A3 /* STFileReceiveInfo.m in Sources */,
 				CEA12C491C29ABCB00328CEF /* Reachability.m in Sources */,
 				CE9C91A31C390DAB0075CB06 /* STFeedBackViewController.m in Sources */,
 				CED0D12D1C1D77DF00F5C0E3 /* HZAssetCollectionViewCell.m in Sources */,
 				CEB29E741C21B8BE00F17804 /* NSArray+PureLayout.m in Sources */,
 				CE9C91B21C39697D0075CB06 /* STPersonalSettingViewController.m in Sources */,
 				CE6536F91C2FDD3200C1E8A3 /* STFileReceiveCell.m in Sources */,
+				4558BFCF1C746862002F5718 /* STUserInfo.m in Sources */,
 				CED0D1211C1D576D00F5C0E3 /* STMusicSelectionViewController.m in Sources */,
+				4558BFC81C7453F1002F5718 /* HTSFHFKeychainUtils.m in Sources */,
 				CE6536CB1C2ECD3400C1E8A3 /* STWifiNotConnectedPopupView.m in Sources */,
 				CE6536FC1C31955000C1E8A3 /* ZZNavigationController.m in Sources */,
 				CE6536F01C2FBB2300C1E8A3 /* NSDate+ZZ.m in Sources */,
@@ -948,7 +982,7 @@
 				INFOPLIST_FILE = "$(SRCROOT)/SpeedyTransfer/Supporting Files/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.zz.SpeedyTransfer2;
+				PRODUCT_BUNDLE_IDENTIFIER = com.zz.SpeedyTransfer;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 			};
@@ -966,7 +1000,7 @@
 				INFOPLIST_FILE = "$(SRCROOT)/SpeedyTransfer/Supporting Files/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.zz.SpeedyTransfer2;
+				PRODUCT_BUNDLE_IDENTIFIER = com.zz.SpeedyTransfer;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 			};

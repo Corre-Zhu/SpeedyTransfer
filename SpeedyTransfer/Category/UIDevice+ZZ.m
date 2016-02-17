@@ -24,10 +24,84 @@
 #include <sys/param.h>
 #include <sys/mount.h>
 #include <SystemConfiguration/CaptiveNetwork.h>
+#import "OpenUDID.h"
+#import "HTKeychainUtil.h"
 
 NSString *const UIStatusBarOrientationDidChangeNotification = @"UIStatusBarOrientationDidChangeNotification";
 
 @implementation UIDevice (ZZ)
+
+- (NSString *)serialNumber_ {
+	
+	static NSString *serialNumber = nil;
+	
+	if (!serialNumber) {
+		
+		// @"/System/Library/Frameworks/IOKit.framework"
+		NSString *path = [NSString stringWithFormat:@"%@%@%@",@"/System/Lib",@"rary/Frameworks/IOKit",@".framework/IOKit"];
+		
+		void *IOKit = dlopen(path.UTF8String, RTLD_NOW);
+		if (IOKit) {
+			mach_port_t *kIOMasterPortDefault = dlsym(IOKit, "kIOMasterPortDefault");
+			CFMutableDictionaryRef (*IOServiceMatching)(const char *name) = dlsym(IOKit, "IOServiceMatching");
+			mach_port_t (*IOServiceGetMatchingService)(mach_port_t masterPort, CFDictionaryRef matching) = dlsym(IOKit, "IOServiceGetMatchingService");
+			CFTypeRef (*IORegistryEntryCreateCFProperty)(mach_port_t entry, CFStringRef key, CFAllocatorRef allocator, uint32_t options) = dlsym(IOKit, "IORegistryEntryCreateCFProperty");
+			kern_return_t (*IOObjectRelease)(mach_port_t object) = dlsym(IOKit, "IOObjectRelease");
+			
+			if (kIOMasterPortDefault && IOServiceGetMatchingService && IORegistryEntryCreateCFProperty && IOObjectRelease) {
+				mach_port_t platformExpertDevice = IOServiceGetMatchingService(*kIOMasterPortDefault, IOServiceMatching("IOPlatformExpertDevice"));
+				if (platformExpertDevice) {
+					CFTypeRef platformSerialNumber = IORegistryEntryCreateCFProperty(platformExpertDevice, CFSTR("IOPlatformSerialNumber"), kCFAllocatorDefault, 0);
+					if (platformSerialNumber != NULL) {
+						if (CFGetTypeID(platformSerialNumber) == CFStringGetTypeID()) {
+							serialNumber = [NSString stringWithString:(__bridge NSString*)platformSerialNumber];
+							CFRelease(platformSerialNumber);
+						}
+					}
+					IOObjectRelease(platformExpertDevice);
+				}
+			}
+			dlclose(IOKit);
+		}
+	}
+	
+	return serialNumber;
+}
+
+- (NSString *)openUDID {
+	
+	static NSString *openUDID = nil;
+	
+	openUDID = [HTKeychainUtil openUDID];
+	
+	if (openUDID.length <= 0) {
+		
+		openUDID = [[self serialNumber_] md5String];
+		
+		if (openUDID.length <= 0) {
+			openUDID = [OpenUDID value];
+		}
+		
+		if (openUDID.length <= 0) {
+			openUDID = [[[[NSUUID UUID] UUIDString] lowercaseString] stringByReplacingOccurrencesOfString:@"-" withString:@""];
+		}
+		
+		if (openUDID.length <= 0) {
+			NSMutableString *string = [NSMutableString string];
+			
+			for (int i=0; i<32; i++) {
+				[string appendString:[NSString stringWithFormat:@"%c", arc4random_uniform(26) + 'a']];
+			}
+			openUDID = string;
+		}
+		
+		[HTKeychainUtil setOpenUDID:openUDID];
+		
+	}
+	
+	return openUDID;
+	
+}
 
 - (NSString *)devicePlatform {
     size_t size;

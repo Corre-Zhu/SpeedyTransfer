@@ -10,4 +10,22 @@
 
 @implementation STUserInfo
 
+HT_DEF_SINGLETON(STUserInfo, shareInstant);
+
+- (NSString *)_tableName {
+	return @"STUserInfo";
+}
+
+- (NSString *)_userId {
+	return @"UserId";
+}
+
+- (NSString *)_nickname {
+	return @"Nickname";
+}
+
+- (NSString *)_headUrl {
+	return @"HeadUrl";
+}
+
 @end

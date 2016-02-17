@@ -18,6 +18,7 @@ UIKIT_EXTERN NSString *const UIStatusBarOrientationDidChangeNotification;
 
 @interface UIDevice (ZZ)
 
+- (NSString *)openUDID;
 - (NSString *)devicePlatform;
 - (BOOL)isPhone;
 - (BOOL)isPod;

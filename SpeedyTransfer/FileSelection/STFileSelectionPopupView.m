@@ -154,7 +154,7 @@ static NSString *PopupCellIdentifier = @"PopupCellIdentifier";
     }
     
     if (count > 0) {
-        titleLabel.text = [NSString stringWithFormat:@"已选择%ld个文件，共%@", count, [NSString formatSize:totalSize]];
+        titleLabel.text = [NSString stringWithFormat:@"已选择%@个文件，共%@", @(count).stringValue, [NSString formatSize:totalSize]];
     } else {
         titleLabel.text = [NSString stringWithFormat:@"已选择0个文件"];
     }

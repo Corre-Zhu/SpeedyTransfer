@@ -15,10 +15,4 @@
 + (void)setOpenUDID:(NSString *)openUDID;
 + (NSString *)openUDID;
 
-+ (void)setTranslationPurchaseTmpEndDate:(NSDate *)date;
-+ (NSDate *)translationPurchaseTmpEndDate;
-
-+ (void)setLastTime:(HTNTTime *)time andUserId:(NSString *)userid andTitleName:(NSString *)titleName;
-+ (HTNTTime *)lastTimeWithUserId:(NSString *)userid andTitleName:(NSString *)titleName;
-
 @end

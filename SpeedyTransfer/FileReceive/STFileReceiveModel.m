@@ -37,13 +37,13 @@ HT_DEF_SINGLETON(STFileReceiveModel, shareInstant);
         [database open];
         
         HTSQLBuffer *sql = [[HTSQLBuffer alloc] init];
-        sql.SELECT(@"*").FROM(DBFileReceive._tableName).ORDERBY(DBFileReceive._id, @"DESC");
+        sql.SELECT(@"*").FROM(DBFileTransfer._tableName).ORDERBY(DBFileTransfer._id, @"DESC");
         FMResultSet *result = [database executeQuery:sql.sql];
         if (result) {
             NSMutableArray *tempArr = [NSMutableArray array];
             while ([result next]) {
                 if (result.resultDictionary) {
-                    [tempArr addObject:[[STFileReceiveInfo alloc] initWithDictionary:result.resultDictionary]];
+                    [tempArr addObject:[[STFileTransferInfo alloc] initWithDictionary:result.resultDictionary]];
                 }
             }
             _receiveFiles = [NSArray arrayWithArray:tempArr];
@@ -55,7 +55,7 @@ HT_DEF_SINGLETON(STFileReceiveModel, shareInstant);
     return self;
 }
 
-- (void)addTransferFile:(STFileReceiveInfo *)info {
+- (void)addTransferFile:(STFileTransferInfo *)info {
     if (!info) {
         return;
     }
@@ -112,11 +112,11 @@ HT_DEF_SINGLETON(STFileReceiveModel, shareInstant);
     return name;
 }
 
-- (STFileReceiveInfo *)saveContactInfo:(NSData *)vcardData {
-    STFileReceiveInfo *entity = [[STFileReceiveInfo alloc] init];
+- (STFileTransferInfo *)saveContactInfo:(NSData *)vcardData {
+    STFileTransferInfo *entity = [[STFileTransferInfo alloc] init];
     entity.identifier = [NSString uniqueID];
-    entity.type = STFileTransferTypeContact;
-    entity.status = STFileReceiveStatusReceived;
+    entity.fileType = STFileTypeContact;
+    entity.transferStatus = STFileTransferStatusReceived;
     entity.progress = 1.0f;
     entity.url = @"";
     entity.fileName = [self nameOfRecordRef:vcardData];
@@ -125,14 +125,14 @@ HT_DEF_SINGLETON(STFileReceiveModel, shareInstant);
     entity.vcardString = [[NSString alloc] initWithData:vcardData encoding:NSUTF8StringEncoding];
     
     HTSQLBuffer *sql = [[HTSQLBuffer alloc] init];
-    sql.INSERT(DBFileReceive._tableName)
-    .SET(DBFileReceive._identifier, entity.identifier)
-    .SET(DBFileReceive._type, @(entity.type))
-    .SET(DBFileReceive._status , @(entity.status))
-    .SET(DBFileReceive._fileName, entity.fileName)
-    .SET(DBFileReceive._fileSize, @(entity.fileSize))
-    .SET(DBFileReceive._date, entity.dateString)
-    .SET(DBFileReceive._vcard, entity.vcardString);
+    sql.INSERT(DBFileTransfer._tableName)
+    .SET(DBFileTransfer._identifier, entity.identifier)
+    .SET(DBFileTransfer._fileType, @(entity.fileType))
+    .SET(DBFileTransfer._transferStatus , @(entity.transferStatus))
+    .SET(DBFileTransfer._fileName, entity.fileName)
+    .SET(DBFileTransfer._fileSize, @(entity.fileSize))
+    .SET(DBFileTransfer._date, entity.dateString)
+    .SET(DBFileTransfer._vcard, entity.vcardString);
     
     if (![database executeUpdate:sql.sql]) {
         NSLog(@"%@", database.lastError);
@@ -143,24 +143,24 @@ HT_DEF_SINGLETON(STFileReceiveModel, shareInstant);
     return entity;
 }
 
-- (STFileReceiveInfo *)savePicture:(NSString *)pictureName size:(double)size {
-    STFileReceiveInfo *entity = [[STFileReceiveInfo alloc] init];
+- (STFileTransferInfo *)savePicture:(NSString *)pictureName size:(double)size {
+    STFileTransferInfo *entity = [[STFileTransferInfo alloc] init];
     entity.identifier = [NSString uniqueID];
-    entity.type = STFileTransferTypePicture;
-    entity.status = STFileReceiveStatusReceiving;
+    entity.fileType = STFileTypePicture;
+    entity.transferStatus = STFileTransferStatusReceiving;
     entity.url = @"";
     entity.fileName = pictureName;
     entity.fileSize = size;
     entity.dateString = [[NSDate date] dateString];
     
     HTSQLBuffer *sql = [[HTSQLBuffer alloc] init];
-    sql.INSERT(DBFileReceive._tableName)
-    .SET(DBFileReceive._identifier, entity.identifier)
-    .SET(DBFileReceive._type, @(entity.type))
-    .SET(DBFileReceive._status , @(entity.status))
-    .SET(DBFileReceive._fileName, entity.fileName)
-    .SET(DBFileReceive._fileSize, @(entity.fileSize))
-    .SET(DBFileReceive._date, entity.dateString);
+    sql.INSERT(DBFileTransfer._tableName)
+    .SET(DBFileTransfer._identifier, entity.identifier)
+    .SET(DBFileTransfer._fileType, @(entity.fileType))
+    .SET(DBFileTransfer._transferStatus , @(entity.transferStatus))
+    .SET(DBFileTransfer._fileName, entity.fileName)
+    .SET(DBFileTransfer._fileSize, @(entity.fileSize))
+    .SET(DBFileTransfer._date, entity.dateString);
     
     if (![database executeUpdate:sql.sql]) {
         NSLog(@"%@", database.lastError);
@@ -171,12 +171,12 @@ HT_DEF_SINGLETON(STFileReceiveModel, shareInstant);
     return entity;
 }
 
-- (void)updateStatus:(STFileReceiveStatus)status rate:(double)rate withIdentifier:(NSString *)identifier {
+- (void)updateStatus:(STFileTransferStatus)status rate:(double)rate withIdentifier:(NSString *)identifier {
     HTSQLBuffer *sql = [[HTSQLBuffer alloc] init];
-    sql.UPDATE(DBFileReceive._tableName)
-    .SET(DBFileReceive._status , @(status))
-    .SET(DBFileReceive._sizePerSencond, @(rate))
-    .WHERE(SQLStringEqual(DBFileReceive._identifier, identifier));
+    sql.UPDATE(DBFileTransfer._tableName)
+    .SET(DBFileTransfer._transferStatus , @(status))
+    .SET(DBFileTransfer._downloadSpeed, @(rate))
+    .WHERE(SQLStringEqual(DBFileTransfer._identifier, identifier));
     
     if (![database executeUpdate:sql.sql]) {
         NSLog(@"%@", database.lastError);
@@ -185,9 +185,9 @@ HT_DEF_SINGLETON(STFileReceiveModel, shareInstant);
 
 - (void)updateWithUrl:(NSString *)url identifier:(NSString *)identifier {
     HTSQLBuffer *sql = [[HTSQLBuffer alloc] init];
-    sql.UPDATE(DBFileReceive._tableName)
-    .SET(DBFileReceive._url, url)
-    .WHERE(SQLStringEqual(DBFileReceive._identifier, identifier));
+    sql.UPDATE(DBFileTransfer._tableName)
+    .SET(DBFileTransfer._url, url)
+    .WHERE(SQLStringEqual(DBFileTransfer._identifier, identifier));
     
     if (![database executeUpdate:sql.sql]) {
         NSLog(@"%@", database.lastError);

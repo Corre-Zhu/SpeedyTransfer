@@ -25,4 +25,7 @@
 + (NSString *)uniqueID;
 - (NSString *)trim;
 
+// md5
+- (NSString *)md5String;
+
 @end

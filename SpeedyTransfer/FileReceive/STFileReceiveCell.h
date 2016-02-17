@@ -7,11 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "STFileReceiveInfo.h"
 
 @interface STFileReceiveCell : UITableViewCell
 
-@property (nonatomic, strong) STFileReceiveInfo *transferInfo;
+@property (nonatomic, strong) STFileTransferInfo *transferInfo;
 
 - (void)configCell;
 

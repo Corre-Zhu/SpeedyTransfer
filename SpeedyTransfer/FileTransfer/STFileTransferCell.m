@@ -78,9 +78,9 @@
 }
 
 - (void)configCell {
-    if (_transferInfo.type == STFileTransferTypeContact) {
+    if (_transferInfo.fileType == STFileTypeContact) {
         coverImageView.image = [UIImage imageNamed:@"phone_bg"];
-    } else if (_transferInfo.type == STFileTransferTypePicture) {
+    } else if (_transferInfo.fileType == STFileTypePicture) {
         if (self.transferInfo.url.length > 0) {
             PHFetchResult *savedAssets = [PHAsset fetchAssetsWithLocalIdentifiers:@[_transferInfo.url] options:nil];
             if (savedAssets.count > 0) {
@@ -105,13 +105,13 @@
         }
     }
     
-    if (_transferInfo.status == STFileTransferStatusSending) {
+    if (_transferInfo.transferStatus == STFileTransferStatusSending) {
         succeedImageView.hidden = YES;
         failedLabel.hidden = YES;
-    } else if (_transferInfo.status == STFileTransferStatusFailed) {
+    } else if (_transferInfo.transferStatus == STFileTransferStatusSendFailed) {
         succeedImageView.hidden = YES;
         failedLabel.hidden = NO;
-    } else if (_transferInfo.status == STFileTransferStatusSucceed) {
+    } else if (_transferInfo.transferStatus == STFileTransferStatusSent) {
         succeedImageView.hidden = NO;
         failedLabel.hidden = YES;
     }

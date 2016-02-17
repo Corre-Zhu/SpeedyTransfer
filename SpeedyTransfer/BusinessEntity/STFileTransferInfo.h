@@ -11,17 +11,25 @@
 
 #define DBFileTransfer [STFileTransferInfo shareInstant]
 
+typedef NS_ENUM(NSInteger, STFileType) {
+    STFileTypePicture        = 0,
+    STFileTypeMusic          = 1,
+    STFileTypeVideo          = 2,
+    STFileTypeContact        = 3,
+};
+
 typedef NS_ENUM(NSInteger, STFileTransferType) {
-    STFileTransferTypePicture        = 0,
-    STFileTransferTypeMusic          = 1,
-    STFileTransferTypeVideo          = 2,
-    STFileTransferTypeContact        = 3,
+	STFileTransferTypeSend   = 0,
+	STFileTransferTypeReceive
 };
 
 typedef NS_ENUM(NSInteger, STFileTransferStatus) {
-    STFileTransferStatusSending      = 0,
-    STFileTransferStatusFailed       = 1,
-    STFileTransferStatusSucceed      = 2,
+	STFileTransferStatusSending                       = 0,
+	STFileTransferStatusSent,
+	STFileTransferStatusSendFailed,
+	STFileTransferStatusReceiving,
+	STFileTransferStatusReceived,
+	STFileTransferStatusReceiveFailed,
 };
 
 @interface STFileTransferInfo : NSObject
@@ -29,14 +37,18 @@ typedef NS_ENUM(NSInteger, STFileTransferStatus) {
 HT_AS_SINGLETON(STFileTransferInfo, shareInstant)
 
 @property (nonatomic, strong) NSString *identifier;
-@property (nonatomic) STFileTransferType type;
-@property (nonatomic) NSInteger status;
+@property (nonatomic, strong) NSString *friendId;
+@property (nonatomic, strong) NSString *nickname;
+@property (nonatomic, strong) NSString *headUrl;
+@property (nonatomic) STFileType fileType;
+@property (nonatomic) STFileTransferType transferType;
+@property (nonatomic) STFileTransferStatus transferStatus;
 @property (nonatomic, strong) NSString *url;
 @property (nonatomic, strong) NSString *vcardString;
 @property (nonatomic, strong) NSString *fileName;
 @property (nonatomic, strong) NSString *dateString;
 @property (nonatomic) double fileSize;
-@property (nonatomic) double sizePerSecond;
+@property (nonatomic) double downloadSpeed;
 @property (nonatomic) float progress;
 
 @property (nonatomic, strong) UIImage *image;
@@ -49,13 +61,15 @@ HT_AS_SINGLETON(STFileTransferInfo, shareInstant)
 @property(nonatomic,readonly)NSString *_tableName;
 @property(nonatomic,readonly)NSString *_id;
 @property(nonatomic,readonly)NSString *_identifier;
-@property(nonatomic,readonly)NSString *_type;
-@property(nonatomic,readonly)NSString *_status;
+@property(nonatomic,readonly)NSString *_friendId;
+@property(nonatomic,readonly)NSString *_fileType;
+@property(nonatomic,readonly)NSString *_transferType;
+@property(nonatomic,readonly)NSString *_transferStatus;
 @property(nonatomic,readonly)NSString *_url;
 @property(nonatomic,readonly)NSString *_vcard;
 @property(nonatomic,readonly)NSString *_fileName;
 @property(nonatomic,readonly)NSString *_date;
 @property(nonatomic,readonly)NSString *_fileSize;
-@property(nonatomic,readonly)NSString *_sizePerSencond;
+@property(nonatomic,readonly)NSString *_downloadSpeed;
 
 @end

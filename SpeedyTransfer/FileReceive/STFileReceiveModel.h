@@ -7,7 +7,6 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "STFileReceiveInfo.h"
 #import "HTSingleton.h"
 #import "MCTransceiver.h"
 
@@ -20,10 +19,10 @@ HT_AS_SINGLETON(STFileReceiveModel, shareInstant)
 /**
  保存到数据库
  */
-- (STFileReceiveInfo *)saveContactInfo:(NSData *)vcardData;
-- (STFileReceiveInfo *)savePicture:(NSString *)pictureName size:(double)size;
+- (STFileTransferInfo *)saveContactInfo:(NSData *)vcardData;
+- (STFileTransferInfo *)savePicture:(NSString *)pictureName size:(double)size;
 
-- (void)updateStatus:(STFileReceiveStatus)status rate:(double)rate withIdentifier:(NSString *)identifier;
+- (void)updateStatus:(STFileTransferStatus)status rate:(double)rate withIdentifier:(NSString *)identifier;
 - (void)updateWithUrl:(NSString *)url identifier:(NSString *)identifier;
 
 @end

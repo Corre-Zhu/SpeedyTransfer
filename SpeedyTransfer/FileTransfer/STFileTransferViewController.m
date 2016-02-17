@@ -88,7 +88,7 @@ static NSString *cellIdentifier = @"CellIdentifier";
                 NSTimeInterval now = [[NSDate date] timeIntervalSince1970];
                 NSTimeInterval timeInterval = now - lastTimeInterval;
                 if (timeInterval != 0.0f) {
-                    currentTransferInfo.sizePerSecond = 1 / timeInterval * (newProgress - currentTransferInfo.progress) * currentTransferInfo.fileSize;
+                    currentTransferInfo.downloadSpeed = 1 / timeInterval * (newProgress - currentTransferInfo.progress) * currentTransferInfo.fileSize;
                 }
                 currentTransferInfo.progress = newProgress;
                 lastTimeInterval = now;
@@ -126,7 +126,7 @@ static NSString *cellIdentifier = @"CellIdentifier";
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     STFileTransferInfo *info = [_model.transferFiles objectAtIndex:indexPath.row];
-    if (info.type == STFileTransferTypeContact) {
+    if (info.fileType == STFileTypeContact) {
         NSData *vcard = [info.vcardString dataUsingEncoding:NSUTF8StringEncoding];
         CFDataRef vCardData = CFDataCreate(NULL, [vcard bytes], [vcard length]);
         ABAddressBookRef book = ABAddressBookCreate();

@@ -23,16 +23,17 @@ HT_DEF_SINGLETON(STFileTransferInfo, shareInstant);
     self = [super init];
     if (self) {
         self.identifier = [dic stringForKey:DBFileTransfer._identifier];
-        self.type = [dic integerForKey:DBFileTransfer._type];
-        self.status = [dic integerForKey:DBFileTransfer._status];
+        self.fileType = [dic integerForKey:DBFileTransfer._fileType];
+        self.transferStatus = [dic integerForKey:DBFileTransfer._transferStatus];
         self.url = [dic stringForKey:DBFileTransfer._url];
         self.vcardString = [dic stringForKey:DBFileTransfer._vcard];
         self.fileName = [dic stringForKey:DBFileTransfer._fileName];
         self.fileSize = [dic doubleForKey:DBFileTransfer._fileSize];
         self.dateString = [dic stringForKey:DBFileTransfer._date];
-        self.sizePerSecond = [dic doubleForKey:DBFileTransfer._sizePerSencond];
+        self.downloadSpeed = [dic doubleForKey:DBFileTransfer._downloadSpeed];
         
-        if (self.status == STFileTransferStatusSucceed) {
+        if (self.transferStatus == STFileTransferStatusReceived ||
+			self.transferStatus == STFileTransferStatusSent) {
             self.progress = 1.0f;
         }
     }
@@ -42,22 +43,23 @@ HT_DEF_SINGLETON(STFileTransferInfo, shareInstant);
 
 -(NSString *)_tableName{return @"FileTransfer";}
 -(NSString *)_id{return @"ID";}
--(NSString *)_identifier{return @"FileID";}
--(NSString *)_type{return @"Type";}
--(NSString *)_status{return @"Status";}
+-(NSString *)_identifier{return @"Identifier";}
+-(NSString *)_fileType{return @"FileType";}
+-(NSString *)_transferType{return @"TransferType";}
+-(NSString *)_transferStatus{return @"TransferStatus";}
 -(NSString *)_url{return @"Url";}
 -(NSString *)_vcard{return @"Vcard";}
 -(NSString *)_fileName{return @"FileName";}
 -(NSString *)_fileSize{return @"FileSize";}
 -(NSString *)_date{return @"FileDate";}
--(NSString *)_sizePerSencond{return @"SizePerSecond";}
+-(NSString *)_downloadSpeed{return @"DownloadSpeed";}
 
 - (NSString *)fileSizeString {
     return [NSString formatSize:self.fileSize];
 }
 
 - (NSString *)rateString {
-    return [NSString stringWithFormat:@"%@/s", [NSString formatSize:self.sizePerSecond]];
+    return [NSString stringWithFormat:@"%@/s", [NSString formatSize:self.downloadSpeed]];
 }
 
 @end
