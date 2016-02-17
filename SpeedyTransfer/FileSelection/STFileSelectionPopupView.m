@@ -225,7 +225,7 @@ static NSString *PopupCellIdentifier = @"PopupCellIdentifier";
     for (NSArray *arr in _dataSource) {
         count += arr.count;
     }
-    titleLabel.text = [NSString stringWithFormat:@"已选择%ld个文件", count];
+    titleLabel.text = [NSString stringWithFormat:@"已选择%@个文件", @(count).stringValue];
     [self.tableView reloadData];
     
     [caculatingQueue queueBlock:^{
@@ -328,35 +328,33 @@ static NSString *PopupCellIdentifier = @"PopupCellIdentifier";
         PHAsset *asset = object;
         NSInteger currentTag = cell.tag + 1;
         cell.tag = currentTag;
-        
-        [self.imageManager requestImageDataForAsset:asset options:nil resultHandler:^(NSData * _Nullable imageData, NSString * _Nullable dataUTI, UIImageOrientation orientation, NSDictionary * _Nullable info) {
-            if (cell.tag == currentTag) {
-                cell.size = imageData.length;
-                NSURL *url = [info objectForKey:@"PHImageFileURLKey"];
-                cell.title = [url.absoluteString lastPathComponent];
-            }
-        }];
-        
-        if (asset.mediaType == PHAssetMediaTypeImage) {
-            CGFloat scale = [UIScreen mainScreen].scale;
-            CGSize size = CGSizeMake(72.0f * scale, 72.0f * scale);
-            PHImageRequestOptions *options = [[PHImageRequestOptions alloc] init];
-            options.resizeMode = PHImageRequestOptionsResizeModeExact;
-            options.deliveryMode = PHImageRequestOptionsDeliveryModeOpportunistic;
-            [self.imageManager requestImageForAsset:asset
-                                         targetSize:size
-                                        contentMode:PHImageContentModeAspectFill
-                                            options:options
-                                      resultHandler:^(UIImage *result, NSDictionary *info) {
-                                          if (cell.tag == currentTag) {
-                                              cell.image = result;
-                                          }
-                                      }];
-        } else {
-            cell.image = [UIImage imageNamed:@"video_bg"];
-        }
-        
-        
+		
+		@autoreleasepool {
+			[self.imageManager requestImageDataForAsset:asset options:nil resultHandler:^(NSData * _Nullable imageData, NSString * _Nullable dataUTI, UIImageOrientation orientation, NSDictionary * _Nullable info) {
+				if (cell.tag == currentTag) {
+					cell.size = imageData.length;
+					NSURL *url = [info objectForKey:@"PHImageFileURLKey"];
+					cell.title = [url.absoluteString lastPathComponent];
+				}
+			}];
+			
+			CGFloat scale = [UIScreen mainScreen].scale;
+			CGSize size = CGSizeMake(72.0f * scale, 72.0f * scale);
+			PHImageRequestOptions *options = [[PHImageRequestOptions alloc] init];
+			options.resizeMode = PHImageRequestOptionsResizeModeExact;
+			options.deliveryMode = PHImageRequestOptionsDeliveryModeOpportunistic;
+			[self.imageManager requestImageForAsset:asset
+										 targetSize:size
+										contentMode:PHImageContentModeAspectFill
+											options:options
+									  resultHandler:^(UIImage *result, NSDictionary *info) {
+										  if (cell.tag == currentTag) {
+											  cell.image = result;
+										  }
+									  }];
+		}
+		
+		
     } else if ([object isKindOfClass:[STMusicInfo class]]) {
         STMusicInfo *model = object;
         cell.title = model.title;

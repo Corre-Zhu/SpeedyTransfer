@@ -187,22 +187,6 @@
             __weak STFileTransferInfo *weakInfo = _currentTransferInfo;
             
             lastTimeInterval = [[NSDate date] timeIntervalSince1970];
-            NSProgress *progress = [[STFileTransferModel shareInstant].transceiver sendResourceAtURL:[NSURL fileURLWithPath:path] withName:[url.absoluteString lastPathComponent] toPeer:[STFileTransferModel shareInstant].transceiver.connectedPeers.firstObject withCompletionHandler:^(NSError * _Nullable error) {
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    [progress removeObserver:self forKeyPath:@"fractionCompleted" context:NULL];
-                    if (!error) {
-                        weakInfo.status = STFileTransferStatusSucceed;
-                        [[STFileTransferModel shareInstant] updateStatus:STFileTransferStatusSucceed rate:weakInfo.sizePerSecond withIdentifier:weakInfo.identifier];
-                    } else {
-                        weakInfo.status = STFileTransferStatusFailed;
-                        [[STFileTransferModel shareInstant] updateStatus:STFileTransferStatusFailed rate:weakInfo.sizePerSecond withIdentifier:weakInfo.identifier];
-                    }
-                    
-                    [self startSendFile];
-                });
-            }];
-            
-            [progress addObserver:self forKeyPath:@"fractionCompleted" options:NSKeyValueObservingOptionNew context:NULL];
         }];
         return;
     }
@@ -238,7 +222,6 @@
         // do the export
         [exporter exportAsynchronouslyWithCompletionHandler:^
          {
-             NSData *data1 = [NSData dataWithContentsOfFile:exportFile];
              int exportStatus = exporter.status;
              
              switch (exportStatus) {
@@ -255,11 +238,7 @@
                      
                      NSLog (@"AVAssetExportSessionStatusCompleted");
                      
-                     [[STFileTransferModel shareInstant].transceiver sendResourceAtURL:exportURL withName:@"sdfsdfsdf.sdf" toPeer:[STFileTransferModel shareInstant].transceiver.connectedPeers.firstObject withCompletionHandler:^(NSError * _Nullable error) {
-                         dispatch_async(dispatch_get_main_queue(), ^{
-                             [self startSendFile];
-                         });
-                     }];
+					 
                      break;
                  }
                  default:
@@ -280,22 +259,7 @@
         if (data.length > 0) {
             STFileTransferInfo *info = [[STFileTransferModel shareInstant] setContactInfo:contact forKey:nil];
             NSTimeInterval start = [[NSDate date] timeIntervalSince1970];
-            [[STFileTransferModel shareInstant].transceiver sendUnreliableData:data toPeers:[STFileTransferModel shareInstant].transceiver.connectedPeers completion:^(NSError *error) {
-                if (error) {
-                    NSLog(@"%@", error);
-                    info.status = STFileTransferStatusFailed;
-                    [[STFileTransferModel shareInstant] updateStatus:info.status rate:0 withIdentifier:info.identifier];
-                } else {
-                    NSTimeInterval end = [[NSDate date] timeIntervalSince1970];
-                    info.sizePerSecond = 1 / (end - start) * data.length;
-                    info.status = STFileTransferStatusSucceed;
-                    info.progress = 1.0f;
-                    [[STFileTransferModel shareInstant] updateStatus:info.status rate:info.sizePerSecond withIdentifier:info.identifier];
-                }
-                [self.fileSelectionTabController removeContact:contact];
-                [self.fileSelectionTabController reloadContactsTableView];
-                [self startSendFile];
-            }];
+			
         } else {
             [self.fileSelectionTabController removeContact:contact];
             [self.fileSelectionTabController reloadContactsTableView];

@@ -11,7 +11,7 @@
 #import "MCTransceiver.h"
 #import "STFileTransferModel.h"
 
-@interface STTransferInstructionViewController ()<MCTransceiverDelegate>
+@interface STTransferInstructionViewController ()
 {
     UIScrollView *scrollView;
     UIView *topContainerView;
@@ -62,7 +62,7 @@
     self.navigationItem.title = NSLocalizedString(@"建立连接", nil);
     self.view.backgroundColor = RGBFromHex(0xf0f0f0);
     
-    scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, IPHONE_WIDTH, IPHONE_HEIGHT)];
+    scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, IPHONE_WIDTH, IPHONE_HEIGHT_WITHOUTTOPBAR)];
     scrollView.contentSize = CGSizeMake(IPHONE_WIDTH, 550.0f);
     [self.view addSubview:scrollView];
     
@@ -170,25 +170,10 @@
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
 	[[STFileTransferModel shareInstant] addObserver:self forKeyPath:@"connectStatus" options:NSKeyValueObservingOptionNew context:NULL];
-    [[STFileTransferModel shareInstant].transceiver startBrowsing];
 }
 
 - (void)leftBarButtonItemClick {
     [self.navigationController popViewControllerAnimated:YES];
-}
-
-- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSString *,id> *)change context:(void *)context {
-	if ([keyPath isEqualToString:@"connectStatus"]) {
-		dispatch_async(dispatch_get_main_queue(), ^{
-			if ([STFileTransferModel shareInstant].connectStatus == MCPeerConnnectStatusConnected) {
-				if (self.navigationController.topViewController == self) {
-					STFileTransferViewController *fileTransferViewController = [[STFileTransferViewController alloc] init];
-					[self.navigationController pushViewController:fileTransferViewController animated:YES];
-				}
-			}
-		});
-		
-	}
 }
 
 @end
