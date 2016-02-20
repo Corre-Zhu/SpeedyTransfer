@@ -115,7 +115,7 @@ static NSString *ReceiveCellIdentifier = @"ReceiveCellIdentifier";
                 }
                 currentReceiveInfo.progress = newProgress;
                 lastTimeInterval = now;
-                NSInteger index = [model.receiveFiles indexOfObject:currentReceiveInfo];
+//                NSInteger index = [model.receiveFiles indexOfObject:currentReceiveInfo];
                 [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:index inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
                 NSLog(@"%f", currentReceiveInfo.progress);
             }
@@ -126,12 +126,11 @@ static NSString *ReceiveCellIdentifier = @"ReceiveCellIdentifier";
 #pragma mark - Table view data source
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return model.receiveFiles.count;
+    return 0;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     STFileReceiveCell *cell = [tableView dequeueReusableCellWithIdentifier:ReceiveCellIdentifier forIndexPath:indexPath];
-    cell.transferInfo = [model.receiveFiles objectAtIndex:indexPath.row];
     [cell configCell];
     return cell;
 }
@@ -141,7 +140,7 @@ static NSString *ReceiveCellIdentifier = @"ReceiveCellIdentifier";
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    STFileTransferInfo *info = [model.receiveFiles objectAtIndex:indexPath.row];
+    STFileTransferInfo *info = nil;//[model.receiveFiles objectAtIndex:indexPath.row];
     if (info.fileType == STFileTypeContact) {
         NSData *vcard = [info.vcardString dataUsingEncoding:NSUTF8StringEncoding];
         CFDataRef vCardData = CFDataCreate(NULL, [vcard bytes], [vcard length]);
@@ -191,7 +190,7 @@ static NSString *ReceiveCellIdentifier = @"ReceiveCellIdentifier";
             dispatch_async(dispatch_get_main_queue(), ^{
                 if (success) {
                     currentReceiveInfo.url = placeholder.localIdentifier;
-                    [model updateWithUrl:placeholder.localIdentifier identifier:currentReceiveInfo.identifier];
+//                    [model updateWithUrl:placeholder.localIdentifier identifier:currentReceiveInfo.identifier];
                     [self.tableView reloadData];
                     NSLog(@"%@", placeholder.localIdentifier);
                 } else {

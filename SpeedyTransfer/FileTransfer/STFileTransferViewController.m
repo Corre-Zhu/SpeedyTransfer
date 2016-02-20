@@ -92,8 +92,8 @@ static NSString *cellIdentifier = @"CellIdentifier";
                 }
                 currentTransferInfo.progress = newProgress;
                 lastTimeInterval = now;
-                NSInteger index = [_model.transferFiles indexOfObject:currentTransferInfo];
-                [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:index inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
+//                NSInteger index = [_model.transferFiles indexOfObject:currentTransferInfo];
+//                [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:index inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
                 NSLog(@"%f", currentTransferInfo.progress);
             }
            
@@ -110,12 +110,12 @@ static NSString *cellIdentifier = @"CellIdentifier";
 #pragma mark - Table view data source
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return _model.transferFiles.count;
+    return 0;//_model.transferFiles.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     STFileTransferCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier forIndexPath:indexPath];
-    cell.transferInfo = [_model.transferFiles objectAtIndex:indexPath.row];
+//    cell.transferInfo = [_model.transferFiles objectAtIndex:indexPath.row];
     [cell configCell];
     return cell;
 }
@@ -125,7 +125,7 @@ static NSString *cellIdentifier = @"CellIdentifier";
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    STFileTransferInfo *info = [_model.transferFiles objectAtIndex:indexPath.row];
+    STFileTransferInfo *info = nil;//[_model.transferFiles objectAtIndex:indexPath.row];
     if (info.fileType == STFileTypeContact) {
         NSData *vcard = [info.vcardString dataUsingEncoding:NSUTF8StringEncoding];
         CFDataRef vCardData = CFDataCreate(NULL, [vcard bytes], [vcard length]);

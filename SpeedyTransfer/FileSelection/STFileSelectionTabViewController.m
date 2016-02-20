@@ -182,7 +182,7 @@
             NSURL *url = [info objectForKey:@"PHImageFileURLKey"];
             NSString *path = [[ZZPath picturePath] stringByAppendingPathComponent:[url.absoluteString lastPathComponent]];
             [imageData writeToFile:path atomically:YES];
-            self.currentTransferInfo = [[STFileTransferModel shareInstant] saveAssetWithIdentifier:photoAsset.localIdentifier fileName:[url.absoluteString lastPathComponent] length:imageData.length forKey:nil];
+//            self.currentTransferInfo = [[STFileTransferModel shareInstant] saveAssetWithIdentifier:photoAsset.localIdentifier fileName:[url.absoluteString lastPathComponent] length:imageData.length forKey:nil];
             
             __weak STFileTransferInfo *weakInfo = _currentTransferInfo;
             
@@ -257,8 +257,8 @@
         STContactInfo *contact = self.fileSelectionTabController.selectedContactsArr.firstObject;
         NSData *data = [contact.vcardString dataUsingEncoding:NSUTF8StringEncoding];
         if (data.length > 0) {
-            STFileTransferInfo *info = [[STFileTransferModel shareInstant] setContactInfo:contact forKey:nil];
-            NSTimeInterval start = [[NSDate date] timeIntervalSince1970];
+//            STFileTransferInfo *info = [[STFileTransferModel shareInstant] setContactInfo:contact forKey:nil];
+//            NSTimeInterval start = [[NSDate date] timeIntervalSince1970];
 			
         } else {
             [self.fileSelectionTabController removeContact:contact];

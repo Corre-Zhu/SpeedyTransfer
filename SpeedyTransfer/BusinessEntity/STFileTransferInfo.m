@@ -44,6 +44,7 @@ HT_DEF_SINGLETON(STFileTransferInfo, shareInstant);
 -(NSString *)_tableName{return @"FileTransfer";}
 -(NSString *)_id{return @"ID";}
 -(NSString *)_identifier{return @"Identifier";}
+-(NSString *)_deviceId{return @"DeviceId";}
 -(NSString *)_fileType{return @"FileType";}
 -(NSString *)_transferType{return @"TransferType";}
 -(NSString *)_transferStatus{return @"TransferStatus";}

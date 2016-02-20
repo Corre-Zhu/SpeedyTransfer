@@ -17,14 +17,11 @@
 
 HT_AS_SINGLETON(STFileTransferModel, shareInstant);
 
-@property (nonatomic, strong) NSArray *transferFiles; // 发送的文件
+@property (nonatomic, strong) NSArray *friendsInfoArray;
 
 /**
- 保存到数据库
+ 开始监听广播
  */
-- (STFileTransferInfo *)setContactInfo:(STContactInfo *)object forKey:(NSString *)key;
-- (STFileTransferInfo *)saveAssetWithIdentifier:(NSString *)identifier fileName:(NSString *)fileName length:(double)length forKey:(NSString *)key;
-
-- (void)updateStatus:(STFileTransferStatus)status rate:(double)rate withIdentifier:(NSString *)identifier;
+- (void)startListenBroadcast;
 
 @end

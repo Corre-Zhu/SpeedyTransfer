@@ -11,7 +11,7 @@
 @interface ZZPath : NSObject
 
 + (NSString *)documentPath;
-
++ (NSString *)headImagePath;
 + (NSString *)picturePath;
 
 @end

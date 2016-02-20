@@ -104,6 +104,11 @@ static NSString *PersonalSetttingIdentifier = @"PersonalSetttingIdentifier";
             }
             NSData *data = UIImageJPEGRepresentation(headImageView.image, 1.0f);
             [data writeToFile:path atomically:YES];
+        } else {
+            NSInteger index = [headImages indexOfObject:selectedImage];
+            if (index != NSNotFound && index < cellImages.count) {
+                [[NSUserDefaults standardUserDefaults] setObject:[cellImages objectAtIndex:index] forKey:HeadImage_];
+            }
         }
         [[NSUserDefaults standardUserDefaults] setObject:selectedImage forKey:HeadImage];
         [[NSUserDefaults standardUserDefaults] synchronize];

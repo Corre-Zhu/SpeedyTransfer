@@ -11,7 +11,7 @@
 		4558BFC41C74538B002F5718 /* HTKeychainUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 4558BFC31C74538B002F5718 /* HTKeychainUtil.m */; };
 		4558BFC81C7453F1002F5718 /* HTSFHFKeychainUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 4558BFC71C7453F1002F5718 /* HTSFHFKeychainUtils.m */; };
 		4558BFCC1C745903002F5718 /* OpenUDID.m in Sources */ = {isa = PBXBuildFile; fileRef = 4558BFCB1C745903002F5718 /* OpenUDID.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		4558BFCF1C746862002F5718 /* STUserInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 4558BFCE1C746862002F5718 /* STUserInfo.m */; };
+		4558BFCF1C746862002F5718 /* STDeviceInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 4558BFCE1C746862002F5718 /* STDeviceInfo.m */; };
 		4558BFD41C747483002F5718 /* STWebServerConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = 4558BFD11C747483002F5718 /* STWebServerConnection.m */; };
 		4558BFD51C747483002F5718 /* STWebServerModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 4558BFD31C747483002F5718 /* STWebServerModel.m */; };
 		4569CB391C41264C00A97D2A /* ZZReachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 4569CB381C41264C00A97D2A /* ZZReachability.m */; };
@@ -53,6 +53,7 @@
 		CE9C91B51C3970D60075CB06 /* STPersonalSettingCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CE9C91B41C3970D60075CB06 /* STPersonalSettingCell.m */; };
 		CE9C91B81C397C210075CB06 /* UIImage+ZZ.m in Sources */ = {isa = PBXBuildFile; fileRef = CE9C91B71C397C210075CB06 /* UIImage+ZZ.m */; };
 		CEA12C491C29ABCB00328CEF /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = CEA12C481C29ABCB00328CEF /* Reachability.m */; };
+		CEA74C2C1C78656400E1B34C /* STDeviceButton.m in Sources */ = {isa = PBXBuildFile; fileRef = CEA74C2B1C78656400E1B34C /* STDeviceButton.m */; };
 		CEB29E601C21A9EB00F17804 /* NSDictionary+HT.m in Sources */ = {isa = PBXBuildFile; fileRef = CEB29E5F1C21A9EB00F17804 /* NSDictionary+HT.m */; };
 		CEB29E631C21B6D700F17804 /* HTContactsHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = CEB29E621C21B6D700F17804 /* HTContactsHeaderView.m */; };
 		CEB29E671C21B7C000F17804 /* HTDrawView.m in Sources */ = {isa = PBXBuildFile; fileRef = CEB29E661C21B7C000F17804 /* HTDrawView.m */; };
@@ -95,8 +96,8 @@
 		4558BFC71C7453F1002F5718 /* HTSFHFKeychainUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HTSFHFKeychainUtils.m; sourceTree = "<group>"; };
 		4558BFCA1C745903002F5718 /* OpenUDID.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OpenUDID.h; sourceTree = "<group>"; };
 		4558BFCB1C745903002F5718 /* OpenUDID.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OpenUDID.m; sourceTree = "<group>"; };
-		4558BFCD1C746862002F5718 /* STUserInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STUserInfo.h; sourceTree = "<group>"; };
-		4558BFCE1C746862002F5718 /* STUserInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STUserInfo.m; sourceTree = "<group>"; };
+		4558BFCD1C746862002F5718 /* STDeviceInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STDeviceInfo.h; sourceTree = "<group>"; };
+		4558BFCE1C746862002F5718 /* STDeviceInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STDeviceInfo.m; sourceTree = "<group>"; };
 		4558BFD01C747483002F5718 /* STWebServerConnection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STWebServerConnection.h; sourceTree = "<group>"; };
 		4558BFD11C747483002F5718 /* STWebServerConnection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STWebServerConnection.m; sourceTree = "<group>"; };
 		4558BFD21C747483002F5718 /* STWebServerModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STWebServerModel.h; sourceTree = "<group>"; };
@@ -175,6 +176,8 @@
 		CE9C91B71C397C210075CB06 /* UIImage+ZZ.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+ZZ.m"; sourceTree = "<group>"; };
 		CEA12C471C29ABCB00328CEF /* Reachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Reachability.h; sourceTree = "<group>"; };
 		CEA12C481C29ABCB00328CEF /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Reachability.m; sourceTree = "<group>"; };
+		CEA74C2A1C78656400E1B34C /* STDeviceButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STDeviceButton.h; sourceTree = "<group>"; };
+		CEA74C2B1C78656400E1B34C /* STDeviceButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STDeviceButton.m; sourceTree = "<group>"; };
 		CEB29E5E1C21A9EB00F17804 /* NSDictionary+HT.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDictionary+HT.h"; sourceTree = "<group>"; };
 		CEB29E5F1C21A9EB00F17804 /* NSDictionary+HT.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDictionary+HT.m"; sourceTree = "<group>"; };
 		CEB29E611C21B6D700F17804 /* HTContactsHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HTContactsHeaderView.h; sourceTree = "<group>"; };
@@ -345,6 +348,8 @@
 				CE6536C41C2ECD3400C1E8A3 /* STTransferInstructionViewController.m */,
 				CE6536C51C2ECD3400C1E8A3 /* STWifiNotConnectedPopupView.h */,
 				CE6536C61C2ECD3400C1E8A3 /* STWifiNotConnectedPopupView.m */,
+				CEA74C2A1C78656400E1B34C /* STDeviceButton.h */,
+				CEA74C2B1C78656400E1B34C /* STDeviceButton.m */,
 			);
 			path = FileTransfer;
 			sourceTree = "<group>";
@@ -363,8 +368,8 @@
 				CE6536D01C2ECEC200C1E8A3 /* STFileTransferInfo.m */,
 				CE9C91A71C39414D0075CB06 /* STFeedbackInfo.h */,
 				CE9C91A81C39414D0075CB06 /* STFeedbackInfo.m */,
-				4558BFCD1C746862002F5718 /* STUserInfo.h */,
-				4558BFCE1C746862002F5718 /* STUserInfo.m */,
+				4558BFCD1C746862002F5718 /* STDeviceInfo.h */,
+				4558BFCE1C746862002F5718 /* STDeviceInfo.m */,
 			);
 			name = BusinessEntity;
 			path = SpeedyTransfer/BusinessEntity;
@@ -861,12 +866,13 @@
 				CE6536E91C2F096600C1E8A3 /* HTFMDatabase.m in Sources */,
 				CEA12C491C29ABCB00328CEF /* Reachability.m in Sources */,
 				CE9C91A31C390DAB0075CB06 /* STFeedBackViewController.m in Sources */,
+				CEA74C2C1C78656400E1B34C /* STDeviceButton.m in Sources */,
 				CED0D12D1C1D77DF00F5C0E3 /* HZAssetCollectionViewCell.m in Sources */,
 				4558BFD51C747483002F5718 /* STWebServerModel.m in Sources */,
 				CEB29E741C21B8BE00F17804 /* NSArray+PureLayout.m in Sources */,
 				CE9C91B21C39697D0075CB06 /* STPersonalSettingViewController.m in Sources */,
 				CE6536F91C2FDD3200C1E8A3 /* STFileReceiveCell.m in Sources */,
-				4558BFCF1C746862002F5718 /* STUserInfo.m in Sources */,
+				4558BFCF1C746862002F5718 /* STDeviceInfo.m in Sources */,
 				CED0D1211C1D576D00F5C0E3 /* STMusicSelectionViewController.m in Sources */,
 				4558BFC81C7453F1002F5718 /* HTSFHFKeychainUtils.m in Sources */,
 				CE6536CB1C2ECD3400C1E8A3 /* STWifiNotConnectedPopupView.m in Sources */,

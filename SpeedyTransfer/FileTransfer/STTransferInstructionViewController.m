@@ -8,7 +8,7 @@
 
 #import "STTransferInstructionViewController.h"
 #import "STFileTransferViewController.h"
-#import "MCTransceiver.h"
+#import "STDeviceButton.h"
 #import "STFileTransferModel.h"
 
 @interface STTransferInstructionViewController ()
@@ -21,6 +21,8 @@
     
     UIView *devicesView;
     UIButton *sendButton;
+    UILabel *sendLabel;
+    NSMutableArray *deviceButtons;
 }
 
 @end
@@ -28,31 +30,69 @@
 @implementation STTransferInstructionViewController
 
 - (void)dealloc {
-	
+    [[STFileTransferModel shareInstant] removeObserver:self forKeyPath:@"friendsInfoArray"];
 }
 
 - (void)setupDeviceView {
-    devicesView = [[UIView alloc] init];
-    devicesView.backgroundColor = [UIColor whiteColor];
-    [self.view addSubview:devicesView];
-    [devicesView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero];
+    if (!devicesView) {
+        devicesView = [[UIView alloc] init];
+        devicesView.backgroundColor = [UIColor whiteColor];
+        devicesView.clipsToBounds = YES;
+        [self.view addSubview:devicesView];
+        [devicesView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero];
+        
+        sendButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        [sendButton setTitle:NSLocalizedString(@"发送", nil) forState:UIControlStateNormal];
+        sendButton.titleLabel.font = [UIFont systemFontOfSize:16.0f];
+        sendButton.backgroundColor = RGBFromHex(0xeb684b);
+        sendButton.frame= CGRectMake((IPHONE_WIDTH - 103.0f) / 2.0f, IPHONE_HEIGHT_WITHOUTTOPBAR - 177.0f, 104.0f, 104.0f);
+        sendButton.layer.cornerRadius = 52.0f;
+        sendButton.layer.masksToBounds = YES;
+        [devicesView addSubview:sendButton];
+        
+        sendLabel = [[UILabel alloc] initWithFrame:CGRectMake(20.0f, sendButton.bottom + 13.0f, IPHONE_WIDTH - 40.0f, 16.0f)];
+        sendLabel.text = NSLocalizedString(@"点击选择用户发送文件", nil);
+        sendLabel.font = [UIFont systemFontOfSize:14.0f];
+        sendLabel.textColor = [UIColor grayColor];
+        sendLabel.textAlignment = NSTextAlignmentCenter;
+        [devicesView addSubview:sendLabel];
+        
+        UIImageView *imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"我要发送"]];
+        imageView.top = sendButton.top - imageView.height + 170.0f;
+        imageView.left = (IPHONE_WIDTH - imageView.width) / 2.0f;
+        imageView.contentMode = UIViewContentModeCenter;
+        imageView.backgroundColor = [UIColor lightGrayColor];
+        [devicesView insertSubview:imageView belowSubview:sendButton];
+        
+        NSArray *rectsArr = @[NSStringFromCGRect(CGRectMake(88.0f, imageView.bottom - 473.0f, 42.0f, 42.0f)),
+                              NSStringFromCGRect(CGRectMake(IPHONE_WIDTH - 130.0f, imageView.bottom - 473.0f, 42.0f, 42.0f)),
+                              NSStringFromCGRect(CGRectMake(30.0f, imageView.bottom - 350.0f, 42.0f, 42.0f)),
+                              NSStringFromCGRect(CGRectMake(IPHONE_WIDTH / 2.0f - 21.0f, imageView.bottom - 370.0f, 42.0f, 42.0f)),
+                              NSStringFromCGRect(CGRectMake(IPHONE_WIDTH - 72.0f, imageView.bottom - 350.0f, 42.0f, 42.0f)),
+                              ];
+        
+        deviceButtons = [NSMutableArray arrayWithCapacity:5];
+        for (int i = 0; i < 5; i++) {
+            STDeviceButton *deviceButton = [[STDeviceButton alloc] initWithFrame:CGRectFromString([rectsArr objectAtIndex:i])];
+            [devicesView addSubview:deviceButton];
+            deviceButton.hidden = YES;
+            [deviceButtons addObject:deviceButton];
+        }
+        
+        self.navigationItem.title = NSLocalizedString(@"我要发送", nil);
+    }
     
-    UIImageView *imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"我要发送"]];
-    imageView.frame = CGRectMake(0.0f, 0.0f, IPHONE_WIDTH, 460.0f);
-    [devicesView addSubview:imageView];
-    
-    sendButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    [sendButton setTitle:NSLocalizedString(@"发送", nil) forState:UIControlStateNormal];
-    sendButton.titleLabel.font = [UIFont systemFontOfSize:16.0f];
-    sendButton.backgroundColor = RGBFromHex(0xeb684b);
-    sendButton.frame= CGRectMake((IPHONE_WIDTH - 103.0f) / 2.0f, IPHONE_HEIGHT_WITHOUTTOPBAR - 177.0f, 104.0f, 104.0f);
-    sendButton.layer.cornerRadius = 52.0f;
-    sendButton.layer.masksToBounds = YES;
-    [devicesView addSubview:sendButton];
-    
-    
-    
-    
+    NSArray *tempArr = [STFileTransferModel shareInstant].friendsInfoArray;
+    for (int i = 0; i < 5; i++) {
+        STDeviceButton *deviceButton = [deviceButtons objectAtIndex:i];
+        if (tempArr.count > i) {
+            STDeviceInfo *userinfo = [tempArr objectAtIndex:i];
+            deviceButton.deviceInfo = userinfo;
+            deviceButton.hidden = NO;
+        } else {
+            deviceButton.hidden = YES;
+        }
+    }
     
 }
 
@@ -144,7 +184,19 @@
     
     [self reloadWifiName];
     
-    [self setupDeviceView];
+    if ([STFileTransferModel shareInstant].friendsInfoArray.count > 0) {
+        [self setupDeviceView];
+    }
+    
+    [[STFileTransferModel shareInstant] addObserver:self forKeyPath:@"friendsInfoArray" options:NSKeyValueObservingOptionNew context:NULL];
+}
+
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSString *,id> *)change context:(void *)context {
+    if ([keyPath isEqualToString:@"friendsInfoArray"]) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self setupDeviceView];
+        });
+    }
 }
 
 - (void)reloadWifiName {

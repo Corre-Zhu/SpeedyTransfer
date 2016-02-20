@@ -98,6 +98,11 @@ NSString *const UIStatusBarOrientationDidChangeNotification = @"UIStatusBarOrien
 		[HTKeychainUtil setOpenUDID:openUDID];
 		
 	}
+    
+    if (openUDID.length == 0) {
+        NSLog(@"get open udid error");
+        openUDID = [NSString uniqueID];
+    }
 	
 	return openUDID;
 	
@@ -269,8 +274,8 @@ NSString *const UIStatusBarOrientationDidChangeNotification = @"UIStatusBarOrien
 }
 
 // Get All ipv4 interface
-+ (NSDictionary *)getIpAddresses {
-    NSMutableDictionary* addresses = [[NSMutableDictionary alloc] init];
++ (NSArray *)getIpAddresses {
+    NSMutableArray *addresses = [[NSMutableArray alloc] init];
     struct ifaddrs *interfaces = NULL;
     struct ifaddrs *temp_addr = NULL;
     
@@ -284,14 +289,10 @@ NSString *const UIStatusBarOrientationDidChangeNotification = @"UIStatusBarOrien
             while(temp_addr != NULL) {
                 if(temp_addr->ifa_addr->sa_family == AF_INET) {
                     // Get NSString from C String
-                    NSString* ifaName = [NSString stringWithUTF8String:temp_addr->ifa_name];
                     NSString* address = [NSString stringWithUTF8String:inet_ntoa(((struct sockaddr_in *) temp_addr->ifa_addr)->sin_addr)];
-                    NSString* mask = [NSString stringWithUTF8String:inet_ntoa(((struct sockaddr_in *) temp_addr->ifa_netmask)->sin_addr)];
-                    NSString* gateway = [NSString stringWithUTF8String:inet_ntoa(((struct sockaddr_in *) temp_addr->ifa_dstaddr)->sin_addr)];
-                    
-                    
-                   
-                    NSLog(@"netAddress=%@", address);
+                    if (address.length > 0) {
+                        [addresses addObject:address];
+                    }
                 }
                 temp_addr = temp_addr->ifa_next;
             }

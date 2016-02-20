@@ -35,6 +35,7 @@
 #define AutoImportPhoto @"AutoImportPhoto"
 #define AutoImportVideo @"AutoImportVideo"
 #define HeadImage @"HeadImage"
+#define HeadImage_ @"HeadImage_"
 #define CustomHeadImage @"CustomHeadImage"
 
 typedef NS_ENUM(NSInteger, MCPeerConnnectStatus) {

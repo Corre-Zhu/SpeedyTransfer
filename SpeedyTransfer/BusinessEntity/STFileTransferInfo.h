@@ -37,9 +37,9 @@ typedef NS_ENUM(NSInteger, STFileTransferStatus) {
 HT_AS_SINGLETON(STFileTransferInfo, shareInstant)
 
 @property (nonatomic, strong) NSString *identifier;
-@property (nonatomic, strong) NSString *friendId;
-@property (nonatomic, strong) NSString *nickname;
-@property (nonatomic, strong) NSString *headUrl;
+@property (nonatomic, strong) NSString *deviceId;
+@property (nonatomic, strong) NSString *deviceName;
+@property (nonatomic, strong) UIImage *headImage;
 @property (nonatomic) STFileType fileType;
 @property (nonatomic) STFileTransferType transferType;
 @property (nonatomic) STFileTransferStatus transferStatus;
@@ -61,7 +61,7 @@ HT_AS_SINGLETON(STFileTransferInfo, shareInstant)
 @property(nonatomic,readonly)NSString *_tableName;
 @property(nonatomic,readonly)NSString *_id;
 @property(nonatomic,readonly)NSString *_identifier;
-@property(nonatomic,readonly)NSString *_friendId;
+@property(nonatomic,readonly)NSString *_deviceId;
 @property(nonatomic,readonly)NSString *_fileType;
 @property(nonatomic,readonly)NSString *_transferType;
 @property(nonatomic,readonly)NSString *_transferStatus;

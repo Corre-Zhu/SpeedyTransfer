@@ -14,8 +14,6 @@
 #import <GCDWebServerFunctions.h>
 #import "STWebServerConnection.h"
 
-#define PORT 8081
-
 @interface STWebServerModel ()
 
 @property (nonatomic, strong) GCDWebServer *webServer;
@@ -28,13 +26,10 @@
     NSString *apiInfoStr = nil;
     NSString *address = GCDWebServerGetPrimaryIPAddress(NO);
     if (address.length > 0) {
-        NSString *devInfoUrl = [NSString stringWithFormat:@"%@:%@/info", address, @(PORT)];
-        NSString *portraitUrl = [NSString stringWithFormat:@"%@:%@/portrait", address, @(PORT)];
-        NSString *recvUrl = [NSString stringWithFormat:@"%@:%@/recv", address, @(PORT)];
-        
-        NSArray *apiInfos = @[@{@"dev_info": @{@"href": devInfoUrl, @"rel": @"dev_info"}},
-                              @{@"portrait": @{@"href": portraitUrl, @"rel": @"portrait"}},
-                              @{@"recv": @{@"href": recvUrl, @"rel": @"recv"}}];
+        NSString *devInfoUrl = [NSString stringWithFormat:@"http://%@:%@/info", address, @(KSERVERPORT)];
+        NSString *portraitUrl = [NSString stringWithFormat:@"http://%@:%@/portrait", address, @(KSERVERPORT)];
+        NSString *recvUrl = [NSString stringWithFormat:@"http://%@:%@/recv", address, @(KSERVERPORT)];
+        NSDictionary *apiInfos = @{@"dev_info":@{@"href": devInfoUrl, @"rel": @"info"}, @"portrait": @{@"href": portraitUrl, @"rel": @"portrait"}, @"recv": @{@"href": recvUrl, @"rel": @"recv"}};
         apiInfoStr = [apiInfos jsonString];
     }
     
@@ -56,7 +51,8 @@
               @"version_name": versionNum,
               @"device_name": deviceName,
               @"device_addr": address,
-              @"user_nick": deviceName} jsonString];
+              @"user_nick": deviceName,
+              @"device_id": [[UIDevice currentDevice] openUDID]} jsonString];
 }
 
 - (void)startWebServer {
@@ -85,6 +81,7 @@
                                       if ([headImage isEqualToString:CustomHeadImage]) {
                                           image = [[UIImage alloc] initWithContentsOfFile:[[ZZPath documentPath] stringByAppendingPathComponent:CustomHeadImage]];
                                       } else {
+                                          headImage = [[NSUserDefaults standardUserDefaults] stringForKey:HeadImage_];
                                           image = [UIImage imageNamed:headImage];
                                       }
                                       if (image) {
@@ -105,7 +102,7 @@
     }];
     
     // Start server on port 8080
-    NSDictionary *options = @{GCDWebServerOption_ConnectionClass: [STWebServerConnection class], GCDWebServerOption_Port: @(PORT)};
+    NSDictionary *options = @{GCDWebServerOption_ConnectionClass: [STWebServerConnection class], GCDWebServerOption_Port: @(KSERVERPORT)};
     [_webServer startWithOptions:options error:nil];
     NSLog(@"Visit %@ in your web browser", _webServer.serverURL);
 }

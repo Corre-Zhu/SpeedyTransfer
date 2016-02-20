@@ -13,3 +13,8 @@
 #import "ZZPath.h"
 #import "BusineesEntity.h"
 #import "ZZReachability.h"
+#import "STFileTransferModel.h"
+#import "STFileReceiveModel.h"
+
+#define KUDPPORT 5944
+#define KSERVERPORT 8080

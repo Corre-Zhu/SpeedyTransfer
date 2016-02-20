@@ -36,6 +36,6 @@ UIKIT_EXTERN NSString *const UIStatusBarOrientationDidChangeNotification;
 - (float)statusbarHeight;
 
 + (NSString *)getWifiName;
-+ (NSDictionary *)getIpAddresses;
++ (NSArray *)getIpAddresses;
 
 @end

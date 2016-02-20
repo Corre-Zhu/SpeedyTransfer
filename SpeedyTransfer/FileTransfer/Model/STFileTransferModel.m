@@ -7,14 +7,13 @@
 //
 
 #import "STFileTransferModel.h"
-#import "STContactInfo.h"
-#import "HTSQLBuffer.h"
-#import "HTFMDatabase.h"
-#import "AppDelegate.h"
+#import <CocoaAsyncSocket/GCDAsyncUdpSocket.h>
+#import "STDeviceInfo.h"
 
-@interface STFileTransferModel ()
+@interface STFileTransferModel ()<GCDAsyncUdpSocketDelegate>
 {
-    HTFMDatabase *database;
+    GCDAsyncUdpSocket *udpSocket;
+    NSTimer *timeoutTimer;
 }
 
 @end
@@ -23,128 +22,100 @@
 
 HT_DEF_SINGLETON(STFileTransferModel, shareInstant);
 
-- (void)dealloc {
-    [database close];
-}
-
 - (instancetype)init {
     self = [super init];
     if (self) {
-        NSString *defaultDbPath = [[ZZPath documentPath] stringByAppendingPathComponent:dbName];
-        database = [[HTFMDatabase alloc] initWithPath:defaultDbPath];
-        [database open];
+        udpSocket = [[GCDAsyncUdpSocket alloc] initWithDelegate:self delegateQueue:dispatch_get_main_queue()];
+        [udpSocket setIPv4Enabled:YES];
+        [udpSocket setIPv6Enabled:NO];
         
-        HTSQLBuffer *sql = [[HTSQLBuffer alloc] init];
-        sql.SELECT(@"*").FROM(DBFileTransfer._tableName).ORDERBY(DBFileTransfer._id, @"DESC");
-        FMResultSet *result = [database executeQuery:sql.sql];
-        if (result) {
-            NSMutableArray *tempArr = [NSMutableArray array];
-            while ([result next]) {
-                if (result.resultDictionary) {
-                    [tempArr addObject:[[STFileTransferInfo alloc] initWithDictionary:result.resultDictionary]];
-                }
-            }
-            _transferFiles = [NSArray arrayWithArray:tempArr];
-        }
-		
+        timeoutTimer = [NSTimer scheduledTimerWithTimeInterval:15.0f target:self selector:@selector(timeout) userInfo:nil repeats:YES];
     }
 	
     return self;
 }
 
-- (void)addTransferFile:(STFileTransferInfo *)info {
-    if (!info) {
-        return;
-    }
+- (void)startListenBroadcast {
+    NSError *error = nil;
+    if (![udpSocket bindToPort:KUDPPORT error:&error]) {
+        NSLog(@"bind to port error: %@", error);
+    };
     
-    if (!_transferFiles) {
-        _transferFiles = [NSArray arrayWithObject:info];
-    } else {
-        @autoreleasepool {
-            NSMutableArray *arr = [NSMutableArray arrayWithArray:_transferFiles];
-            [arr insertObject:info atIndex:0];
-            _transferFiles = [NSArray arrayWithArray:arr];
+    if (![udpSocket beginReceiving:&error]) {
+        NSLog(@"Error starting server (recv): %@", error);
+    }
+}
+
+- (void)timeout {
+    [[GCDQueue backgroundPriorityGlobalQueue] queueBlock:^{
+        @synchronized(self) {
+            @autoreleasepool {
+                NSArray *tempArr = [NSArray arrayWithArray:self.friendsInfoArray];
+                NSMutableArray *tempMutableArry = [NSMutableArray arrayWithArray:self.friendsInfoArray];
+                BOOL timeout = NO;
+                for (STDeviceInfo *userInfo in tempArr) {
+                    if ([[NSDate date] timeIntervalSince1970] - userInfo.lastUpdateTimestamp > 15) {
+                        // 15秒之内没有收到udp广播，默认当做离线处理
+                        timeout = YES;
+                        [tempMutableArry removeObject:userInfo];
+                        NSLog(@"timeout: %@, %@", userInfo.ip, @(userInfo.port).stringValue);
+                    }
+                }
+                
+                if (timeout) {
+                    self.friendsInfoArray = [NSArray arrayWithArray:tempMutableArry];
+                }
+            }
         }
-    }
+
+    }];
+    
 }
 
-- (STFileTransferInfo *)setContactInfo:(STContactInfo *)object forKey:(NSString *)key {
-    STFileTransferInfo *entity = [[STFileTransferInfo alloc] init];
-    if (key.length > 0) {
-        entity.identifier = [key copy];
-    } else {
-        entity.identifier = [NSString uniqueID];
-    }
-    entity.fileType = STFileTypeContact;
-    entity.transferStatus = STFileTransferStatusSending;
-    entity.url = @"";
-    entity.fileName = object.name;
-    entity.dateString = [[NSDate date] dateString];
-    entity.fileSize = object.size;
-    entity.vcardString = object.vcardString;
-    
-    HTSQLBuffer *sql = [[HTSQLBuffer alloc] init];
-    sql.INSERT(DBFileTransfer._tableName)
-    .SET(DBFileTransfer._identifier, entity.identifier)
-    .SET(DBFileTransfer._fileType, @(entity.fileType))
-    .SET(DBFileTransfer._transferStatus , @(entity.transferStatus))
-    .SET(DBFileTransfer._fileName, entity.fileName)
-    .SET(DBFileTransfer._fileSize, @(entity.fileSize))
-    .SET(DBFileTransfer._date, entity.dateString)
-    .SET(DBFileTransfer._vcard, entity.vcardString);
-    
-    if (![database executeUpdate:sql.sql]) {
-        NSLog(@"%@", database.lastError);
-    }
-    
-    [self addTransferFile:entity];
-    
-    return entity;
-}
+#pragma mark - GCDAsyncUdpSocketDelegate
 
-- (STFileTransferInfo *)saveAssetWithIdentifier:(NSString *)identifier fileName:(NSString *)fileName length:(double)length forKey:(NSString *)key {
-    STFileTransferInfo *entity = [[STFileTransferInfo alloc] init];
-    if (key.length > 0) {
-        entity.identifier = [key copy];
-    } else {
-        entity.identifier = [NSString uniqueID];
-    }
-    entity.fileType = STFileTypePicture;
-    entity.transferStatus = STFileTransferStatusSending;
-    entity.url = identifier;
-    entity.fileName = fileName;
-    entity.dateString = [[NSDate date] dateString];
-    entity.fileSize = length;
+- (void)udpSocket:(GCDAsyncUdpSocket *)sock
+   didReceiveData:(NSData *)data
+      fromAddress:(NSData *)address
+withFilterContext:(id)filterContext {
+    [[GCDQueue backgroundPriorityGlobalQueue] queueBlock:^{
+        @synchronized(self) {
+            @autoreleasepool {
+                NSString *host = nil;
+                NSInteger port = 0;
+                NSString *dataString = [[NSString alloc]initWithData:data encoding:NSUTF8StringEncoding];
+                NSArray *arr = [dataString componentsSeparatedByString:@":"];
+                if (arr.count == 3) {
+                    port = [[arr objectAtIndex:1] integerValue];
+                }
+                [GCDAsyncUdpSocket getHost:&host port:NULL fromAddress:address];
+                if (host.length > 0 && port > 0 && ![[UIDevice getIpAddresses] containsObject:host]) {
+                    
+                    NSLog(@"%@, %@, %@", dataString, host, @(port).stringValue);
+                    
+                    BOOL find = NO;
+                    NSArray *tempArr = [NSArray arrayWithArray:self.friendsInfoArray];
+                    for (STDeviceInfo *userInfo in tempArr) {
+                        if ([userInfo.ip isEqualToString:host]) {
+                            userInfo.lastUpdateTimestamp = [[NSDate date] timeIntervalSince1970];
+                            find = YES;
+                            break;
+                        }
+                    }
+                    
+                    if (!find) {
+                        STDeviceInfo *userInfo = [[STDeviceInfo alloc] init];
+                        userInfo.ip = host;
+                        userInfo.port = port;
+                        userInfo.lastUpdateTimestamp = [[NSDate date] timeIntervalSince1970];
+                        [userInfo setup];
+                        self.friendsInfoArray = [tempArr arrayByAddingObject:userInfo];
+                    }
+                }
+            }
+        }
+    }];
     
-    HTSQLBuffer *sql = [[HTSQLBuffer alloc] init];
-    sql.INSERT(DBFileTransfer._tableName)
-    .SET(DBFileTransfer._identifier, entity.identifier)
-    .SET(DBFileTransfer._fileType, @(entity.fileType))
-    .SET(DBFileTransfer._transferStatus , @(entity.transferStatus))
-    .SET(DBFileTransfer._fileName, entity.fileName)
-    .SET(DBFileTransfer._fileSize, @(entity.fileSize))
-    .SET(DBFileTransfer._date, entity.dateString)
-    .SET(DBFileTransfer._url, entity.url);
-    
-    if (![database executeUpdate:sql.sql]) {
-        NSLog(@"%@", database.lastError);
-    }
-    
-    [self addTransferFile:entity];
-    
-    return entity;
-}
-
-- (void)updateStatus:(STFileTransferStatus)status rate:(double)rate withIdentifier:(NSString *)identifier {
-    HTSQLBuffer *sql = [[HTSQLBuffer alloc] init];
-    sql.UPDATE(DBFileTransfer._tableName)
-    .SET(DBFileTransfer._transferStatus , @(status))
-    .SET(DBFileTransfer._downloadSpeed, @(rate))
-    .WHERE(SQLStringEqual(DBFileTransfer._identifier, identifier));
-    
-    if (![database executeUpdate:sql.sql]) {
-        NSLog(@"%@", database.lastError);
-    }
 }
 
 @end

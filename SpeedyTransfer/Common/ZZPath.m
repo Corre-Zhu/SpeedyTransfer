@@ -19,6 +19,19 @@
     return documentPath;
 }
 
++ (NSString *)headImagePath {
+    static NSString *headImagePath;
+    if (!headImagePath) {
+        headImagePath = [[self documentPath] stringByAppendingPathComponent:@"HeadImage"];
+    }
+    
+    if (![[NSFileManager defaultManager] fileExistsAtPath:headImagePath]) {
+        [[NSFileManager defaultManager] createDirectoryAtPath:headImagePath withIntermediateDirectories:YES attributes:NULL error:NULL];
+    }
+    
+    return headImagePath;
+}
+
 + (NSString *)picturePath {
     static NSString *picturePath;
     if (!picturePath) {
