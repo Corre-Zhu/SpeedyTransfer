@@ -204,10 +204,10 @@
 }
 
 - (void)feedbackButtonClick {
-//    STFileTransferViewController *sdf = [[STFileTransferViewController alloc] init];
-//    [self.navigationController pushViewController:sdf animated:YES];
-    STFeedBackViewController *feedBackVc = [[STFeedBackViewController alloc] init];
-    [self.navigationController pushViewController:feedBackVc animated:YES];
+    STFileTransferViewController *sdf = [[STFileTransferViewController alloc] init];
+    [self.navigationController pushViewController:sdf animated:YES];
+//    STFeedBackViewController *feedBackVc = [[STFeedBackViewController alloc] init];
+//    [self.navigationController pushViewController:feedBackVc animated:YES];
 }
 
 @end

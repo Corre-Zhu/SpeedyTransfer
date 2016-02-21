@@ -14,4 +14,6 @@
 
 @property (nonatomic, strong) STDeviceInfo *deviceInfo;
 
+- (BOOL)isSelected;
+
 @end

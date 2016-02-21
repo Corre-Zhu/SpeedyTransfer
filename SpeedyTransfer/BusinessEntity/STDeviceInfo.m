@@ -68,6 +68,10 @@ HT_DEF_SINGLETON(STDeviceInfo, shareInstant);
             }
         }
         
+        //
+        NSDictionary *recvInfo = [apiInfo dictionaryForKey:@"recv"];
+        NSString *recvUrl = [recvInfo stringForKey:@"href"];
+        self.recvUrl = recvUrl;
 
     }
     

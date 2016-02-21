@@ -54,6 +54,8 @@
 		CE9C91B81C397C210075CB06 /* UIImage+ZZ.m in Sources */ = {isa = PBXBuildFile; fileRef = CE9C91B71C397C210075CB06 /* UIImage+ZZ.m */; };
 		CEA12C491C29ABCB00328CEF /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = CEA12C481C29ABCB00328CEF /* Reachability.m */; };
 		CEA74C2C1C78656400E1B34C /* STDeviceButton.m in Sources */ = {isa = PBXBuildFile; fileRef = CEA74C2B1C78656400E1B34C /* STDeviceButton.m */; };
+		CEA74C2F1C79D65F00E1B34C /* STSendHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = CEA74C2E1C79D65F00E1B34C /* STSendHeaderView.m */; };
+		CEA74C321C79D68100E1B34C /* STReceiveHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = CEA74C311C79D68100E1B34C /* STReceiveHeaderView.m */; };
 		CEB29E601C21A9EB00F17804 /* NSDictionary+HT.m in Sources */ = {isa = PBXBuildFile; fileRef = CEB29E5F1C21A9EB00F17804 /* NSDictionary+HT.m */; };
 		CEB29E631C21B6D700F17804 /* HTContactsHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = CEB29E621C21B6D700F17804 /* HTContactsHeaderView.m */; };
 		CEB29E671C21B7C000F17804 /* HTDrawView.m in Sources */ = {isa = PBXBuildFile; fileRef = CEB29E661C21B7C000F17804 /* HTDrawView.m */; };
@@ -178,6 +180,10 @@
 		CEA12C481C29ABCB00328CEF /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Reachability.m; sourceTree = "<group>"; };
 		CEA74C2A1C78656400E1B34C /* STDeviceButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STDeviceButton.h; sourceTree = "<group>"; };
 		CEA74C2B1C78656400E1B34C /* STDeviceButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STDeviceButton.m; sourceTree = "<group>"; };
+		CEA74C2D1C79D65F00E1B34C /* STSendHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STSendHeaderView.h; sourceTree = "<group>"; };
+		CEA74C2E1C79D65F00E1B34C /* STSendHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STSendHeaderView.m; sourceTree = "<group>"; };
+		CEA74C301C79D68100E1B34C /* STReceiveHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STReceiveHeaderView.h; sourceTree = "<group>"; };
+		CEA74C311C79D68100E1B34C /* STReceiveHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STReceiveHeaderView.m; sourceTree = "<group>"; };
 		CEB29E5E1C21A9EB00F17804 /* NSDictionary+HT.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDictionary+HT.h"; sourceTree = "<group>"; };
 		CEB29E5F1C21A9EB00F17804 /* NSDictionary+HT.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDictionary+HT.m"; sourceTree = "<group>"; };
 		CEB29E611C21B6D700F17804 /* HTContactsHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HTContactsHeaderView.h; sourceTree = "<group>"; };
@@ -340,14 +346,18 @@
 			isa = PBXGroup;
 			children = (
 				CE6536D91C2ED09100C1E8A3 /* Model */,
-				CE6536BF1C2ECD3400C1E8A3 /* STFileTransferCell.h */,
-				CE6536C01C2ECD3400C1E8A3 /* STFileTransferCell.m */,
 				CE6536C11C2ECD3400C1E8A3 /* STFileTransferViewController.h */,
 				CE6536C21C2ECD3400C1E8A3 /* STFileTransferViewController.m */,
 				CE6536C31C2ECD3400C1E8A3 /* STTransferInstructionViewController.h */,
 				CE6536C41C2ECD3400C1E8A3 /* STTransferInstructionViewController.m */,
 				CE6536C51C2ECD3400C1E8A3 /* STWifiNotConnectedPopupView.h */,
 				CE6536C61C2ECD3400C1E8A3 /* STWifiNotConnectedPopupView.m */,
+				CE6536BF1C2ECD3400C1E8A3 /* STFileTransferCell.h */,
+				CE6536C01C2ECD3400C1E8A3 /* STFileTransferCell.m */,
+				CEA74C2D1C79D65F00E1B34C /* STSendHeaderView.h */,
+				CEA74C2E1C79D65F00E1B34C /* STSendHeaderView.m */,
+				CEA74C301C79D68100E1B34C /* STReceiveHeaderView.h */,
+				CEA74C311C79D68100E1B34C /* STReceiveHeaderView.m */,
 				CEA74C2A1C78656400E1B34C /* STDeviceButton.h */,
 				CEA74C2B1C78656400E1B34C /* STDeviceButton.m */,
 			);
@@ -825,6 +835,7 @@
 				CE8975631C26AE5B002E11F8 /* MBProgressHUD.m in Sources */,
 				CE9C91A91C39414D0075CB06 /* STFeedbackInfo.m in Sources */,
 				CED0D1331C1D959800F5C0E3 /* UITableViewCell+ST.m in Sources */,
+				CEA74C321C79D68100E1B34C /* STReceiveHeaderView.m in Sources */,
 				CED62A351C094FDD00270EDB /* STHomeViewController.m in Sources */,
 				CEB29E791C21C01600F17804 /* STMusicSelectionCell.m in Sources */,
 				CE2AD7AB1C4A340D00C67D1D /* HTJSONAdapter.m in Sources */,
@@ -841,6 +852,7 @@
 				CE6536F31C2FD53600C1E8A3 /* STFileReceiveModel.m in Sources */,
 				CE6536D71C2ECEC300C1E8A3 /* STMusicInfo.m in Sources */,
 				CE6536B01C2E92C200C1E8A3 /* MCTransceiver.m in Sources */,
+				CEA74C2F1C79D65F00E1B34C /* STSendHeaderView.m in Sources */,
 				CED62A481C09512100270EDB /* main.m in Sources */,
 				CEB29E751C21B8BE00F17804 /* NSLayoutConstraint+PureLayout.m in Sources */,
 				CEB29E7C1C230BA400F17804 /* UIViewController+ST.m in Sources */,

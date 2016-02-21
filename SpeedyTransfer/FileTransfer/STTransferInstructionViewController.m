@@ -30,7 +30,7 @@
 @implementation STTransferInstructionViewController
 
 - (void)dealloc {
-    [[STFileTransferModel shareInstant] removeObserver:self forKeyPath:@"friendsInfoArray"];
+    [[STFileTransferModel shareInstant] removeObserver:self forKeyPath:@"devicesArray"];
 }
 
 - (void)setupDeviceView {
@@ -48,6 +48,7 @@
         sendButton.frame= CGRectMake((IPHONE_WIDTH - 103.0f) / 2.0f, IPHONE_HEIGHT_WITHOUTTOPBAR - 177.0f, 104.0f, 104.0f);
         sendButton.layer.cornerRadius = 52.0f;
         sendButton.layer.masksToBounds = YES;
+        [sendButton addTarget:self action:@selector(sendButtonClick) forControlEvents:UIControlEventTouchUpInside];
         [devicesView addSubview:sendButton];
         
         sendLabel = [[UILabel alloc] initWithFrame:CGRectMake(20.0f, sendButton.bottom + 13.0f, IPHONE_WIDTH - 40.0f, 16.0f)];
@@ -82,7 +83,7 @@
         self.navigationItem.title = NSLocalizedString(@"我要发送", nil);
     }
     
-    NSArray *tempArr = [STFileTransferModel shareInstant].friendsInfoArray;
+    NSArray *tempArr = [STFileTransferModel shareInstant].devicesArray;
     for (int i = 0; i < 5; i++) {
         STDeviceButton *deviceButton = [deviceButtons objectAtIndex:i];
         if (tempArr.count > i) {
@@ -184,15 +185,15 @@
     
     [self reloadWifiName];
     
-    if ([STFileTransferModel shareInstant].friendsInfoArray.count > 0) {
+    if ([STFileTransferModel shareInstant].devicesArray.count > 0) {
         [self setupDeviceView];
     }
     
-    [[STFileTransferModel shareInstant] addObserver:self forKeyPath:@"friendsInfoArray" options:NSKeyValueObservingOptionNew context:NULL];
+    [[STFileTransferModel shareInstant] addObserver:self forKeyPath:@"devicesArray" options:NSKeyValueObservingOptionNew context:NULL];
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSString *,id> *)change context:(void *)context {
-    if ([keyPath isEqualToString:@"friendsInfoArray"]) {
+    if ([keyPath isEqualToString:@"devicesArray"]) {
         dispatch_async(dispatch_get_main_queue(), ^{
             [self setupDeviceView];
         });
@@ -222,6 +223,24 @@
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
 	[[STFileTransferModel shareInstant] addObserver:self forKeyPath:@"connectStatus" options:NSKeyValueObservingOptionNew context:NULL];
+}
+
+- (void)sendButtonClick {
+    NSMutableArray *tempArr = [NSMutableArray array];
+    for (STDeviceButton *button in deviceButtons) {
+        if ([button isSelected] && !button.hidden) {
+            [tempArr addObject:button.deviceInfo];
+        }
+    }
+    
+    if (tempArr.count > 0) {
+        [STFileTransferModel shareInstant].selectedDevicesArray = [NSArray arrayWithArray:tempArr];
+        [[STFileTransferModel shareInstant] startSendFile];
+        
+        STFileTransferViewController *fileTransferVc = [[STFileTransferViewController alloc] init];
+        [self.navigationController pushViewController:fileTransferVc animated:YES];
+    }
+    
 }
 
 - (void)leftBarButtonItemClick {

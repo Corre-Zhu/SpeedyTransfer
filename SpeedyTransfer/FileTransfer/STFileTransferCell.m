@@ -31,6 +31,8 @@
         self.selectionStyle = UITableViewCellSelectionStyleNone;
         
         coverImageView = [[UIImageView alloc] initWithFrame:CGRectMake(16.0f, 10.0f, 72.0f, 72.0f)];
+        coverImageView.layer.cornerRadius = 4.0f;
+        coverImageView.layer.masksToBounds = YES;
         [self.contentView addSubview:coverImageView];
         
         fileNameLabel = [[UILabel alloc] init];
@@ -72,6 +74,10 @@
         failedLabel.text = NSLocalizedString(@"发送失败", nil);
         [self.contentView addSubview:failedLabel];
         failedLabel.hidden = YES;
+        
+        UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 91.5f, IPHONE_WIDTH, 0.5f)];
+        lineView.backgroundColor = RGBFromHex(0x929292);
+        [self.contentView addSubview:lineView];
     }
     
     return self;

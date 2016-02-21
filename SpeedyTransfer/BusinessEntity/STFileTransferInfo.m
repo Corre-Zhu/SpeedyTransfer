@@ -7,6 +7,7 @@
 //
 
 #import "STFileTransferInfo.h"
+#import "STDeviceInfo.h"
 
 @interface STFileTransferInfo ()
 {
@@ -36,6 +37,9 @@ HT_DEF_SINGLETON(STFileTransferInfo, shareInstant);
 			self.transferStatus == STFileTransferStatusSent) {
             self.progress = 1.0f;
         }
+        
+        self.deviceId = [dic stringForKey:DBDeviceInfo._deviceId];
+        self.deviceName = [dic stringForKey:DBDeviceInfo._deviceName];
     }
     
     return self;

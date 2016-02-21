@@ -38,6 +38,14 @@
 #define HeadImage_ @"HeadImage_"
 #define CustomHeadImage @"CustomHeadImage"
 
+#define FILE_NAME @"file_name"
+#define FILE_TYPE @"file_type"
+#define FILE_SIZE @"file_size"
+#define FILE_URL @"file_url"
+#define ICON_URL @"icon_url"
+#define ASSET_ID @"asset_id"
+
+
 typedef NS_ENUM(NSInteger, MCPeerConnnectStatus) {
 	MCPeerConnnectStatusNormal          = 0,
 	MCPeerConnnectStatusConnecting      = 1,

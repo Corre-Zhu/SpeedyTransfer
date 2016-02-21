@@ -67,4 +67,8 @@
     }
 }
 
+- (BOOL)isSelected {
+    return button.selected;
+}
+
 @end

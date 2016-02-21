@@ -255,12 +255,8 @@ static NSString *PopupCellIdentifier = @"PopupCellIdentifier";
         return;
     }
     
-    [self.tabViewController removeAllSelectedFiles];
+    [[STFileTransferModel shareInstant] removeAllSelectedFiles];
     _dataSource = nil;
-    [self.tabViewController reloadAssetsTableView];
-    [self.tabViewController reloadMusicsTableView];
-    [self.tabViewController reloadVideosTableView];
-    [self.tabViewController reloadContactsTableView];
     [self.tableView reloadData];
     totalSize = 0.0f;
     [self reloadTitle];
@@ -283,24 +279,21 @@ static NSString *PopupCellIdentifier = @"PopupCellIdentifier";
         NSMutableArray *mutableArr = _dataSource[indexPath.section];
         id object = [mutableArr objectAtIndex:indexPath.row];
         [mutableArr removeObject:object];
+        [STFileTransferModel shareInstant].selectedFilesCount -= 1;
         if ([object isKindOfClass:[PHAsset class]]) {
             PHAsset *asset = object;
             if (asset.mediaType == PHAssetMediaTypeImage) {
-                [self.tabViewController configToolView];
-                [self.tabViewController reloadAssetsTableView];
+                [STFileTransferModel shareInstant].photosCountChanged = YES;
             } else {
-                [self.tabViewController configToolView];
-                [self.tabViewController reloadVideosTableView];
+                [STFileTransferModel shareInstant].videosCountChanged = YES;
             }
             [self removeAsset:asset];
         } else if ([object isKindOfClass:[STMusicInfo class]]) {
-            [self.tabViewController configToolView];
-            [self.tabViewController reloadMusicsTableView];
+            [STFileTransferModel shareInstant].musicsCountChanged = YES;
             totalSize -= ((STMusicInfo *)object).fileSize;
             [self reloadTitle];
         } else if ([object isKindOfClass:[STContactInfo class]]) {
-            [self.tabViewController configToolView];
-            [self.tabViewController reloadContactsTableView];
+            [STFileTransferModel shareInstant].contactsCountChanged = YES;
             totalSize -= ((STContactInfo *)object).size;
             [self reloadTitle];
         }

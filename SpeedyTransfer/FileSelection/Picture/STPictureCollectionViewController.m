@@ -292,7 +292,7 @@ static NSString * const CollectionViewCellReuseIdentifier = @"CollectionViewCell
                                                                       subtype:PHAssetCollectionSubtypeSmartAlbumUserLibrary
                                                                       options:nil].firstObject;
                 PHAsset *asset = [PHAsset fetchAssetsWithLocalIdentifiers:@[placeholder.localIdentifier] options:nil].firstObject;
-                [self.fileSelectionTabController addAsset:asset inCollection:collection.localIdentifier];
+                [[STFileTransferModel shareInstant] addAsset:asset inCollection:collection.localIdentifier];
             } else {
                 NSLog(@"Saving image error : %@", error);
             }
@@ -355,7 +355,7 @@ static NSString * const CollectionViewCellReuseIdentifier = @"CollectionViewCell
                                   }
                               }];
     
-    if ([self.fileSelectionTabController isSelectedWithAsset:asset inCollection:model.localIdentifier]) {
+    if ([[STFileTransferModel shareInstant] isSelectedWithAsset:asset inCollection:model.localIdentifier]) {
         cell.selected = YES;
         [collectionView selectItemAtIndexPath:indexPath animated:NO scrollPosition:UICollectionViewScrollPositionNone];
     } else {
@@ -411,8 +411,8 @@ static NSString * const CollectionViewCellReuseIdentifier = @"CollectionViewCell
     }
     
     PHAsset *asset = model.fetchResult[item];
-    [self.fileSelectionTabController addAsset:asset inCollection:model.localIdentifier];
-    if (model.fetchResult.count == [self.fileSelectionTabController selectedPhotosCountInCollection:model.localIdentifier]) {
+    [[STFileTransferModel shareInstant] addAsset:asset inCollection:model.localIdentifier];
+    if (model.fetchResult.count == [[STFileTransferModel shareInstant] selectedPhotosCountInCollection:model.localIdentifier]) {
         model.selectedAll = YES;
         [collectionView reloadData];
     }
@@ -428,7 +428,7 @@ static NSString * const CollectionViewCellReuseIdentifier = @"CollectionViewCell
     }
     
     PHAsset *asset = model.fetchResult[item];
-    [self.fileSelectionTabController removeAsset:asset inCollection:model.localIdentifier];
+    [[STFileTransferModel shareInstant] removeAsset:asset inCollection:model.localIdentifier];
     if (model.selectedAll) {
         model.selectedAll = NO;
         [collectionView reloadData];
@@ -455,7 +455,7 @@ static NSString * const CollectionViewCellReuseIdentifier = @"CollectionViewCell
                 if ([removedIndexes count] > 0) {
                     [removedIndexes enumerateIndexesUsingBlock:^(NSUInteger idx, BOOL *stop) {
                         PHAsset *asset = collectionsFetchResult[idx];
-                        [self.fileSelectionTabController removeAsset:asset inCollection:[self.fetchResultsIdentifiers objectAtIndex:index]];
+                        [[STFileTransferModel shareInstant] removeAsset:asset inCollection:[self.fetchResultsIdentifiers objectAtIndex:index]];
                     }];
                 }
                 
@@ -496,7 +496,7 @@ static NSString * const CollectionViewCellReuseIdentifier = @"CollectionViewCell
             NSIndexSet *indexSet = [changeDetails removedIndexes];
             [indexSet enumerateIndexesUsingBlock:^(NSUInteger idx, BOOL * _Nonnull stop) {
                 if (self.albumIdentifiers.count > idx) {
-                    [self.fileSelectionTabController removeAllAssetsInCollection:self.albumIdentifiers[idx]];
+                    [[STFileTransferModel shareInstant] removeAllAssetsInCollection:self.albumIdentifiers[idx]];
                 }
             }];
             _albumCollections = [changeDetails fetchResultAfterChanges];

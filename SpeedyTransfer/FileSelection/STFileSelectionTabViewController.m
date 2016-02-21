@@ -22,11 +22,7 @@
     UIButton *transferButton;
     STFileSelectionPopupView *popupView;
     STWifiNotConnectedPopupView *wifiNotConnectedPopupView;
-    
-    NSTimeInterval lastTimeInterval;
 }
-
-@property (nonatomic) NSInteger selectedFilesCount;
 
 @end
 
@@ -34,6 +30,12 @@
 
 - (void)dealloc {
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
+    [[STFileTransferModel shareInstant] removeObserver:self forKeyPath:@"selectedFilesCount"];
+    [[STFileTransferModel shareInstant] removeObserver:self forKeyPath:@"photosCountChanged"];
+    [[STFileTransferModel shareInstant] removeObserver:self forKeyPath:@"musicsCountChanged"];
+    [[STFileTransferModel shareInstant] removeObserver:self forKeyPath:@"videosCountChanged"];
+    [[STFileTransferModel shareInstant] removeObserver:self forKeyPath:@"contactsCountChanged"];
+    [[STFileTransferModel shareInstant] removeAllSelectedFiles];
 }
 
 - (void)viewDidLoad {
@@ -67,10 +69,17 @@
     [toolView addSubview:transferButton];
 	
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reachabilityStatusChange:) name:kHTReachabilityChangedNotification object:nil];
+    
+    [[STFileTransferModel shareInstant] addObserver:self forKeyPath:@"selectedFilesCount" options:NSKeyValueObservingOptionNew context:NULL];
+    [[STFileTransferModel shareInstant] addObserver:self forKeyPath:@"photosCountChanged" options:NSKeyValueObservingOptionNew context:NULL];
+    [[STFileTransferModel shareInstant] addObserver:self forKeyPath:@"musicsCountChanged" options:NSKeyValueObservingOptionNew context:NULL];
+    [[STFileTransferModel shareInstant] addObserver:self forKeyPath:@"videosCountChanged" options:NSKeyValueObservingOptionNew context:NULL];
+    [[STFileTransferModel shareInstant] addObserver:self forKeyPath:@"contactsCountChanged" options:NSKeyValueObservingOptionNew context:NULL];
+
 }
 
 - (void)configToolView {
-    NSInteger count = [self selectedFilesCount];
+    NSInteger count = [STFileTransferModel shareInstant].selectedFilesCount;
     if (count > 0) {
         [transferButton setTitle:[NSString stringWithFormat:@"%@ (%@)", NSLocalizedString(@"全部传输", nil), @(count)] forState:UIControlStateNormal];
         toolView.hidden = NO;
@@ -86,6 +95,30 @@
     transferButton.width = width;
 }
 
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSString *,id> *)change context:(void *)context {
+    if ([keyPath isEqualToString:@"selectedFilesCount"]) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self configToolView];
+        });
+    } else if ([keyPath isEqualToString:@"photosCountChanged"]) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self reloadAssetsTableView];
+        });
+    } else if ([keyPath isEqualToString:@"musicsCountChanged"]) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self reloadMusicsTableView];
+        });
+    } else if ([keyPath isEqualToString:@"videosCountChanged"]) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self reloadVideosTableView];
+        });
+    } else if ([keyPath isEqualToString:@"contactsCountChanged"]) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self reloadContactsTableView];
+        });
+    }
+}
+
 - (void)photoLibraryDidChange {
     if (popupView.superview) {
         [popupView removeFromSuperview];
@@ -99,7 +132,7 @@
 - (void)deleteButtonClick {
     NSMutableArray *array = [NSMutableArray array];
     
-    for (NSDictionary *dic in self.selectedAssetsArr) {
+    for (NSDictionary *dic in [STFileTransferModel shareInstant].selectedAssetsArr) {
         if ([dic.allValues.firstObject count] > 0) {
             [array addObject:dic.allValues.firstObject];
         }
@@ -158,19 +191,20 @@
 
 #pragma mark - Send file
 
-- (PHAsset *)firstPhotoAsset {
-    for (NSDictionary *dic in _selectedAssetsArr) {
-        NSMutableArray *arr = [dic.allValues firstObject];
-        if (arr.count > 0) {
-            PHAsset *asset = arr.firstObject;
-            [arr removeObject:asset];
-            return asset;
-        }
-    }
-    
-    return nil;
-}
+//- (PHAsset *)firstPhotoAsset {
+//    for (NSDictionary *dic in _selectedAssetsArr) {
+//        NSMutableArray *arr = [dic.allValues firstObject];
+//        if (arr.count > 0) {
+//            PHAsset *asset = arr.firstObject;
+//            [arr removeObject:asset];
+//            return asset;
+//        }
+//    }
+//    
+//    return nil;
+//}
 
+/*
 - (void)startSendFile {
     self.sendingFile = YES;
     
@@ -271,6 +305,7 @@
     
     self.sendingFile = NO;
 }
+ */
 
 #pragma mark - Reload table view
 
@@ -292,168 +327,6 @@
 - (void)reloadContactsTableView {
     UITableViewController *viewC = self.viewControllers.lastObject;
     [viewC.tableView reloadData];
-}
-
-- (void)removeAllSelectedFiles {
-    _selectedAssetsArr = nil;
-    _selectedMusicsArr = nil;
-    _selectedVideoAssetsArr = nil;
-    _selectedContactsArr = nil;
-    [self configToolView];
-}
-
-// 选中的总文件个数
-- (NSInteger)selectedFilesCount {
-    NSUInteger count = 0;
-    count += [self selectedPhotosCount];
-    
-    count += _selectedMusicsArr.count;
-    
-    count += _selectedVideoAssetsArr.count;
-    
-    count += _selectedContactsArr.count;
-
-    return count;
-}
-
-#pragma mark - Picture
-
-- (void)addAsset:(PHAsset *)asset inCollection:(NSString *)collection {
-    if (!asset || !collection) {
-        return;
-    }
-    
-    if (!_selectedAssetsArr) {
-        _selectedAssetsArr = [NSMutableArray array];
-    }
-    
-    BOOL collectionExist = NO;
-    for (NSDictionary *dic in _selectedAssetsArr) {
-        if ([dic.allKeys.firstObject isEqualToString:collection]) {
-            NSMutableArray *arr = dic.allValues.firstObject;
-            if (![arr containsObject:asset]) {
-                [arr addObject:asset];
-            }
-            collectionExist = YES;
-            break;
-        }
-    }
-    
-    if (!collectionExist) {
-        [_selectedAssetsArr addObject:@{collection: [NSMutableArray arrayWithObject:asset]}];
-    }
-    
-    
-    [self configToolView];
-}
-
-- (void)addAssets:(NSArray *)assets inCollection:(NSString *)collection {
-    if (!assets || !collection) {
-        return;
-    }
-    
-    if (!_selectedAssetsArr) {
-        _selectedAssetsArr = [NSMutableArray array];
-    }
-    
-    BOOL collectionExist = NO;
-    for (NSDictionary *dic in _selectedAssetsArr) {
-        if ([dic.allKeys.firstObject isEqualToString:collection]) {
-            NSMutableArray *arr = dic.allValues.firstObject;
-            [arr addObjectsFromArray:assets];
-            collectionExist = YES;
-            break;
-        }
-    }
-    
-    if (!collectionExist) {
-        [_selectedAssetsArr addObject:@{collection: [NSMutableArray arrayWithArray:assets]}];
-    }
-    
-    
-    [self configToolView];
-}
-
-- (void)removeAsset:(PHAsset *)asset inCollection:(NSString *)collection {
-    if (!asset || !collection) {
-        return;
-    }
-    
-    for (NSDictionary *dic in _selectedAssetsArr) {
-        if ([dic.allKeys.firstObject isEqualToString:collection]) {
-            NSMutableArray *arr = dic.allValues.firstObject;
-            [arr removeObject:asset];
-            [self configToolView];
-            return;
-        }
-    }
-    
-}
-
-- (void)removeAssets:(NSArray *)assets inCollection:(NSString *)collection {
-    if (!assets || !collection) {
-        return;
-    }
-    
-    for (NSDictionary *dic in _selectedAssetsArr) {
-        if ([dic.allKeys.firstObject isEqualToString:collection]) {
-            NSMutableArray *arr = dic.allValues.firstObject;
-            [arr removeObjectsInArray:assets];
-            [self configToolView];
-            return;
-        }
-    }
-}
-
-- (void)removeAllAssetsInCollection:(NSString *)collection {
-    if (!collection) {
-        return;
-    }
-    
-    for (NSDictionary *dic in _selectedAssetsArr) {
-        if ([dic.allKeys.firstObject isEqualToString:collection]) {
-            NSMutableArray *arr = dic.allValues.firstObject;
-            [arr removeAllObjects];
-            [self configToolView];
-            return;
-        }
-    }
-}
-
-- (BOOL)isSelectedWithAsset:(PHAsset *)asset inCollection:(NSString *)collection{
-    if (!asset || !collection) {
-        return NO;
-    }
-    
-    for (NSDictionary *dic in _selectedAssetsArr) {
-        if ([dic.allKeys.firstObject isEqualToString:collection]) {
-            NSMutableArray *arr = dic.allValues.firstObject;
-            return [arr containsObject:asset];
-        }
-    }
-    
-    return NO;
-}
-
-- (NSInteger)selectedPhotosCount {
-    NSInteger count = 0;
-    for (NSDictionary *dic in _selectedAssetsArr) {
-        count += [dic.allValues.firstObject count];
-    }
-    
-    return count;
-}
-
-- (NSInteger)selectedPhotosCountInCollection:(NSString *)collection {
-    NSInteger count = 0;
-    for (NSDictionary *dic in _selectedAssetsArr) {
-        if ([dic.allKeys.firstObject isEqualToString:collection]) {
-            count += [dic.allValues.firstObject count];
-            break;
-        }
-    }
-    
-    return count;
 }
 
 #pragma mark - Music

@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "HTSingleton.h"
 
-#define DBUserInfo [STDeviceInfo shareInstant]
+#define DBDeviceInfo [STDeviceInfo shareInstant]
 
 @interface STDeviceInfo : NSObject
 
@@ -22,6 +22,7 @@ HT_AS_SINGLETON(STDeviceInfo, shareInstant)
 @property (nonatomic, strong) NSString *ip;
 @property (nonatomic) uint16_t port;
 @property (nonatomic) NSTimeInterval lastUpdateTimestamp;
+@property (nonatomic, strong) NSString *recvUrl;
 
 @property(nonatomic,readonly)NSString *_tableName;
 @property(nonatomic,readonly)NSString *_deviceId;
