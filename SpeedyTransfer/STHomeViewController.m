@@ -12,7 +12,6 @@
 #import "STMusicSelectionViewController.h"
 #import "STVideoSelectionViewController.h"
 #import "STContactsSelectionViewController.h"
-#import "STFileReceivingViewController.h"
 #import "STFileTransferViewController.h"
 #import "STSettingViewController.h"
 #import "STInviteFriendViewController.h"
@@ -184,8 +183,8 @@
 }
 
 - (void)receiveButtonClick {
-    STFileReceivingViewController *receiveVc = [[STFileReceivingViewController alloc] init];
-    [self.navigationController pushViewController:receiveVc animated:YES];
+    STFileTransferViewController *fileTransferVc = [[STFileTransferViewController alloc] init];
+    [self.navigationController pushViewController:fileTransferVc animated:YES];
 }
 
 - (void)inviteFriendButtonClick {

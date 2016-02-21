@@ -76,7 +76,7 @@
         failedLabel.hidden = YES;
         
         UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 91.5f, IPHONE_WIDTH, 0.5f)];
-        lineView.backgroundColor = RGBFromHex(0x929292);
+        lineView.backgroundColor = [UIColor lightGrayColor];
         [self.contentView addSubview:lineView];
     }
     
@@ -87,7 +87,7 @@
     if (_transferInfo.fileType == STFileTypeContact) {
         coverImageView.image = [UIImage imageNamed:@"phone_bg"];
     } else if (_transferInfo.fileType == STFileTypePicture) {
-        if (self.transferInfo.url.length > 0) {
+        if (self.transferInfo.url.length > 0 && ![self.transferInfo.url hasPrefix:@"http://"]) {
             PHFetchResult *savedAssets = [PHAsset fetchAssetsWithLocalIdentifiers:@[_transferInfo.url] options:nil];
             if (savedAssets.count > 0) {
                 PHAsset *asset = savedAssets.firstObject;
@@ -107,7 +107,7 @@
                                                             }}];
             }
         } else {
-            coverImageView.image = nil;
+            coverImageView.image = [UIImage imageNamed:@"picture"];
         }
     }
     

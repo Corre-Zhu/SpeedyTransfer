@@ -24,6 +24,10 @@ HT_AS_SINGLETON(STFileTransferModel, shareInstant);
 @property (nonatomic, strong) NSArray *curentTransferFiles; // 当前正在传输的文件
 - (NSArray *)sortTransferInfo:(NSArray *)infos;
 
+// 接收文件
+@property (nonatomic, strong) NSArray *currentReceiveFiles;
+- (void)receiveItems:(NSArray *)items;
+
 /**
  开始监听广播
  */

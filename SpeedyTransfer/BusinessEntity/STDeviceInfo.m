@@ -12,7 +12,7 @@
 
 HT_DEF_SINGLETON(STDeviceInfo, shareInstant);
 
-- (void)setup {
+- (BOOL)setup {
     if (self.ip.length > 0 && self.port > 0) {
         // 访问api总接口
         NSString *apiUrl = [NSString stringWithFormat:@"http://%@:%@/api", self.ip, @(self.port)];
@@ -24,7 +24,7 @@ HT_DEF_SINGLETON(STDeviceInfo, shareInstant);
         NSString *dataString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
         if (error || dataString.length == 0) {
             NSLog(@"apiUrl: %@, error: %@", apiUrl, error);
-            return;
+            return NO;
         }
         
         NSDictionary *apiInfo = [dataString jsonDictionary];
@@ -39,13 +39,15 @@ HT_DEF_SINGLETON(STDeviceInfo, shareInstant);
             dataString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
             if (error || dataString.length == 0) {
                 NSLog(@"devInfoUrl: %@, error: %@", devInfoUrl, error);
-                return;
+                return NO;
             } else {
                 NSDictionary *devInfo = [dataString jsonDictionary];
                 self.deviceId = [devInfo stringForKey:@"device_id"];
                 self.deviceName = [devInfo stringForKey:@"device_name"];
             }
             
+        } else {
+            return NO;
         }
         
         // 访问设备头像
@@ -58,14 +60,17 @@ HT_DEF_SINGLETON(STDeviceInfo, shareInstant);
             UIImage *image = [[UIImage alloc] initWithData:data];
             if (error || !image) {
                 NSLog(@"devInfoUrl: %@, error: %@", devInfoUrl, error);
+                return NO;
             } else {
                 NSString *headPath = [[ZZPath headImagePath] stringByAppendingFormat:@"/%@", self.deviceId];
-                if ([[NSFileManager defaultManager] fileExistsAtPath:headPath isDirectory:NO]) {
+                if ([[NSFileManager defaultManager] fileExistsAtPath:headPath isDirectory:NULL]) {
                     [[NSFileManager defaultManager] removeItemAtPath:headPath error:NULL];
                 }
                 [data writeToFile:headPath atomically:YES];
                 self.headImage = image;
             }
+        } else {
+            return NO;
         }
         
         //
@@ -73,8 +78,10 @@ HT_DEF_SINGLETON(STDeviceInfo, shareInstant);
         NSString *recvUrl = [recvInfo stringForKey:@"href"];
         self.recvUrl = recvUrl;
 
+        return YES;
     }
     
+    return NO;
 }
 
 - (NSString *)_tableName {

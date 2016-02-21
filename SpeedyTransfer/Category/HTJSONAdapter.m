@@ -36,6 +36,15 @@
 	return nil;
 }
 
+- (NSArray *)jsonArray {
+    id jsonValue = [self jsonValue];
+    if ([jsonValue isKindOfClass:[NSArray class]]) {
+        return (NSArray *)jsonValue;
+    }
+    
+    return nil;
+}
+
 @end
 
 @implementation NSData (HTJSONAdapter)

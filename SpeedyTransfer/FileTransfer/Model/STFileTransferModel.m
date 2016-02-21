@@ -208,6 +208,7 @@ withFilterContext:(id)filterContext {
     STFileTransferInfo *entity = [[STFileTransferInfo alloc] init];
     entity.identifier = [NSString uniqueID];
     entity.fileType = STFileTypePicture;
+    entity.transferType = STFileTransferTypeSend;
     entity.transferStatus = STFileTransferStatusSending;
     entity.url = [fileInfo stringForKey:ASSET_ID];
     entity.fileName = [fileInfo stringForKey:FILE_NAME];
@@ -223,6 +224,7 @@ withFilterContext:(id)filterContext {
     .SET(DBFileTransfer._identifier, entity.identifier)
     .SET(DBFileTransfer._deviceId, entity.deviceId)
     .SET(DBFileTransfer._fileType, @(entity.fileType))
+    .SET(DBFileTransfer._transferType , @(entity.transferType))
     .SET(DBFileTransfer._transferStatus , @(entity.transferStatus))
     .SET(DBFileTransfer._fileName, entity.fileName)
     .SET(DBFileTransfer._fileSize, @(entity.fileSize))
@@ -335,6 +337,37 @@ withFilterContext:(id)filterContext {
     self.musicsCountChanged = YES;
     self.videosCountChanged = YES;
     self.contactsCountChanged = YES;
+}
+
+#pragma mark - Receive file
+
+- (void)receiveItems:(NSArray *)items {
+    for (STFileTransferInfo *entity in items) {
+        HTSQLBuffer *sql = [[HTSQLBuffer alloc] init];
+        sql.INSERT(DBFileTransfer._tableName)
+        .SET(DBFileTransfer._identifier, entity.identifier)
+        .SET(DBFileTransfer._deviceId, entity.deviceId)
+        .SET(DBFileTransfer._fileType, @(entity.fileType))
+        .SET(DBFileTransfer._transferType , @(entity.transferType))
+        .SET(DBFileTransfer._transferStatus , @(entity.transferStatus))
+        .SET(DBFileTransfer._fileName, entity.fileName)
+        .SET(DBFileTransfer._fileSize, @(entity.fileSize))
+        .SET(DBFileTransfer._date, entity.dateString);
+        
+        if (![database executeUpdate:sql.sql]) {
+            NSLog(@"%@", database.lastError);
+        }
+        
+        sql = [[HTSQLBuffer alloc] init];
+        sql.REPLACE(DBDeviceInfo._tableName)
+        .SET(DBDeviceInfo._deviceId, entity.deviceId)
+        .SET(DBDeviceInfo._deviceName, entity.deviceName);
+        if (![database executeUpdate:sql.sql]) {
+            NSLog(@"%@", database.lastError);
+        }
+        
+        [self addTransferFile:entity];
+    }
 }
 
 #pragma mark - Picture

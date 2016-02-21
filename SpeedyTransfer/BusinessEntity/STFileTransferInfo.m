@@ -25,6 +25,7 @@ HT_DEF_SINGLETON(STFileTransferInfo, shareInstant);
     if (self) {
         self.identifier = [dic stringForKey:DBFileTransfer._identifier];
         self.fileType = [dic integerForKey:DBFileTransfer._fileType];
+        self.transferType = [dic integerForKey:DBFileTransfer._transferType];
         self.transferStatus = [dic integerForKey:DBFileTransfer._transferStatus];
         self.url = [dic stringForKey:DBFileTransfer._url];
         self.vcardString = [dic stringForKey:DBFileTransfer._vcard];

@@ -11,6 +11,7 @@
 @interface NSString (HTJSONAdapter)
 - (id)jsonValue;
 - (NSDictionary *)jsonDictionary;
+- (NSArray *)jsonArray;
 @end
 
 @interface NSData (HTJSONAdapter)

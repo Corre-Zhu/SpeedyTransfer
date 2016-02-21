@@ -13,6 +13,7 @@
 #import <GCDWebServerFileResponse.h>
 #import <GCDWebServerFunctions.h>
 #import "STWebServerConnection.h"
+#import "STDeviceInfo.h"
 
 @interface STWebServerModel ()
 
@@ -97,7 +98,47 @@
     
     [_webServer addHandlerForMethod:@"POST" path:@"/recv" requestClass:[GCDWebServerDataRequest class] processBlock:^GCDWebServerResponse *(GCDWebServerRequest *request) {
         GCDWebServerDataRequest *dataRequest = (GCDWebServerDataRequest *)request;
-        NSLog(@"%@", [[NSString alloc] initWithData:dataRequest.data encoding:NSUTF8StringEncoding]);
+        NSArray *items = [[[NSString alloc] initWithData:dataRequest.data encoding:NSUTF8StringEncoding] jsonArray];
+        NSMutableArray *tempArry = [NSMutableArray array];
+        for (NSDictionary *fileInfo in items) {
+            NSString *file_url = [fileInfo stringForKey:FILE_URL];
+            NSString *host = [[NSURL URLWithString:file_url] host];
+            NSInteger port = [[[NSURL URLWithString:file_url] port] integerValue];
+            STDeviceInfo *deviceInfo = [[STDeviceInfo alloc] init];
+            deviceInfo.ip = host;
+            deviceInfo.port = port;
+            if (![deviceInfo setup]) {
+                NSLog(@"deviceInfo setup error");
+                continue;
+            }
+            
+            STFileTransferInfo *entity = [[STFileTransferInfo alloc] init];
+            entity.identifier = [NSString uniqueID];
+            entity.transferType = STFileTransferTypeReceive;
+            entity.transferStatus = STFileTransferStatusReceiving;
+            entity.url = file_url;
+            entity.fileName = [fileInfo stringForKey:FILE_NAME];
+            entity.dateString = [[NSDate date] dateString];
+            entity.fileSize = [fileInfo doubleForKey:FILE_SIZE];
+            entity.deviceId = deviceInfo.deviceId;
+            entity.deviceName = deviceInfo.deviceName;
+            entity.headImage = deviceInfo.headImage;
+            
+            NSString *fileType = [fileInfo stringForKey:FILE_TYPE];
+            if ([fileType.lowercaseString isEqualToString:@"png"] ||
+                [fileType.lowercaseString isEqualToString:@"jpg"] ||
+                [fileType.lowercaseString isEqualToString:@"jpeg"]) {
+                fileType = STFileTypePicture;
+            } else {
+                NSLog(@"未知文件类型");
+                continue;
+            }
+            
+            [tempArry addObject:entity];
+        }
+        
+        [[STFileTransferModel shareInstant] receiveItems:tempArry];
+        
         return [GCDWebServerResponse responseWithStatusCode:200];
     }];
     

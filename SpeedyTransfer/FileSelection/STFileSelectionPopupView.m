@@ -321,6 +321,8 @@ static NSString *PopupCellIdentifier = @"PopupCellIdentifier";
         PHAsset *asset = object;
         NSInteger currentTag = cell.tag + 1;
         cell.tag = currentTag;
+        
+        NSLog(@"asset iden: %@", asset.localIdentifier);
 		
 		@autoreleasepool {
 			[self.imageManager requestImageDataForAsset:asset options:nil resultHandler:^(NSData * _Nullable imageData, NSString * _Nullable dataUTI, UIImageOrientation orientation, NSDictionary * _Nullable info) {

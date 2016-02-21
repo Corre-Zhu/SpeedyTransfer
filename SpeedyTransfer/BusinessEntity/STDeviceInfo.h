@@ -28,6 +28,6 @@ HT_AS_SINGLETON(STDeviceInfo, shareInstant)
 @property(nonatomic,readonly)NSString *_deviceId;
 @property(nonatomic,readonly)NSString *_deviceName;
 
-- (void)setup;
+- (BOOL)setup;
 
 @end

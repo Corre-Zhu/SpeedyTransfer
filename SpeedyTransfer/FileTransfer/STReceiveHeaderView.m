@@ -18,12 +18,12 @@
 
 @implementation STReceiveHeaderView
 
-- (instancetype)initWithFrame:(CGRect)frame {
-    self = [super initWithFrame:frame];
+- (instancetype)initWithReuseIdentifier:(NSString *)reuseIdentifier {
+    self = [super initWithReuseIdentifier:reuseIdentifier];
     if (self) {
         self.backgroundColor = [UIColor whiteColor];
         self.contentView.backgroundColor = [UIColor whiteColor];
-
+        
         imageView = [[UIImageView alloc] initWithFrame:CGRectMake(16.0f, 10.0f, 40.0f, 40.0f)];
         imageView.contentMode = UIViewContentModeScaleAspectFill;
         imageView.layer.cornerRadius = 20.0f;
@@ -34,8 +34,6 @@
         label.textAlignment = NSTextAlignmentLeft;
         label.font = [UIFont systemFontOfSize:14.0f];
         [self.contentView addSubview:label];
-        
-        
     }
     
     return self;
@@ -56,6 +54,7 @@
     if ([headImage isEqualToString:CustomHeadImage]) {
         imageView.image = [[UIImage alloc] initWithContentsOfFile:[[ZZPath documentPath] stringByAppendingPathComponent:CustomHeadImage]];
     } else {
+        headImage = [[NSUserDefaults standardUserDefaults] stringForKey:HeadImage_];
         imageView.image = [UIImage imageNamed:headImage];
     }
     
