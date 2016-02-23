@@ -44,7 +44,7 @@
         NSString *text = [NSString stringWithFormat:@"我接收自%@", transferInfo.deviceName];
         NSMutableAttributedString *string = [[NSMutableAttributedString alloc] initWithString:text];
         [string addAttributes:@{NSForegroundColorAttributeName: RGBFromHex(0x323232)} range:NSMakeRange(0, 4)];
-        [string addAttributes:@{NSForegroundColorAttributeName: RGBFromHex(0x323232)} range:NSMakeRange(4, text.length - 4)];
+        [string addAttributes:@{NSForegroundColorAttributeName: RGBFromHex(0xeb684b)} range:NSMakeRange(4, text.length - 4)];
         label.attributedText = string;
     } else {
         label.attributedText = nil;

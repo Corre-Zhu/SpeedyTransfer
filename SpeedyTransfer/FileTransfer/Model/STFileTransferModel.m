@@ -14,13 +14,14 @@
 #import "HTFMDatabase.h"
 #import "HTSQLBuffer.h"
 #import "AppDelegate.h"
+#import <AFNetworking/AFNetworking.h>
 
 @interface STFileTransferModel ()<GCDAsyncUdpSocketDelegate>
 {
     GCDAsyncUdpSocket *udpSocket;
     NSTimer *timeoutTimer;
-    
     HTFMDatabase *database;
+    NSTimeInterval lastTimestamp;
 }
 
 @end
@@ -144,7 +145,7 @@ withFilterContext:(id)filterContext {
                 [GCDAsyncUdpSocket getHost:&host port:NULL fromAddress:address];
                 if (host.length > 0 && port > 0 && ![[UIDevice getIpAddresses] containsObject:host]) {
                     
-                    NSLog(@"%@, %@, %@", dataString, host, @(port).stringValue);
+//                    NSLog(@"%@, %@, %@", dataString, host, @(port).stringValue);
                     
                     BOOL find = NO;
                     NSArray *tempArr = [NSArray arrayWithArray:self.devicesArray];
@@ -384,37 +385,80 @@ withFilterContext:(id)filterContext {
 	}
 	[self addTransferFile:_currentReceivingInfo];
 	
-	
+    // 下载缩略图
+    NSURLSessionConfiguration *configuration = [NSURLSessionConfiguration defaultSessionConfiguration];
+    AFURLSessionManager *manager = [[AFURLSessionManager alloc] initWithSessionConfiguration:configuration];
+    
+    NSURL *thumbURL = [NSURL URLWithString:_currentReceivingInfo.thumbnailUrl];
+    NSURLRequest *thumbRequest = [NSURLRequest requestWithURL:thumbURL];
+    
+    NSURLSessionDownloadTask *thumbDownloadTask = [manager downloadTaskWithRequest:thumbRequest progress:nil destination:^NSURL *(NSURL *targetPath, NSURLResponse *response) {
+        NSString *path = [[ZZPath picturePath] stringByAppendingPathComponent:[NSString stringWithFormat:@"%@_thumb", _currentReceivingInfo.identifier]];
+        return [NSURL fileURLWithPath:path];
+    } completionHandler:^(NSURLResponse *response, NSURL *filePath, NSError *error) {
+        NSHTTPURLResponse *httpURLResponse = nil;
+        if ([response isKindOfClass:[NSHTTPURLResponse class]]) {
+            httpURLResponse = (NSHTTPURLResponse *)response;
+        }
+        if (error || httpURLResponse.statusCode != 200) {
+            NSLog(@"thumbnail download failed");
+        } else {
+            _currentReceivingInfo.thumbnailProgress = 1.0f;
+        }
+    }];
+    [thumbDownloadTask resume];
+    
+    // 下载原图
+    NSURL *originURL = [NSURL URLWithString:_currentReceivingInfo.url];
+    NSURLRequest *originRequest = [NSURLRequest requestWithURL:originURL];
+    
+    __block NSProgress *progress = nil;
+    NSURLSessionDownloadTask *origindownloadTask = [manager downloadTaskWithRequest:originRequest progress:^(NSProgress * _Nonnull downloadProgress) {
+        progress = downloadProgress;
+        [downloadProgress addObserver:self forKeyPath:@"fractionCompleted" options:NSKeyValueObservingOptionNew context:NULL];
+    } destination:^NSURL *(NSURL *targetPath, NSURLResponse *response) {
+        NSString *path = [[ZZPath picturePath] stringByAppendingPathComponent:_currentReceivingInfo.identifier];
+        return [NSURL fileURLWithPath:path];
+    } completionHandler:^(NSURLResponse *response, NSURL *filePath, NSError *error) {
+        [progress removeObserver:self forKeyPath:@"fractionCompleted"];
+        
+        NSHTTPURLResponse *httpURLResponse = nil;
+        if ([response isKindOfClass:[NSHTTPURLResponse class]]) {
+            httpURLResponse = (NSHTTPURLResponse *)response;
+        }
+        if (error || httpURLResponse.statusCode != 200) {
+            [self updateTransferStatus:STFileTransferStatusReceiveFailed withIdentifier:_currentReceivingInfo.identifier];
+            _currentReceivingInfo.transferStatus = STFileTransferStatusReceiveFailed;
+        } else {
+            [self updateTransferStatus:STFileTransferStatusReceived withIdentifier:_currentReceivingInfo.identifier];
+            _currentReceivingInfo.transferStatus = STFileTransferStatusReceived;
+        }
+        [self startDownload];
+        _currentReceivingInfo = nil;
+        NSLog(@"File downloaded to: %@", filePath);
+    }];
+    
+    [origindownloadTask resume];
 	
 }
 
-//- (void)receiveItems:(NSArray *)items {
-//    for (STFileTransferInfo *entity in items) {
-//        HTSQLBuffer *sql = [[HTSQLBuffer alloc] init];
-//        sql.INSERT(DBFileTransfer._tableName)
-//        .SET(DBFileTransfer._identifier, entity.identifier)
-//        .SET(DBFileTransfer._deviceName, entity.deviceName)
-//        .SET(DBFileTransfer._fileType, @(entity.fileType))
-//        .SET(DBFileTransfer._transferType , @(entity.transferType))
-//        .SET(DBFileTransfer._transferStatus , @(entity.transferStatus))
-//        .SET(DBFileTransfer._fileName, entity.fileName)
-//        .SET(DBFileTransfer._fileSize, @(entity.fileSize))
-//        .SET(DBFileTransfer._date, entity.dateString);
-//        
-//        if (![database executeUpdate:sql.sql]) {
-//            NSLog(@"%@", database.lastError);
-//        }
-//        
-//        sql = [[HTSQLBuffer alloc] init];
-//        sql.REPLACE(DBDeviceInfo._tableName)
-//        .SET(DBDeviceInfo._deviceName, entity.deviceName);
-//        if (![database executeUpdate:sql.sql]) {
-//            NSLog(@"%@", database.lastError);
-//        }
-//        
-//        [self addTransferFile:entity];
-//    }
-//}
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
+{
+    if ([keyPath isEqualToString:@"fractionCompleted"]) {
+        NSProgress *progress = (NSProgress *)object;
+        if (progress.fractionCompleted - _currentReceivingInfo.progress > 0.02f || progress.fractionCompleted == 1.0f) {
+            NSTimeInterval now = [[NSDate date] timeIntervalSince1970];
+            NSTimeInterval timeInterval = now - lastTimestamp;
+            if (timeInterval != 0.0f) {
+                _currentReceivingInfo.downloadSpeed = 1 / timeInterval * (progress.fractionCompleted - _currentReceivingInfo.progress) * _currentReceivingInfo.fileSize;
+            }
+            _currentReceivingInfo.progress = progress.fractionCompleted;
+            lastTimestamp = now;
+        }
+    } else {
+        [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
+    }
+}
 
 #pragma mark - Picture
 

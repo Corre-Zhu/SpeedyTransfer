@@ -19,11 +19,21 @@
     UILabel *rateLabel;
     UIImageView *succeedImageView;
     UILabel *failedLabel;
+    
+    BOOL progressObserverAdded;
 }
 
 @end
 
 @implementation STFileTransferCell
+
+- (void)dealloc {
+    if (progressObserverAdded) {
+        [_transferInfo removeObserver:self forKeyPath:@"progress"];
+        [_transferInfo removeObserver:self forKeyPath:@"thumbnailProgress"];
+        [_transferInfo removeObserver:self forKeyPath:@"transferStatus"];
+    }
+}
 
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
@@ -57,6 +67,9 @@
         [progressView setTransform:CGAffineTransformMakeScale(1.0, 4.0)];
         
         rateLabel = [[UILabel alloc] initWithFrame:CGRectMake(progressView.right + 16.0f, 66.0f, IPHONE_WIDTH - progressView.right - 32.0f, 16.0f)];
+        if (IPHONE_WIDTH == 320.0f) {
+            rateLabel.frame = CGRectMake(progressView.right + 10.0f, 66.0f, IPHONE_WIDTH - progressView.right - 20.0f, 16.0f);
+        }
         rateLabel.textColor = RGBFromHex(0x929292);
         rateLabel.font = [UIFont systemFontOfSize:12.0f];
         [self.contentView addSubview:rateLabel];
@@ -83,6 +96,31 @@
     return self;
 }
 
+- (void)setTransferInfo:(STFileTransferInfo *)transferInfo {
+    _transferInfo = transferInfo;
+    
+    if (!progressObserverAdded) {
+        [_transferInfo addObserver:self forKeyPath:@"progress" options:NSKeyValueObservingOptionNew context:NULL];
+        [_transferInfo addObserver:self forKeyPath:@"thumbnailProgress" options:NSKeyValueObservingOptionNew context:NULL];
+        [_transferInfo addObserver:self forKeyPath:@"transferStatus" options:NSKeyValueObservingOptionNew context:NULL];
+
+        progressObserverAdded = YES;
+    }
+    
+}
+
+- (void)prepareForReuse {
+    [super prepareForReuse];
+    
+    if (progressObserverAdded) {
+        [_transferInfo removeObserver:self forKeyPath:@"progress"];
+        [_transferInfo removeObserver:self forKeyPath:@"thumbnailProgress"];
+        [_transferInfo removeObserver:self forKeyPath:@"transferStatus"];
+
+        progressObserverAdded = NO;
+    }
+}
+
 - (void)configCell {
     if (_transferInfo.fileType == STFileTypeContact) {
         coverImageView.image = [UIImage imageNamed:@"phone_bg"];
@@ -105,10 +143,20 @@
                                                             if (_transferInfo.tag == currentTag) {
                                                                 coverImageView.image = result;
                                                             }}];
+                
+                return;
             }
+  
+        }
+    
+        NSString *path = [[ZZPath picturePath] stringByAppendingPathComponent:[NSString stringWithFormat:@"%@_thumb", _transferInfo.identifier]];
+        if ([[NSFileManager defaultManager] fileExistsAtPath:path]) {
+            UIImage *image = [[UIImage alloc] initWithContentsOfFile:path];
+            coverImageView.image = image;
         } else {
             coverImageView.image = [UIImage imageNamed:@"picture"];
         }
+        
     }
     
     if (_transferInfo.transferStatus == STFileTransferStatusSending) {
@@ -133,6 +181,20 @@
     dateLabel.top = 13.0f;
     
     fileNameLabel.frame = CGRectMake(coverImageView.right + 10.0f, 12.0f, IPHONE_WIDTH - coverImageView.right - dateLabel.width - 26.0f, 15.0f);
+}
+
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSString *,id> *)change context:(void *)context {
+    if ([keyPath isEqualToString:@"progress"]) {
+        [[GCDQueue mainQueue] queueBlock:^{
+            progressView.progress = _transferInfo.progress;
+            rateLabel.text = _transferInfo.rateString;
+        }];
+    } else if ([keyPath isEqualToString:@"thumbnailProgress"] ||
+               [keyPath isEqualToString:@"transferStatus"]) {
+        [[GCDQueue mainQueue] queueBlock:^{
+            [self configCell];
+        }];
+    }
 }
 
 @end
