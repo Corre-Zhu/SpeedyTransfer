@@ -38,8 +38,7 @@ HT_DEF_SINGLETON(STFileTransferInfo, shareInstant);
 			self.transferStatus == STFileTransferStatusSent) {
             self.progress = 1.0f;
         }
-        
-        self.deviceId = [dic stringForKey:DBDeviceInfo._deviceId];
+		
         self.deviceName = [dic stringForKey:DBDeviceInfo._deviceName];
     }
     
@@ -49,7 +48,7 @@ HT_DEF_SINGLETON(STFileTransferInfo, shareInstant);
 -(NSString *)_tableName{return @"FileTransfer";}
 -(NSString *)_id{return @"ID";}
 -(NSString *)_identifier{return @"Identifier";}
--(NSString *)_deviceId{return @"DeviceId";}
+-(NSString *)_deviceName{return @"DeviceName";}
 -(NSString *)_fileType{return @"FileType";}
 -(NSString *)_transferType{return @"TransferType";}
 -(NSString *)_transferStatus{return @"TransferStatus";}

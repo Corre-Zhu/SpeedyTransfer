@@ -25,7 +25,8 @@ HT_AS_SINGLETON(STFileTransferModel, shareInstant);
 - (NSArray *)sortTransferInfo:(NSArray *)infos;
 
 // 接收文件
-@property (nonatomic, strong) NSArray *currentReceiveFiles;
+@property (nonatomic, strong) NSMutableArray *currentReceiveFiles; // 收到的所有文件
+@property (nonatomic, strong) STFileTransferInfo *currentReceivingInfo; // 当前正在下载的文件
 - (void)receiveItems:(NSArray *)items;
 
 /**

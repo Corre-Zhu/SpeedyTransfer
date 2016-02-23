@@ -40,7 +40,7 @@ HT_DEF_SINGLETON(STFileTransferModel, shareInstant);
         database = [[HTFMDatabase alloc] initWithPath:defaultDbPath];
         [database open];
         
-        NSString *sql = [NSString stringWithFormat:@"SELECT * FROM %@ LEFT JOIN %@ ON %@.%@=%@.%@ ORDER BY %@ DESC", DBFileTransfer._tableName, DBDeviceInfo._tableName, DBFileTransfer._tableName, DBFileTransfer._deviceId, DBDeviceInfo._tableName, DBDeviceInfo._deviceId, DBFileTransfer._id];
+        NSString *sql = [NSString stringWithFormat:@"SELECT * FROM %@ LEFT JOIN %@ ON %@.%@=%@.%@ ORDER BY %@ DESC", DBFileTransfer._tableName, DBDeviceInfo._tableName, DBFileTransfer._tableName, DBFileTransfer._deviceName, DBDeviceInfo._tableName, DBDeviceInfo._deviceName, DBFileTransfer._id];
         FMResultSet *result = [database executeQuery:sql];
         if (result) {
             NSMutableArray *tempArr = [NSMutableArray array];
@@ -69,7 +69,7 @@ HT_DEF_SINGLETON(STFileTransferModel, shareInstant);
     NSMutableArray *tempArr = [NSMutableArray array];
     STFileTransferInfo *lastInfo = nil;
     for (STFileTransferInfo *info in infos) {
-        if (!lastInfo || ([info.deviceId isEqualToString:lastInfo.deviceId] && info.transferType == lastInfo.transferType)) {
+        if (!lastInfo || ([info.deviceName isEqualToString:lastInfo.deviceName] && info.transferType == lastInfo.transferType)) {
             [tempArr addObject:info];
         } else {
             [resultArr addObject:tempArr];
@@ -214,15 +214,14 @@ withFilterContext:(id)filterContext {
     entity.fileName = [fileInfo stringForKey:FILE_NAME];
     entity.dateString = [[NSDate date] dateString];
     entity.fileSize = [fileInfo doubleForKey:FILE_SIZE];
-    
-    entity.deviceId = deviceInfo.deviceId;
+	
     entity.deviceName = deviceInfo.deviceName;
     entity.headImage = deviceInfo.headImage;
     
     HTSQLBuffer *sql = [[HTSQLBuffer alloc] init];
     sql.INSERT(DBFileTransfer._tableName)
     .SET(DBFileTransfer._identifier, entity.identifier)
-    .SET(DBFileTransfer._deviceId, entity.deviceId)
+    .SET(DBFileTransfer._deviceName, entity.deviceName)
     .SET(DBFileTransfer._fileType, @(entity.fileType))
     .SET(DBFileTransfer._transferType , @(entity.transferType))
     .SET(DBFileTransfer._transferStatus , @(entity.transferStatus))
@@ -237,7 +236,6 @@ withFilterContext:(id)filterContext {
     
     sql = [[HTSQLBuffer alloc] init];
     sql.REPLACE(DBDeviceInfo._tableName)
-    .SET(DBDeviceInfo._deviceId, deviceInfo.deviceId)
     .SET(DBDeviceInfo._deviceName, deviceInfo.deviceName);
     if (![database executeUpdate:sql.sql]) {
         NSLog(@"%@", database.lastError);
@@ -271,8 +269,8 @@ withFilterContext:(id)filterContext {
                 NSString *fileName = [url.absoluteString lastPathComponent];
                 NSUInteger fileSize = imageData.length;
                 NSString *fileType = [url.absoluteString pathExtension];
-                NSString *fileUrl = [NSString stringWithFormat:@"http://%@:%@/photo/origin/%@", address, @(KSERVERPORT), localIdentifier];
-                NSString *thumbnailUrl = [NSString stringWithFormat:@"http://%@:%@/photo/thumbnail/%@", address, @(KSERVERPORT), localIdentifier];
+                NSString *fileUrl = [NSString stringWithFormat:@"http://%@:%@/image/origin/%@", address, @(KSERVERPORT), localIdentifier];
+                NSString *thumbnailUrl = [NSString stringWithFormat:@"http://%@:%@/image/thumbnail/%@", address, @(KSERVERPORT), localIdentifier];
                 
                 NSDictionary *fileInfo = @{FILE_NAME: fileName,
                                            FILE_TYPE: fileType,
@@ -342,33 +340,81 @@ withFilterContext:(id)filterContext {
 #pragma mark - Receive file
 
 - (void)receiveItems:(NSArray *)items {
-    for (STFileTransferInfo *entity in items) {
-        HTSQLBuffer *sql = [[HTSQLBuffer alloc] init];
-        sql.INSERT(DBFileTransfer._tableName)
-        .SET(DBFileTransfer._identifier, entity.identifier)
-        .SET(DBFileTransfer._deviceId, entity.deviceId)
-        .SET(DBFileTransfer._fileType, @(entity.fileType))
-        .SET(DBFileTransfer._transferType , @(entity.transferType))
-        .SET(DBFileTransfer._transferStatus , @(entity.transferStatus))
-        .SET(DBFileTransfer._fileName, entity.fileName)
-        .SET(DBFileTransfer._fileSize, @(entity.fileSize))
-        .SET(DBFileTransfer._date, entity.dateString);
-        
-        if (![database executeUpdate:sql.sql]) {
-            NSLog(@"%@", database.lastError);
-        }
-        
-        sql = [[HTSQLBuffer alloc] init];
-        sql.REPLACE(DBDeviceInfo._tableName)
-        .SET(DBDeviceInfo._deviceId, entity.deviceId)
-        .SET(DBDeviceInfo._deviceName, entity.deviceName);
-        if (![database executeUpdate:sql.sql]) {
-            NSLog(@"%@", database.lastError);
-        }
-        
-        [self addTransferFile:entity];
-    }
+	if (!self.currentReceiveFiles) {
+		self.currentReceiveFiles = [NSMutableArray array];
+	}
+	
+	@synchronized(self.currentReceiveFiles) {
+		[self.currentReceiveFiles addObjectsFromArray:items];
+	}
+	
+	[self startDownload];
 }
+
+// 开始下载接收的文件
+- (void)startDownload {
+	if (self.currentReceivingInfo || self.currentReceiveFiles.count == 0) {
+		return;
+	}
+	
+	@synchronized(self.currentReceiveFiles) {
+		self.currentReceivingInfo = [self.currentReceiveFiles firstObject];
+		[self.currentReceiveFiles removeObject:self.currentReceivingInfo];
+	}
+	
+	// 写入数据库
+	HTSQLBuffer *sql = [[HTSQLBuffer alloc] init];
+	sql.INSERT(DBFileTransfer._tableName)
+	.SET(DBFileTransfer._identifier, _currentReceivingInfo.identifier)
+	.SET(DBFileTransfer._deviceName, _currentReceivingInfo.deviceName)
+	.SET(DBFileTransfer._fileType, @(_currentReceivingInfo.fileType))
+	.SET(DBFileTransfer._transferType , @(_currentReceivingInfo.transferType))
+	.SET(DBFileTransfer._transferStatus , @(_currentReceivingInfo.transferStatus))
+	.SET(DBFileTransfer._fileName, _currentReceivingInfo.fileName)
+	.SET(DBFileTransfer._fileSize, @(_currentReceivingInfo.fileSize))
+	.SET(DBFileTransfer._date, _currentReceivingInfo.dateString);
+	if (![database executeUpdate:sql.sql]) {
+		NSLog(@"%@", database.lastError);
+	}
+	sql = [[HTSQLBuffer alloc] init];
+	sql.REPLACE(DBDeviceInfo._tableName)
+	.SET(DBDeviceInfo._deviceName, _currentReceivingInfo.deviceName);
+	if (![database executeUpdate:sql.sql]) {
+		NSLog(@"%@", database.lastError);
+	}
+	[self addTransferFile:_currentReceivingInfo];
+	
+	
+	
+}
+
+//- (void)receiveItems:(NSArray *)items {
+//    for (STFileTransferInfo *entity in items) {
+//        HTSQLBuffer *sql = [[HTSQLBuffer alloc] init];
+//        sql.INSERT(DBFileTransfer._tableName)
+//        .SET(DBFileTransfer._identifier, entity.identifier)
+//        .SET(DBFileTransfer._deviceName, entity.deviceName)
+//        .SET(DBFileTransfer._fileType, @(entity.fileType))
+//        .SET(DBFileTransfer._transferType , @(entity.transferType))
+//        .SET(DBFileTransfer._transferStatus , @(entity.transferStatus))
+//        .SET(DBFileTransfer._fileName, entity.fileName)
+//        .SET(DBFileTransfer._fileSize, @(entity.fileSize))
+//        .SET(DBFileTransfer._date, entity.dateString);
+//        
+//        if (![database executeUpdate:sql.sql]) {
+//            NSLog(@"%@", database.lastError);
+//        }
+//        
+//        sql = [[HTSQLBuffer alloc] init];
+//        sql.REPLACE(DBDeviceInfo._tableName)
+//        .SET(DBDeviceInfo._deviceName, entity.deviceName);
+//        if (![database executeUpdate:sql.sql]) {
+//            NSLog(@"%@", database.lastError);
+//        }
+//        
+//        [self addTransferFile:entity];
+//    }
+//}
 
 #pragma mark - Picture
 

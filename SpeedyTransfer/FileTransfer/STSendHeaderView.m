@@ -51,8 +51,8 @@
     }
     
     UIImage *headImage = nil;
-    if (transferInfo.deviceId.length > 0) {
-        NSString *headPath = [[ZZPath headImagePath] stringByAppendingPathComponent:transferInfo.deviceId];
+    if (transferInfo.deviceName.length > 0) {
+        NSString *headPath = [[ZZPath headImagePath] stringByAppendingPathComponent:transferInfo.deviceName];
         if ([[NSFileManager defaultManager] fileExistsAtPath:headPath]) {
             headImage = [[UIImage alloc] initWithContentsOfFile:headPath];
         }

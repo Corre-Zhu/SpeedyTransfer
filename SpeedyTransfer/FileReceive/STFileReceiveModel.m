@@ -36,8 +36,12 @@ HT_DEF_SINGLETON(STFileReceiveModel, shareInstant);
 }
 
 - (void)doBroadcast {
+	NSString *broadcastAddr = [UIDevice getBroadcastAddress];
+	if (broadcastAddr.length == 0) {
+		broadcastAddr = @"255.255.255.255";
+	}
     NSString *deviceName = [NSString stringWithFormat:@"DCDC:%@:1", @(KSERVERPORT)];
-    [udpSocket sendData:[deviceName dataUsingEncoding:NSUTF8StringEncoding] toHost:@"255.255.255.255" port:KUDPPORT withTimeout:-1 tag:0];
+    [udpSocket sendData:[deviceName dataUsingEncoding:NSUTF8StringEncoding] toHost:broadcastAddr port:KUDPPORT withTimeout:-1 tag:0];
 }
 
 - (void)startBroadcast {

@@ -42,7 +42,6 @@ HT_DEF_SINGLETON(STDeviceInfo, shareInstant);
                 return NO;
             } else {
                 NSDictionary *devInfo = [dataString jsonDictionary];
-                self.deviceId = [devInfo stringForKey:@"device_id"];
                 self.deviceName = [devInfo stringForKey:@"device_name"];
             }
             
@@ -62,7 +61,7 @@ HT_DEF_SINGLETON(STDeviceInfo, shareInstant);
                 NSLog(@"devInfoUrl: %@, error: %@", devInfoUrl, error);
                 return NO;
             } else {
-                NSString *headPath = [[ZZPath headImagePath] stringByAppendingFormat:@"/%@", self.deviceId];
+                NSString *headPath = [[ZZPath headImagePath] stringByAppendingFormat:@"/%@", self.deviceName];
                 if ([[NSFileManager defaultManager] fileExistsAtPath:headPath isDirectory:NULL]) {
                     [[NSFileManager defaultManager] removeItemAtPath:headPath error:NULL];
                 }
@@ -86,10 +85,6 @@ HT_DEF_SINGLETON(STDeviceInfo, shareInstant);
 
 - (NSString *)_tableName {
 	return @"STDeviceInfo";
-}
-
-- (NSString *)_deviceId {
-	return @"DeviceId";
 }
 
 - (NSString *)_deviceName {

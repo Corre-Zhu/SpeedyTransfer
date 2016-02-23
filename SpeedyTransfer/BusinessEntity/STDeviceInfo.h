@@ -15,7 +15,6 @@
 
 HT_AS_SINGLETON(STDeviceInfo, shareInstant)
 
-@property (nonatomic, strong) NSString *deviceId;
 @property (nonatomic, strong) NSString *deviceName;
 @property (nonatomic, strong) UIImage *headImage;
 
@@ -25,7 +24,6 @@ HT_AS_SINGLETON(STDeviceInfo, shareInstant)
 @property (nonatomic, strong) NSString *recvUrl;
 
 @property(nonatomic,readonly)NSString *_tableName;
-@property(nonatomic,readonly)NSString *_deviceId;
 @property(nonatomic,readonly)NSString *_deviceName;
 
 - (BOOL)setup;
