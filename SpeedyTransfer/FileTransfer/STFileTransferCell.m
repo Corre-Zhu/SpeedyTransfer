@@ -125,9 +125,12 @@
     if (_transferInfo.fileType == STFileTypeContact) {
         coverImageView.image = [UIImage imageNamed:@"phone_bg"];
     } else if (_transferInfo.fileType == STFileTypePicture) {
+        BOOL localAssetExist = NO;
         if (self.transferInfo.url.length > 0 && ![self.transferInfo.url hasPrefix:@"http://"]) {
             PHFetchResult *savedAssets = [PHAsset fetchAssetsWithLocalIdentifiers:@[_transferInfo.url] options:nil];
             if (savedAssets.count > 0) {
+                localAssetExist = YES;
+                
                 PHAsset *asset = savedAssets.firstObject;
                 NSInteger currentTag = _transferInfo.tag + 1;
                 _transferInfo.tag = currentTag;
@@ -144,17 +147,18 @@
                                                                 coverImageView.image = result;
                                                             }}];
                 
-                return;
             }
   
         }
     
-        NSString *path = [[ZZPath picturePath] stringByAppendingPathComponent:[NSString stringWithFormat:@"%@_thumb", _transferInfo.identifier]];
-        if ([[NSFileManager defaultManager] fileExistsAtPath:path]) {
-            UIImage *image = [[UIImage alloc] initWithContentsOfFile:path];
-            coverImageView.image = image;
-        } else {
-            coverImageView.image = [UIImage imageNamed:@"picture"];
+        if (!localAssetExist) {
+            NSString *path = [[ZZPath picturePath] stringByAppendingPathComponent:[NSString stringWithFormat:@"%@_thumb", _transferInfo.identifier]];
+            if ([[NSFileManager defaultManager] fileExistsAtPath:path]) {
+                UIImage *image = [[UIImage alloc] initWithContentsOfFile:path];
+                coverImageView.image = image;
+            } else {
+                coverImageView.image = [UIImage imageNamed:@"picture"];
+            }
         }
         
     }

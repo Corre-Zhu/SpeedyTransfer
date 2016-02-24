@@ -173,16 +173,16 @@
             entity.url = file_url;
 			entity.thumbnailUrl = thumbnailUrl;
             entity.fileName = [fileInfo stringForKey:FILE_NAME];
-            entity.dateString = [[NSDate date] dateString];
             entity.fileSize = [fileInfo doubleForKey:FILE_SIZE];
+            entity.pathExtension = [fileInfo stringForKey:FILE_TYPE];
+            entity.dateString = [[NSDate date] dateString];
             entity.deviceName = deviceInfo.deviceName;
             entity.headImage = deviceInfo.headImage;
             
-            NSString *fileType = [fileInfo stringForKey:FILE_TYPE];
-            if ([fileType.lowercaseString isEqualToString:@"png"] ||
-                [fileType.lowercaseString isEqualToString:@"jpg"] ||
-                [fileType.lowercaseString isEqualToString:@"jpeg"]) {
-                fileType = STFileTypePicture;
+            if ([entity.pathExtension.lowercaseString isEqualToString:@"png"] ||
+                [entity.pathExtension.lowercaseString isEqualToString:@"jpg"] ||
+                [entity.pathExtension.lowercaseString isEqualToString:@"jpeg"]) {
+                entity.fileType = STFileTypePicture;
             } else {
                 NSLog(@"未知文件类型");
                 continue;

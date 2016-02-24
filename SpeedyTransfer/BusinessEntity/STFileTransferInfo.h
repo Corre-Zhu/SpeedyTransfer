@@ -46,6 +46,7 @@ HT_AS_SINGLETON(STFileTransferInfo, shareInstant)
 @property (nonatomic, strong) NSString *thumbnailUrl;
 @property (nonatomic, strong) NSString *vcardString;
 @property (nonatomic, strong) NSString *fileName;
+@property (nonatomic, strong) NSString *pathExtension;
 @property (nonatomic, strong) NSString *dateString;
 @property (nonatomic) double fileSize;
 @property (nonatomic) double downloadSpeed;

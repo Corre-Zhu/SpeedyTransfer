@@ -16,12 +16,18 @@
 #import "AppDelegate.h"
 #import <AFNetworking/AFNetworking.h>
 
+#define ALBUM_TITLE @"点传"
+
 @interface STFileTransferModel ()<GCDAsyncUdpSocketDelegate>
 {
     GCDAsyncUdpSocket *udpSocket;
     NSTimer *timeoutTimer;
     HTFMDatabase *database;
+    NSTimeInterval downloadStartTimestamp;
     NSTimeInterval lastTimestamp;
+    float lastProgress;
+    
+    __block PHAssetCollection *toSaveCollection;
 }
 
 @end
@@ -53,6 +59,32 @@ HT_DEF_SINGLETON(STFileTransferModel, shareInstant);
             
             _transferFiles = [NSArray arrayWithArray:tempArr];
             _sectionTransferFiles = [self sortTransferInfo:_transferFiles];
+        }
+        
+        // 创建相册
+        __block PHObjectPlaceholder *placeholder;
+
+        PHFetchOptions *fetchOptions = [[PHFetchOptions alloc] init];
+        fetchOptions.predicate = [NSPredicate predicateWithFormat:@"title = %@", ALBUM_TITLE];
+        toSaveCollection = [PHAssetCollection fetchAssetCollectionsWithType:PHAssetCollectionTypeAlbum
+                                                              subtype:PHAssetCollectionSubtypeAny
+                                                              options:fetchOptions].firstObject;
+        
+        if (!toSaveCollection)
+        {
+            [[PHPhotoLibrary sharedPhotoLibrary] performChanges:^{
+                PHAssetCollectionChangeRequest *createAlbum = [PHAssetCollectionChangeRequest creationRequestForAssetCollectionWithTitle:ALBUM_TITLE];
+                placeholder = [createAlbum placeholderForCreatedAssetCollection];
+            } completionHandler:^(BOOL success, NSError *error) {
+                if (success)
+                {
+                    PHFetchResult *collectionFetchResult = [PHAssetCollection fetchAssetCollectionsWithLocalIdentifiers:@[placeholder.localIdentifier]
+                                                                                                                options:nil];
+                    toSaveCollection = collectionFetchResult.firstObject;
+                } else {
+                    NSLog(@"create albumn failed");
+                }
+            }];
         }
         
         udpSocket = [[GCDAsyncUdpSocket alloc] initWithDelegate:self delegateQueue:dispatch_get_main_queue()];
@@ -258,6 +290,28 @@ withFilterContext:(id)filterContext {
     }
 }
 
+- (void)updateDownloadSpeed:(float)downloadSpeed withIdentifier:(NSString *)identifier {
+    HTSQLBuffer *sql = [[HTSQLBuffer alloc] init];
+    sql.UPDATE(DBFileTransfer._tableName)
+    .WHERE(SQLStringEqual(DBFileTransfer._identifier, identifier))
+    .SET(DBFileTransfer._downloadSpeed, @(downloadSpeed));
+    
+    if (![database executeUpdate:sql.sql]) {
+        NSLog(@"%@", database.lastError);
+    }
+}
+
+- (void)updateAssetIdentifier:(NSString *)assetIdentifier withIdentifier:(NSString *)identifier {
+    HTSQLBuffer *sql = [[HTSQLBuffer alloc] init];
+    sql.UPDATE(DBFileTransfer._tableName)
+    .WHERE(SQLStringEqual(DBFileTransfer._identifier, identifier))
+    .SET(DBFileTransfer._url, assetIdentifier);
+    
+    if (![database executeUpdate:sql.sql]) {
+        NSLog(@"%@", database.lastError);
+    }
+}
+
 - (void)startSendFile {
     // 发送图片
     PHAsset *photoAsset = [self firstPhotoAsset];
@@ -412,13 +466,23 @@ withFilterContext:(id)filterContext {
     NSURL *originURL = [NSURL URLWithString:_currentReceivingInfo.url];
     NSURLRequest *originRequest = [NSURLRequest requestWithURL:originURL];
     
+    NSString *pathExtension = _currentReceivingInfo.pathExtension;
+    if (pathExtension.length == 0) {
+        pathExtension = _currentReceivingInfo.fileName.pathExtension;
+    }
+    
+    if (pathExtension.length == 0) {
+        pathExtension = @"jpg";
+    }
+    
+    NSString *downloadPath = [[ZZPath picturePath] stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.%@", _currentReceivingInfo.identifier, pathExtension]];
+    
     __block NSProgress *progress = nil;
     NSURLSessionDownloadTask *origindownloadTask = [manager downloadTaskWithRequest:originRequest progress:^(NSProgress * _Nonnull downloadProgress) {
         progress = downloadProgress;
         [downloadProgress addObserver:self forKeyPath:@"fractionCompleted" options:NSKeyValueObservingOptionNew context:NULL];
     } destination:^NSURL *(NSURL *targetPath, NSURLResponse *response) {
-        NSString *path = [[ZZPath picturePath] stringByAppendingPathComponent:_currentReceivingInfo.identifier];
-        return [NSURL fileURLWithPath:path];
+        return [NSURL fileURLWithPath:downloadPath];
     } completionHandler:^(NSURLResponse *response, NSURL *filePath, NSError *error) {
         [progress removeObserver:self forKeyPath:@"fractionCompleted"];
         
@@ -429,17 +493,69 @@ withFilterContext:(id)filterContext {
         if (error || httpURLResponse.statusCode != 200) {
             [self updateTransferStatus:STFileTransferStatusReceiveFailed withIdentifier:_currentReceivingInfo.identifier];
             _currentReceivingInfo.transferStatus = STFileTransferStatusReceiveFailed;
+            _currentReceivingInfo = nil;
+            [self startDownload];
         } else {
             [self updateTransferStatus:STFileTransferStatusReceived withIdentifier:_currentReceivingInfo.identifier];
+            
+            NSTimeInterval now = [[NSDate date] timeIntervalSince1970];
+            float downloadSpeed = 1 / (now - downloadStartTimestamp) * _currentReceivingInfo.fileSize;
+            [self updateDownloadSpeed:downloadSpeed withIdentifier:_currentReceivingInfo.identifier];
+            _currentReceivingInfo.downloadSpeed = downloadSpeed;
             _currentReceivingInfo.transferStatus = STFileTransferStatusReceived;
+            
+            if ([[NSUserDefaults standardUserDefaults] boolForKey:AutoImportPhoto]) {
+                [self writeToSavedPhotosAlbum:downloadPath];
+            } else {
+                _currentReceivingInfo = nil;
+                [self startDownload];
+            }
         }
-        [self startDownload];
-        _currentReceivingInfo = nil;
-        NSLog(@"File downloaded to: %@", filePath);
     }];
     
     [origindownloadTask resume];
-	
+    
+    downloadStartTimestamp = [[NSDate date] timeIntervalSince1970];
+    lastTimestamp = downloadStartTimestamp;
+    lastProgress = 0.0f;
+}
+
+- (void)writeToSavedPhotosAlbum:(NSString *)path {
+    __block PHFetchResult *photosAsset;
+    __block PHObjectPlaceholder *placeholder;
+    NSURL *fileUrl = [NSURL fileURLWithPath:path];
+    
+    dispatch_block_t block = ^ {
+        // Save to the album
+        [[PHPhotoLibrary sharedPhotoLibrary] performChanges:^{
+            PHAssetChangeRequest *assetRequest = [PHAssetChangeRequest creationRequestForAssetFromImageAtFileURL:fileUrl];
+            placeholder = [assetRequest placeholderForCreatedAsset];
+            photosAsset = [PHAsset fetchAssetsInAssetCollection:toSaveCollection options:nil];
+            PHAssetCollectionChangeRequest *albumChangeRequest = [PHAssetCollectionChangeRequest changeRequestForAssetCollection:toSaveCollection
+                                                                                                                          assets:photosAsset];
+            [albumChangeRequest addAssets:@[placeholder]];
+        } completionHandler:^(BOOL success, NSError *error) {
+            if (success) {
+                _currentReceivingInfo.url = placeholder.localIdentifier;
+                [self updateAssetIdentifier:placeholder.localIdentifier withIdentifier:_currentReceivingInfo.identifier];
+                // 保存相册成功，删除本地缓存
+                if ([[NSFileManager defaultManager] fileExistsAtPath:path]) {
+                    [[NSFileManager defaultManager] removeItemAtPath:path error:NULL];
+                }
+            } else {
+                NSLog(@"%@", error);
+            }
+            _currentReceivingInfo = nil;
+            [self startDownload];
+        }];
+    };
+    
+    if (toSaveCollection) {
+        block();
+    } else {
+        _currentReceivingInfo = nil;
+        [self startDownload];
+    }
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
@@ -447,13 +563,15 @@ withFilterContext:(id)filterContext {
     if ([keyPath isEqualToString:@"fractionCompleted"]) {
         NSProgress *progress = (NSProgress *)object;
         if (progress.fractionCompleted - _currentReceivingInfo.progress > 0.02f || progress.fractionCompleted == 1.0f) {
+            
             NSTimeInterval now = [[NSDate date] timeIntervalSince1970];
             NSTimeInterval timeInterval = now - lastTimestamp;
-            if (timeInterval != 0.0f) {
-                _currentReceivingInfo.downloadSpeed = 1 / timeInterval * (progress.fractionCompleted - _currentReceivingInfo.progress) * _currentReceivingInfo.fileSize;
+            if (timeInterval > 0.3f) { // 每隔0.5秒更新一次速度
+                _currentReceivingInfo.downloadSpeed = 1 / timeInterval * (progress.fractionCompleted - lastProgress) * _currentReceivingInfo.fileSize;
+                lastTimestamp = now;
+                lastProgress = progress.fractionCompleted;
             }
             _currentReceivingInfo.progress = progress.fractionCompleted;
-            lastTimestamp = now;
         }
     } else {
         [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
