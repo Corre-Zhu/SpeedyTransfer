@@ -184,6 +184,7 @@
 
 - (void)receiveButtonClick {
     STFileTransferViewController *fileTransferVc = [[STFileTransferViewController alloc] init];
+    fileTransferVc.isFromReceive = YES;
     [self.navigationController pushViewController:fileTransferVc animated:YES];
 }
 

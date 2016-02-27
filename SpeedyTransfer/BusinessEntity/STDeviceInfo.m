@@ -7,10 +7,26 @@
 //
 
 #import "STDeviceInfo.h"
+#import "ZZFileUtility.h"
+
+#define KConcurrentSendFilesCount 2 // 同时最多post两个文件
 
 @implementation STDeviceInfo
 
 HT_DEF_SINGLETON(STDeviceInfo, shareInstant);
+
+- (void)dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
+- (instancetype)init {
+    self = [super init];
+    if (self) {
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(fileWrittenProgressNotification:) name:KFileWrittenProgressNotification object:nil];
+    }
+    
+    return self;
+}
 
 - (BOOL)setup {
     if (self.ip.length > 0 && self.port > 0) {
@@ -42,7 +58,11 @@ HT_DEF_SINGLETON(STDeviceInfo, shareInstant);
                 return NO;
             } else {
                 NSDictionary *devInfo = [dataString jsonDictionary];
-                self.deviceName = [devInfo stringForKey:@"device_name"];
+                NSString *deviceName = [devInfo stringForKey:@"device_name"];
+                if (deviceName.length == 0) {
+                    deviceName = @"未知设备";
+                }
+                self.deviceName = deviceName;
             }
             
         } else {
@@ -75,6 +95,10 @@ HT_DEF_SINGLETON(STDeviceInfo, shareInstant);
         //
         NSDictionary *recvInfo = [apiInfo dictionaryForKey:@"recv"];
         NSString *recvUrl = [recvInfo stringForKey:@"href"];
+        if (recvUrl.length == 0) {
+            NSLog(@"recvUrl is nil");
+            return NO;
+        }
         self.recvUrl = recvUrl;
 
         return YES;
@@ -83,12 +107,141 @@ HT_DEF_SINGLETON(STDeviceInfo, shareInstant);
     return NO;
 }
 
+- (void)setDeviceName:(NSString *)deviceName {
+    _deviceName = deviceName;
+    
+    if (deviceName.length == 0) {
+        return;
+    }
+}
+
 - (NSString *)_tableName {
 	return @"STDeviceInfo";
 }
 
 - (NSString *)_deviceName {
 	return @"DeviceName";
+}
+
+#pragma mark - Send file
+
+- (NSArray *)popSendingItems {
+    if (self.sendingTransferInfos.count >= KConcurrentSendFilesCount) {
+        return nil;
+    }
+    
+    @synchronized(_prepareToSendFiles) {
+        if (_prepareToSendFiles.count == 0) {
+            return nil;
+        }
+        
+        NSMutableArray *resultArray = [NSMutableArray arrayWithCapacity:KConcurrentSendFilesCount];
+        
+        do {
+            id object = _prepareToSendFiles.firstObject;
+            [resultArray addObject:object];
+            [_prepareToSendFiles removeObject:object];
+        } while ((self.sendingTransferInfos.count + resultArray.count) < KConcurrentSendFilesCount && _prepareToSendFiles.count > 0);
+        
+        return resultArray;
+    }
+}
+
+- (void)addSendItems:(NSArray *)files {
+    if (!_prepareToSendFiles) {
+        _prepareToSendFiles = [NSMutableArray array];
+        _sendingTransferInfos = [NSMutableArray array];
+    }
+    
+    @synchronized(_prepareToSendFiles) {
+        [_prepareToSendFiles addObjectsFromArray:files];
+    }
+}
+
+- (void)startSend {
+    if (self.sendingTransferInfos.count >= KConcurrentSendFilesCount) {
+        return;
+    }
+    
+    NSArray *items = [self popSendingItems];
+    ZZFileUtility *fileUtility = [[ZZFileUtility alloc] init];
+    [fileUtility fileInfoWithItems:items completionBlock:^(NSArray *fileInfos) {
+        // 写数据库
+        NSArray *fileTransferInfos = [[STFileTransferModel shareInstant] insertItemsToDbWithDeviceInfo:self fileInfos:fileInfos];
+        @synchronized(_prepareToSendFiles) {
+            [self.sendingTransferInfos addObjectsFromArray:fileTransferInfos];
+        }
+        
+        NSString *itemsString = [fileInfos jsonString];
+        NSData *postData = [itemsString dataUsingEncoding:NSUTF8StringEncoding];
+        NSString *postLength = @(postData.length).stringValue;
+        
+        NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:self.recvUrl]];
+        request.HTTPMethod = @"POST";
+        [request setValue:postLength forHTTPHeaderField:@"Content-Length"];
+        [request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];
+        [request setHTTPBody:postData];
+        
+        NSHTTPURLResponse *response = nil;
+        NSError *error = nil;
+        [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&error];
+        if (response.statusCode != 200) {
+            for (STFileTransferInfo *transferInfo in fileTransferInfos) {
+                transferInfo.transferStatus = STFileTransferStatusSendFailed;
+                [[STFileTransferModel shareInstant] updateTransferStatus:STFileTransferStatusSendFailed withIdentifier:transferInfo.identifier];
+            }
+            
+        }
+        
+    }];
+    
+}
+
+- (void)fileWrittenProgressNotification:(NSNotification *)notification {
+    NSDictionary *userInfo = notification.userInfo;
+    @synchronized(_prepareToSendFiles) {
+        BOOL succeed = NO;
+        STFileTransferInfo *tempInfo = nil;
+        for (STFileTransferInfo *info in self.sendingTransferInfos) {
+            NSString *requestPath = [userInfo stringForKey:REQUEST_PATH];
+            if ([requestPath containsString:info.url]) {
+                NSUInteger totalBytesWritten = [userInfo integerForKey:TOTAL_BYTES_WRITTEN];
+                float progress = MIN(1.0f, (totalBytesWritten + 248) / info.fileSize);
+                
+                double startTimestamp = [userInfo doubleForKey:START_TIMESTAMP];
+                if (info.lastProgressTimeStamp == 0.0f) {
+                    info.lastProgressTimeStamp = startTimestamp;
+                }
+                NSTimeInterval now = [[NSDate date] timeIntervalSince1970];
+                NSTimeInterval timeInterval = now - info.lastProgressTimeStamp;
+                if (timeInterval > 0.3f) { // 每隔0.3秒更新一次速度
+                    info.downloadSpeed = 1 / timeInterval * (progress - info.lastProgress) * info.fileSize;
+                    info.lastProgressTimeStamp = now;
+                    info.lastProgress = progress;
+                }
+                info.progress = progress;
+                
+                // 文件发送成功
+                if (info.progress == 1.0f) {
+                    [[STFileTransferModel shareInstant] updateTransferStatus:STFileTransferStatusSent withIdentifier:info.identifier];
+                    info.transferStatus = STFileTransferStatusSent;
+                    
+                    NSTimeInterval now = [[NSDate date] timeIntervalSince1970];
+                    float downloadSpeed = 1 / (now - startTimestamp) * info.fileSize;
+                    [[STFileTransferModel shareInstant] updateDownloadSpeed:downloadSpeed withIdentifier:info.identifier];
+                    info.downloadSpeed = downloadSpeed;
+                    
+                    succeed = YES;
+                    tempInfo = info;
+                }
+            }
+        }
+        
+        if (succeed) {
+            [self.sendingTransferInfos removeObject:tempInfo];
+            [self startSend];
+        }
+    }
 }
 
 @end

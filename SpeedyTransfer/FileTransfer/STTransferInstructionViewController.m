@@ -235,7 +235,7 @@
     
     if (tempArr.count > 0) {
         [STFileTransferModel shareInstant].selectedDevicesArray = [NSArray arrayWithArray:tempArr];
-        [[STFileTransferModel shareInstant] startSendFile];
+//        [[STFileTransferModel shareInstant] startSendFile];
         
         STFileTransferViewController *fileTransferVc = [[STFileTransferViewController alloc] init];
         [self.navigationController pushViewController:fileTransferVc animated:YES];

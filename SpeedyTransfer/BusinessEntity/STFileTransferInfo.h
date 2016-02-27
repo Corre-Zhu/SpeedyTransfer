@@ -52,6 +52,8 @@ HT_AS_SINGLETON(STFileTransferInfo, shareInstant)
 @property (nonatomic) double downloadSpeed;
 @property (nonatomic) float progress; // 原图下载进度
 @property (nonatomic) float thumbnailProgress; // 缩略图下载进度
+@property (nonatomic) double lastProgressTimeStamp; // 用于计算瞬时速度
+@property (nonatomic) double lastProgress; // 用于计算瞬时速度
 
 @property (nonatomic, strong) UIImage *image;
 @property (nonatomic, strong) NSString *fileSizeString;

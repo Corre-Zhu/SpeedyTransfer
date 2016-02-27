@@ -12,49 +12,39 @@
 #import "MCTransceiver.h"
 
 @class STContactInfo;
+@class STDeviceInfo;
+
+extern NSString *const KDeviceNotConnectedNotification;
 
 @interface STFileTransferModel : NSObject
 
 HT_AS_SINGLETON(STFileTransferModel, shareInstant);
-
-@property (nonatomic, strong) NSArray *devicesArray; // 发现的所有设备
-@property (nonatomic, strong) NSArray *selectedDevicesArray; // 选择发送的所有设备
-@property (nonatomic, strong) NSArray *transferFiles;
-@property (nonatomic, strong) NSArray *sectionTransferFiles; // 分好组的
-@property (nonatomic, strong) NSArray *curentTransferFiles; // 当前正在传输的文件
-- (NSArray *)sortTransferInfo:(NSArray *)infos;
-
-// 接收文件
-@property (nonatomic, strong) NSMutableArray *currentReceiveFiles; // 收到的所有文件
-@property (nonatomic, strong) STFileTransferInfo *currentReceivingInfo; // 当前正在下载的文件
-- (void)receiveItems:(NSArray *)items;
 
 /**
  开始监听广播
  */
 - (void)startListenBroadcast;
 
-// 发送文件
-- (void)startSendFile;
-@property (nonatomic, strong) NSArray *currentTransferInfos;
+@property (nonatomic, strong) NSArray *devicesArray; // 发现的所有设备
+@property (nonatomic, strong) NSArray *selectedDevicesArray; // 选择发送的所有设备
 
-//
-- (void)removeAllSelectedFiles;
-@property (nonatomic) NSInteger selectedFilesCount;
-@property (nonatomic) BOOL photosCountChanged;
-@property (nonatomic) BOOL musicsCountChanged;
-@property (nonatomic) BOOL videosCountChanged;
-@property (nonatomic) BOOL contactsCountChanged;
+// 所有文件传输记录
+@property (nonatomic, strong) NSArray *transferFiles;
+@property (nonatomic, strong) NSArray *sectionTransferFiles; // 分好组的
+- (NSArray *)sortTransferInfo:(NSArray *)infos;
 
-// 图片
-@property (nonatomic, strong, readonly) NSMutableArray *selectedAssetsArr;
-- (NSInteger)selectedPhotosCountInCollection:(NSString *)collection;
+// 文件接收
+@property (nonatomic, strong) NSMutableArray *prepareToReceiveFiles; // 收到的的所有文件
+@property (nonatomic, strong) STFileTransferInfo *currentReceivingInfo; // 当前正在下载的文件
+- (void)receiveItems:(NSArray *)items;
 
-- (void)addAsset:(PHAsset *)asset inCollection:(NSString *)collection;
-- (void)addAssets:(NSArray *)assets inCollection:(NSString *)collection;
-- (void)removeAsset:(PHAsset *)asset inCollection:(NSString *)collection;
-- (void)removeAssets:(NSArray *)assets inCollection:(NSString *)collection;
-- (void)removeAllAssetsInCollection:(NSString *)collection;
-- (BOOL)isSelectedWithAsset:(PHAsset *)asset inCollection:(NSString *)collection;
+// 文件发送
+- (NSArray *)insertItemsToDbWithDeviceInfo:(STDeviceInfo *)deviceInfo fileInfos:(NSArray *)fileInfos;
+- (void)updateTransferStatus:(STFileTransferStatus)status withIdentifier:(NSString *)identifier;
+- (void)updateDownloadSpeed:(float)downloadSpeed withIdentifier:(NSString *)identifier;
+- (void)updateAssetIdentifier:(NSString *)assetIdentifier withIdentifier:(NSString *)identifier;
+- (void)addTransferFile:(STFileTransferInfo *)info;
+- (void)sendItems:(NSArray *)items;
+
 
 @end

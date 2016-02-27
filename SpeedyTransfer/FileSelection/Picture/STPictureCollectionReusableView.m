@@ -89,11 +89,11 @@
 
 - (void)selectAllButtonClick {
     if (!_model.selectedAll) {
-        [[STFileTransferModel shareInstant] removeAllAssetsInCollection:self.model.localIdentifier];
-        [[STFileTransferModel shareInstant] addAssets:[_model.fetchResult objectsAtIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, _model.fetchResult.count)]] inCollection:self.model.localIdentifier];
+        [self.tabViewController removeAllAssetsInCollection:self.model.localIdentifier];
+        [self.tabViewController addAssets:[_model.fetchResult objectsAtIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, _model.fetchResult.count)]] inCollection:self.model.localIdentifier];
         _model.selectedAll = YES;
     } else {
-        [[STFileTransferModel shareInstant] removeAssets:[_model.fetchResult objectsAtIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, _model.fetchResult.count)]] inCollection:self.model.localIdentifier];
+        [self.tabViewController removeAssets:[_model.fetchResult objectsAtIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, _model.fetchResult.count)]] inCollection:self.model.localIdentifier];
         _model.selectedAll = NO;
     }
     

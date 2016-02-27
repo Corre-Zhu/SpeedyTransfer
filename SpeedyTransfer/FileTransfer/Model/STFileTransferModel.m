@@ -18,6 +18,8 @@
 
 #define ALBUM_TITLE @"点传"
 
+NSString *const KDeviceNotConnectedNotification = @"DeviceNotConnectedNotification"; // 设备退出共享网络通知
+
 @interface STFileTransferModel ()<GCDAsyncUdpSocketDelegate>
 {
     GCDAsyncUdpSocket *udpSocket;
@@ -121,6 +123,8 @@ HT_DEF_SINGLETON(STFileTransferModel, shareInstant);
     return [NSArray arrayWithArray:resultArr];
 }
 
+#pragma mark - Broadcast
+
 - (void)startListenBroadcast {
     NSError *error = nil;
     if (![udpSocket bindToPort:KUDPPORT error:&error]) {
@@ -137,19 +141,35 @@ HT_DEF_SINGLETON(STFileTransferModel, shareInstant);
         @synchronized(self) {
             @autoreleasepool {
                 NSArray *tempArr = [NSArray arrayWithArray:self.devicesArray];
-                NSMutableArray *tempMutableArry = [NSMutableArray arrayWithArray:self.devicesArray];
+                NSMutableArray *tempDevicesArry = [NSMutableArray arrayWithArray:self.devicesArray];
+                NSMutableArray *tempSelectedDevicesArray = [NSMutableArray arrayWithArray:self.selectedDevicesArray];
                 BOOL timeout = NO;
-                for (STDeviceInfo *userInfo in tempArr) {
-                    if ([[NSDate date] timeIntervalSince1970] - userInfo.lastUpdateTimestamp > 15) {
+                BOOL deviceNotConnected = NO;
+                for (STDeviceInfo *deviceInfo in tempArr) {
+                    if ([[NSDate date] timeIntervalSince1970] - deviceInfo.lastUpdateTimestamp > 15) {
                         // 15秒之内没有收到udp广播，默认当做离线处理
                         timeout = YES;
-                        [tempMutableArry removeObject:userInfo];
-                        NSLog(@"timeout: %@, %@", userInfo.ip, @(userInfo.port).stringValue);
+                        [tempDevicesArry removeObject:deviceInfo];
+                        
+                        if ([tempSelectedDevicesArray containsObject:deviceInfo]) {
+                            deviceNotConnected = YES;
+                            [tempSelectedDevicesArray removeObject:deviceInfo];
+                            NSString *deviceName = deviceInfo.deviceName;
+                            if (deviceName.length == 0) {
+                                deviceName = NSLocalizedString(@"对方", nil);
+                            }
+                            [[NSNotificationCenter defaultCenter] postNotificationName:KDeviceNotConnectedNotification object:nil userInfo:@{DEVICE_NAME: deviceName}];
+                        }
+                        NSLog(@"timeout: %@, %@", deviceInfo.ip, @(deviceInfo.port).stringValue);
                     }
                 }
                 
                 if (timeout) {
-                    self.devicesArray = [NSArray arrayWithArray:tempMutableArry];
+                    self.devicesArray = [NSArray arrayWithArray:tempDevicesArry];
+                }
+                
+                if (deviceNotConnected) {
+                    self.selectedDevicesArray = [NSArray arrayWithArray:tempSelectedDevicesArray];
                 }
             }
         }
@@ -206,77 +226,65 @@ withFilterContext:(id)filterContext {
 
 #pragma mark - Send file
 
-- (PHAsset *)firstPhotoAsset {
-    for (NSDictionary *dic in _selectedAssetsArr) {
-        NSMutableArray *arr = [dic.allValues firstObject];
-        if (arr.count > 0) {
-            PHAsset *asset = arr.firstObject;
-            [arr removeObject:asset];
-            self.selectedFilesCount -= 1;
-            self.photosCountChanged = YES;
-            return asset;
-        }
-    }
-    
-    return nil;
-}
-
-- (void)addTransferFile:(STFileTransferInfo *)info {
-    if (!info) {
-        return;
-    }
-    
-    if (!_transferFiles) {
-        self.transferFiles = [NSArray arrayWithObject:info];
-    } else {
-        @autoreleasepool {
-            NSMutableArray *arr = [NSMutableArray arrayWithArray:_transferFiles];
-            [arr insertObject:info atIndex:0];
-            self.transferFiles = [NSArray arrayWithArray:arr];
+- (void)sendItems:(NSArray *)items {
+    @synchronized(self) {
+        NSArray *selectedDevices = [NSArray arrayWithArray:self.selectedDevicesArray];
+        for (STDeviceInfo *info in selectedDevices) {
+            [info addSendItems:items];
+            [info startSend];
         }
     }
 }
 
-- (STFileTransferInfo *)insertPhotoToDbWithDeviceInfo:(STDeviceInfo *)deviceInfo fileInfo:(NSDictionary *)fileInfo {
-    STFileTransferInfo *entity = [[STFileTransferInfo alloc] init];
-    entity.identifier = [NSString uniqueID];
-    entity.fileType = STFileTypePicture;
-    entity.transferType = STFileTransferTypeSend;
-    entity.transferStatus = STFileTransferStatusSending;
-    entity.url = [fileInfo stringForKey:ASSET_ID];
-    entity.fileName = [fileInfo stringForKey:FILE_NAME];
-    entity.dateString = [[NSDate date] dateString];
-    entity.fileSize = [fileInfo doubleForKey:FILE_SIZE];
-	
-    entity.deviceName = deviceInfo.deviceName;
-    entity.headImage = deviceInfo.headImage;
+- (NSArray *)insertItemsToDbWithDeviceInfo:(STDeviceInfo *)deviceInfo fileInfos:(NSArray *)fileInfos {
+    
+    NSMutableArray *resultArray = [NSMutableArray arrayWithCapacity:fileInfos.count];
+    for (NSDictionary *fileInfo in fileInfos) {
+        STFileTransferInfo *entity = [[STFileTransferInfo alloc] init];
+        entity.identifier = [NSString uniqueID];
+        entity.transferType = STFileTransferTypeSend;
+        entity.transferStatus = STFileTransferStatusSending;
+        entity.fileName = [fileInfo stringForKey:FILE_NAME];
+        entity.dateString = [[NSDate date] dateString];
+        entity.fileSize = [fileInfo doubleForKey:FILE_SIZE];
+        
+        NSString *fileUrl = [fileInfo stringForKey:FILE_URL];
+        if ([fileUrl containsString:@"/image"]) {
+            entity.fileType = STFileTypePicture;
+            entity.url = [fileInfo stringForKey:ASSET_ID];
+        }
+        
+        entity.deviceName = deviceInfo.deviceName;
+        entity.headImage = deviceInfo.headImage;
+        
+        HTSQLBuffer *sql = [[HTSQLBuffer alloc] init];
+        sql.INSERT(DBFileTransfer._tableName)
+        .SET(DBFileTransfer._identifier, entity.identifier)
+        .SET(DBFileTransfer._deviceName, entity.deviceName)
+        .SET(DBFileTransfer._fileType, @(entity.fileType))
+        .SET(DBFileTransfer._transferType , @(entity.transferType))
+        .SET(DBFileTransfer._transferStatus , @(entity.transferStatus))
+        .SET(DBFileTransfer._fileName, entity.fileName)
+        .SET(DBFileTransfer._fileSize, @(entity.fileSize))
+        .SET(DBFileTransfer._date, entity.dateString)
+        .SET(DBFileTransfer._url, entity.url);
+        
+        if (![database executeUpdate:sql.sql]) {
+            NSLog(@"%@", database.lastError);
+        }
+        
+        [self addTransferFile:entity];
+        [resultArray addObject:entity];
+    }
     
     HTSQLBuffer *sql = [[HTSQLBuffer alloc] init];
-    sql.INSERT(DBFileTransfer._tableName)
-    .SET(DBFileTransfer._identifier, entity.identifier)
-    .SET(DBFileTransfer._deviceName, entity.deviceName)
-    .SET(DBFileTransfer._fileType, @(entity.fileType))
-    .SET(DBFileTransfer._transferType , @(entity.transferType))
-    .SET(DBFileTransfer._transferStatus , @(entity.transferStatus))
-    .SET(DBFileTransfer._fileName, entity.fileName)
-    .SET(DBFileTransfer._fileSize, @(entity.fileSize))
-    .SET(DBFileTransfer._date, entity.dateString)
-    .SET(DBFileTransfer._url, entity.url);
-    
-    if (![database executeUpdate:sql.sql]) {
-        NSLog(@"%@", database.lastError);
-    }
-    
-    sql = [[HTSQLBuffer alloc] init];
     sql.REPLACE(DBDeviceInfo._tableName)
     .SET(DBDeviceInfo._deviceName, deviceInfo.deviceName);
     if (![database executeUpdate:sql.sql]) {
         NSLog(@"%@", database.lastError);
     }
     
-    [self addTransferFile:entity];
-    
-    return entity;
+    return resultArray;
 }
 
 - (void)updateTransferStatus:(STFileTransferStatus)status withIdentifier:(NSString *)identifier {
@@ -312,6 +320,52 @@ withFilterContext:(id)filterContext {
     }
 }
 
+- (void)addTransferFile:(STFileTransferInfo *)info {
+    if (!info) {
+        return;
+    }
+    
+    if (!_transferFiles) {
+        self.transferFiles = [NSArray arrayWithObject:info];
+    } else {
+        @autoreleasepool {
+            NSMutableArray *arr = [NSMutableArray arrayWithArray:_transferFiles];
+            [arr insertObject:info atIndex:0];
+            self.transferFiles = [NSArray arrayWithArray:arr];
+        }
+    }
+}
+/*
+- (PHAsset *)firstPhotoAsset {
+    for (NSDictionary *dic in _selectedAssetsArr) {
+        NSMutableArray *arr = [dic.allValues firstObject];
+        if (arr.count > 0) {
+            PHAsset *asset = arr.firstObject;
+            [arr removeObject:asset];
+            self.selectedFilesCount -= 1;
+            self.photosCountChanged = YES;
+            return asset;
+        }
+    }
+    
+    return nil;
+}
+
+- (PHAsset *)firstVideoAsset {
+    for (NSDictionary *dic in _selectedAssetsArr) {
+        NSMutableArray *arr = [dic.allValues firstObject];
+        if (arr.count > 0) {
+            PHAsset *asset = arr.firstObject;
+            [arr removeObject:asset];
+            self.selectedFilesCount -= 1;
+            self.photosCountChanged = YES;
+            return asset;
+        }
+    }
+    
+    return nil;
+}
+
 - (void)startSendFile {
     // 发送图片
     PHAsset *photoAsset = [self firstPhotoAsset];
@@ -326,6 +380,8 @@ withFilterContext:(id)filterContext {
                 NSString *fileType = [url.absoluteString pathExtension];
                 NSString *fileUrl = [NSString stringWithFormat:@"http://%@:%@/image/origin/%@", address, @(KSERVERPORT), localIdentifier];
                 NSString *thumbnailUrl = [NSString stringWithFormat:@"http://%@:%@/image/thumbnail/%@", address, @(KSERVERPORT), localIdentifier];
+                
+                NSLog(@"file size = %@", @(fileSize));
                 
                 NSDictionary *fileInfo = @{FILE_NAME: fileName,
                                            FILE_TYPE: fileType,
@@ -377,30 +433,21 @@ withFilterContext:(id)filterContext {
         }];
         return;
     }
-}
-
-- (void)removeAllSelectedFiles {
-    _selectedAssetsArr = nil;
-//    _selectedMusicsArr = nil;
-//    _selectedVideoAssetsArr = nil;
-//    _selectedContactsArr = nil;
     
-    self.selectedFilesCount = 0;
-    self.photosCountChanged = YES;
-    self.musicsCountChanged = YES;
-    self.videosCountChanged = YES;
-    self.contactsCountChanged = YES;
+    // 发送视频
+    
 }
+ */
 
 #pragma mark - Receive file
 
 - (void)receiveItems:(NSArray *)items {
-	if (!self.currentReceiveFiles) {
-		self.currentReceiveFiles = [NSMutableArray array];
+	if (!self.prepareToReceiveFiles) {
+		self.prepareToReceiveFiles = [NSMutableArray array];
 	}
 	
-	@synchronized(self.currentReceiveFiles) {
-		[self.currentReceiveFiles addObjectsFromArray:items];
+	@synchronized(self.prepareToReceiveFiles) {
+		[self.prepareToReceiveFiles addObjectsFromArray:items];
 	}
 	
 	[self startDownload];
@@ -408,13 +455,13 @@ withFilterContext:(id)filterContext {
 
 // 开始下载接收的文件
 - (void)startDownload {
-	if (self.currentReceivingInfo || self.currentReceiveFiles.count == 0) {
+	if (self.currentReceivingInfo || self.prepareToReceiveFiles.count == 0) {
 		return;
 	}
 	
-	@synchronized(self.currentReceiveFiles) {
-		self.currentReceivingInfo = [self.currentReceiveFiles firstObject];
-		[self.currentReceiveFiles removeObject:self.currentReceivingInfo];
+	@synchronized(self.prepareToReceiveFiles) {
+		self.currentReceivingInfo = [self.prepareToReceiveFiles firstObject];
+		[self.prepareToReceiveFiles removeObject:self.currentReceivingInfo];
 	}
 	
 	// 写入数据库
@@ -566,7 +613,7 @@ withFilterContext:(id)filterContext {
             
             NSTimeInterval now = [[NSDate date] timeIntervalSince1970];
             NSTimeInterval timeInterval = now - lastTimestamp;
-            if (timeInterval > 0.3f) { // 每隔0.5秒更新一次速度
+            if (timeInterval > 0.3f) { // 每隔0.3秒更新一次速度
                 _currentReceivingInfo.downloadSpeed = 1 / timeInterval * (progress.fractionCompleted - lastProgress) * _currentReceivingInfo.fileSize;
                 lastTimestamp = now;
                 lastProgress = progress.fractionCompleted;
@@ -578,135 +625,6 @@ withFilterContext:(id)filterContext {
     }
 }
 
-#pragma mark - Picture
 
-- (void)addAsset:(PHAsset *)asset inCollection:(NSString *)collection {
-    if (!asset || !collection) {
-        return;
-    }
-    
-    if (!_selectedAssetsArr) {
-        _selectedAssetsArr = [NSMutableArray array];
-    }
-    
-    BOOL collectionExist = NO;
-    for (NSDictionary *dic in _selectedAssetsArr) {
-        if ([dic.allKeys.firstObject isEqualToString:collection]) {
-            NSMutableArray *arr = dic.allValues.firstObject;
-            if (![arr containsObject:asset]) {
-                [arr addObject:asset];
-                self.selectedFilesCount += 1;
-            }
-            collectionExist = YES;
-            break;
-        }
-    }
-    
-    if (!collectionExist) {
-        [_selectedAssetsArr addObject:@{collection: [NSMutableArray arrayWithObject:asset]}];
-        self.selectedFilesCount += 1;
-    }
-    
-}
-
-- (void)addAssets:(NSArray *)assets inCollection:(NSString *)collection {
-    if (!assets || !collection) {
-        return;
-    }
-    
-    if (!_selectedAssetsArr) {
-        _selectedAssetsArr = [NSMutableArray array];
-    }
-    
-    BOOL collectionExist = NO;
-    for (NSDictionary *dic in _selectedAssetsArr) {
-        if ([dic.allKeys.firstObject isEqualToString:collection]) {
-            NSMutableArray *arr = dic.allValues.firstObject;
-            [arr addObjectsFromArray:assets];
-            collectionExist = YES;
-            break;
-        }
-    }
-    
-    if (!collectionExist) {
-        [_selectedAssetsArr addObject:@{collection: [NSMutableArray arrayWithArray:assets]}];
-    }
-    
-    self.selectedFilesCount += assets.count;
-    
-}
-
-- (void)removeAsset:(PHAsset *)asset inCollection:(NSString *)collection {
-    if (!asset || !collection) {
-        return;
-    }
-    
-    for (NSDictionary *dic in _selectedAssetsArr) {
-        if ([dic.allKeys.firstObject isEqualToString:collection]) {
-            NSMutableArray *arr = dic.allValues.firstObject;
-            [arr removeObject:asset];
-            self.selectedFilesCount -= 1;
-            return;
-        }
-    }
-    
-}
-
-- (void)removeAssets:(NSArray *)assets inCollection:(NSString *)collection {
-    if (!assets || !collection) {
-        return;
-    }
-    
-    for (NSDictionary *dic in _selectedAssetsArr) {
-        if ([dic.allKeys.firstObject isEqualToString:collection]) {
-            NSMutableArray *arr = dic.allValues.firstObject;
-            [arr removeObjectsInArray:assets];
-            self.selectedFilesCount -= assets.count;
-            return;
-        }
-    }
-}
-
-- (void)removeAllAssetsInCollection:(NSString *)collection {
-    if (!collection) {
-        return;
-    }
-    
-    for (NSDictionary *dic in _selectedAssetsArr) {
-        if ([dic.allKeys.firstObject isEqualToString:collection]) {
-            NSMutableArray *arr = dic.allValues.firstObject;
-            self.selectedFilesCount -= arr.count;
-            [arr removeAllObjects];
-            return;
-        }
-    }
-}
-
-- (BOOL)isSelectedWithAsset:(PHAsset *)asset inCollection:(NSString *)collection{
-    if (!asset || !collection) {
-        return NO;
-    }
-    
-    for (NSDictionary *dic in _selectedAssetsArr) {
-        if ([dic.allKeys.firstObject isEqualToString:collection]) {
-            NSMutableArray *arr = dic.allValues.firstObject;
-            return [arr containsObject:asset];
-        }
-    }
-    
-    return NO;
-}
-
-- (NSInteger)selectedPhotosCountInCollection:(NSString *)collection {
-    NSInteger count = 0;
-    for (NSDictionary *dic in _selectedAssetsArr) {
-        if ([dic.allKeys.firstObject isEqualToString:collection]) {
-            count += [dic.allValues.firstObject count];
-            break;
-        }
-    }
-    
-    return count;
-}
 
 @end

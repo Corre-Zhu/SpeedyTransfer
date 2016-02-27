@@ -84,7 +84,7 @@
         failedLabel.textColor = RGBFromHex(0xff3b30);
         failedLabel.font = [UIFont systemFontOfSize:14.0f];
         failedLabel.textAlignment = NSTextAlignmentRight;
-        failedLabel.text = NSLocalizedString(@"发送失败", nil);
+        failedLabel.text = NSLocalizedString(@"传输失败", nil);
         [self.contentView addSubview:failedLabel];
         failedLabel.hidden = YES;
         
@@ -163,13 +163,16 @@
         
     }
     
-    if (_transferInfo.transferStatus == STFileTransferStatusSending) {
+    if (_transferInfo.transferStatus == STFileTransferStatusSending ||
+        _transferInfo.transferStatus == STFileTransferStatusReceiving) {
         succeedImageView.hidden = YES;
         failedLabel.hidden = YES;
-    } else if (_transferInfo.transferStatus == STFileTransferStatusSendFailed) {
+    } else if (_transferInfo.transferStatus == STFileTransferStatusSendFailed ||
+               _transferInfo.transferStatus == STFileTransferStatusReceiveFailed) {
         succeedImageView.hidden = YES;
         failedLabel.hidden = NO;
-    } else if (_transferInfo.transferStatus == STFileTransferStatusSent) {
+    } else if (_transferInfo.transferStatus == STFileTransferStatusSent ||
+               _transferInfo.transferStatus == STFileTransferStatusReceived) {
         succeedImageView.hidden = NO;
         failedLabel.hidden = YES;
     }

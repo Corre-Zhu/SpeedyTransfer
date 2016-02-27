@@ -38,6 +38,8 @@
 #define HeadImage_ @"HeadImage_"
 #define CustomHeadImage @"CustomHeadImage"
 
+#define DEVICE_NAME @"device_name"
+
 #define FILE_NAME @"file_name"
 #define FILE_TYPE @"file_type"
 #define FILE_SIZE @"file_size"
@@ -45,6 +47,11 @@
 #define ICON_URL @"icon_url"
 #define ASSET_ID @"asset_id"
 
+#define REQUEST_PATH @"request_path" 
+#define TOTAL_BYTES_WRITTEN @"total_bytes_written"
+#define START_TIMESTAMP @"start_timestamp"
+
+#define KFileWrittenProgressNotification @"FileWrittenProgressNotification"
 
 typedef NS_ENUM(NSInteger, MCPeerConnnectStatus) {
 	MCPeerConnnectStatusNormal          = 0,

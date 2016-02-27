@@ -16,6 +16,8 @@
 #import <Photos/Photos.h>
 #import "STSendHeaderView.h"
 #import "STReceiveHeaderView.h"
+#import "STWifiNotConnectedPopupView2.h"
+#import "MBProgressHUD.h"
 
 static NSString *sendHeaderIdentifier = @"sendHeaderIdentifier";
 static NSString *receiveHeaderIdentifier = @"receiveHeaderIdentifier";
@@ -23,6 +25,8 @@ static NSString *cellIdentifier = @"CellIdentifier";
 
 @interface STFileTransferViewController ()<UITableViewDataSource,UITableViewDelegate>
 {
+    STWifiNotConnectedPopupView2 *popupView;
+
     UIButton *continueSendButton;
     STFileTransferInfo *currentTransferInfo;
     NSTimeInterval lastTimeInterval;
@@ -37,18 +41,31 @@ static NSString *cellIdentifier = @"CellIdentifier";
 
 - (void)dealloc {
     [_model removeObserver:self forKeyPath:@"transferFiles"];
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (void)leftBarButtonItemClick {
-    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"不再发送其他文件，确认退出？", nil) message:nil preferredStyle: UIAlertControllerStyleAlert];
-    UIAlertAction *action1 = [UIAlertAction actionWithTitle:NSLocalizedString(@"确认", nil) style:UIAlertActionStyleDestructive handler:^(UIAlertAction * _Nonnull action) {
-        [self.navigationController popToRootViewControllerAnimated:YES];
-    }];
-    [alertController addAction:action1];
-    
-    UIAlertAction *action3 = [UIAlertAction actionWithTitle:NSLocalizedString(@"取消", nil) style:UIAlertActionStyleCancel handler:NULL];
-    [alertController addAction:action3];
-    [self presentViewController:alertController animated:YES completion:NULL];
+    if (self.isFromReceive) {
+        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"不再接收其他文件，确认退出？", nil) message:nil preferredStyle: UIAlertControllerStyleAlert];
+        UIAlertAction *action1 = [UIAlertAction actionWithTitle:NSLocalizedString(@"确认", nil) style:UIAlertActionStyleDestructive handler:^(UIAlertAction * _Nonnull action) {
+            [self.navigationController popToRootViewControllerAnimated:YES];
+        }];
+        [alertController addAction:action1];
+        
+        UIAlertAction *action3 = [UIAlertAction actionWithTitle:NSLocalizedString(@"取消", nil) style:UIAlertActionStyleCancel handler:NULL];
+        [alertController addAction:action3];
+        [self presentViewController:alertController animated:YES completion:NULL];
+    } else {
+        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"不再发送其他文件，确认退出？", nil) message:nil preferredStyle: UIAlertControllerStyleAlert];
+        UIAlertAction *action1 = [UIAlertAction actionWithTitle:NSLocalizedString(@"确认", nil) style:UIAlertActionStyleDestructive handler:^(UIAlertAction * _Nonnull action) {
+            [self.navigationController popToRootViewControllerAnimated:YES];
+        }];
+        [alertController addAction:action1];
+        
+        UIAlertAction *action3 = [UIAlertAction actionWithTitle:NSLocalizedString(@"取消", nil) style:UIAlertActionStyleCancel handler:NULL];
+        [alertController addAction:action3];
+        [self presentViewController:alertController animated:YES completion:NULL];
+    }
 }
 
 - (void)viewDidLoad {
@@ -80,8 +97,39 @@ static NSString *cellIdentifier = @"CellIdentifier";
     [continueSendButton addTarget:self action:@selector(continueSendButtonClick) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:continueSendButton];
     
+    if (self.isFromReceive) {
+        if ([ZZReachability shareInstance].currentReachabilityStatus != ReachableViaWiFi) {
+            if (!popupView) {
+                popupView = [[STWifiNotConnectedPopupView2 alloc] init];
+            }
+            [popupView showInView:self.navigationController.view];
+            
+             [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reachabilityStatusChange:) name:kHTReachabilityChangedNotification object:nil];
+        }
+    } else {
+        // 对方退出共享网络通知
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(deviceNotConnectedNotification:) name:KDeviceNotConnectedNotification object:nil];
+    }
+    
+    
     _model = [STFileTransferModel shareInstant];
     [_model addObserver:self forKeyPath:@"transferFiles" options:NSKeyValueObservingOptionNew context:NULL];
+
+}
+
+- (void)reachabilityStatusChange:(NSNotification *)notification {
+    NetworkStatus status = [ZZReachability shareInstance].currentReachabilityStatus;
+    switch (status) {
+        case ReachableViaWiFi: {
+            if (popupView) {
+                [popupView removeFromSuperview];
+                popupView = nil;
+            }
+        }
+            break;
+        default:
+            return;
+    }
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSString *,id> *)change context:(void *)context {
@@ -91,6 +139,17 @@ static NSString *cellIdentifier = @"CellIdentifier";
             [self.tableView reloadData];
         });
     }
+}
+
+- (void)deviceNotConnectedNotification:(NSNotification *)notification {
+    NSString *deviceName = [notification.userInfo stringForKey:DEVICE_NAME];
+    MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
+    HUD.mode = MBProgressHUDModeText;
+    HUD.labelText = [NSString stringWithFormat:@"%@%@", deviceName, NSLocalizedString(@"已退出共享网络", nil)];
+    HUD.removeFromSuperViewOnHide = YES;
+    [self.view addSubview:HUD];
+    [HUD show:YES];
+    [HUD hide:YES afterDelay:2.5f];
 }
 
 - (void)viewDidAppear:(BOOL)animated {

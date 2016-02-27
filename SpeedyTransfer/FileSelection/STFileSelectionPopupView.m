@@ -255,7 +255,7 @@ static NSString *PopupCellIdentifier = @"PopupCellIdentifier";
         return;
     }
     
-    [[STFileTransferModel shareInstant] removeAllSelectedFiles];
+    [self.tabViewController removeAllSelectedFiles];
     _dataSource = nil;
     [self.tableView reloadData];
     totalSize = 0.0f;
@@ -279,21 +279,21 @@ static NSString *PopupCellIdentifier = @"PopupCellIdentifier";
         NSMutableArray *mutableArr = _dataSource[indexPath.section];
         id object = [mutableArr objectAtIndex:indexPath.row];
         [mutableArr removeObject:object];
-        [STFileTransferModel shareInstant].selectedFilesCount -= 1;
+        self.tabViewController.selectedFilesCount -= 1;
         if ([object isKindOfClass:[PHAsset class]]) {
             PHAsset *asset = object;
             if (asset.mediaType == PHAssetMediaTypeImage) {
-                [STFileTransferModel shareInstant].photosCountChanged = YES;
+                [self.tabViewController reloadAssetsTableView];
             } else {
-                [STFileTransferModel shareInstant].videosCountChanged = YES;
+                [self.tabViewController reloadVideosTableView];
             }
             [self removeAsset:asset];
         } else if ([object isKindOfClass:[STMusicInfo class]]) {
-            [STFileTransferModel shareInstant].musicsCountChanged = YES;
+            [self.tabViewController reloadMusicsTableView];
             totalSize -= ((STMusicInfo *)object).fileSize;
             [self reloadTitle];
         } else if ([object isKindOfClass:[STContactInfo class]]) {
-            [STFileTransferModel shareInstant].contactsCountChanged = YES;
+            [self.tabViewController reloadContactsTableView];
             totalSize -= ((STContactInfo *)object).size;
             [self reloadTitle];
         }
@@ -321,8 +321,6 @@ static NSString *PopupCellIdentifier = @"PopupCellIdentifier";
         PHAsset *asset = object;
         NSInteger currentTag = cell.tag + 1;
         cell.tag = currentTag;
-        
-        NSLog(@"asset iden: %@", asset.localIdentifier);
 		
 		@autoreleasepool {
 			[self.imageManager requestImageDataForAsset:asset options:nil resultHandler:^(NSData * _Nullable imageData, NSString * _Nullable dataUTI, UIImageOrientation orientation, NSDictionary * _Nullable info) {

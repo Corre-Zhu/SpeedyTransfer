@@ -28,4 +28,10 @@ HT_AS_SINGLETON(STDeviceInfo, shareInstant)
 
 - (BOOL)setup;
 
+@property (nonatomic, strong) NSMutableArray *prepareToSendFiles; // 准备要发送的文件
+@property (nonatomic, strong) NSMutableArray *sendingTransferInfos; // 正在发送的文件
+
+- (void)addSendItems:(NSArray *)files; // 添加准备发送的文件
+- (void)startSend; // 开始向这个设备发送文件
+
 @end
