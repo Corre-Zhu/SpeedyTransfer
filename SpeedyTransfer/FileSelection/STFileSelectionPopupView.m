@@ -279,7 +279,7 @@ static NSString *PopupCellIdentifier = @"PopupCellIdentifier";
         NSMutableArray *mutableArr = _dataSource[indexPath.section];
         id object = [mutableArr objectAtIndex:indexPath.row];
         [mutableArr removeObject:object];
-        self.tabViewController.selectedFilesCount -= 1;
+        [self.tabViewController selectedFilesCountChanged];
         if ([object isKindOfClass:[PHAsset class]]) {
             PHAsset *asset = object;
             if (asset.mediaType == PHAssetMediaTypeImage) {

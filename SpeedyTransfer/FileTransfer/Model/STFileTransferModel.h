@@ -45,6 +45,5 @@ HT_AS_SINGLETON(STFileTransferModel, shareInstant);
 - (void)updateAssetIdentifier:(NSString *)assetIdentifier withIdentifier:(NSString *)identifier;
 - (void)addTransferFile:(STFileTransferInfo *)info;
 - (void)sendItems:(NSArray *)items;
-
-
+- (void)writeToSavedPhotosAlbum:(NSString *)path isImage:(BOOL)isImage;
 @end

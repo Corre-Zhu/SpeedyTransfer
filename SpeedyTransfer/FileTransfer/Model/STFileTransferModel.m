@@ -49,6 +49,15 @@ HT_DEF_SINGLETON(STFileTransferModel, shareInstant);
         database = [[HTFMDatabase alloc] initWithPath:defaultDbPath];
         [database open];
         
+        // 发送中的或者接收中的状态置为传输失败
+        HTSQLBuffer *sqlBuffer = [[HTSQLBuffer alloc] init];
+        sqlBuffer.UPDATE(DBFileTransfer._tableName).SET(DBFileTransfer._transferStatus, @(STFileTransferStatusSendFailed)).WHERE(SQLFieldEqual(DBFileTransfer._transferStatus, @(STFileTransferStatusSending)));
+        [database executeUpdate:sqlBuffer.sql];
+        
+        sqlBuffer = [[HTSQLBuffer alloc] init];
+        sqlBuffer.UPDATE(DBFileTransfer._tableName).SET(DBFileTransfer._transferStatus, @(STFileTransferStatusReceiveFailed)).WHERE(SQLFieldEqual(DBFileTransfer._transferStatus, @(STFileTransferStatusReceiving)));
+        [database executeUpdate:sqlBuffer.sql];
+        
         NSString *sql = [NSString stringWithFormat:@"SELECT * FROM %@ LEFT JOIN %@ ON %@.%@=%@.%@ ORDER BY %@ DESC", DBFileTransfer._tableName, DBDeviceInfo._tableName, DBFileTransfer._tableName, DBFileTransfer._deviceName, DBDeviceInfo._tableName, DBDeviceInfo._deviceName, DBFileTransfer._id];
         FMResultSet *result = [database executeQuery:sql];
         if (result) {
@@ -201,9 +210,12 @@ withFilterContext:(id)filterContext {
                     
                     BOOL find = NO;
                     NSArray *tempArr = [NSArray arrayWithArray:self.devicesArray];
-                    for (STDeviceInfo *userInfo in tempArr) {
-                        if ([userInfo.ip isEqualToString:host]) {
-                            userInfo.lastUpdateTimestamp = [[NSDate date] timeIntervalSince1970];
+                    for (STDeviceInfo *deviceInfo in tempArr) {
+                        if ([deviceInfo.ip isEqualToString:host]) {
+                            if (deviceInfo.deviceName.length == 0) {
+                                [deviceInfo setup];
+                            }
+                            deviceInfo.lastUpdateTimestamp = [[NSDate date] timeIntervalSince1970];
                             find = YES;
                             break;
                         }
@@ -214,8 +226,10 @@ withFilterContext:(id)filterContext {
                         userInfo.ip = host;
                         userInfo.port = port;
                         userInfo.lastUpdateTimestamp = [[NSDate date] timeIntervalSince1970];
-                        [userInfo setup];
-                        self.devicesArray = [tempArr arrayByAddingObject:userInfo];
+                        if ([userInfo setup]) {
+                            self.devicesArray = [tempArr arrayByAddingObject:userInfo];
+                        }
+                        
                     }
                 }
             }
@@ -252,6 +266,9 @@ withFilterContext:(id)filterContext {
         if ([fileUrl containsString:@"/image"]) {
             entity.fileType = STFileTypePicture;
             entity.url = [fileInfo stringForKey:ASSET_ID];
+        } else if ([fileUrl containsString:@"/contact"]) {
+            entity.fileType = STFileTypeContact;
+            entity.url = [fileInfo stringForKey:RECORD_ID];
         }
         
         entity.deviceName = deviceInfo.deviceName;
@@ -335,109 +352,6 @@ withFilterContext:(id)filterContext {
         }
     }
 }
-/*
-- (PHAsset *)firstPhotoAsset {
-    for (NSDictionary *dic in _selectedAssetsArr) {
-        NSMutableArray *arr = [dic.allValues firstObject];
-        if (arr.count > 0) {
-            PHAsset *asset = arr.firstObject;
-            [arr removeObject:asset];
-            self.selectedFilesCount -= 1;
-            self.photosCountChanged = YES;
-            return asset;
-        }
-    }
-    
-    return nil;
-}
-
-- (PHAsset *)firstVideoAsset {
-    for (NSDictionary *dic in _selectedAssetsArr) {
-        NSMutableArray *arr = [dic.allValues firstObject];
-        if (arr.count > 0) {
-            PHAsset *asset = arr.firstObject;
-            [arr removeObject:asset];
-            self.selectedFilesCount -= 1;
-            self.photosCountChanged = YES;
-            return asset;
-        }
-    }
-    
-    return nil;
-}
-
-- (void)startSendFile {
-    // 发送图片
-    PHAsset *photoAsset = [self firstPhotoAsset];
-    if (photoAsset) {
-        NSString *localIdentifier = photoAsset.localIdentifier;
-        [[PHImageManager defaultManager] requestImageDataForAsset:photoAsset options:nil resultHandler:^(NSData * _Nullable imageData, NSString * _Nullable dataUTI, UIImageOrientation orientation, NSDictionary * _Nullable info) {
-            NSURL *url = [info objectForKey:@"PHImageFileURLKey"];
-            NSString *address = GCDWebServerGetPrimaryIPAddress(NO);
-            if (url.absoluteString.length > 0 && imageData.length > 0 && address.length > 0) {
-                NSString *fileName = [url.absoluteString lastPathComponent];
-                NSUInteger fileSize = imageData.length;
-                NSString *fileType = [url.absoluteString pathExtension];
-                NSString *fileUrl = [NSString stringWithFormat:@"http://%@:%@/image/origin/%@", address, @(KSERVERPORT), localIdentifier];
-                NSString *thumbnailUrl = [NSString stringWithFormat:@"http://%@:%@/image/thumbnail/%@", address, @(KSERVERPORT), localIdentifier];
-                
-                NSLog(@"file size = %@", @(fileSize));
-                
-                NSDictionary *fileInfo = @{FILE_NAME: fileName,
-                                           FILE_TYPE: fileType,
-                                           FILE_SIZE: @(fileSize),
-                                           FILE_URL: fileUrl,
-                                           ICON_URL: thumbnailUrl,
-                                           ASSET_ID: localIdentifier};
-                NSString *itemsString = [@[fileInfo] jsonString];
-                
-                NSArray *tempDevices = [NSArray arrayWithArray:self.selectedDevicesArray];
-                for (STDeviceInfo *info in tempDevices) {
-                    if (info.recvUrl.length > 0) {
-                        // 写数据库
-                        STFileTransferInfo *transferInfo = [self insertPhotoToDbWithDeviceInfo:info fileInfo:fileInfo];
-                        self.curentTransferFiles = [NSArray arrayWithObject:transferInfo];
-                        
-                        NSData *postData = [itemsString dataUsingEncoding:NSUTF8StringEncoding];
-                        NSString *postLength = @(postData.length).stringValue;
-
-                        NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:info.recvUrl]];
-                        request.HTTPMethod = @"POST";
-                        [request setValue:postLength forHTTPHeaderField:@"Content-Length"];
-                        [request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];
-                        [request setHTTPBody:postData];
-                        
-                        NSHTTPURLResponse *response = nil;
-                        NSError *error = nil;
-                        [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&error];
-                        if (response.statusCode != 200) {
-                            transferInfo.transferStatus = STFileTransferStatusSendFailed;
-                            [self updateTransferStatus:STFileTransferStatusSendFailed withIdentifier:transferInfo.identifier];
-                        }
-                    }
-                   
-                }
-                
-                
-            } else {
-                [self startSendFile];
-            }
-
-            
-            
-            
-//            NSString *path = [[ZZPath picturePath] stringByAppendingPathComponent:[url.absoluteString lastPathComponent]];
-//            [imageData writeToFile:path atomically:YES];
-           
-            
-        }];
-        return;
-    }
-    
-    // 发送视频
-    
-}
- */
 
 #pragma mark - Receive file
 
@@ -490,24 +404,26 @@ withFilterContext:(id)filterContext {
     NSURLSessionConfiguration *configuration = [NSURLSessionConfiguration defaultSessionConfiguration];
     AFURLSessionManager *manager = [[AFURLSessionManager alloc] initWithSessionConfiguration:configuration];
     
-    NSURL *thumbURL = [NSURL URLWithString:_currentReceivingInfo.thumbnailUrl];
-    NSURLRequest *thumbRequest = [NSURLRequest requestWithURL:thumbURL];
-    
-    NSURLSessionDownloadTask *thumbDownloadTask = [manager downloadTaskWithRequest:thumbRequest progress:nil destination:^NSURL *(NSURL *targetPath, NSURLResponse *response) {
-        NSString *path = [[ZZPath picturePath] stringByAppendingPathComponent:[NSString stringWithFormat:@"%@_thumb", _currentReceivingInfo.identifier]];
-        return [NSURL fileURLWithPath:path];
-    } completionHandler:^(NSURLResponse *response, NSURL *filePath, NSError *error) {
-        NSHTTPURLResponse *httpURLResponse = nil;
-        if ([response isKindOfClass:[NSHTTPURLResponse class]]) {
-            httpURLResponse = (NSHTTPURLResponse *)response;
-        }
-        if (error || httpURLResponse.statusCode != 200) {
-            NSLog(@"thumbnail download failed");
-        } else {
-            _currentReceivingInfo.thumbnailProgress = 1.0f;
-        }
-    }];
-    [thumbDownloadTask resume];
+    if (_currentReceivingInfo.thumbnailUrl.length > 0) {
+        NSURL *thumbURL = [NSURL URLWithString:_currentReceivingInfo.thumbnailUrl];
+        NSURLRequest *thumbRequest = [NSURLRequest requestWithURL:thumbURL];
+        
+        NSURLSessionDownloadTask *thumbDownloadTask = [manager downloadTaskWithRequest:thumbRequest progress:nil destination:^NSURL *(NSURL *targetPath, NSURLResponse *response) {
+            NSString *path = [[ZZPath downloadPath] stringByAppendingPathComponent:[NSString stringWithFormat:@"%@_thumb", _currentReceivingInfo.identifier]];
+            return [NSURL fileURLWithPath:path];
+        } completionHandler:^(NSURLResponse *response, NSURL *filePath, NSError *error) {
+            NSHTTPURLResponse *httpURLResponse = nil;
+            if ([response isKindOfClass:[NSHTTPURLResponse class]]) {
+                httpURLResponse = (NSHTTPURLResponse *)response;
+            }
+            if (error || httpURLResponse.statusCode != 200) {
+                NSLog(@"thumbnail download failed");
+            } else {
+                _currentReceivingInfo.thumbnailProgress = 1.0f;
+            }
+        }];
+        [thumbDownloadTask resume];
+    }
     
     // 下载原图
     NSURL *originURL = [NSURL URLWithString:_currentReceivingInfo.url];
@@ -519,10 +435,10 @@ withFilterContext:(id)filterContext {
     }
     
     if (pathExtension.length == 0) {
-        pathExtension = @"jpg";
+        pathExtension = @"unknow";
     }
     
-    NSString *downloadPath = [[ZZPath picturePath] stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.%@", _currentReceivingInfo.identifier, pathExtension]];
+    NSString *downloadPath = [[ZZPath downloadPath] stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.%@", _currentReceivingInfo.identifier, pathExtension]];
     
     __block NSProgress *progress = nil;
     NSURLSessionDownloadTask *origindownloadTask = [manager downloadTaskWithRequest:originRequest progress:^(NSProgress * _Nonnull downloadProgress) {
@@ -549,10 +465,15 @@ withFilterContext:(id)filterContext {
             float downloadSpeed = 1 / (now - downloadStartTimestamp) * _currentReceivingInfo.fileSize;
             [self updateDownloadSpeed:downloadSpeed withIdentifier:_currentReceivingInfo.identifier];
             _currentReceivingInfo.downloadSpeed = downloadSpeed;
+            _currentReceivingInfo.progress = 1.0f;
             _currentReceivingInfo.transferStatus = STFileTransferStatusReceived;
             
-            if ([[NSUserDefaults standardUserDefaults] boolForKey:AutoImportPhoto]) {
-                [self writeToSavedPhotosAlbum:downloadPath];
+            if (_currentReceivingInfo.fileType == STFileTypePicture && [[NSUserDefaults standardUserDefaults] boolForKey:AutoImportPhoto]) {
+                // 导入图片到系统相册
+                [self writeToSavedPhotosAlbum:downloadPath isImage:YES];
+            } else if (_currentReceivingInfo.fileType == STFileTypeVideo && [[NSUserDefaults standardUserDefaults] boolForKey:AutoImportVideo]) {
+                // 导入视频到系统相册
+                [self writeToSavedPhotosAlbum:downloadPath isImage:NO];
             } else {
                 _currentReceivingInfo = nil;
                 [self startDownload];
@@ -567,7 +488,7 @@ withFilterContext:(id)filterContext {
     lastProgress = 0.0f;
 }
 
-- (void)writeToSavedPhotosAlbum:(NSString *)path {
+- (void)writeToSavedPhotosAlbum:(NSString *)path isImage:(BOOL)isImage {
     __block PHFetchResult *photosAsset;
     __block PHObjectPlaceholder *placeholder;
     NSURL *fileUrl = [NSURL fileURLWithPath:path];
@@ -575,7 +496,13 @@ withFilterContext:(id)filterContext {
     dispatch_block_t block = ^ {
         // Save to the album
         [[PHPhotoLibrary sharedPhotoLibrary] performChanges:^{
-            PHAssetChangeRequest *assetRequest = [PHAssetChangeRequest creationRequestForAssetFromImageAtFileURL:fileUrl];
+            PHAssetChangeRequest *assetRequest = nil;
+            if (isImage) {
+                assetRequest = [PHAssetChangeRequest creationRequestForAssetFromImageAtFileURL:fileUrl];
+            } else {
+                assetRequest = [PHAssetChangeRequest creationRequestForAssetFromVideoAtFileURL:fileUrl];
+            }
+            
             placeholder = [assetRequest placeholderForCreatedAsset];
             photosAsset = [PHAsset fetchAssetsInAssetCollection:toSaveCollection options:nil];
             PHAssetCollectionChangeRequest *albumChangeRequest = [PHAssetCollectionChangeRequest changeRequestForAssetCollection:toSaveCollection

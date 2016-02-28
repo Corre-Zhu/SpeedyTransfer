@@ -11,6 +11,7 @@
 
 @interface STFileReceiveModel ()
 {
+    NSTimer *broadcastTimer;
     GCDAsyncUdpSocket *udpSocket;
 }
 
@@ -30,6 +31,10 @@ HT_DEF_SINGLETON(STFileReceiveModel, shareInstant);
         if ([udpSocket enableBroadcast:YES error:&error] == false) {
             NSLog(@"Failed to enable broadcast, Reason : %@",[error userInfo]);
         }
+        
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didEnterBackgroundNotification) name:UIApplicationDidEnterBackgroundNotification object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(willEnterForegroundNotification) name:UIApplicationWillEnterForegroundNotification object:nil];
+
     }
     
     return self;
@@ -45,7 +50,21 @@ HT_DEF_SINGLETON(STFileReceiveModel, shareInstant);
 }
 
 - (void)startBroadcast {
-    [NSTimer scheduledTimerWithTimeInterval:1.0f target:self selector:@selector(doBroadcast) userInfo:nil repeats:YES];
+    broadcastTimer = [NSTimer scheduledTimerWithTimeInterval:1.0f target:self selector:@selector(doBroadcast) userInfo:nil repeats:YES];
+}
+
+- (void)invalidTimer {
+    [broadcastTimer invalidate];
+    broadcastTimer = nil;
+}
+
+- (void)didEnterBackgroundNotification {
+    [self invalidTimer];
+}
+
+- (void)willEnterForegroundNotification {
+    [self invalidTimer];
+    [self startBroadcast];
 }
 
 @end

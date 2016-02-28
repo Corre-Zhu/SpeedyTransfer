@@ -11,7 +11,7 @@
 
 typedef void(^GetContactsCompletionHandler)(NSArray *array);
 
-@interface STContactInfo : NSObject
+@interface STContactInfo : NSObject<NSCopying>
 
 @property (nonatomic, assign) NSInteger recordId;
 @property (nonatomic, strong) NSString *name;

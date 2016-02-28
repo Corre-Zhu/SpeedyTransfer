@@ -54,6 +54,7 @@ static NSString *headerIdentifier = @"ContactsHeaderView";
     NSInteger section = sender.tag;
     NSDictionary *dic = [_musicInfoModels objectAtIndex:section];
     if (!sender.selected) {
+        [self.fileSelectionTabController removeMusics:dic.allValues.firstObject];
         [self.fileSelectionTabController addMusics:dic.allValues.firstObject];
         sender.selected = YES;
     } else {

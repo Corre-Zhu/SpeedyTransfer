@@ -32,17 +32,30 @@
     return headImagePath;
 }
 
-+ (NSString *)picturePath {
-    static NSString *picturePath;
-    if (!picturePath) {
-        picturePath = [[ZZPath documentPath] stringByAppendingPathComponent:@"Picture"];
++ (NSString *)downloadPath {
+    static NSString *downloadPath;
+    if (!downloadPath) {
+        downloadPath = [[ZZPath documentPath] stringByAppendingPathComponent:@"Download"];
     }
     
-    if (![[NSFileManager defaultManager] fileExistsAtPath:picturePath]) {
-        [[NSFileManager defaultManager] createDirectoryAtPath:picturePath withIntermediateDirectories:YES attributes:NULL error:NULL];
+    if (![[NSFileManager defaultManager] fileExistsAtPath:downloadPath]) {
+        [[NSFileManager defaultManager] createDirectoryAtPath:downloadPath withIntermediateDirectories:YES attributes:NULL error:NULL];
     }
     
-    return picturePath;
+    return downloadPath;
+}
+
++ (NSString *)tmpUploadPath {
+    static NSString *uploadPath;
+    if (!uploadPath) {
+        uploadPath = [NSTemporaryDirectory() stringByAppendingPathComponent:@"Upload"];
+    }
+    
+    if (![[NSFileManager defaultManager] fileExistsAtPath:uploadPath]) {
+        [[NSFileManager defaultManager] createDirectoryAtPath:uploadPath withIntermediateDirectories:YES attributes:NULL error:NULL];
+    }
+    
+    return uploadPath;
 }
 
 @end

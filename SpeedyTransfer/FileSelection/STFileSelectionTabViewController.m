@@ -70,8 +70,27 @@
 }
 
 - (void)configToolView {
-    if (_selectedFilesCount > 0) {
-        [transferButton setTitle:[NSString stringWithFormat:@"%@ (%@)", NSLocalizedString(@"全部传输", nil), @(_selectedFilesCount)] forState:UIControlStateNormal];
+    NSInteger count = 0;
+    for (NSDictionary *dic in self.selectedAssetsArr) {
+        if ([dic.allValues.firstObject count] > 0) {
+            count += [dic.allValues.firstObject count];
+        }
+    }
+    
+    if (self.selectedMusicsArr.count > 0) {
+        count += self.selectedMusicsArr.count;
+    }
+    
+    if (self.selectedVideoAssetsArr.count > 0) {
+        count += self.selectedVideoAssetsArr.count;
+    }
+    
+    if (self.selectedContactsArr.count > 0) {
+        count += self.selectedContactsArr.count;
+    }
+    
+    if (count > 0) {
+        [transferButton setTitle:[NSString stringWithFormat:@"%@ (%@)", NSLocalizedString(@"全部传输", nil), @(count)] forState:UIControlStateNormal];
         toolView.hidden = NO;
     } else {
         [transferButton setTitle:NSLocalizedString(@"全部传输", nil) forState:UIControlStateNormal];
@@ -83,30 +102,6 @@
     toolView.width = 93.0f + width;
     toolView.left = (IPHONE_WIDTH - toolView.width) / 2.0f;
     transferButton.width = width;
-}
-
-- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSString *,id> *)change context:(void *)context {
-    if ([keyPath isEqualToString:@"selectedFilesCount"]) {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [self configToolView];
-        });
-    } else if ([keyPath isEqualToString:@"photosCountChanged"]) {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [self reloadAssetsTableView];
-        });
-    } else if ([keyPath isEqualToString:@"musicsCountChanged"]) {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [self reloadMusicsTableView];
-        });
-    } else if ([keyPath isEqualToString:@"videosCountChanged"]) {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [self reloadVideosTableView];
-        });
-    } else if ([keyPath isEqualToString:@"contactsCountChanged"]) {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [self reloadContactsTableView];
-        });
-    }
 }
 
 - (void)photoLibraryDidChange {
@@ -333,8 +328,7 @@
 
 #pragma mark - All files handle
 
-- (void)setSelectedFilesCount:(NSInteger)selectedFilesCount {
-    _selectedFilesCount = selectedFilesCount;
+- (void)selectedFilesCountChanged {
     [self configToolView];
 }
 
@@ -373,7 +367,7 @@
     [self reloadVideosTableView];
     [self reloadContactsTableView];
     
-    self.selectedFilesCount = 0;
+    [self selectedFilesCountChanged];
 }
 
 #pragma mark - Picture
@@ -393,7 +387,6 @@
             NSMutableArray *arr = dic.allValues.firstObject;
             if (![arr containsObject:asset]) {
                 [arr addObject:asset];
-                self.selectedFilesCount += 1;
             }
             collectionExist = YES;
             break;
@@ -402,8 +395,9 @@
     
     if (!collectionExist) {
         [_selectedAssetsArr addObject:@{collection: [NSMutableArray arrayWithObject:asset]}];
-        self.selectedFilesCount += 1;
     }
+    
+    [self selectedFilesCountChanged];
     
 }
 
@@ -430,8 +424,8 @@
         [_selectedAssetsArr addObject:@{collection: [NSMutableArray arrayWithArray:assets]}];
     }
     
-    self.selectedFilesCount += assets.count;
-    
+    [self selectedFilesCountChanged];
+
 }
 
 - (void)removeAsset:(PHAsset *)asset inCollection:(NSString *)collection {
@@ -443,11 +437,12 @@
         if ([dic.allKeys.firstObject isEqualToString:collection]) {
             NSMutableArray *arr = dic.allValues.firstObject;
             [arr removeObject:asset];
-            self.selectedFilesCount -= 1;
             return;
         }
     }
     
+    [self selectedFilesCountChanged];
+
 }
 
 - (void)removeAssets:(NSArray *)assets inCollection:(NSString *)collection {
@@ -459,10 +454,12 @@
         if ([dic.allKeys.firstObject isEqualToString:collection]) {
             NSMutableArray *arr = dic.allValues.firstObject;
             [arr removeObjectsInArray:assets];
-            self.selectedFilesCount -= assets.count;
             return;
         }
     }
+    
+    [self selectedFilesCountChanged];
+
 }
 
 - (void)removeAllAssetsInCollection:(NSString *)collection {
@@ -473,11 +470,13 @@
     for (NSDictionary *dic in _selectedAssetsArr) {
         if ([dic.allKeys.firstObject isEqualToString:collection]) {
             NSMutableArray *arr = dic.allValues.firstObject;
-            self.selectedFilesCount -= arr.count;
             [arr removeAllObjects];
             return;
         }
     }
+    
+    [self selectedFilesCountChanged];
+
 }
 
 - (BOOL)isSelectedWithAsset:(PHAsset *)asset inCollection:(NSString *)collection{
@@ -520,8 +519,10 @@
     
     if (![_selectedVideoAssetsArr containsObject:asset]) {
         [_selectedVideoAssetsArr addObject:asset];
-        self.selectedFilesCount += 1;
     }
+    
+    [self selectedFilesCountChanged];
+
 }
 
 - (void)removeVideoAsset:(PHAsset *)asset {
@@ -531,8 +532,9 @@
     
     if ([_selectedVideoAssetsArr containsObject:asset]) {
         [_selectedVideoAssetsArr removeObject:asset];
-        self.selectedFilesCount -= 1;
     }
+    
+    [self selectedFilesCountChanged];
     
 }
 
@@ -555,7 +557,7 @@
         [_selectedMusicsArr addObject:music];
     }
     
-    [self configToolView];
+    [self selectedFilesCountChanged];
 }
 
 - (void)addMusics:(NSArray *)musics {
@@ -569,7 +571,7 @@
     
     [_selectedMusicsArr addObjectsFromArray:musics];
     
-    [self configToolView];
+    [self selectedFilesCountChanged];
 }
 
 - (void)removeMusic:(STMusicInfo *)music {
@@ -581,7 +583,7 @@
         [_selectedMusicsArr removeObject:music];
     }
     
-    [self configToolView];
+    [self selectedFilesCountChanged];
 }
 
 - (void)removeMusics:(NSArray *)musics {
@@ -591,7 +593,7 @@
     
     [_selectedMusicsArr removeObjectsInArray:musics];
     
-    [self configToolView];
+    [self selectedFilesCountChanged];
 }
 
 - (BOOL)isSelectedWithMusic:(STMusicInfo *)music {
@@ -608,6 +610,8 @@
     return YES;
 }
 
+#pragma mark - Contacts
+
 - (void)addContact:(STContactInfo *)contact {
     if (!contact) {
         return;
@@ -621,7 +625,8 @@
         [_selectedContactsArr addObject:contact];
     }
     
-    [self configToolView];
+    [self selectedFilesCountChanged];
+
 }
 
 - (void)addContacts:(NSArray *)contacts {
@@ -635,7 +640,7 @@
     
     [_selectedContactsArr addObjectsFromArray:contacts];
     
-    [self configToolView];
+    [self selectedFilesCountChanged];
 }
 
 - (void)removeContact:(STContactInfo *)contact {
@@ -645,7 +650,7 @@
     
     [_selectedContactsArr removeObject:contact];
     
-    [self configToolView];
+    [self selectedFilesCountChanged];
 }
 
 - (void)removeContacts:(NSArray *)contacts {
@@ -655,7 +660,7 @@
     
     [_selectedContactsArr removeObjectsInArray:contacts];
     
-    [self configToolView];
+    [self selectedFilesCountChanged];
 }
 
 - (BOOL)isSelectedWithContact:(STContactInfo *)contact {

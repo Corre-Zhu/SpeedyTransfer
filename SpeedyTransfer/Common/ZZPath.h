@@ -12,6 +12,7 @@
 
 + (NSString *)documentPath;
 + (NSString *)headImagePath;
-+ (NSString *)picturePath;
++ (NSString *)downloadPath;
++ (NSString *)tmpUploadPath;
 
 @end

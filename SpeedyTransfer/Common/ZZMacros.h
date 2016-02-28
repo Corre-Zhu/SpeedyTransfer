@@ -46,6 +46,7 @@
 #define FILE_URL @"file_url"
 #define ICON_URL @"icon_url"
 #define ASSET_ID @"asset_id"
+#define RECORD_ID @"record_id"
 
 #define REQUEST_PATH @"request_path" 
 #define TOTAL_BYTES_WRITTEN @"total_bytes_written"

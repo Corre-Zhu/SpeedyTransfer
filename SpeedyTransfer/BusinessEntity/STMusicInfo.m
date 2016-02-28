@@ -126,4 +126,8 @@
     return [model.url isEqual:self.url];
 }
 
+- (id)copyWithZone:(NSZone *)zone {
+    return nil;
+}
+
 @end

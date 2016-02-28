@@ -23,6 +23,8 @@
     UIButton *sendButton;
     UILabel *sendLabel;
     NSMutableArray *deviceButtons;
+    
+    BOOL viewDidAppear;
 }
 
 @end
@@ -196,6 +198,26 @@
     if ([keyPath isEqualToString:@"devicesArray"]) {
         dispatch_async(dispatch_get_main_queue(), ^{
             [self setupDeviceView];
+            
+            if (viewDidAppear) {
+                // 如果只发现一台设备，直接选择这台设备
+                if ([STFileTransferModel shareInstant].selectedDevicesArray.count == 0 && [STFileTransferModel shareInstant].devicesArray.count == 1) {
+                    STDeviceInfo *deviceInfo = [[STFileTransferModel shareInstant].devicesArray firstObject];
+                    [STFileTransferModel shareInstant].selectedDevicesArray = [NSArray arrayWithObject:deviceInfo];
+                }
+                
+                // 已经选择好设备的情况下直接进入发送界面
+                if ([STFileTransferModel shareInstant].selectedDevicesArray.count > 0) {
+                    [[STFileTransferModel shareInstant] sendItems:[self.fileSelectionTabController allSelectedFiles]];
+                    [self.fileSelectionTabController removeAllSelectedFiles];
+                    
+                    STFileTransferViewController *fileTransferVc = [[STFileTransferViewController alloc] init];
+                    [self.navigationController pushViewController:fileTransferVc animated:YES];
+                } else {
+                    STTransferInstructionViewController *transferIns = [[STTransferInstructionViewController alloc] init];
+                    [self.navigationController pushViewController:transferIns animated:YES];
+                }
+            }
         });
     }
 }
@@ -217,12 +239,12 @@
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
-	[[STFileTransferModel shareInstant] removeObserver:self forKeyPath:@"connectStatus"];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
-	[[STFileTransferModel shareInstant] addObserver:self forKeyPath:@"connectStatus" options:NSKeyValueObservingOptionNew context:NULL];
+    
+    viewDidAppear = YES;
 }
 
 - (void)sendButtonClick {

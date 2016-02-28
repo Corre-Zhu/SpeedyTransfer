@@ -114,7 +114,8 @@ static NSString *cellIdentifier = @"CellIdentifier";
     
     _model = [STFileTransferModel shareInstant];
     [_model addObserver:self forKeyPath:@"transferFiles" options:NSKeyValueObservingOptionNew context:NULL];
-
+    
+    _model.sectionTransferFiles = [_model sortTransferInfo:_model.transferFiles];
 }
 
 - (void)reachabilityStatusChange:(NSNotification *)notification {
@@ -142,14 +143,17 @@ static NSString *cellIdentifier = @"CellIdentifier";
 }
 
 - (void)deviceNotConnectedNotification:(NSNotification *)notification {
-    NSString *deviceName = [notification.userInfo stringForKey:DEVICE_NAME];
-    MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
-    HUD.mode = MBProgressHUDModeText;
-    HUD.labelText = [NSString stringWithFormat:@"%@%@", deviceName, NSLocalizedString(@"已退出共享网络", nil)];
-    HUD.removeFromSuperViewOnHide = YES;
-    [self.view addSubview:HUD];
-    [HUD show:YES];
-    [HUD hide:YES afterDelay:2.5f];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        NSString *deviceName = [notification.userInfo stringForKey:DEVICE_NAME];
+        MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
+        HUD.mode = MBProgressHUDModeText;
+        HUD.labelText = [NSString stringWithFormat:@"%@%@", deviceName, NSLocalizedString(@"已退出共享网络", nil)];
+        HUD.removeFromSuperViewOnHide = YES;
+        [self.view addSubview:HUD];
+        [HUD show:YES];
+        [HUD hide:YES afterDelay:2.5f];
+    });
+    
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -205,19 +209,36 @@ static NSString *cellIdentifier = @"CellIdentifier";
     NSArray *arr = [_model.sectionTransferFiles objectAtIndex:indexPath.section];
     STFileTransferInfo *info = [arr objectAtIndex:indexPath.row];
     if (info.fileType == STFileTypeContact) {
-        NSData *vcard = [info.vcardString dataUsingEncoding:NSUTF8StringEncoding];
-        CFDataRef vCardData = CFDataCreate(NULL, [vcard bytes], [vcard length]);
+        
+        CFDataRef vCardData;
         ABAddressBookRef book = ABAddressBookCreate();
-        ABRecordRef defaultSource = ABAddressBookCopyDefaultSource(book);
-        CFArrayRef vCardPeople = ABPersonCreatePeopleInSourceWithVCardRepresentation(defaultSource, vCardData);
-        if (CFArrayGetCount(vCardPeople) > 0) {
-            ABRecordRef person = CFArrayGetValueAtIndex(vCardPeople, 0);
-            ABPersonViewController *personViewc = [[ABPersonViewController alloc] init];
-            personViewc.displayedPerson = person;
-            personViewc.allowsEditing = NO;
-            personViewc.allowsActions = YES;
-            [self.navigationController pushViewController:personViewc animated:YES];
+
+        if (info.transferType == STFileTransferTypeSend && info.url.integerValue > 0) {
+            ABRecordRef recordRef = ABAddressBookGetPersonWithRecordID(book, (ABRecordID)info.url.integerValue);
+            CFArrayRef cfArrayRef =  (__bridge CFArrayRef)@[(__bridge id)recordRef];
+            vCardData = (CFDataRef)ABPersonCreateVCardRepresentationWithPeople(cfArrayRef);
+        } else if (info.transferType == STFileTransferTypeReceive) {
+            NSString *path = [[ZZPath downloadPath] stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.vcard", info.identifier]];
+            if ([[NSFileManager defaultManager] fileExistsAtPath:path]) {
+                NSData *vcard = [[NSData alloc] initWithContentsOfFile:path];
+                vCardData = CFDataCreate(NULL, [vcard bytes], [vcard length]);
+            }
         }
+        
+        if (vCardData) {
+            ABAddressBookRef book = ABAddressBookCreate();
+            ABRecordRef defaultSource = ABAddressBookCopyDefaultSource(book);
+            CFArrayRef vCardPeople = ABPersonCreatePeopleInSourceWithVCardRepresentation(defaultSource, vCardData);
+            if (CFArrayGetCount(vCardPeople) > 0) {
+                ABRecordRef person = CFArrayGetValueAtIndex(vCardPeople, 0);
+                ABPersonViewController *personViewc = [[ABPersonViewController alloc] init];
+                personViewc.displayedPerson = person;
+                personViewc.allowsEditing = NO;
+                personViewc.allowsActions = YES;
+                [self.navigationController pushViewController:personViewc animated:YES];
+            }
+        }
+        
     }
 
 }

@@ -124,7 +124,8 @@
 - (void)configCell {
     if (_transferInfo.fileType == STFileTypeContact) {
         coverImageView.image = [UIImage imageNamed:@"phone_bg"];
-    } else if (_transferInfo.fileType == STFileTypePicture) {
+    } else if (_transferInfo.fileType == STFileTypePicture ||
+               _transferInfo.fileType == STFileTypeVideo) {
         BOOL localAssetExist = NO;
         if (self.transferInfo.url.length > 0 && ![self.transferInfo.url hasPrefix:@"http://"]) {
             PHFetchResult *savedAssets = [PHAsset fetchAssetsWithLocalIdentifiers:@[_transferInfo.url] options:nil];
@@ -152,7 +153,7 @@
         }
     
         if (!localAssetExist) {
-            NSString *path = [[ZZPath picturePath] stringByAppendingPathComponent:[NSString stringWithFormat:@"%@_thumb", _transferInfo.identifier]];
+            NSString *path = [[ZZPath downloadPath] stringByAppendingPathComponent:[NSString stringWithFormat:@"%@_thumb", _transferInfo.identifier]];
             if ([[NSFileManager defaultManager] fileExistsAtPath:path]) {
                 UIImage *image = [[UIImage alloc] initWithContentsOfFile:path];
                 coverImageView.image = image;

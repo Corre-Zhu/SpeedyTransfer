@@ -69,6 +69,20 @@
                     [self setObject:fileInfo forKey:object];
                 
                 }}];
+        } else if ([object isKindOfClass:[STContactInfo class]]) {
+            STContactInfo *contactInfo = object;
+            NSString *address = GCDWebServerGetPrimaryIPAddress(NO);
+            NSString *fileName = contactInfo.name;
+            NSUInteger fileSize = contactInfo.size;
+            NSString *fileType = @"vcard";
+            NSString *fileUrl = [NSString stringWithFormat:@"http://%@:%@/contact/%@", address, @(KSERVERPORT), @(contactInfo.recordId)];
+            
+            NSDictionary *fileInfo = @{FILE_NAME: fileName,
+                                       FILE_TYPE: fileType,
+                                       FILE_SIZE: @(fileSize),
+                                       FILE_URL: fileUrl,
+                                       RECORD_ID: @(contactInfo.recordId)};
+            [self setObject:fileInfo forKey:object];
         }
     }
 }

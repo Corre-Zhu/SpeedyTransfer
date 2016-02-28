@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface STMusicInfo : NSObject
+@interface STMusicInfo : NSObject<NSCopying>
 
 @property (nonatomic, strong) NSString *format;			// 格式
 @property (nonatomic, strong) NSString *title;			// 歌曲名

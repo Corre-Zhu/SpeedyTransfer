@@ -17,7 +17,7 @@
 @interface STFileSelectionTabViewController : UITabBarController
 
 // All
-@property (nonatomic) NSInteger selectedFilesCount;
+- (void)selectedFilesCountChanged;
 - (NSArray *)allSelectedFiles;
 - (void)removeAllSelectedFiles;
 

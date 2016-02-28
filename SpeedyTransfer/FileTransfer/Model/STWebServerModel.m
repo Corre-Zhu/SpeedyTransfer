@@ -16,10 +16,12 @@
 #import "STWebServerConnection.h"
 #import "STDeviceInfo.h"
 #import <Photos/Photos.h>
+#import <AddressBook/AddressBook.h>
 
 @interface STWebServerModel ()
 
 @property (nonatomic, strong) GCDWebServer *webServer;
+@property (nonatomic) ABAddressBookRef addressBook;
 
 @end
 
@@ -105,7 +107,7 @@
 					[[PHImageManager defaultManager] requestImageDataForAsset:asset options:nil resultHandler:^(NSData * _Nullable imageData, NSString * _Nullable dataUTI, UIImageOrientation orientation, NSDictionary * _Nullable info) {
 						if (imageData.length > 0) {
 							NSURL *url = [info objectForKey:@"PHImageFileURLKey"];
-							NSString *path = [[ZZPath picturePath] stringByAppendingPathComponent:[url.absoluteString lastPathComponent]];
+							NSString *path = [[ZZPath tmpUploadPath] stringByAppendingPathComponent:[url.absoluteString lastPathComponent]];
 							[imageData writeToFile:path atomically:YES];
 							completionBlock([GCDWebServerFileResponse responseWithFile:path]);
 						} else {
@@ -144,7 +146,21 @@
 					return;
 				}
 			}
-		}
+        } else if ([request.path hasPrefix:@"/contact/"]) {
+            NSInteger loc = [@"/contact/" length];
+            NSString *recordId = [request.path substringWithRange:NSMakeRange(loc, request.path.length - loc)];
+            if (recordId.length > 0) {
+                if (!weakSelf.addressBook) {
+                    weakSelf.addressBook = ABAddressBookCreateWithOptions(NULL, NULL);
+                }
+                ABRecordRef recordRef = ABAddressBookGetPersonWithRecordID(weakSelf.addressBook, (ABRecordID)recordId.integerValue);
+                CFArrayRef cfArrayRef =  (__bridge CFArrayRef)@[(__bridge id)recordRef];
+                CFDataRef vcards = (CFDataRef)ABPersonCreateVCardRepresentationWithPeople(cfArrayRef);
+                completionBlock([GCDWebServerDataResponse responseWithData:(__bridge NSData *)vcards contentType:@"contact/vcard"]);
+                return;
+            }
+            
+        }
 		
 		completionBlock([GCDWebServerResponse responseWithStatusCode:kGCDWebServerHTTPStatusCode_NotFound]);
 	}];
@@ -183,9 +199,14 @@
                 [entity.pathExtension.lowercaseString isEqualToString:@"jpg"] ||
                 [entity.pathExtension.lowercaseString isEqualToString:@"jpeg"]) {
                 entity.fileType = STFileTypePicture;
-            } else {
+            } else if ([entity.pathExtension.lowercaseString isEqualToString:@"mov"] ||
+                       [entity.pathExtension.lowercaseString isEqualToString:@"3gp"] ||
+                       [entity.pathExtension.lowercaseString isEqualToString:@"mp4"]) {
+                entity.fileType = STFileTypeVideo;
+            } else if ([entity.pathExtension.lowercaseString isEqualToString:@"vcard"]) {
+                entity.fileType = STFileTypeContact;
+            }else {
                 NSLog(@"未知文件类型");
-                continue;
             }
             
             [tempArry addObject:entity];
