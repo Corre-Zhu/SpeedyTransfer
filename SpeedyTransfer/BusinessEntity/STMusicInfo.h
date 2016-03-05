@@ -19,6 +19,7 @@
 @property (nonatomic, assign) NSString *duration;		// 时间
 @property (nonatomic, strong) NSURL *url;               // music url path
 @property (nonatomic) double fileSize;          // 文件大小
+@property (nonatomic, strong) NSNumber *persistentId; 
 
 // 读取手机系统的音乐文件
 + (NSArray *)musicModelList;

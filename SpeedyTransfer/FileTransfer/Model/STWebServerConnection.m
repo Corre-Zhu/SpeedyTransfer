@@ -27,7 +27,8 @@
 - (void)didWriteBytes:(const void *)bytes length:(NSUInteger)length {
     [super didWriteBytes:bytes length:length];
     if ([self.path containsString:@"/image/origin"] ||
-        [self.path containsString:@"/contact"]) {
+        [self.path containsString:@"/contact"] ||
+        [self.path containsString:@"/music"]) {
         NSDictionary *info = @{REQUEST_PATH: self.path, TOTAL_BYTES_WRITTEN: @(self.totalBytesWritten), START_TIMESTAMP: @(self.startTimeStamp)};
         [[NSNotificationCenter defaultCenter] postNotificationName:KFileWrittenProgressNotification object:nil userInfo:info];
     } else {

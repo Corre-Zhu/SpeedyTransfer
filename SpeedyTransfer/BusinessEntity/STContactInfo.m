@@ -47,7 +47,6 @@
             NSString *vcardString = [[NSString alloc] initWithData:(__bridge NSData *)vcards encoding:NSUTF8StringEncoding];
             contact.vcardString = vcardString;
             contact.recordId = ABRecordGetRecordID(contactPerson);
-            NSLog(@"recordId = %@", @(contact.recordId));
 
             // Get first and last names
             NSString *firstName = (__bridge_transfer NSString*)ABRecordCopyValue(contactPerson, kABPersonFirstNameProperty);

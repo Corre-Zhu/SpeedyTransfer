@@ -17,6 +17,7 @@
 #import "STDeviceInfo.h"
 #import <Photos/Photos.h>
 #import <AddressBook/AddressBook.h>
+#import <MediaPlayer/MediaPlayer.h>
 
 @interface STWebServerModel ()
 
@@ -160,6 +161,50 @@
                 return;
             }
             
+        } else if ([request.path hasPrefix:@"/music/"]) {
+            NSInteger loc = [@"/music/" length];
+            NSString *recordId = [request.path substringWithRange:NSMakeRange(loc, request.path.length - loc)];
+            if (recordId.length > 0) {
+                MPMediaQuery *mediaQuery = [[MPMediaQuery alloc] init];
+                MPMediaPropertyPredicate *predicate =[MPMediaPropertyPredicate predicateWithValue:recordId forProperty:MPMediaEntityPropertyPersistentID];
+                [mediaQuery addFilterPredicate:predicate];
+                NSArray *items = [mediaQuery items];
+                MPMediaItem *item = items.firstObject;
+                NSURL *url = [item valueForProperty:MPMediaItemPropertyAssetURL];
+                if (url) {
+                    // 导出音乐到本地
+                    AVURLAsset *songAsset = [AVURLAsset URLAssetWithURL:url options:nil];
+                    AVAssetExportSession *exporter = [[AVAssetExportSession alloc]
+                                                      initWithAsset:songAsset
+                                                      presetName: AVAssetExportPresetAppleM4A];
+                    exporter.outputFileType = @"com.apple.m4a-audio";
+                    NSString *exportPath = [[ZZPath tmpUploadPath] stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.m4a",[item valueForProperty:MPMediaEntityPropertyPersistentID]]];
+                    if([[NSFileManager defaultManager] fileExistsAtPath:exportPath]) {
+                        [[NSFileManager defaultManager] removeItemAtPath:exportPath error:NULL];
+                    }
+                    
+                    NSURL *exportURL = [NSURL fileURLWithPath:exportPath];
+                    exporter.outputURL = exportURL;
+                    [exporter exportAsynchronouslyWithCompletionHandler:^
+                     {
+                         switch (exporter.status) {
+                             case AVAssetExportSessionStatusCompleted: {
+                                 completionBlock([GCDWebServerFileResponse responseWithFile:exportPath]);
+                                 NSLog (@"AVAssetExportSessionStatusCompleted");
+                                 break;
+                             }
+                                 
+                             default: {
+                                 completionBlock([GCDWebServerResponse responseWithStatusCode:kGCDWebServerHTTPStatusCode_NotFound]);
+                                 NSLog (@"AVAssetExportSessionStatusFailed");
+                                 break;  
+                             }  
+                         }
+                     }];
+                    return;
+                }
+            }
+            
         }
 		
 		completionBlock([GCDWebServerResponse responseWithStatusCode:kGCDWebServerHTTPStatusCode_NotFound]);
@@ -205,8 +250,12 @@
                 entity.fileType = STFileTypeVideo;
             } else if ([entity.pathExtension.lowercaseString isEqualToString:@"vcard"]) {
                 entity.fileType = STFileTypeContact;
-            }else {
+            } else if ([entity.pathExtension.lowercaseString isEqualToString:@"mp3"] ||
+                      [entity.pathExtension.lowercaseString isEqualToString:@"mp3"]) {
+                entity.fileType = STFileTypeMusic;
+            } else {
                 NSLog(@"未知文件类型");
+                continue;
             }
             
             [tempArry addObject:entity];

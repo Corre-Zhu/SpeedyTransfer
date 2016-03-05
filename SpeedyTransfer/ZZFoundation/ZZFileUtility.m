@@ -83,6 +83,20 @@
                                        FILE_URL: fileUrl,
                                        RECORD_ID: @(contactInfo.recordId)};
             [self setObject:fileInfo forKey:object];
+        } else if ([object isKindOfClass:[STMusicInfo class]]) {
+            STMusicInfo *musciInfo = object;
+            NSString *address = GCDWebServerGetPrimaryIPAddress(NO);
+            NSString *fileName = musciInfo.title;
+            NSUInteger fileSize = musciInfo.fileSize;
+            NSString *fileType = @"mp3";
+            NSString *fileUrl = [NSString stringWithFormat:@"http://%@:%@/music/%@", address, @(KSERVERPORT), musciInfo.persistentId];
+            
+            NSDictionary *fileInfo = @{FILE_NAME: fileName,
+                                       FILE_TYPE: fileType,
+                                       FILE_SIZE: @(fileSize),
+                                       FILE_URL: fileUrl,
+                                       RECORD_ID: musciInfo.persistentId};
+            [self setObject:fileInfo forKey:object];
         }
     }
 }

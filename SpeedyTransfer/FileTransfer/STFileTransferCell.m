@@ -162,6 +162,8 @@
             }
         }
         
+    } else if (_transferInfo.fileType == STFileTypeMusic) {
+        coverImageView.image = [UIImage imageNamed:@"music_bg"];
     }
     
     if (_transferInfo.transferStatus == STFileTransferStatusSending ||

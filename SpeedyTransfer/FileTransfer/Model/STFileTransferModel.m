@@ -269,8 +269,11 @@ withFilterContext:(id)filterContext {
         } else if ([fileUrl containsString:@"/contact"]) {
             entity.fileType = STFileTypeContact;
             entity.url = [fileInfo stringForKey:RECORD_ID];
+        } else if ([fileUrl containsString:@"/music"]) {
+            entity.fileType = STFileTypeMusic;
+            entity.url = [fileInfo stringForKey:RECORD_ID];
         }
-        
+         
         entity.deviceName = deviceInfo.deviceName;
         entity.headImage = deviceInfo.headImage;
         

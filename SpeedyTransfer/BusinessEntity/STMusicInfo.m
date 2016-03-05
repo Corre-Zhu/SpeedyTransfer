@@ -41,6 +41,10 @@
         NSString *title = [item valueForProperty:MPMediaItemPropertyTitle];
         NSString *artist = [item valueForProperty:MPMediaItemPropertyArtist];
         NSNumber *duration = [item valueForProperty:MPMediaItemPropertyPlaybackDuration];
+        NSNumber *persistentID = [item valueForProperty:MPMediaEntityPropertyPersistentID];
+        
+        
+
         AVURLAsset *songAsset = [AVURLAsset URLAssetWithURL:url options:nil];
         
         AVAssetExportSession *exporter = [[AVAssetExportSession alloc] initWithAsset: songAsset
@@ -57,6 +61,7 @@
         model.artist = artist;
         model.duration = [NSString getDuration:duration.integerValue];
         model.fileSize = exporter.estimatedOutputFileLength;
+        model.persistentId = persistentID;
         [tempArray addObject:model];
     }
     
