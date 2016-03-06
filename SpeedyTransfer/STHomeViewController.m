@@ -141,7 +141,6 @@
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
-    NSLog(@"%@", NSStringFromCGSize([[UIScreen mainScreen] currentMode].size));
 }
 
 - (void)personalSettingClick {
@@ -204,10 +203,8 @@
 }
 
 - (void)feedbackButtonClick {
-    STFileTransferViewController *sdf = [[STFileTransferViewController alloc] init];
-    [self.navigationController pushViewController:sdf animated:YES];
-//    STFeedBackViewController *feedBackVc = [[STFeedBackViewController alloc] init];
-//    [self.navigationController pushViewController:feedBackVc animated:YES];
+    STFeedBackViewController *feedBackVc = [[STFeedBackViewController alloc] init];
+    [self.navigationController pushViewController:feedBackVc animated:YES];
 }
 
 @end

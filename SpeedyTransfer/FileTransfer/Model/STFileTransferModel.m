@@ -204,10 +204,7 @@ withFilterContext:(id)filterContext {
                     port = [[arr objectAtIndex:1] integerValue];
                 }
                 [GCDAsyncUdpSocket getHost:&host port:NULL fromAddress:address];
-                if (host.length > 0 && port > 0 && ![[UIDevice getIpAddresses] containsObject:host]) {
-                    
-//                    NSLog(@"%@, %@, %@", dataString, host, @(port).stringValue);
-                    
+                if (host.length > 0 && port > 0 && ![[UIDevice getAllIpAddresses].allValues containsObject:host]) {
                     BOOL find = NO;
                     NSArray *tempArr = [NSArray arrayWithArray:self.devicesArray];
                     for (STDeviceInfo *deviceInfo in tempArr) {

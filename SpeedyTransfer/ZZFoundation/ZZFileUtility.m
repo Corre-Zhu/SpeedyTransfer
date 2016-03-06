@@ -44,13 +44,18 @@
     _mutableDic = [NSMutableDictionary dictionaryWithCapacity:items.count];
     _completionBlock = completionBlock;
     
+    NSString *address = GCDWebServerGetPrimaryIPAddress(NO);
+    if (address.length == 0) {
+        // 获取个人热点ip
+        address = [UIDevice hotspotAddress];
+    }
+    
     for (id object in items) {
         if ([object isKindOfClass:[PHAsset class]]) {
             PHAsset *asset = object;
             NSString *localIdentifier = asset.localIdentifier;
             [[PHImageManager defaultManager] requestImageDataForAsset:asset options:nil resultHandler:^(NSData * _Nullable imageData, NSString * _Nullable dataUTI, UIImageOrientation orientation, NSDictionary * _Nullable info) {
                 NSURL *url = [info objectForKey:@"PHImageFileURLKey"];
-                NSString *address = GCDWebServerGetPrimaryIPAddress(NO);
                 if (url.absoluteString.length > 0 && imageData.length > 0 && address.length > 0) {
                     NSString *fileName = [url.absoluteString lastPathComponent];
                     NSUInteger fileSize = imageData.length;
@@ -71,7 +76,6 @@
                 }}];
         } else if ([object isKindOfClass:[STContactInfo class]]) {
             STContactInfo *contactInfo = object;
-            NSString *address = GCDWebServerGetPrimaryIPAddress(NO);
             NSString *fileName = contactInfo.name;
             NSUInteger fileSize = contactInfo.size;
             NSString *fileType = @"vcard";
@@ -85,7 +89,6 @@
             [self setObject:fileInfo forKey:object];
         } else if ([object isKindOfClass:[STMusicInfo class]]) {
             STMusicInfo *musciInfo = object;
-            NSString *address = GCDWebServerGetPrimaryIPAddress(NO);
             NSString *fileName = musciInfo.title;
             NSUInteger fileSize = musciInfo.fileSize;
             NSString *fileType = @"mp3";

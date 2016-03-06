@@ -250,13 +250,11 @@ NSString *const UIStatusBarOrientationDidChangeNotification = @"UIStatusBarOrien
     NSString *wifiName = nil;
     
     CFArrayRef wifiInterfaces = CNCopySupportedInterfaces();
-    
     if (!wifiInterfaces) {
         return nil;
     }
     
     NSArray *interfaces = (__bridge NSArray *)wifiInterfaces;
-    
     for (NSString *interfaceName in interfaces) {
         CFDictionaryRef dictRef = CNCopyCurrentNetworkInfo((__bridge CFStringRef)(interfaceName));
         
@@ -273,95 +271,91 @@ NSString *const UIStatusBarOrientationDidChangeNotification = @"UIStatusBarOrien
     return wifiName;
 }
 
++ (NSString *)getBroadcastAddress {
+	NSString *address = nil;
+	
+	struct ifaddrs *interfaces = NULL;
+	struct ifaddrs *temp_addr = NULL;
+	int success = 0;
+	success = getifaddrs(&interfaces);
+    if (success == 0) {
+		temp_addr = interfaces;
+        while(temp_addr != NULL) {
+			if(temp_addr->ifa_addr->sa_family == AF_INET) {
+				// Check if interface is en0 which is the wifi connection on the iPhone
+                NSString *ifa_name = [NSString stringWithUTF8String:temp_addr->ifa_name];
+				if([ifa_name isEqualToString:@"en0"] ||
+                   [ifa_name hasPrefix:@"bridge"]) {
+					 NSString *temp = [NSString stringWithUTF8String:inet_ntoa(((struct sockaddr_in *)temp_addr->ifa_dstaddr)->sin_addr)];
+					if (temp.length > 0 && ![temp hasPrefix:@"127.0"]) {
+						address = temp;
+						break;
+					}
+                }
+			}
+			temp_addr = temp_addr->ifa_next;
+		}
+	}
+	
+	// Free memory
+	freeifaddrs(interfaces);
+	
+	return address;
+}
+
 // Get All ipv4 interface
-+ (NSArray *)getIpAddresses {
-    NSMutableArray *addresses = [[NSMutableArray alloc] init];
++ (NSDictionary *)getAllIpAddresses {
+    NSMutableDictionary *resultDic = [NSMutableDictionary dictionary];
+    
     struct ifaddrs *interfaces = NULL;
     struct ifaddrs *temp_addr = NULL;
     
     @try {
-        // retrieve the current interfaces - returns 0 on success
         NSInteger success = getifaddrs(&interfaces);
-        //NSLog(@"%@, success=%d", NSStringFromSelector(_cmd), success);
         if (success == 0) {
-            // Loop through linked list of interfaces
             temp_addr = interfaces;
             while(temp_addr != NULL) {
                 if(temp_addr->ifa_addr->sa_family == AF_INET) {
-                    // Get NSString from C String
+                    NSString* ifaName = [NSString stringWithUTF8String:temp_addr->ifa_name];
                     NSString* address = [NSString stringWithUTF8String:inet_ntoa(((struct sockaddr_in *) temp_addr->ifa_addr)->sin_addr)];
-                    if (address.length > 0) {
-                        [addresses addObject:address];
-                    }
+                    [resultDic setObject:address forKey:ifaName];
+                    
                 }
                 temp_addr = temp_addr->ifa_next;
             }
         }
     }
     @catch (NSException *exception) {
-        NSLog(@"Exception: %@", exception);
     }
     @finally {
         // Free memory
         freeifaddrs(interfaces);
     }
-	
-    return addresses;
+    
+    return resultDic;
 }
 
-+ (NSString *)getBroadcastAddress {
-	NSString *address = nil;
-	
-	struct ifaddrs *interfaces = NULL;
-	
-	struct ifaddrs *temp_addr = NULL;
-	
-	int success = 0;
-	
-	// retrieve the current interfaces - returns 0 on success
-	
-	success = getifaddrs(&interfaces);
-	
-	if (success == 0)
-		
-	{
-		
-		// Loop through linked list of interfaces
-		
-		temp_addr = interfaces;
-		
-		while(temp_addr != NULL)
-			
-		{
-			
-			if(temp_addr->ifa_addr->sa_family == AF_INET)
-				
-			{
-				
-				// Check if interface is en0 which is the wifi connection on the iPhone
-				
-				if([[NSString stringWithUTF8String:temp_addr->ifa_name] isEqualToString:@"en0"]) {
-					 NSString *temp = [NSString stringWithUTF8String:inet_ntoa(((struct sockaddr_in *)temp_addr->ifa_dstaddr)->sin_addr)];
-					if (temp.length > 0 && ![temp hasPrefix:@"127.0"]) {
-						address = temp;
-						break;
-					}
-				}
-				
-			}
-			
-			temp_addr = temp_addr->ifa_next;
-			
-		}
-		
-	}
-	
-	// Free memory
-	
-	freeifaddrs(interfaces);
-	
-	return address;
-	
+// 个人热点是否启用
++ (BOOL)isPersonalHotspotEnabled {
+    NSDictionary *dic = [self getAllIpAddresses];
+    for (NSString *name in dic.allKeys) {
+        if ([name hasPrefix:@"bridge"] || [[dic objectForKey:name] hasPrefix:@"172.20.10."]) {
+            return YES;
+        }
+    }
+    
+    return NO;
+}
+
++ (NSString *)hotspotAddress {
+    NSDictionary *dic = [self getAllIpAddresses];
+    for (NSString *name in dic.allKeys) {
+        if ([name hasPrefix:@"bridge"]) {
+            return [dic objectForKey:name];
+        }
+    }
+    
+    return nil;
 }
 
 @end

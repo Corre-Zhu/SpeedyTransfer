@@ -158,7 +158,8 @@
 }
 
 - (void)transferButtonClick {
-	if ([ZZReachability shareInstance].currentReachabilityStatus != ReachableViaWiFi) {
+    BOOL hotspotEnable = [UIDevice isPersonalHotspotEnabled];
+	if ([ZZReachability shareInstance].currentReachabilityStatus != ReachableViaWiFi && !hotspotEnable) {
         if (!wifiNotConnectedPopupView) {
             wifiNotConnectedPopupView = [[STWifiNotConnectedPopupView alloc] init];
         }

@@ -18,6 +18,7 @@
 #import "STReceiveHeaderView.h"
 #import "STWifiNotConnectedPopupView2.h"
 #import "MBProgressHUD.h"
+#import "STHomeViewController.h"
 
 static NSString *sendHeaderIdentifier = @"sendHeaderIdentifier";
 static NSString *receiveHeaderIdentifier = @"receiveHeaderIdentifier";
@@ -46,7 +47,7 @@ static NSString *cellIdentifier = @"CellIdentifier";
 
 - (void)leftBarButtonItemClick {
     if (self.isFromReceive) {
-        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"不再接收其他文件，确认退出？", nil) message:nil preferredStyle: UIAlertControllerStyleAlert];
+        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"不再传输其它文件，确认退出？", nil) message:nil preferredStyle: UIAlertControllerStyleAlert];
         UIAlertAction *action1 = [UIAlertAction actionWithTitle:NSLocalizedString(@"确认", nil) style:UIAlertActionStyleDestructive handler:^(UIAlertAction * _Nonnull action) {
             [self.navigationController popToRootViewControllerAnimated:YES];
         }];
@@ -56,7 +57,7 @@ static NSString *cellIdentifier = @"CellIdentifier";
         [alertController addAction:action3];
         [self presentViewController:alertController animated:YES completion:NULL];
     } else {
-        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"不再发送其他文件，确认退出？", nil) message:nil preferredStyle: UIAlertControllerStyleAlert];
+        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"不再传输其它文件，确认退出？", nil) message:nil preferredStyle: UIAlertControllerStyleAlert];
         UIAlertAction *action1 = [UIAlertAction actionWithTitle:NSLocalizedString(@"确认", nil) style:UIAlertActionStyleDestructive handler:^(UIAlertAction * _Nonnull action) {
             [self.navigationController popToRootViewControllerAnimated:YES];
         }];
@@ -98,7 +99,8 @@ static NSString *cellIdentifier = @"CellIdentifier";
     [self.view addSubview:continueSendButton];
     
     if (self.isFromReceive) {
-        if ([ZZReachability shareInstance].currentReachabilityStatus != ReachableViaWiFi) {
+        BOOL hotspotEnable = [UIDevice isPersonalHotspotEnabled];
+        if ([ZZReachability shareInstance].currentReachabilityStatus != ReachableViaWiFi || !hotspotEnable) {
             if (!popupView) {
                 popupView = [[STWifiNotConnectedPopupView2 alloc] init];
             }
@@ -161,7 +163,12 @@ static NSString *cellIdentifier = @"CellIdentifier";
 }
 
 - (void)continueSendButtonClick {
-    [self.navigationController popToViewController:self.fileSelectionTabController animated:YES];
+    if (self.isFromReceive) {
+        STHomeViewController *homeVc = (STHomeViewController *)self.navigationController.viewControllers.firstObject;
+        [homeVc transferButtonClick];
+    } else {
+         [self.navigationController popToViewController:self.fileSelectionTabController animated:YES];
+    }
 }
 
 #pragma mark - Table view data source

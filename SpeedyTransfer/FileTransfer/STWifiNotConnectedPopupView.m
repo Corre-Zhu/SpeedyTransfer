@@ -74,7 +74,7 @@
             [NSLocalizedString(@"（2）打开“个人热点”", nil) drawAtPoint:CGPointMake(86.0f, 152.5f) withAttributes:@{NSFontAttributeName: [UIFont systemFontOfSize:12.0f], NSForegroundColorAttributeName: RGBFromHex(0x323232)}];
             
             [[UIImage imageNamed:@"number3"] drawAtPoint:CGPointMake(16.0f, 195.0f)];
-            [NSLocalizedString(@"返回  点传 > 我要接收", nil) drawAtPoint:CGPointMake(58.0f, 198.0f) withAttributes:@{NSFontAttributeName: [UIFont systemFontOfSize:14.0f], NSForegroundColorAttributeName: RGBFromHex(0x323232)}];
+            [NSLocalizedString(@"返回  点传", nil) drawAtPoint:CGPointMake(58.0f, 198.0f) withAttributes:@{NSFontAttributeName: [UIFont systemFontOfSize:14.0f], NSForegroundColorAttributeName: RGBFromHex(0x323232)}];
         };
         
     }

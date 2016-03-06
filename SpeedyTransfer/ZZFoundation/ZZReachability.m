@@ -13,7 +13,7 @@
 + (ZZReachability *)shareInstance {
 	static ZZReachability *shareInstance = nil;
 	if (!shareInstance) {
-		shareInstance = [ZZReachability reachabilityForLocalWiFi];
+		shareInstance = [ZZReachability reachabilityForInternetConnection];
 		[shareInstance startNotifier];
 	}
 	

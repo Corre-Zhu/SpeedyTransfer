@@ -31,6 +31,9 @@
 - (NSString *)apiInfos {
     NSString *apiInfoStr = nil;
     NSString *address = GCDWebServerGetPrimaryIPAddress(NO);
+    if (address.length == 0) {
+        address = [UIDevice hotspotAddress];
+    }
     if (address.length > 0) {
         NSString *devInfoUrl = [NSString stringWithFormat:@"http://%@:%@/info", address, @(KSERVERPORT)];
         NSString *portraitUrl = [NSString stringWithFormat:@"http://%@:%@/portrait", address, @(KSERVERPORT)];
@@ -53,6 +56,10 @@
 		}
     }
     NSString *address = GCDWebServerGetPrimaryIPAddress(NO);
+    if (address.length == 0) {
+        address = [UIDevice hotspotAddress];
+    }
+    
     if (!address) {
         address = @"";
     }
