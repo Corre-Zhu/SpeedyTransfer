@@ -37,6 +37,8 @@ HT_AS_SINGLETON(STFileTransferModel, shareInstant);
 @property (nonatomic, strong) NSMutableArray *prepareToReceiveFiles; // 收到的的所有文件
 @property (nonatomic, strong) STFileTransferInfo *currentReceivingInfo; // 当前正在下载的文件
 - (void)receiveItems:(NSArray *)items;
+- (void)cancelReceiveItemsWithIp:(NSString *)ip; // 取消接收指定设备的文件
+- (void)cancelAllReceiveItems; // 取消接收所有文件
 
 // 文件发送
 - (NSArray *)insertItemsToDbWithDeviceInfo:(STDeviceInfo *)deviceInfo fileInfos:(NSArray *)fileInfos;
@@ -46,4 +48,8 @@ HT_AS_SINGLETON(STFileTransferModel, shareInstant);
 - (void)addTransferFile:(STFileTransferInfo *)info;
 - (void)sendItems:(NSArray *)items;
 - (void)writeToSavedPhotosAlbum:(NSString *)path isImage:(BOOL)isImage;
+
+// 取消文件发送
+- (void)cancelSendFile;
+
 @end

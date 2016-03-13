@@ -273,6 +273,19 @@
         return [GCDWebServerResponse responseWithStatusCode:200];
     }];
     
+    [_webServer addHandlerForMethod:@"POST" path:@"/cancel" requestClass:[GCDWebServerDataRequest class] processBlock:^GCDWebServerResponse *(GCDWebServerRequest *request) {
+        NSString *ip = nil;
+        if ([request.remoteAddressString containsString:@":"]) {
+            ip = [[request.remoteAddressString componentsSeparatedByString:@":"] firstObject];
+        } else {
+            ip = request.remoteAddressString;
+        }
+        
+        [[STFileTransferModel shareInstant] cancelReceiveItemsWithIp:ip];
+        return [GCDWebServerResponse responseWithStatusCode:200];
+    }];
+
+    
     // Start server on port 8080
     NSDictionary *options = @{GCDWebServerOption_ConnectionClass: [STWebServerConnection class], GCDWebServerOption_Port: @(KSERVERPORT)};
     [_webServer startWithOptions:options error:nil];

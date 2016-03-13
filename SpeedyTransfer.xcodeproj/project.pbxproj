@@ -988,7 +988,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.santikeji.dianchuan;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "9b91b18c-72eb-4a72-a5ab-8be72db166b2";
+				PROVISIONING_PROFILE = "59ff2b79-abe8-4c75-818b-d2405666b04b";
 			};
 			name = Debug;
 		};
@@ -1006,7 +1006,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.santikeji.dianchuan;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "9b91b18c-72eb-4a72-a5ab-8be72db166b2";
+				PROVISIONING_PROFILE = "59ff2b79-abe8-4c75-818b-d2405666b04b";
 			};
 			name = Release;
 		};

@@ -22,6 +22,7 @@ HT_AS_SINGLETON(STDeviceInfo, shareInstant)
 @property (nonatomic) uint16_t port;
 @property (nonatomic) NSTimeInterval lastUpdateTimestamp;
 @property (nonatomic, strong) NSString *recvUrl;
+@property (nonatomic, strong) NSString *cancelUrl;
 
 @property(nonatomic,readonly)NSString *_tableName;
 @property(nonatomic,readonly)NSString *_deviceName;
@@ -33,5 +34,7 @@ HT_AS_SINGLETON(STDeviceInfo, shareInstant)
 
 - (void)addSendItems:(NSArray *)files; // 添加准备发送的文件
 - (void)startSend; // 开始向这个设备发送文件
+
+- (void)cancelSendFile; // 取消发送所有文件
 
 @end

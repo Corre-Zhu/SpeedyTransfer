@@ -30,6 +30,8 @@ NSString *const KDeviceNotConnectedNotification = @"DeviceNotConnectedNotificati
     float lastProgress;
     
     __block PHAssetCollection *toSaveCollection;
+    NSURLSessionDownloadTask *thumbDownloadTask; // 当前缩略图下载任务
+    NSURLSessionDownloadTask *origindownloadTask; // 当前大图下载任务
 }
 
 @end
@@ -235,6 +237,17 @@ withFilterContext:(id)filterContext {
     
 }
 
+#pragma mark - Cancel send file
+
+- (void)cancelSendFile {
+    @synchronized(self) {
+        NSArray *selectedDevices = [NSArray arrayWithArray:self.selectedDevicesArray];
+        for (STDeviceInfo *info in selectedDevices) {
+            [info cancelSendFile];
+        }
+    }
+}
+
 #pragma mark - Send file
 
 - (void)sendItems:(NSArray *)items {
@@ -353,6 +366,36 @@ withFilterContext:(id)filterContext {
     }
 }
 
+#pragma mark - Cancel Receive File
+
+- (void)cancelReceiveItemsWithIp:(NSString *)ip {
+    @synchronized(self.prepareToReceiveFiles) {
+        NSMutableArray *tempArray = [NSMutableArray arrayWithArray:self.prepareToReceiveFiles];
+        for (STFileTransferInfo *info in self.prepareToReceiveFiles) {
+            if ([info.url containsString:ip]) {
+                [tempArray removeObject:info];
+            }
+        }
+        self.prepareToReceiveFiles = [NSMutableArray arrayWithArray:tempArray];
+        
+        if ([self.currentReceivingInfo.url containsString:ip]) {
+            [thumbDownloadTask cancel];
+            [origindownloadTask cancel];
+        }
+    }
+}
+
+- (void)cancelAllReceiveItems {
+    @synchronized(self.prepareToReceiveFiles) {
+        [self.prepareToReceiveFiles removeAllObjects];
+        
+        if (self.currentReceivingInfo) {
+            [thumbDownloadTask cancel];
+            [origindownloadTask cancel];
+        }
+    }
+}
+
 #pragma mark - Receive file
 
 - (void)receiveItems:(NSArray *)items {
@@ -365,6 +408,9 @@ withFilterContext:(id)filterContext {
 	}
 	
 	[self startDownload];
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:KReceiveFileNotification object:nil];
+    
 }
 
 // 开始下载接收的文件
@@ -408,7 +454,7 @@ withFilterContext:(id)filterContext {
         NSURL *thumbURL = [NSURL URLWithString:_currentReceivingInfo.thumbnailUrl];
         NSURLRequest *thumbRequest = [NSURLRequest requestWithURL:thumbURL];
         
-        NSURLSessionDownloadTask *thumbDownloadTask = [manager downloadTaskWithRequest:thumbRequest progress:nil destination:^NSURL *(NSURL *targetPath, NSURLResponse *response) {
+        thumbDownloadTask = [manager downloadTaskWithRequest:thumbRequest progress:nil destination:^NSURL *(NSURL *targetPath, NSURLResponse *response) {
             NSString *path = [[ZZPath downloadPath] stringByAppendingPathComponent:[NSString stringWithFormat:@"%@_thumb", _currentReceivingInfo.identifier]];
             return [NSURL fileURLWithPath:path];
         } completionHandler:^(NSURLResponse *response, NSURL *filePath, NSError *error) {
@@ -441,7 +487,7 @@ withFilterContext:(id)filterContext {
     NSString *downloadPath = [[ZZPath downloadPath] stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.%@", _currentReceivingInfo.identifier, pathExtension]];
     
     __block NSProgress *progress = nil;
-    NSURLSessionDownloadTask *origindownloadTask = [manager downloadTaskWithRequest:originRequest progress:^(NSProgress * _Nonnull downloadProgress) {
+    origindownloadTask = [manager downloadTaskWithRequest:originRequest progress:^(NSProgress * _Nonnull downloadProgress) {
         progress = downloadProgress;
         [downloadProgress addObserver:self forKeyPath:@"fractionCompleted" options:NSKeyValueObservingOptionNew context:NULL];
     } destination:^NSURL *(NSURL *targetPath, NSURLResponse *response) {
@@ -551,7 +597,5 @@ withFilterContext:(id)filterContext {
         [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
     }
 }
-
-
 
 @end

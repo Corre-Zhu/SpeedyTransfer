@@ -53,6 +53,7 @@
 #define START_TIMESTAMP @"start_timestamp"
 
 #define KFileWrittenProgressNotification @"FileWrittenProgressNotification"
+#define KReceiveFileNotification @"ReceiveFileNotification"
 
 typedef NS_ENUM(NSInteger, MCPeerConnnectStatus) {
 	MCPeerConnnectStatusNormal          = 0,

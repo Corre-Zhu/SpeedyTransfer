@@ -49,6 +49,7 @@ static NSString *cellIdentifier = @"CellIdentifier";
     if (self.isFromReceive) {
         UIAlertController *alertController = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"不再传输其它文件，确认退出？", nil) message:nil preferredStyle: UIAlertControllerStyleAlert];
         UIAlertAction *action1 = [UIAlertAction actionWithTitle:NSLocalizedString(@"确认", nil) style:UIAlertActionStyleDestructive handler:^(UIAlertAction * _Nonnull action) {
+            [[STFileTransferModel shareInstant] cancelAllReceiveItems];
             [self.navigationController popToRootViewControllerAnimated:YES];
         }];
         [alertController addAction:action1];
@@ -59,6 +60,7 @@ static NSString *cellIdentifier = @"CellIdentifier";
     } else {
         UIAlertController *alertController = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"不再传输其它文件，确认退出？", nil) message:nil preferredStyle: UIAlertControllerStyleAlert];
         UIAlertAction *action1 = [UIAlertAction actionWithTitle:NSLocalizedString(@"确认", nil) style:UIAlertActionStyleDestructive handler:^(UIAlertAction * _Nonnull action) {
+            [[STFileTransferModel shareInstant] cancelSendFile];
             [self.navigationController popToRootViewControllerAnimated:YES];
         }];
         [alertController addAction:action1];
@@ -100,7 +102,7 @@ static NSString *cellIdentifier = @"CellIdentifier";
     
     if (self.isFromReceive) {
         BOOL hotspotEnable = [UIDevice isPersonalHotspotEnabled];
-        if ([ZZReachability shareInstance].currentReachabilityStatus != ReachableViaWiFi || !hotspotEnable) {
+        if ([ZZReachability shareInstance].currentReachabilityStatus != ReachableViaWiFi && !hotspotEnable) {
             if (!popupView) {
                 popupView = [[STWifiNotConnectedPopupView2 alloc] init];
             }

@@ -100,6 +100,7 @@ HT_DEF_SINGLETON(STDeviceInfo, shareInstant);
             return NO;
         }
         self.recvUrl = recvUrl;
+        self.cancelUrl = [recvUrl stringByReplacingOccurrencesOfString:@"recv" withString:@"cancel"];
 
         return YES;
     }
@@ -164,6 +165,10 @@ HT_DEF_SINGLETON(STDeviceInfo, shareInstant);
     }
     
     NSArray *items = [self popSendingItems];
+    if (items.count == 0) {
+        return;
+    }
+    
     ZZFileUtility *fileUtility = [[ZZFileUtility alloc] init];
     [fileUtility fileInfoWithItems:items completionBlock:^(NSArray *fileInfos) {
         // 写数据库
@@ -189,6 +194,14 @@ HT_DEF_SINGLETON(STDeviceInfo, shareInstant);
             for (STFileTransferInfo *transferInfo in fileTransferInfos) {
                 transferInfo.transferStatus = STFileTransferStatusSendFailed;
                 [[STFileTransferModel shareInstant] updateTransferStatus:STFileTransferStatusSendFailed withIdentifier:transferInfo.identifier];
+                
+                @synchronized(_prepareToSendFiles) {
+                    [self.sendingTransferInfos removeObject:transferInfo];
+                }
+            }
+            
+            if (self.sendingTransferInfos.count == 0) {
+                [self startSend];
             }
             
         }
@@ -203,6 +216,10 @@ HT_DEF_SINGLETON(STDeviceInfo, shareInstant);
         BOOL succeed = NO;
         STFileTransferInfo *tempInfo = nil;
         for (STFileTransferInfo *info in self.sendingTransferInfos) {
+            if (info.isCanceled) {
+                continue;
+            }
+            
             NSString *requestPath = [userInfo stringForKey:REQUEST_PATH];
             if ([requestPath containsString:info.url]) {
                 NSUInteger totalBytesWritten = [userInfo integerForKey:TOTAL_BYTES_WRITTEN];
@@ -242,6 +259,36 @@ HT_DEF_SINGLETON(STDeviceInfo, shareInstant);
             [self startSend];
         }
     }
+}
+
+
+- (void)cancelSendFile {
+    @synchronized(_prepareToSendFiles) {
+        [_prepareToSendFiles removeAllObjects];
+        
+        if (self.sendingTransferInfos.count > 0) {
+            for (STFileTransferInfo *info in self.sendingTransferInfos) {
+                info.isCanceled = YES;
+                info.transferStatus = STFileTransferStatusSendFailed;
+                
+                [[STFileTransferModel shareInstant] updateTransferStatus:STFileTransferStatusSendFailed withIdentifier:info.identifier];
+            }
+            
+            NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:self.cancelUrl]];
+            request.HTTPMethod = @"POST";
+            
+            NSHTTPURLResponse *response = nil;
+            NSError *error = nil;
+            [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&error];
+            if (response.statusCode != 200) {
+                NSLog(@"cancel error: %@", error);
+            }
+        }
+        
+        [self.sendingTransferInfos removeAllObjects];
+    }
+    
+    
 }
 
 @end

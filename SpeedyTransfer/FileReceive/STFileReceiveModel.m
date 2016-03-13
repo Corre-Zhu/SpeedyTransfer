@@ -9,11 +9,12 @@
 #import "STFileReceiveModel.h"
 #import <CocoaAsyncSocket/GCDAsyncUdpSocket.h>
 
-@interface STFileReceiveModel ()
+@interface STFileReceiveModel ()<GCDAsyncUdpSocketDelegate>
 {
     NSTimer *broadcastTimer;
-    GCDAsyncUdpSocket *udpSocket;
 }
+
+@property (nonatomic, strong)GCDAsyncUdpSocket *udpSocket;
 
 @end
 
@@ -24,14 +25,6 @@ HT_DEF_SINGLETON(STFileReceiveModel, shareInstant);
 - (instancetype)init {
     self = [super init];
     if (self) {
-        udpSocket = [[GCDAsyncUdpSocket alloc] initWithDelegate:self delegateQueue:dispatch_get_main_queue()];
-        [udpSocket setIPv4Enabled:YES];
-        [udpSocket setIPv6Enabled:NO];
-        NSError *error = nil;
-        if ([udpSocket enableBroadcast:YES error:&error] == false) {
-            NSLog(@"Failed to enable broadcast, Reason : %@",[error userInfo]);
-        }
-        
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didEnterBackgroundNotification) name:UIApplicationDidEnterBackgroundNotification object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(willEnterForegroundNotification) name:UIApplicationWillEnterForegroundNotification object:nil];
 
@@ -40,13 +33,28 @@ HT_DEF_SINGLETON(STFileReceiveModel, shareInstant);
     return self;
 }
 
+- (GCDAsyncUdpSocket *)udpSocket {
+    if (!_udpSocket) {
+        _udpSocket = [[GCDAsyncUdpSocket alloc] initWithDelegate:self delegateQueue:dispatch_get_main_queue()];
+        [_udpSocket setIPv4Enabled:YES];
+        [_udpSocket setIPv6Enabled:NO];
+        NSError *error = nil;
+        if ([_udpSocket enableBroadcast:YES error:&error] == false) {
+            NSLog(@"Failed to enable broadcast, Reason : %@",[error userInfo]);
+        }
+    }
+    
+    return _udpSocket;
+}
+
 - (void)doBroadcast {
 	NSString *broadcastAddr = [UIDevice getBroadcastAddress];
-	if (broadcastAddr.length == 0) {
-		broadcastAddr = @"255.255.255.255";
+	if (broadcastAddr.length > 0) {
+        NSString *deviceName = [NSString stringWithFormat:@"DCDC:%@:1", @(KSERVERPORT)];
+        [self.udpSocket sendData:[deviceName dataUsingEncoding:NSUTF8StringEncoding] toHost:broadcastAddr port:KUDPPORT withTimeout:-1 tag:0];
+        
+        NSLog(@"start send Data");
 	}
-    NSString *deviceName = [NSString stringWithFormat:@"DCDC:%@:1", @(KSERVERPORT)];
-    [udpSocket sendData:[deviceName dataUsingEncoding:NSUTF8StringEncoding] toHost:broadcastAddr port:KUDPPORT withTimeout:-1 tag:0];
 }
 
 - (void)startBroadcast {
@@ -60,11 +68,18 @@ HT_DEF_SINGLETON(STFileReceiveModel, shareInstant);
 
 - (void)didEnterBackgroundNotification {
     [self invalidTimer];
+    _udpSocket = nil;
 }
 
 - (void)willEnterForegroundNotification {
     [self invalidTimer];
     [self startBroadcast];
+}
+
+#pragma mark - GCDAsyncUdpSocketDelegate
+
+- (void)udpSocket:(GCDAsyncUdpSocket *)sock didSendDataWithTag:(long)tag {
+    NSLog(@"didSendData");
 }
 
 @end
