@@ -116,6 +116,7 @@
     // 启动webserver
     webServerModel = [[STWebServerModel alloc] init];
     [webServerModel startWebServer];
+	[webServerModel startWebServer2];
     
     // 开始发送udp广播
     [[STFileReceiveModel shareInstant] startBroadcast];

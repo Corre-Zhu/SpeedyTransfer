@@ -11,5 +11,9 @@
 @interface STWebServerModel : NSObject
 
 - (void)startWebServer;
+- (void)stopWebServer;
+
+- (void)startWebServer2; // 无界传输
+- (void)stopWebServer2;
 
 @end

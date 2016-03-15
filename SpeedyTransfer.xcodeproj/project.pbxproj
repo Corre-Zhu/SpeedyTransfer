@@ -15,6 +15,7 @@
 		4558BFD41C747483002F5718 /* STWebServerConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = 4558BFD11C747483002F5718 /* STWebServerConnection.m */; };
 		4558BFD51C747483002F5718 /* STWebServerModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 4558BFD31C747483002F5718 /* STWebServerModel.m */; };
 		4569CB391C41264C00A97D2A /* ZZReachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 4569CB381C41264C00A97D2A /* ZZReachability.m */; };
+		458C7B5E1C97A3AD00CA8017 /* Website in Resources */ = {isa = PBXBuildFile; fileRef = 458C7B5D1C97A3AD00CA8017 /* Website */; };
 		81B11DB05739291B2827F0AD /* libPods-SpeedyTransfer.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 43A35BB86492F999A43AE1F4 /* libPods-SpeedyTransfer.a */; };
 		CE2AD7AB1C4A340D00C67D1D /* HTJSONAdapter.m in Sources */ = {isa = PBXBuildFile; fileRef = CE2AD7AA1C4A340D00C67D1D /* HTJSONAdapter.m */; };
 		CE2AD7AD1C4A985F00C67D1D /* test.png in Resources */ = {isa = PBXBuildFile; fileRef = CE2AD7AC1C4A985F00C67D1D /* test.png */; };
@@ -105,6 +106,7 @@
 		4558BFD31C747483002F5718 /* STWebServerModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STWebServerModel.m; sourceTree = "<group>"; };
 		4569CB371C41264C00A97D2A /* ZZReachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZZReachability.h; sourceTree = "<group>"; };
 		4569CB381C41264C00A97D2A /* ZZReachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZZReachability.m; sourceTree = "<group>"; };
+		458C7B5D1C97A3AD00CA8017 /* Website */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Website; sourceTree = "<group>"; };
 		8EA48F6AD6EDCB7E537ACCBC /* Pods-SpeedyTransfer.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SpeedyTransfer.debug.xcconfig"; path = "Pods/Target Support Files/Pods-SpeedyTransfer/Pods-SpeedyTransfer.debug.xcconfig"; sourceTree = "<group>"; };
 		CE2AD7A91C4A340D00C67D1D /* HTJSONAdapter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HTJSONAdapter.h; sourceTree = "<group>"; };
 		CE2AD7AA1C4A340D00C67D1D /* HTJSONAdapter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HTJSONAdapter.m; sourceTree = "<group>"; };
@@ -641,6 +643,7 @@
 		CED62A491C09514200270EDB /* Resource */ = {
 			isa = PBXGroup;
 			children = (
+				458C7B5D1C97A3AD00CA8017 /* Website */,
 				CE2AD7AE1C4AA15D00C67D1D /* IMG_7551.JPG */,
 				CE2AD7AC1C4A985F00C67D1D /* test.png */,
 				CE6536E41C2F078D00C1E8A3 /* Sql */,
@@ -729,7 +732,7 @@
 				TargetAttributes = {
 					CED62A291C094FDD00270EDB = {
 						CreatedOnToolsVersion = 7.1.1;
-						DevelopmentTeam = 6443RH2762;
+						DevelopmentTeam = 9UU37VNQKP;
 					};
 				};
 			};
@@ -760,6 +763,7 @@
 				CED62A4B1C09514200270EDB /* Assets.xcassets in Resources */,
 				CE6536E61C2F07A600C1E8A3 /* defaultSql.sql in Resources */,
 				CE2AD7AD1C4A985F00C67D1D /* test.png in Resources */,
+				458C7B5E1C97A3AD00CA8017 /* Website in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -986,9 +990,9 @@
 				INFOPLIST_FILE = "$(SRCROOT)/SpeedyTransfer/Supporting Files/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.santikeji.dianchuan;
+				PRODUCT_BUNDLE_IDENTIFIER = com.santikeji.dianchuan2;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "9b91b18c-72eb-4a72-a5ab-8be72db166b2";
+				PROVISIONING_PROFILE = "";
 			};
 			name = Debug;
 		};
@@ -1004,9 +1008,9 @@
 				INFOPLIST_FILE = "$(SRCROOT)/SpeedyTransfer/Supporting Files/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.santikeji.dianchuan;
+				PRODUCT_BUNDLE_IDENTIFIER = com.santikeji.dianchuan2;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "9b91b18c-72eb-4a72-a5ab-8be72db166b2";
+				PROVISIONING_PROFILE = "";
 			};
 			name = Release;
 		};

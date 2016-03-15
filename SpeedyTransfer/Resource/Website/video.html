@@ -1,0 +1,72 @@
+<!doctype html>
+<html class="no-js" lang="zh">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>${title}-${video}</title>
+        <meta name="description" content="点传，DCShare, 共享手机中的多媒体和应用">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="apple-touch-icon" href="/ws/apple-touch-icon.png">
+
+        <link rel="stylesheet" href="/ws/normalize.css">
+        <link rel="stylesheet" href="/ws/main.css">
+        <style type="text/css">
+        	body {
+        		background: #f4f4f4;
+        		margin:0;
+        		padding:0px;
+        		font-size: 1.2em;
+        		text-align: center;
+        	}
+        	div{
+        		padding-left:10px;
+        		padding-right:10px;
+        		line-height:34px;
+      			color:#646464;
+        	}
+        	div a{
+        		display:inline-block;
+        		width:63px;
+        		height:34px;
+        		line-height:34px;
+        		color:#f60;
+        		font-weight:bold;
+        		text-decoration:none;
+        		background:url(/ws/button.png) no-repeat;
+        		position:relative;
+        	}
+		.swipe_h3{line-height:40px;
+					height:40px;
+					background:rgba(0,0,0,.4);
+					position:fixed;
+					left:0;
+					right:0;
+					bottom:0;
+					z-index:10;
+					color:#ffffff;
+					font-weight:600;
+					padding-left:8px;
+					font-size:16px;
+					}
+		.swipe_h3  a{color:#ffffff;
+		text-decoration:none;
+		position:absolute;
+		left:15px;
+		top:5px;
+		background:url(images/ic_arrow_left_white_24dp.png) no-repeat left 5px;
+		padding-left:10px;
+		}	
+        </style>
+    </head>
+    <body>
+		<div>
+			<video width="100%" height="100%" autoplay>
+				<source src="/file?fp=${filePath}">
+			Your browser does not support the video tag.
+			</video>
+		</div>
+        <div class="swipe_h3">
+        <a href="recive.html">${back}</a> </div>
+    </body>
+</html>
