@@ -16,5 +16,5 @@
 #import "STFileTransferModel.h"
 #import "STFileReceiveModel.h"
 
-#define KUDPPORT 5944
+#define KUDPPORT 3333
 #define KSERVERPORT 8080
