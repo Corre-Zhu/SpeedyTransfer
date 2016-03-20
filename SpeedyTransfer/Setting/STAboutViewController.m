@@ -40,7 +40,8 @@
     label3.textColor = RGBFromHex(0x929292);
     label3.font = [UIFont systemFontOfSize:14.0f];
     label3.textAlignment = NSTextAlignmentCenter;
-    label3.text = NSLocalizedString(@"V1.0", nil);
+    NSString *version = [[[NSBundle mainBundle] infoDictionary] stringForKey:@"CFBundleShortVersionString"];
+    label3.text = version;
     [headView addSubview:label3];
     
     self.tableView.tableHeaderView = headView;
