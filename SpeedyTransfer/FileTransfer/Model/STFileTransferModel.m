@@ -75,32 +75,6 @@ HT_DEF_SINGLETON(STFileTransferModel, shareInstant);
             _sectionTransferFiles = [self sortTransferInfo:_transferFiles];
         }
         
-        // 创建相册
-        __block PHObjectPlaceholder *placeholder;
-
-        PHFetchOptions *fetchOptions = [[PHFetchOptions alloc] init];
-        fetchOptions.predicate = [NSPredicate predicateWithFormat:@"title = %@", ALBUM_TITLE];
-        toSaveCollection = [PHAssetCollection fetchAssetCollectionsWithType:PHAssetCollectionTypeAlbum
-                                                              subtype:PHAssetCollectionSubtypeAny
-                                                              options:fetchOptions].firstObject;
-        
-        if (!toSaveCollection)
-        {
-            [[PHPhotoLibrary sharedPhotoLibrary] performChanges:^{
-                PHAssetCollectionChangeRequest *createAlbum = [PHAssetCollectionChangeRequest creationRequestForAssetCollectionWithTitle:ALBUM_TITLE];
-                placeholder = [createAlbum placeholderForCreatedAssetCollection];
-            } completionHandler:^(BOOL success, NSError *error) {
-                if (success)
-                {
-                    PHFetchResult *collectionFetchResult = [PHAssetCollection fetchAssetCollectionsWithLocalIdentifiers:@[placeholder.localIdentifier]
-                                                                                                                options:nil];
-                    toSaveCollection = collectionFetchResult.firstObject;
-                } else {
-                    NSLog(@"create albumn failed");
-                }
-            }];
-        }
-        
         timeoutTimer = [NSTimer scheduledTimerWithTimeInterval:15.0f target:self selector:@selector(timeout) userInfo:nil repeats:YES];
         
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didEnterBackgroundNotification) name:UIApplicationDidEnterBackgroundNotification object:nil];
@@ -151,6 +125,38 @@ HT_DEF_SINGLETON(STFileTransferModel, shareInstant);
     }
     
     return [NSArray arrayWithArray:resultArr];
+}
+
+- (void)createToSaveCollectionIfNeeded:(void(^)(PHAssetCollection *assetCollection))completionHandler {
+    // 创建相册
+    __block PHObjectPlaceholder *placeholder;
+    
+    PHFetchOptions *fetchOptions = [[PHFetchOptions alloc] init];
+    fetchOptions.predicate = [NSPredicate predicateWithFormat:@"title = %@", ALBUM_TITLE];
+    toSaveCollection = [PHAssetCollection fetchAssetCollectionsWithType:PHAssetCollectionTypeAlbum
+                                                                subtype:PHAssetCollectionSubtypeAny
+                                                                options:fetchOptions].firstObject;
+    
+    if (!toSaveCollection)
+    {
+        [[PHPhotoLibrary sharedPhotoLibrary] performChanges:^{
+            PHAssetCollectionChangeRequest *createAlbum = [PHAssetCollectionChangeRequest creationRequestForAssetCollectionWithTitle:ALBUM_TITLE];
+            placeholder = [createAlbum placeholderForCreatedAssetCollection];
+        } completionHandler:^(BOOL success, NSError *error) {
+            if (success)
+            {
+                PHFetchResult *collectionFetchResult = [PHAssetCollection fetchAssetCollectionsWithLocalIdentifiers:@[placeholder.localIdentifier]
+                                                                                                            options:nil];
+                toSaveCollection = collectionFetchResult.firstObject;
+                completionHandler(toSaveCollection);
+            } else {
+                completionHandler(nil);
+                NSLog(@"create albumn failed");
+            }
+        }];
+    } else {
+        completionHandler(toSaveCollection);
+    }
 }
 
 #pragma mark - Broadcast
@@ -548,12 +554,14 @@ withFilterContext:(id)filterContext {
         }];
     };
     
-    if (toSaveCollection) {
-        block();
-    } else {
-        _currentReceivingInfo = nil;
-        [self startDownload];
-    }
+    [self createToSaveCollectionIfNeeded:^(PHAssetCollection *assetCollection) {
+        if (!assetCollection) {
+            _currentReceivingInfo = nil;
+            [self startDownload];
+        } else {
+            block();
+        }
+    }];
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context

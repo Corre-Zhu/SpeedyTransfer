@@ -32,7 +32,6 @@
 
 - (void)dealloc {
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
-    [self removeAllSelectedFiles];
 }
 
 - (void)viewDidLoad {
@@ -358,15 +357,25 @@
 }
 
 - (void)removeAllSelectedFiles {
-    [_selectedAssetsArr removeAllObjects];
-    [_selectedMusicsArr removeAllObjects];
-    [_selectedVideoAssetsArr removeAllObjects];
-    [_selectedContactsArr removeAllObjects];
+    if (_selectedAssetsArr.count > 0) {
+        [_selectedAssetsArr removeAllObjects];
+        [self reloadAssetsTableView];
+    }
     
-    [self reloadAssetsTableView];
-    [self reloadMusicsTableView];
-    [self reloadVideosTableView];
-    [self reloadContactsTableView];
+    if (_selectedVideoAssetsArr.count > 0) {
+        [_selectedVideoAssetsArr removeAllObjects];
+        [self reloadVideosTableView];
+    }
+    
+    if (_selectedMusicsArr.count > 0) {
+        [_selectedMusicsArr removeAllObjects];
+        [self reloadMusicsTableView];
+    }
+    
+    if (_selectedContactsArr.count > 0) {
+        [_selectedContactsArr removeAllObjects];
+        [self reloadContactsTableView];
+    }
     
     [self selectedFilesCountChanged];
 }

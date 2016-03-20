@@ -197,6 +197,10 @@
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSString *,id> *)change context:(void *)context {
     if ([keyPath isEqualToString:@"devicesArray"]) {
         dispatch_async(dispatch_get_main_queue(), ^{
+            if (self.navigationController.topViewController != self) {
+                return;
+            }
+            
             [self setupDeviceView];
             
             if (viewDidAppear) {
