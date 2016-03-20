@@ -262,7 +262,7 @@ HT_DEF_SINGLETON(STDeviceInfo, shareInstant);
 }
 
 
-- (void)cancelSendFile {
+- (void)cancelSendItemsAndPostCancel:(BOOL)postCancel {
     @synchronized(_prepareToSendFiles) {
         [_prepareToSendFiles removeAllObjects];
         
@@ -274,14 +274,16 @@ HT_DEF_SINGLETON(STDeviceInfo, shareInstant);
                 [[STFileTransferModel shareInstant] updateTransferStatus:STFileTransferStatusSendFailed withIdentifier:info.identifier];
             }
             
-            NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:self.cancelUrl]];
-            request.HTTPMethod = @"POST";
-            
-            NSHTTPURLResponse *response = nil;
-            NSError *error = nil;
-            [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&error];
-            if (response.statusCode != 200) {
-                NSLog(@"cancel error: %@", error);
+            if (postCancel) {
+                NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:self.cancelUrl]];
+                request.HTTPMethod = @"POST";
+                
+                NSHTTPURLResponse *response = nil;
+                NSError *error = nil;
+                [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&error];
+                if (response.statusCode != 200) {
+                    NSLog(@"cancel error: %@", error);
+                }
             }
         }
         

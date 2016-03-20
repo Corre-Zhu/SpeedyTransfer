@@ -68,6 +68,7 @@ HT_DEF_SINGLETON(STFileReceiveModel, shareInstant);
 
 - (void)didEnterBackgroundNotification {
     [self invalidTimer];
+    [_udpSocket close];
     _udpSocket = nil;
 }
 

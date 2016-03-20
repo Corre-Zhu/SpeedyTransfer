@@ -67,4 +67,10 @@ HT_DEF_SINGLETON(STFileTransferInfo, shareInstant);
     return [NSString stringWithFormat:@"%@/s", [NSString formatSize:self.downloadSpeed]];
 }
 
+- (NSString *)cancelUrl {
+    NSString *host = [[NSURL URLWithString:self.url] host];
+    NSNumber *port = [[NSURL URLWithString:self.url] port];
+    return [NSString stringWithFormat:@"http://%@:%@/cancel", host, port];
+}
+
 @end

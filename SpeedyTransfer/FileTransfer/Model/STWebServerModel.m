@@ -281,7 +281,8 @@
             ip = request.remoteAddressString;
         }
         
-        [[STFileTransferModel shareInstant] cancelReceiveItemsWithIp:ip];
+        [[STFileTransferModel shareInstant] cancelSendItemsTo:ip];
+        [[STFileTransferModel shareInstant] cancelReceiveItemsFrom:ip];
         return [GCDWebServerResponse responseWithStatusCode:200];
     }];
 

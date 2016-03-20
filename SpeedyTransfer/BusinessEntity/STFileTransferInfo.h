@@ -55,6 +55,7 @@ HT_AS_SINGLETON(STFileTransferInfo, shareInstant)
 @property (nonatomic) double lastProgressTimeStamp; // 用于计算瞬时速度
 @property (nonatomic) double lastProgress; // 用于计算瞬时速度
 @property (nonatomic) BOOL isCanceled; // 是否被取消传输
+@property (nonatomic, strong) NSString *cancelUrl; // 取消发送
 
 @property (nonatomic, strong) UIImage *image;
 @property (nonatomic, strong) NSString *fileSizeString;

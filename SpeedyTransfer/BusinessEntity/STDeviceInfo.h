@@ -35,6 +35,6 @@ HT_AS_SINGLETON(STDeviceInfo, shareInstant)
 - (void)addSendItems:(NSArray *)files; // 添加准备发送的文件
 - (void)startSend; // 开始向这个设备发送文件
 
-- (void)cancelSendFile; // 取消发送所有文件
+- (void)cancelSendItemsAndPostCancel:(BOOL)postCancel; // 取消向这个设备发送文件
 
 @end

@@ -22,7 +22,6 @@ NSString *const KDeviceNotConnectedNotification = @"DeviceNotConnectedNotificati
 
 @interface STFileTransferModel ()<GCDAsyncUdpSocketDelegate>
 {
-    GCDAsyncUdpSocket *udpSocket;
     NSTimer *timeoutTimer;
     HTFMDatabase *database;
     NSTimeInterval downloadStartTimestamp;
@@ -33,6 +32,8 @@ NSString *const KDeviceNotConnectedNotification = @"DeviceNotConnectedNotificati
     NSURLSessionDownloadTask *thumbDownloadTask; // 当前缩略图下载任务
     NSURLSessionDownloadTask *origindownloadTask; // 当前大图下载任务
 }
+
+@property (nonatomic, strong) GCDAsyncUdpSocket *udpSocket;
 
 @end
 
@@ -100,14 +101,32 @@ HT_DEF_SINGLETON(STFileTransferModel, shareInstant);
             }];
         }
         
-        udpSocket = [[GCDAsyncUdpSocket alloc] initWithDelegate:self delegateQueue:dispatch_get_main_queue()];
-        [udpSocket setIPv4Enabled:YES];
-        [udpSocket setIPv6Enabled:NO];
-        
         timeoutTimer = [NSTimer scheduledTimerWithTimeInterval:15.0f target:self selector:@selector(timeout) userInfo:nil repeats:YES];
+        
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didEnterBackgroundNotification) name:UIApplicationDidEnterBackgroundNotification object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(willEnterForegroundNotification) name:UIApplicationWillEnterForegroundNotification object:nil];
     }
 	
     return self;
+}
+
+- (GCDAsyncUdpSocket *)udpSocket {
+    if (!_udpSocket) {
+        _udpSocket = [[GCDAsyncUdpSocket alloc] initWithDelegate:self delegateQueue:dispatch_get_main_queue()];
+        [_udpSocket setIPv4Enabled:YES];
+        [_udpSocket setIPv6Enabled:NO];
+    }
+    
+    return _udpSocket;
+}
+
+- (void)didEnterBackgroundNotification {
+    [self.udpSocket close];
+    _udpSocket = nil;
+}
+
+- (void)willEnterForegroundNotification {
+    [self startListenBroadcast];
 }
 
 - (NSArray *)sortTransferInfo:(NSArray *)infos {
@@ -138,11 +157,11 @@ HT_DEF_SINGLETON(STFileTransferModel, shareInstant);
 
 - (void)startListenBroadcast {
     NSError *error = nil;
-    if (![udpSocket bindToPort:KUDPPORT error:&error]) {
+    if (![self.udpSocket bindToPort:KUDPPORT error:&error]) {
         NSLog(@"bind to port error: %@", error);
     };
     
-    if (![udpSocket beginReceiving:&error]) {
+    if (![self.udpSocket beginReceiving:&error]) {
         NSLog(@"Error starting server (recv): %@", error);
     }
 }
@@ -235,17 +254,6 @@ withFilterContext:(id)filterContext {
         }
     }];
     
-}
-
-#pragma mark - Cancel send file
-
-- (void)cancelSendFile {
-    @synchronized(self) {
-        NSArray *selectedDevices = [NSArray arrayWithArray:self.selectedDevicesArray];
-        for (STDeviceInfo *info in selectedDevices) {
-            [info cancelSendFile];
-        }
-    }
 }
 
 #pragma mark - Send file
@@ -362,36 +370,6 @@ withFilterContext:(id)filterContext {
             NSMutableArray *arr = [NSMutableArray arrayWithArray:_transferFiles];
             [arr insertObject:info atIndex:0];
             self.transferFiles = [NSArray arrayWithArray:arr];
-        }
-    }
-}
-
-#pragma mark - Cancel Receive File
-
-- (void)cancelReceiveItemsWithIp:(NSString *)ip {
-    @synchronized(self.prepareToReceiveFiles) {
-        NSMutableArray *tempArray = [NSMutableArray arrayWithArray:self.prepareToReceiveFiles];
-        for (STFileTransferInfo *info in self.prepareToReceiveFiles) {
-            if ([info.url containsString:ip]) {
-                [tempArray removeObject:info];
-            }
-        }
-        self.prepareToReceiveFiles = [NSMutableArray arrayWithArray:tempArray];
-        
-        if ([self.currentReceivingInfo.url containsString:ip]) {
-            [thumbDownloadTask cancel];
-            [origindownloadTask cancel];
-        }
-    }
-}
-
-- (void)cancelAllReceiveItems {
-    @synchronized(self.prepareToReceiveFiles) {
-        [self.prepareToReceiveFiles removeAllObjects];
-        
-        if (self.currentReceivingInfo) {
-            [thumbDownloadTask cancel];
-            [origindownloadTask cancel];
         }
     }
 }
@@ -595,6 +573,91 @@ withFilterContext:(id)filterContext {
         }
     } else {
         [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
+    }
+}
+
+#pragma mark - Cancel transfer
+
+- (void)cancelAllTransferFile {
+    [self cancelAllSendItems];
+    [self cancelAllReceiveItems];
+}
+
+- (void)cancelSendItemsTo:(NSString *)ip {
+    @synchronized(self) {
+        NSArray *selectedDevices = [NSArray arrayWithArray:self.selectedDevicesArray];
+        for (STDeviceInfo *info in selectedDevices) {
+            if ([info.ip isEqualToString:ip]) {
+                [info cancelSendItemsAndPostCancel:NO];
+                return;
+            }
+        }
+    }
+}
+
+- (void)cancelReceiveItemsFrom:(NSString *)ip {
+    @synchronized(self.prepareToReceiveFiles) {
+        NSMutableArray *tempArray = [NSMutableArray arrayWithArray:self.prepareToReceiveFiles];
+        for (STFileTransferInfo *info in self.prepareToReceiveFiles) {
+            if ([info.url containsString:ip]) {
+                [tempArray removeObject:info];
+            }
+        }
+        self.prepareToReceiveFiles = [NSMutableArray arrayWithArray:tempArray];
+        
+        if ([self.currentReceivingInfo.url containsString:ip]) {
+            [thumbDownloadTask cancel];
+            [origindownloadTask cancel];
+        }
+    }
+
+}
+
+// 取消所有发送
+- (void)cancelAllSendItems {
+    @synchronized(self) {
+        NSArray *selectedDevices = [NSArray arrayWithArray:self.selectedDevicesArray];
+        for (STDeviceInfo *info in selectedDevices) {
+            [info cancelSendItemsAndPostCancel:YES];
+        }
+    }
+}
+
+// 取消所有接收
+- (void)cancelAllReceiveItems {
+    @synchronized(self.prepareToReceiveFiles) {
+        // 找出所有设备来post cancel
+        NSMutableArray *tempCancelUrls = [NSMutableArray array];
+        for (STFileTransferInfo *info in self.prepareToReceiveFiles) {
+            NSString *cancelUrl = info.cancelUrl;
+            if (![tempCancelUrls containsObject:cancelUrl] && cancelUrl.length > 0) {
+                [tempCancelUrls addObject:cancelUrl];
+            }
+        }
+        
+        [self.prepareToReceiveFiles removeAllObjects];
+        
+        if (self.currentReceivingInfo) {
+            NSString *cancelUrl = self.currentReceivingInfo.cancelUrl;
+            if (![tempCancelUrls containsObject:cancelUrl] && cancelUrl.length > 0) {
+                [tempCancelUrls addObject:cancelUrl];
+            }
+            
+            [thumbDownloadTask cancel];
+            [origindownloadTask cancel];
+        }
+        
+        for (NSString *cancelUrl in tempCancelUrls) {
+            NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:cancelUrl]];
+            request.HTTPMethod = @"POST";
+            
+            NSHTTPURLResponse *response = nil;
+            NSError *error = nil;
+            [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&error];
+            if (response.statusCode != 200) {
+                NSLog(@"cancel error: %@", error);
+            }
+        }
     }
 }
 

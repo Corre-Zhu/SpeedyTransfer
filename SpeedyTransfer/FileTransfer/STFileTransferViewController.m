@@ -46,29 +46,16 @@ static NSString *cellIdentifier = @"CellIdentifier";
 }
 
 - (void)leftBarButtonItemClick {
-    if (self.isFromReceive) {
-        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"不再传输其它文件，确认退出？", nil) message:nil preferredStyle: UIAlertControllerStyleAlert];
-        UIAlertAction *action1 = [UIAlertAction actionWithTitle:NSLocalizedString(@"确认", nil) style:UIAlertActionStyleDestructive handler:^(UIAlertAction * _Nonnull action) {
-            [[STFileTransferModel shareInstant] cancelAllReceiveItems];
-            [self.navigationController popToRootViewControllerAnimated:YES];
-        }];
-        [alertController addAction:action1];
-        
-        UIAlertAction *action3 = [UIAlertAction actionWithTitle:NSLocalizedString(@"取消", nil) style:UIAlertActionStyleCancel handler:NULL];
-        [alertController addAction:action3];
-        [self presentViewController:alertController animated:YES completion:NULL];
-    } else {
-        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"不再传输其它文件，确认退出？", nil) message:nil preferredStyle: UIAlertControllerStyleAlert];
-        UIAlertAction *action1 = [UIAlertAction actionWithTitle:NSLocalizedString(@"确认", nil) style:UIAlertActionStyleDestructive handler:^(UIAlertAction * _Nonnull action) {
-            [[STFileTransferModel shareInstant] cancelSendFile];
-            [self.navigationController popToRootViewControllerAnimated:YES];
-        }];
-        [alertController addAction:action1];
-        
-        UIAlertAction *action3 = [UIAlertAction actionWithTitle:NSLocalizedString(@"取消", nil) style:UIAlertActionStyleCancel handler:NULL];
-        [alertController addAction:action3];
-        [self presentViewController:alertController animated:YES completion:NULL];
-    }
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"不再传输其它文件，确认退出？", nil) message:nil preferredStyle: UIAlertControllerStyleAlert];
+    UIAlertAction *action1 = [UIAlertAction actionWithTitle:NSLocalizedString(@"确认", nil) style:UIAlertActionStyleDestructive handler:^(UIAlertAction * _Nonnull action) {
+        [[STFileTransferModel shareInstant] cancelAllTransferFile];
+        [self.navigationController popToRootViewControllerAnimated:YES];
+    }];
+    [alertController addAction:action1];
+    
+    UIAlertAction *action3 = [UIAlertAction actionWithTitle:NSLocalizedString(@"取消", nil) style:UIAlertActionStyleCancel handler:NULL];
+    [alertController addAction:action3];
+    [self presentViewController:alertController animated:YES completion:NULL];
 }
 
 - (void)viewDidLoad {
