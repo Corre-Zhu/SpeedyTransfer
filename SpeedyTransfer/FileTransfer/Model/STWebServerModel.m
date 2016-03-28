@@ -367,26 +367,25 @@
 		// Add a default handler to serve static files (i.e. anything other than HTML files)
 		[self.webServer2 addGETHandlerForBasePath:@"/" directoryPath:websitePath indexFilename:nil cacheAge:3600 allowRangeRequests:YES];
 		
+		NSMutableDictionary *variables = [NSMutableDictionary dictionaryWithObjectsAndKeys:NSLocalizedString(@"", nil), @"title", NSLocalizedString(@"接收", nil), @"recv", NSLocalizedString(@"传送", nil), @"send", NSLocalizedString(@"更多", nil), @"more", nil];
+		
 		// Add an override handler for all requests to "*.html" URLs to do the special HTML templatization
 		[self.webServer2 addHandlerForMethod:@"GET"
 								   pathRegex:@"/.*\\.html"
 								requestClass:[GCDWebServerRequest class]
 								processBlock:^GCDWebServerResponse *(GCDWebServerRequest* request) {
-									
-									NSDictionary* variables = [NSDictionary dictionaryWithObjectsAndKeys:@"value", @"variable", nil];
 									return [GCDWebServerDataResponse responseWithHTMLTemplate:[websitePath stringByAppendingPathComponent:request.path]
 																					variables:variables];
-									
 								}];
 		
-		// Add an override handler to redirect "/" URL to "/index.html"
+		// Add an override handler to redirect "/" URL to "/recive.html"
 		[self.webServer2 addHandlerForMethod:@"GET"
 										path:@"/"
 								requestClass:[GCDWebServerRequest class]
 								processBlock:^GCDWebServerResponse *(GCDWebServerRequest* request) {
-									
-									return [GCDWebServerResponse responseWithRedirect:[NSURL URLWithString:@"index.html" relativeToURL:request.URL]
-																			permanent:NO];
+									// 默认跳转到接收页面
+									return [GCDWebServerDataResponse responseWithHTMLTemplate:[websitePath stringByAppendingPathComponent:@"recive.html"]
+																					variables:variables];
 								}];
 	}
 	

@@ -447,7 +447,7 @@
         if ([dic.allKeys.firstObject isEqualToString:collection]) {
             NSMutableArray *arr = dic.allValues.firstObject;
             [arr removeObject:asset];
-            return;
+            break;
         }
     }
     
@@ -464,7 +464,7 @@
         if ([dic.allKeys.firstObject isEqualToString:collection]) {
             NSMutableArray *arr = dic.allValues.firstObject;
             [arr removeObjectsInArray:assets];
-            return;
+            break;
         }
     }
     
@@ -481,7 +481,7 @@
         if ([dic.allKeys.firstObject isEqualToString:collection]) {
             NSMutableArray *arr = dic.allValues.firstObject;
             [arr removeAllObjects];
-            return;
+            break;
         }
     }
     
