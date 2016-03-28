@@ -1,0 +1,86 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>${title}-${more}</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" type="text/css" href="wj.css">
+<style>
+.titleL{display:block;}
+.titleR{display:none;}
+</style>
+</head>
+
+<body>
+<div class="header_container">
+<ul class="header">
+	<li><a href="send.html">${send}</a></li>
+    <li><a href="recive.html">${recv}</a></li>
+    <li style="padding-right:0;" class="recent"><a href="more.html">${more}</a></li>
+</ul>
+</div>
+<div class="container_wj" id="container_wj">
+     <a href="about.html"><div class="apk_68dp">
+    	<div class="icon"><img src="images/ic_advice_purple_40dp.png"></div>
+        <div class="apk_text1">${about}</div>
+        <div class="xz"><img src="images/ic_arrow_left_gray_24dp.png"></div>
+        <div class="line"></div>
+    </div>
+    </a>
+
+ <!--   <div class="title"  id="title">
+    	<div class="titleL">
+          <a href="DianChuan.apk"><div class="apk_68dp">
+    	<div class="icon"><img src="images/ic_friend_red_20dp.png"></div>
+       <div class="apk_text1">零流量邀请安装</div>
+        <div class="xz"><img src="images/ic_arrow_left_gray_24dp.png"></div>
+        <div class="line"></div>
+    </div>
+    </a>
+    </div>
+    </div>
+-->
+  <!--<div id="title" class="title"><div class="titleL"><a id="aa" href="http://3tkj.cn"><a id="ab" href="http://baidu.com"><div class="apk_68dp">-->
+  <div id="title" class="title"><div class="titleL"><a id="aa" href="yqaz.html"><a id="ab" href="yqaz.html"><div class="apk_68dp">
+    	<div class="icon"><img src="images/ic_friend_red_20dp.png"></div>
+       <div class="apk_text1">${zero_mobile_data}</div>
+        <div class="xz"><img src="images/ic_arrow_left_gray_24dp.png"></div>
+        <div class="line"></div>
+    </div></a></a></div>
+    </div>
+    
+         <a href="faq.html"><div class="apk_68dp">
+    	<div class="icon"><img src="images/question.png"></div>
+       <div class="apk_text1">${faq}</div>
+        <div class="xz"><img src="images/ic_arrow_left_gray_24dp.png"></div>
+        <div class="line"></div>
+    </div>
+    </a>
+
+</div>
+
+</body>
+<script>  
+
+    	
+        	//点击下载
+        	var title=base.getEle('title');
+        	var l=base.getEleFromCls(title,'titleL')[0].getElementsByTagName('a')[0];
+
+        	
+        	l.onclick=function(evt){
+        		evt=base.fixevt(evt);
+        		if (navigator.userAgent.match(/Android/i)) {
+        		base.getEle('aa').setAttribute("style", "display:block");
+				base.getEle('ab').setAttribute("style", "display: none");
+        		}else{
+        		base.getEle('aa').setAttribute("style", "display:none");
+				base.getEle('aa').setAttribute("style", "display:block");
+			
+
+        		}
+        		if(!sign)
+        			evt.preventDefault();
+        	}
+</script>
+</html>
