@@ -10,6 +10,7 @@
 #import "STFileTransferViewController.h"
 #import "STDeviceButton.h"
 #import "STFileTransferModel.h"
+#import <GCDWebServerFunctions.h>
 
 @interface STTransferInstructionViewController ()
 {
@@ -18,6 +19,8 @@
     UIImageView *wifiBgView;
     UILabel *wifiLabel;
     UIView *bottomContainerView;
+	UIButton *button;
+	UIView *qrcodeView;
     
     UIView *devicesView;
     UIButton *sendButton;
@@ -151,6 +154,7 @@
     [wifiBgView addSubview:wifiLabel];
     
     bottomContainerView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, topContainerView.bottom, IPHONE_WIDTH, 180.0f)];
+	bottomContainerView.backgroundColor = [UIColor redColor];
     [scrollView addSubview:bottomContainerView];
     
     UILabel *descLabel3 = [[UILabel alloc] initWithFrame:CGRectMake(16.0f, 20.0f, 200.0f, 21.0f)];
@@ -184,7 +188,36 @@
     descLabel5.attributedText = string2;
     descLabel5.font = [UIFont systemFontOfSize:13.0f];
     [whiteView2 addSubview:descLabel5];
-    
+	
+	button = [UIButton buttonWithType:UIButtonTypeCustom];
+	button.frame = CGRectMake(10.0f, 55.0f, whiteView2.width - 20.0f, 40.0f);
+	button.backgroundColor = [UIColor clearColor];
+	[button setImage:[UIImage imageNamed:@"ic_keyboard_arrow_down_grey600"] forState:UIControlStateNormal];
+	button.imageEdgeInsets = UIEdgeInsetsMake(0.0f, button.width - 30.0f, 0.0f, 0.0f);
+	[button addTarget:self action:@selector(buttonClick) forControlEvents:UIControlEventTouchUpInside];
+	[whiteView2 addSubview:button];
+	
+	
+	qrcodeView = [[UIView alloc] initWithFrame:CGRectMake(10.0f, 95.0f, whiteView2.width - 20.0f, 230.0f)];
+	[whiteView2 addSubview:qrcodeView];
+	qrcodeView.hidden = YES;
+	
+	UIImageView *lineView2 = [[UIImageView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, qrcodeView.width, 0.5f)];
+	lineView2.backgroundColor = [UIColor lightGrayColor];
+	[qrcodeView addSubview:lineView2];
+	
+	UILabel *descLabel6 = [[UILabel alloc] initWithFrame:CGRectMake(0.0f, 5.0f, 200.0f, 20.0f)];
+	descLabel6.text = NSLocalizedString(@"请好友扫描二维码接收文件", nil);
+	descLabel6.font = [UIFont systemFontOfSize:13.0f];
+	[qrcodeView addSubview:descLabel6];
+	
+	NSString *address = GCDWebServerGetPrimaryIPAddress(NO);
+	if (address.length == 0) {
+		// 获取个人热点ip
+		address = [UIDevice hotspotAddress];
+	}
+	
+	
     [self reloadWifiName];
     
     if ([STFileTransferModel shareInstant].devicesArray.count > 0) {
@@ -274,6 +307,10 @@
 
 - (void)leftBarButtonItemClick {
     [self.navigationController popViewControllerAnimated:YES];
+}
+
+- (void)buttonClick {
+	
 }
 
 @end
