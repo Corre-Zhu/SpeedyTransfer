@@ -203,7 +203,7 @@
 }
 
 - (id)copyWithZone:(NSZone *)zone {
-    return nil;
+    return self;
 }
 
 @end

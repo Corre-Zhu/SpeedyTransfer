@@ -7,13 +7,18 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "HTSingleton.h"
 
 @interface STWebServerModel : NSObject
+
+HT_AS_SINGLETON(STWebServerModel, shareInstant);
 
 - (void)startWebServer;
 - (void)stopWebServer;
 
-- (void)startWebServer2; // 无界传输
+// 无界传输
+@property (nonatomic, strong) NSDictionary *variables;
+- (void)startWebServer2;
 - (void)stopWebServer2;
 
 @end

@@ -23,7 +23,6 @@
 @interface STHomeViewController ()
 {
     UIImageView *headImageView;
-    STWebServerModel *webServerModel;
 }
 @end
 
@@ -114,9 +113,7 @@
     [self addButtonWithImage:@"home6" title:NSLocalizedString(@"反馈", nil) frame:CGRectMake(IPHONE_WIDTH / 2.0f + 30.0f + inset, backView.bottom + 123.0f, 60.0f, 90.0f) selector:@selector(feedbackButtonClick)];
     
     // 启动webserver
-    webServerModel = [[STWebServerModel alloc] init];
-    [webServerModel startWebServer];
-	[webServerModel startWebServer2];
+    [[STWebServerModel shareInstant] startWebServer];
     
     // 开始发送udp广播
     [[STFileReceiveModel shareInstant] startBroadcast];

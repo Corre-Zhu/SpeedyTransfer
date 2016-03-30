@@ -11,6 +11,8 @@
 #import "STDeviceButton.h"
 #import "STFileTransferModel.h"
 #import <GCDWebServerFunctions.h>
+#import "STWebServerModel.h"
+#import "ZZFileUtility.h"
 
 @interface STTransferInstructionViewController ()
 {
@@ -19,8 +21,11 @@
     UIImageView *wifiBgView;
     UILabel *wifiLabel;
     UIView *bottomContainerView;
+	UIImageView *whiteView2;
 	UIButton *button;
 	UIView *qrcodeView;
+	UIImageView *qrcodeImageView;
+	UILabel *ipLabel;
     
     UIView *devicesView;
     UIButton *sendButton;
@@ -154,7 +159,7 @@
     [wifiBgView addSubview:wifiLabel];
     
     bottomContainerView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, topContainerView.bottom, IPHONE_WIDTH, 180.0f)];
-	bottomContainerView.backgroundColor = [UIColor redColor];
+	bottomContainerView.backgroundColor = [UIColor clearColor];
     [scrollView addSubview:bottomContainerView];
     
     UILabel *descLabel3 = [[UILabel alloc] initWithFrame:CGRectMake(16.0f, 20.0f, 200.0f, 21.0f)];
@@ -163,8 +168,9 @@
     descLabel3.font = [UIFont systemFontOfSize:14.0f];
     [bottomContainerView addSubview:descLabel3];
     
-    UIImageView *whiteView2 = [[UIImageView alloc] initWithFrame:CGRectMake(16.0f, 49.0f, IPHONE_WIDTH - 32.0f, 100.0f)];
+    whiteView2 = [[UIImageView alloc] initWithFrame:CGRectMake(16.0f, 49.0f, IPHONE_WIDTH - 32.0f, 100.0f)];
     whiteView2.image = [[UIImage imageNamed:@"我要发送_bg"] resizableImageWithCapInsets:UIEdgeInsetsMake(4.0f, 6.0f, 4.0f, 6.0f)];
+	whiteView2.userInteractionEnabled = YES;
     [bottomContainerView addSubview:whiteView2];
     
     UIImageView *lineView = [[UIImageView alloc] initWithFrame:CGRectMake(10.0f, whiteView2.height / 2.0f, whiteView2.width - 20.0f, 0.5f)];
@@ -206,17 +212,31 @@
 	lineView2.backgroundColor = [UIColor lightGrayColor];
 	[qrcodeView addSubview:lineView2];
 	
-	UILabel *descLabel6 = [[UILabel alloc] initWithFrame:CGRectMake(0.0f, 5.0f, 200.0f, 20.0f)];
+	UILabel *descLabel6 = [[UILabel alloc] initWithFrame:CGRectMake(0.0f, 12.0f, 200.0f, 20.0f)];
 	descLabel6.text = NSLocalizedString(@"请好友扫描二维码接收文件", nil);
 	descLabel6.font = [UIFont systemFontOfSize:13.0f];
+	descLabel6.textColor = [UIColor grayColor];
 	[qrcodeView addSubview:descLabel6];
 	
-	NSString *address = GCDWebServerGetPrimaryIPAddress(NO);
-	if (address.length == 0) {
-		// 获取个人热点ip
-		address = [UIDevice hotspotAddress];
-	}
+	qrcodeImageView = [[UIImageView alloc] initWithFrame:CGRectMake((qrcodeView.width - 100.0f) / 2.0f, descLabel6.bottom + 12.0f, 100.0f, 100.0f)];
+	qrcodeImageView.contentMode = UIViewContentModeScaleAspectFit;
+	[qrcodeView addSubview:qrcodeImageView];
 	
+	UIImageView *lineView3 = [[UIImageView alloc] initWithFrame:CGRectMake(0.0f, qrcodeImageView.bottom + 12.0f, qrcodeView.width, 0.5f)];
+	lineView3.backgroundColor = [UIColor lightGrayColor];
+	[qrcodeView addSubview:lineView3];
+	
+	UILabel *descLabel7 = [[UILabel alloc] initWithFrame:CGRectMake(0.0f, lineView3.bottom + 12.0f, qrcodeView.width, 20.0f)];
+	descLabel7.text = NSLocalizedString(@"或请好友打开浏览器输入以下网址接收文件", nil);
+	descLabel7.font = [UIFont systemFontOfSize:13.0f];
+	descLabel7.textColor = [UIColor grayColor];
+	[qrcodeView addSubview:descLabel7];
+	
+	ipLabel = [[UILabel alloc] initWithFrame:CGRectMake(0.0f, descLabel7.bottom + 9.0f, qrcodeView.width, 20.0f)];
+	ipLabel.font = [UIFont systemFontOfSize:13.0f];
+	ipLabel.textAlignment = NSTextAlignmentCenter;
+	ipLabel.textColor = [UIColor grayColor];
+	[qrcodeView addSubview:ipLabel];
 	
     [self reloadWifiName];
     
@@ -310,7 +330,168 @@
 }
 
 - (void)buttonClick {
-	
+	if (qrcodeView.hidden) {
+		NSString *address = GCDWebServerGetPrimaryIPAddress(NO);
+		if (address.length == 0) {
+			// 获取个人热点ip
+			address = [UIDevice hotspotAddress];
+		}
+		
+		if (address.length == 0) {
+			return;
+		}
+		
+		address = [NSString stringWithFormat:@"%@:%@", address, @(KSERVERPORT2)];
+		[button setImage:[UIImage imageNamed:@"ic_keyboard_arrow_up_grey600"] forState:UIControlStateNormal];
+		qrcodeView.hidden = NO;
+		whiteView2.frame = CGRectMake(16.0f, 49.0f, IPHONE_WIDTH - 32.0f, 328.0f);
+		scrollView.contentSize = CGSizeMake(IPHONE_WIDTH, 778.0f);
+		
+		UIImage *image = [address createRRcode];
+		if (image.size.width < 100.0f) {
+			image = [image resizeImage:image withQuality:kCGInterpolationNone rate:100.0f / image.size.width];
+		}
+		qrcodeImageView.image = image;
+		ipLabel.text = address;
+		[scrollView setContentOffset:CGPointMake(0.0f, scrollView.contentSize.height - scrollView.height) animated:YES];
+		
+		[self setupVariablesAndStartWebServer];
+	} else {
+		[button setImage:[UIImage imageNamed:@"ic_keyboard_arrow_down_grey600"] forState:UIControlStateNormal];
+		qrcodeView.hidden = YES;
+		whiteView2.frame = CGRectMake(16.0f, 49.0f, IPHONE_WIDTH - 32.0f, 100.0f);
+		scrollView.contentSize = CGSizeMake(IPHONE_WIDTH, 550.0f);
+		
+		[[STWebServerModel shareInstant] stopWebServer2]; // 停止无界传输
+		[[STFileTransferModel shareInstant] removeAllBrowser];
+	}
 }
+
+// 设置无界传输变量值
+- (NSString *)htmlForFileInfo:(NSArray *)fileInfos category:(NSString *)category image:(NSString *)imageName icon:(NSString *)iconName {
+	NSMutableString *htmlString = [NSMutableString string];
+
+	[htmlString appendFormat:@"<div class=\"container1\"> \
+	 <div class=\"container_wj\"> \
+	 <div class=\"apk_container\"> \
+	 <img src=\"%@\"> \
+	 <div class=\"apk_text\">%@(%@)</div> \
+	 </div>", imageName, category, @(fileInfos.count)];
+	
+	for (NSDictionary *fileInfo in fileInfos) {
+		NSString *url = [fileInfo stringForKey:FILE_URL];
+		NSString *iconUrl = [fileInfo stringForKey:ICON_URL];
+		if (!iconUrl) {
+			iconUrl = iconName;
+		}
+		NSString *fileName = [fileInfo stringForKey:FILE_NAME];
+		double fileSize = [fileInfo doubleForKey:FILE_SIZE];
+		NSString *fileSizeString = [NSString formatSize:fileSize];
+		[htmlString appendFormat:@"<a href=\"%@\"> <div class=\"apk_68dp\"> \
+		 <div class=\"icon\"><img src=\"%@\"></div> \
+		 <div class=\"apk_text1\">%@</div> \
+		 <div class=\"xz\"><img src=\"images/xz.png\"></div> \
+		 <div class=\"apk_text2\">%@</div> \
+		 <div class=\"line\"></div> \
+		 </div> \
+		 </a>", url, iconUrl, fileName, fileSizeString];
+	}
+	
+	[htmlString appendFormat:@" </div> \
+	 <div class=\"jiange\"> \
+	 <div class=\"line1\"></div> \
+	 <div class=\"jianxi\"></div> \
+	 <div class=\"line1\"></div> \
+	 </div> \
+	 </div>"];
+	
+	return htmlString;
+}
+
+- (void)setupVariablesAndStartWebServer {
+	ZZFileUtility *fileUtility = [[ZZFileUtility alloc] init];
+	[fileUtility fileInfoWithItems:[self.fileSelectionTabController allSelectedFiles] completionBlock:^(NSArray *fileInfos) {
+		NSMutableArray *picArray = [NSMutableArray arrayWithCapacity:fileInfos.count];
+		NSMutableArray *musicArray = [NSMutableArray arrayWithCapacity:fileInfos.count];
+		NSMutableArray *videoArray = [NSMutableArray arrayWithCapacity:fileInfos.count];
+		NSMutableArray *contactArray = [NSMutableArray arrayWithCapacity:fileInfos.count];
+		for (NSDictionary *fileInfo in fileInfos) {
+			NSString *url = [fileInfo stringForKey:FILE_URL];
+			NSString *fileType = [fileInfo stringForKey:FILE_TYPE];
+			if ([url containsString:@"/image/"]) {
+				if ([fileType.lowercaseString isEqualToString:@"mov"] ||
+					[fileType.lowercaseString isEqualToString:@"3gp"] ||
+					[fileType.lowercaseString isEqualToString:@"mp4"]) {
+					[videoArray addObject:fileInfo];
+				} else {
+					[picArray addObject:fileInfo];
+				}
+			} else if ([url containsString:@"/contact/"]) {
+				[contactArray addObject:fileInfo];
+			} else if ([url containsString:@"/music/"]) {
+				[musicArray addObject:fileInfo];
+			}
+		}
+		
+		NSMutableString *htmlString = [NSMutableString string];
+
+		if (picArray.count > 0) {
+			[htmlString appendString:[self htmlForFileInfo:picArray category:@"图片" image:@"images/ic_picture_red_24dp.png" icon:nil]];
+		}
+		
+		if (musicArray.count > 0) {
+			[htmlString appendString:[self htmlForFileInfo:musicArray category:@"音乐" image:@"images/ic_picture_green_12dp.png" icon:@"images/ic_music_purple_40dp.png"]];
+		}
+		
+		if (videoArray.count > 0) {
+			[htmlString appendString:[self htmlForFileInfo:videoArray category:@"视频" image:@"images/ic_picture_green_12dp.png" icon:nil]];
+		}
+		
+		if (contactArray.count > 0) {
+			[htmlString appendString:[self htmlForFileInfo:contactArray category:@"联系人" image:@"images/ic_picture_green_12dp.png" icon:@"images/wendang.png"]];
+		}
+
+		NSString *summary = [NSString stringWithFormat:@"%@给您发送了%@个文件", [UIDevice currentDevice].name, @([self.fileSelectionTabController allSelectedFiles].count)];
+		[[STWebServerModel shareInstant] setVariables:@{@"summary": summary,
+														@"fileInfo": htmlString}];
+		[[STWebServerModel shareInstant] startWebServer2]; // 启动无界传输
+		
+	}];
+
+}
+
+/*
+ <div class="container1">
+ <div class="container_wj">
+ <div class="apk_container">
+ <img src="images/ic_picture_green_12dp.png">
+ <div class="apk_text">${category}(${count})</div>
+ </div>
+ <!-- $BeginBlock files -->
+ <a href="${fileType}?fp=${path}"> <div class="apk_68dp">
+ <div class="icon"><img src="${icon}"></div>
+ <div class="apk_text1">${name}</div>
+ <div class="xz"><img src="images/xz.png"></div>
+ <div class="apk_text2">${length}</div>
+ <div class="line"></div>
+ </div>
+ </a>
+ <a href="${fileType}?fp=${path}"> <div class="apk_68dp">
+ <div class="icon"><img src="${icon}"></div>
+ <div class="apk_text1">${name}</div>
+ <div class="xz"><img src="images/xz.png"></div>
+ <div class="apk_text2">${length}</div>
+ <div class="line"></div>
+ </div>
+ </a>
+ <!-- $EndBlock files -->
+ </div>
+ <div class="jiange">
+	<div class="line1"></div>
+ <div class="jianxi"></div>
+ <div class="line1"></div>
+ </div>
+ </div>
+ */
 
 @end

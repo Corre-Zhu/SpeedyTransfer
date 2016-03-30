@@ -13,5 +13,8 @@
 - (UIImage *)imageWithScaleSize:(CGSize)size;
 - (UIImage *)imageWithScaleSize:(CGSize)size interpolationQuality:(CGInterpolationQuality)quality;
 - (UIImage *)imageScaleAspectToMaxSize:(CGFloat)newSize;
+- (UIImage *)resizeImage:(UIImage *)image
+			 withQuality:(CGInterpolationQuality)quality
+					rate:(CGFloat)rate;
 
 @end

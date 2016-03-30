@@ -52,4 +52,8 @@ HT_AS_SINGLETON(STFileTransferModel, shareInstant);
 - (void)cancelSendItemsTo:(NSString *)ip; // 取消发送给。。
 - (void)cancelReceiveItemsFrom:(NSString *)ip; // 取消接收自。。
 
+// 发现无界设备
+- (void)addNewBrowser:(NSString *)host;
+- (void)removeAllBrowser; // 移除所有无界设备
+
 @end

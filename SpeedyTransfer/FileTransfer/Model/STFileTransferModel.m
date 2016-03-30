@@ -15,6 +15,7 @@
 #import "HTSQLBuffer.h"
 #import "AppDelegate.h"
 #import <AFNetworking/AFNetworking.h>
+#import "STWebServerModel.h"
 
 #define ALBUM_TITLE @"点传"
 
@@ -182,7 +183,7 @@ HT_DEF_SINGLETON(STFileTransferModel, shareInstant);
                 BOOL timeout = NO;
                 BOOL deviceNotConnected = NO;
                 for (STDeviceInfo *deviceInfo in tempArr) {
-                    if ([[NSDate date] timeIntervalSince1970] - deviceInfo.lastUpdateTimestamp > 15) {
+                    if (!deviceInfo.isBrowser && [[NSDate date] timeIntervalSince1970] - deviceInfo.lastUpdateTimestamp > 15) {
                         // 15秒之内没有收到udp广播，默认当做离线处理
                         timeout = YES;
                         [tempDevicesArry removeObject:deviceInfo];
@@ -262,6 +263,65 @@ withFilterContext:(id)filterContext {
     
 }
 
+#pragma mark - Find new device
+
+- (void)addNewBrowser:(NSString *)host {
+		@synchronized(self) {
+			@autoreleasepool {
+				if (host.length > 0 && ![[UIDevice getAllIpAddresses].allValues containsObject:host]) {
+					BOOL find = NO;
+					NSArray *tempArr = [NSArray arrayWithArray:self.devicesArray];
+					for (STDeviceInfo *deviceInfo in tempArr) {
+						if (deviceInfo.isBrowser && [deviceInfo.ip isEqualToString:host]) {
+							find = YES;
+							break;
+						}
+					}
+					
+					if (!find) {
+						STDeviceInfo *deviceInfo = [[STDeviceInfo alloc] init];
+						deviceInfo.ip = host;
+						deviceInfo.isBrowser = YES;
+						deviceInfo.deviceName = host;
+						deviceInfo.headImage = [UIImage imageNamed:@"head9"];
+						self.devicesArray = [tempArr arrayByAddingObject:deviceInfo];
+					}
+				}
+			}
+		}
+}
+
+- (void)removeAllBrowser {
+	@synchronized(self) {
+		@autoreleasepool {
+			NSArray *tempArr = [NSArray arrayWithArray:self.devicesArray];
+			NSMutableArray *tempDevicesArry = [NSMutableArray arrayWithArray:self.devicesArray];
+			NSMutableArray *tempSelectedDevicesArray = [NSMutableArray arrayWithArray:self.selectedDevicesArray];
+			BOOL findBrowser = NO;
+			BOOL deviceNotConnected = NO;
+			for (STDeviceInfo *deviceInfo in tempArr) {
+				if (deviceInfo.isBrowser) {
+					findBrowser = YES;
+					[tempDevicesArry removeObject:deviceInfo];
+					
+					if ([tempSelectedDevicesArray containsObject:deviceInfo]) {
+						deviceNotConnected = YES;
+						[tempSelectedDevicesArray removeObject:deviceInfo];
+					}
+				}
+			}
+			
+			if (findBrowser) {
+				self.devicesArray = [NSArray arrayWithArray:tempDevicesArry];
+			}
+			
+			if (deviceNotConnected) {
+				self.selectedDevicesArray = [NSArray arrayWithArray:tempSelectedDevicesArray];
+			}
+		}
+	}
+}
+
 #pragma mark - Send file
 
 - (void)sendItems:(NSArray *)items {
@@ -275,7 +335,7 @@ withFilterContext:(id)filterContext {
 }
 
 - (NSArray *)insertItemsToDbWithDeviceInfo:(STDeviceInfo *)deviceInfo fileInfos:(NSArray *)fileInfos {
-    
+	
     NSMutableArray *resultArray = [NSMutableArray arrayWithCapacity:fileInfos.count];
     for (NSDictionary *fileInfo in fileInfos) {
         STFileTransferInfo *entity = [[STFileTransferInfo alloc] init];
@@ -589,6 +649,8 @@ withFilterContext:(id)filterContext {
 - (void)cancelAllTransferFile {
     [self cancelAllSendItems];
     [self cancelAllReceiveItems];
+	[self removeAllBrowser];
+	[[STWebServerModel shareInstant] stopWebServer2];
 }
 
 - (void)cancelSendItemsTo:(NSString *)ip {

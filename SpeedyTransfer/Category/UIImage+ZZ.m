@@ -86,4 +86,22 @@
     return scaledImage;
 }
 
+- (UIImage *)resizeImage:(UIImage *)image
+			 withQuality:(CGInterpolationQuality)quality
+					rate:(CGFloat)rate
+{
+	UIImage *resized = nil;
+	CGFloat width = image.size.width * rate;
+	CGFloat height = image.size.height * rate;
+	
+	UIGraphicsBeginImageContext(CGSizeMake(width, height));
+	CGContextRef context = UIGraphicsGetCurrentContext();
+	CGContextSetInterpolationQuality(context, quality);
+	[image drawInRect:CGRectMake(0, 0, width, height)];
+	resized = UIGraphicsGetImageFromCurrentImageContext();
+	UIGraphicsEndImageContext();
+	
+	return resized;
+}
+
 @end

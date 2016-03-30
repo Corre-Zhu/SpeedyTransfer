@@ -15,6 +15,7 @@
 
 HT_AS_SINGLETON(STDeviceInfo, shareInstant)
 
+@property (nonatomic) BOOL isBrowser; // 是否是浏览器（通过无界连接的）
 @property (nonatomic, strong) NSString *deviceName;
 @property (nonatomic, strong) UIImage *headImage;
 

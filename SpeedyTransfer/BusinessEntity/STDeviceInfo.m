@@ -176,38 +176,40 @@ HT_DEF_SINGLETON(STDeviceInfo, shareInstant);
         @synchronized(_prepareToSendFiles) {
             [self.sendingTransferInfos addObjectsFromArray:fileTransferInfos];
         }
-        
-        NSString *itemsString = [fileInfos jsonString];
-        NSData *postData = [itemsString dataUsingEncoding:NSUTF8StringEncoding];
-        NSString *postLength = @(postData.length).stringValue;
-        
-        NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:self.recvUrl]];
-        request.HTTPMethod = @"POST";
-        [request setValue:postLength forHTTPHeaderField:@"Content-Length"];
-        [request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];
-        [request setHTTPBody:postData];
-        
-        NSHTTPURLResponse *response = nil;
-        NSError *error = nil;
-        [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&error];
-        if (response.statusCode != 200) {
-            for (STFileTransferInfo *transferInfo in fileTransferInfos) {
-                transferInfo.transferStatus = STFileTransferStatusSendFailed;
-                [[STFileTransferModel shareInstant] updateTransferStatus:STFileTransferStatusSendFailed withIdentifier:transferInfo.identifier];
-                
-                @synchronized(_prepareToSendFiles) {
-                    [self.sendingTransferInfos removeObject:transferInfo];
-                }
-            }
-            
-            if (self.sendingTransferInfos.count == 0) {
-                [self startSend];
-            }
-            
-        }
-        
+		
+		if (!self.isBrowser) {
+			NSString *itemsString = [fileInfos jsonString];
+			NSData *postData = [itemsString dataUsingEncoding:NSUTF8StringEncoding];
+			NSString *postLength = @(postData.length).stringValue;
+			
+			NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:self.recvUrl]];
+			request.HTTPMethod = @"POST";
+			[request setValue:postLength forHTTPHeaderField:@"Content-Length"];
+			[request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];
+			[request setHTTPBody:postData];
+			
+			NSHTTPURLResponse *response = nil;
+			NSError *error = nil;
+			[NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&error];
+			if (response.statusCode != 200) {
+				for (STFileTransferInfo *transferInfo in fileTransferInfos) {
+					transferInfo.transferStatus = STFileTransferStatusSendFailed;
+					[[STFileTransferModel shareInstant] updateTransferStatus:STFileTransferStatusSendFailed withIdentifier:transferInfo.identifier];
+					
+					@synchronized(_prepareToSendFiles) {
+						[self.sendingTransferInfos removeObject:transferInfo];
+					}
+				}
+				
+				if (self.sendingTransferInfos.count == 0) {
+					[self startSend];
+				}
+				
+			}
+		}
+		
     }];
-    
+	
 }
 
 - (void)fileWrittenProgressNotification:(NSNotification *)notification {

@@ -25,10 +25,13 @@
 @property (nonatomic) ABAddressBookRef addressBook;
 
 @property (nonatomic, strong) GCDWebServer *webServer2;
+@property (nonatomic, strong) NSDictionary *constVariable;
 
 @end
 
 @implementation STWebServerModel
+
+HT_DEF_SINGLETON(STWebServerModel, shareInstant);
 
 - (NSString *)apiInfos {
     NSString *apiInfoStr = nil;
@@ -358,6 +361,10 @@
 }
 
 - (void)startWebServer2 {
+	if (!self.constVariable) {
+		self.constVariable = [NSDictionary dictionaryWithObjectsAndKeys:NSLocalizedString(@"", nil), @"title", NSLocalizedString(@"接收", nil), @"recv", NSLocalizedString(@"传送", nil), @"send", NSLocalizedString(@"更多", nil), @"more", nil];
+	}
+	
 	if (!_webServer2) {
 		// Get the path to the website directory
 		NSString* websitePath = [[NSBundle mainBundle] pathForResource:@"Website" ofType:nil];
@@ -367,13 +374,19 @@
 		// Add a default handler to serve static files (i.e. anything other than HTML files)
 		[self.webServer2 addGETHandlerForBasePath:@"/" directoryPath:websitePath indexFilename:nil cacheAge:3600 allowRangeRequests:YES];
 		
-		NSMutableDictionary *variables = [NSMutableDictionary dictionaryWithObjectsAndKeys:NSLocalizedString(@"", nil), @"title", NSLocalizedString(@"接收", nil), @"recv", NSLocalizedString(@"传送", nil), @"send", NSLocalizedString(@"更多", nil), @"more", nil];
-		
+		__weak typeof(self) weakSelf = self;
 		// Add an override handler for all requests to "*.html" URLs to do the special HTML templatization
 		[self.webServer2 addHandlerForMethod:@"GET"
 								   pathRegex:@"/.*\\.html"
 								requestClass:[GCDWebServerRequest class]
 								processBlock:^GCDWebServerResponse *(GCDWebServerRequest* request) {
+									NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"http://%@", request.remoteAddressString]];
+									[[STFileTransferModel shareInstant] addNewBrowser:url.host];
+									
+									NSMutableDictionary *variables = [NSMutableDictionary dictionaryWithDictionary:weakSelf.constVariable];
+									if (weakSelf.variables.count > 0) {
+										[variables addEntriesFromDictionary:weakSelf.variables];
+									}
 									return [GCDWebServerDataResponse responseWithHTMLTemplate:[websitePath stringByAppendingPathComponent:request.path]
 																					variables:variables];
 								}];
@@ -384,18 +397,26 @@
 								requestClass:[GCDWebServerRequest class]
 								processBlock:^GCDWebServerResponse *(GCDWebServerRequest* request) {
 									// 默认跳转到接收页面
+									NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"http://%@", request.remoteAddressString]];
+									[[STFileTransferModel shareInstant] addNewBrowser:url.host];
+									
+									NSMutableDictionary *variables = [NSMutableDictionary dictionaryWithDictionary:weakSelf.constVariable];
+									if (weakSelf.variables.count > 0) {
+										[variables addEntriesFromDictionary:weakSelf.variables];
+									}
 									return [GCDWebServerDataResponse responseWithHTMLTemplate:[websitePath stringByAppendingPathComponent:@"recive.html"]
 																					variables:variables];
 								}];
 	}
 	
-	NSDictionary *options = @{GCDWebServerOption_Port: @(8081)};
+	NSDictionary *options = @{GCDWebServerOption_Port: @(KSERVERPORT2)};
 	[self.webServer2 startWithOptions:options error:nil];
 	NSLog(@"Visit %@ in your web browser", self.webServer2.serverURL);
 }
 
 - (void)stopWebServer2 {
 	[self.webServer2 stop];
+	self.variables = nil;
 }
 
 @end
