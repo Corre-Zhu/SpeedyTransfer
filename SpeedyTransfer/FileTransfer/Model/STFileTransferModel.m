@@ -494,6 +494,12 @@ withFilterContext:(id)filterContext {
 		NSLog(@"%@", database.lastError);
 	}
 	[self addTransferFile:_currentReceivingInfo];
+    
+    if (_currentReceivingInfo.transferStatus == STFileTransferStatusReceived) {
+        // 从无界接收的时候
+        [self downloadSucceedWithPath:_currentReceivingInfo.url];
+        return;
+    }
 	
     // 下载缩略图
     NSURLSessionConfiguration *configuration = [NSURLSessionConfiguration defaultSessionConfiguration];
@@ -554,45 +560,7 @@ withFilterContext:(id)filterContext {
             _currentReceivingInfo = nil;
             [self startDownload];
         } else {
-            [self updateTransferStatus:STFileTransferStatusReceived withIdentifier:_currentReceivingInfo.identifier];
-            
-            NSTimeInterval now = [[NSDate date] timeIntervalSince1970];
-            float downloadSpeed = 1 / (now - downloadStartTimestamp) * _currentReceivingInfo.fileSize;
-            [self updateDownloadSpeed:downloadSpeed withIdentifier:_currentReceivingInfo.identifier];
-            _currentReceivingInfo.downloadSpeed = downloadSpeed;
-            _currentReceivingInfo.progress = 1.0f;
-            _currentReceivingInfo.transferStatus = STFileTransferStatusReceived;
-            
-            if (_currentReceivingInfo.fileType == STFileTypePicture && [[NSUserDefaults standardUserDefaults] boolForKey:AutoImportPhoto]) {
-                // 导入图片到系统相册
-                [self writeToSavedPhotosAlbum:downloadPath isImage:YES];
-            } else if (_currentReceivingInfo.fileType == STFileTypeVideo && [[NSUserDefaults standardUserDefaults] boolForKey:AutoImportVideo]) {
-                // 导入视频到系统相册
-                [self writeToSavedPhotosAlbum:downloadPath isImage:NO];
-            } else if (_currentReceivingInfo.fileType == STFileTypeContact) {
-                // 导入联系人到通讯录
-                if ([[NSFileManager defaultManager] fileExistsAtPath:downloadPath]) {
-                    NSData *vcard = [[NSData alloc] initWithContentsOfFile:downloadPath];
-                    if (vcard.length > 0) {
-                        CFDataRef vCardData = CFDataCreate(NULL, [vcard bytes], [vcard length]);
-                        if (vCardData) {
-                            ABAddressBookRef book = ABAddressBookCreate();
-                            ABRecordRef defaultSource = ABAddressBookCopyDefaultSource(book);
-                            CFArrayRef vCardPeople = ABPersonCreatePeopleInSourceWithVCardRepresentation(defaultSource, vCardData);
-                            if (CFArrayGetCount(vCardPeople) > 0) {
-                                ABRecordRef person = CFArrayGetValueAtIndex(vCardPeople, 0);
-                                ABAddressBookAddRecord(book, person, NULL);
-                                ABAddressBookSave(book, NULL);
-                            }
-                        }
-                        
-                        
-                    }
-                }
-            } else {
-                _currentReceivingInfo = nil;
-                [self startDownload];
-            }
+            [self downloadSucceedWithPath:downloadPath];
         }
     }];
     
@@ -601,6 +569,51 @@ withFilterContext:(id)filterContext {
     downloadStartTimestamp = [[NSDate date] timeIntervalSince1970];
     lastTimestamp = downloadStartTimestamp;
     lastProgress = 0.0f;
+}
+
+- (void)downloadSucceedWithPath:(NSString *)downloadPath {
+    [self updateTransferStatus:STFileTransferStatusReceived withIdentifier:_currentReceivingInfo.identifier];
+    
+    NSTimeInterval now = [[NSDate date] timeIntervalSince1970];
+    float downloadSpeed = 1 / (now - downloadStartTimestamp) * _currentReceivingInfo.fileSize;
+    [self updateDownloadSpeed:downloadSpeed withIdentifier:_currentReceivingInfo.identifier];
+    _currentReceivingInfo.downloadSpeed = downloadSpeed;
+    _currentReceivingInfo.progress = 1.0f;
+    _currentReceivingInfo.transferStatus = STFileTransferStatusReceived;
+    
+    if (_currentReceivingInfo.fileType == STFileTypePicture && [[NSUserDefaults standardUserDefaults] boolForKey:AutoImportPhoto]) {
+        // 导入图片到系统相册
+        [self writeToSavedPhotosAlbum:downloadPath isImage:YES];
+    } else if (_currentReceivingInfo.fileType == STFileTypeVideo && [[NSUserDefaults standardUserDefaults] boolForKey:AutoImportVideo]) {
+        // 导入视频到系统相册
+        [self writeToSavedPhotosAlbum:downloadPath isImage:NO];
+    } else if (_currentReceivingInfo.fileType == STFileTypeContact) {
+        // 导入联系人到通讯录
+        if ([[NSFileManager defaultManager] fileExistsAtPath:downloadPath]) {
+            NSData *vcard = [[NSData alloc] initWithContentsOfFile:downloadPath];
+            if (vcard.length > 0) {
+                CFDataRef vCardData = CFDataCreate(NULL, [vcard bytes], [vcard length]);
+                if (vCardData) {
+                    ABAddressBookRef book = ABAddressBookCreate();
+                    ABRecordRef defaultSource = ABAddressBookCopyDefaultSource(book);
+                    CFArrayRef vCardPeople = ABPersonCreatePeopleInSourceWithVCardRepresentation(defaultSource, vCardData);
+                    if (CFArrayGetCount(vCardPeople) > 0) {
+                        ABRecordRef person = CFArrayGetValueAtIndex(vCardPeople, 0);
+                        ABAddressBookAddRecord(book, person, NULL);
+                        ABAddressBookSave(book, NULL);
+                    }
+                }
+                
+                
+            }
+        }
+        
+        _currentReceivingInfo = nil;
+        [self startDownload];
+    } else {
+        _currentReceivingInfo = nil;
+        [self startDownload];
+    }
 }
 
 - (void)writeToSavedPhotosAlbum:(NSString *)path isImage:(BOOL)isImage {
@@ -627,6 +640,7 @@ withFilterContext:(id)filterContext {
             if (success) {
                 _currentReceivingInfo.url = placeholder.localIdentifier;
                 [self updateAssetIdentifier:placeholder.localIdentifier withIdentifier:_currentReceivingInfo.identifier];
+                _currentReceivingInfo.transferStatus = STFileTransferStatusReceived; // 触发刷新列表
                 // 保存相册成功，删除本地缓存
                 if ([[NSFileManager defaultManager] fileExistsAtPath:path]) {
                     [[NSFileManager defaultManager] removeItemAtPath:path error:NULL];

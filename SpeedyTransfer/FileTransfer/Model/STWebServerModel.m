@@ -9,10 +9,12 @@
 #import "STWebServerModel.h"
 #import <GCDWebServer/GCDWebServer.h>
 #import <GCDWebServer/GCDWebServerDataResponse.h>
+#import <GCDWebServer/GCDWebServerErrorResponse.h>
 #import <GCDWebServerDataRequest.h>
 #import <GCDWebServerFileResponse.h>
 #import <GCDWebServerFunctions.h>
 #import <GCDWebServerHTTPStatusCodes.h>
+#import <GCDWebServer/GCDWebServerMultiPartFormRequest.h>
 #import "STWebServerConnection.h"
 #import "STDeviceInfo.h"
 #import <Photos/Photos.h>
@@ -74,6 +76,56 @@ HT_DEF_SINGLETON(STWebServerModel, shareInstant);
               @"device_name": deviceName,
               @"device_addr": address,
               @"user_nick": deviceName} jsonString];
+}
+
+- (NSString*)uniquePathForPath:(NSString*)path {
+    if ([[NSFileManager defaultManager] fileExistsAtPath:path]) {
+        NSString* directory = [path stringByDeletingLastPathComponent];
+        NSString* file = [path lastPathComponent];
+        NSString* base = [file stringByDeletingPathExtension];
+        NSString* extension = [file pathExtension];
+        int retries = 0;
+        do {
+            if (extension.length) {
+                path = [directory stringByAppendingPathComponent:[[base stringByAppendingFormat:@" (%i)", ++retries] stringByAppendingPathExtension:extension]];
+            } else {
+                path = [directory stringByAppendingPathComponent:[base stringByAppendingFormat:@" (%i)", ++retries]];
+            }
+        } while ([[NSFileManager defaultManager] fileExistsAtPath:path]);
+    }
+    return path;
+}
+
+- (BOOL)checkSandboxedPath:(NSString*)path {
+    return [[path stringByStandardizingPath] hasPrefix:[ZZPath tmpReceivedPath]];
+}
+
+- (STFileType)fileTypeWithPathExtension:(NSString *)pathExtension {
+    if ([pathExtension.lowercaseString isEqualToString:@"png"] ||
+        [pathExtension.lowercaseString isEqualToString:@"jpg"] ||
+        [pathExtension.lowercaseString isEqualToString:@"jpeg"]) {
+        return STFileTypePicture;
+    } else if ([pathExtension.lowercaseString isEqualToString:@"mov"] ||
+               [pathExtension.lowercaseString isEqualToString:@"3gp"] ||
+               [pathExtension.lowercaseString isEqualToString:@"mp4"]) {
+        return STFileTypeVideo;
+    } else if ([pathExtension.lowercaseString isEqualToString:@"vcard"]) {
+        return STFileTypeContact;
+    } else if ([pathExtension.lowercaseString isEqualToString:@"mp3"] ||
+               [pathExtension.lowercaseString isEqualToString:@"mp3"]) {
+        return STFileTypeMusic;
+    } else {
+        NSLog(@"未知文件类型");
+        return -1;
+    }
+}
+
+- (BOOL)checkFileExtension:(NSString*)fileName {
+    if ([self fileTypeWithPathExtension:fileName.pathExtension] >= 0) {
+        return YES;
+    }
+    
+    return NO;
 }
 
 - (void)startWebServer {
@@ -253,23 +305,12 @@ HT_DEF_SINGLETON(STWebServerModel, shareInstant);
 				entity.deviceName = deviceInfo.deviceName;
 				entity.headImage = deviceInfo.headImage;
 				
-				if ([entity.pathExtension.lowercaseString isEqualToString:@"png"] ||
-					[entity.pathExtension.lowercaseString isEqualToString:@"jpg"] ||
-					[entity.pathExtension.lowercaseString isEqualToString:@"jpeg"]) {
-					entity.fileType = STFileTypePicture;
-				} else if ([entity.pathExtension.lowercaseString isEqualToString:@"mov"] ||
-						   [entity.pathExtension.lowercaseString isEqualToString:@"3gp"] ||
-						   [entity.pathExtension.lowercaseString isEqualToString:@"mp4"]) {
-					entity.fileType = STFileTypeVideo;
-				} else if ([entity.pathExtension.lowercaseString isEqualToString:@"vcard"]) {
-					entity.fileType = STFileTypeContact;
-				} else if ([entity.pathExtension.lowercaseString isEqualToString:@"mp3"] ||
-						   [entity.pathExtension.lowercaseString isEqualToString:@"mp3"]) {
-					entity.fileType = STFileTypeMusic;
-				} else {
-					NSLog(@"未知文件类型");
-					continue;
-				}
+                STFileType fileType = [weakSelf fileTypeWithPathExtension:entity.pathExtension];
+                if (fileType < 0) {
+                    continue;
+                } else {
+                    entity.fileType = fileType;
+                }
 				
 				[tempArry addObject:entity];
 			}
@@ -279,62 +320,6 @@ HT_DEF_SINGLETON(STWebServerModel, shareInstant);
 			return [GCDWebServerResponse responseWithStatusCode:200];
 		}];
 	}
-	
-    [_webServer addHandlerForMethod:@"POST" path:@"/recv" requestClass:[GCDWebServerDataRequest class] processBlock:^GCDWebServerResponse *(GCDWebServerRequest *request) {
-        GCDWebServerDataRequest *dataRequest = (GCDWebServerDataRequest *)request;
-        NSArray *items = [[[NSString alloc] initWithData:dataRequest.data encoding:NSUTF8StringEncoding] jsonArray];
-        NSMutableArray *tempArry = [NSMutableArray array];
-        for (NSDictionary *fileInfo in items) {
-            NSString *file_url = [fileInfo stringForKey:FILE_URL];
-			NSString *thumbnailUrl = [fileInfo stringForKey:ICON_URL];
-            NSString *host = [[NSURL URLWithString:file_url] host];
-            NSInteger port = [[[NSURL URLWithString:file_url] port] integerValue];
-            STDeviceInfo *deviceInfo = [[STDeviceInfo alloc] init];
-            deviceInfo.ip = host;
-            deviceInfo.port = port;
-            if (![deviceInfo setup]) {
-                NSLog(@"deviceInfo setup error");
-                continue;
-            }
-            
-            STFileTransferInfo *entity = [[STFileTransferInfo alloc] init];
-            entity.identifier = [NSString uniqueID];
-            entity.transferType = STFileTransferTypeReceive;
-            entity.transferStatus = STFileTransferStatusReceiving;
-            entity.url = file_url;
-			entity.thumbnailUrl = thumbnailUrl;
-            entity.fileName = [fileInfo stringForKey:FILE_NAME];
-            entity.fileSize = [fileInfo doubleForKey:FILE_SIZE];
-            entity.pathExtension = [fileInfo stringForKey:FILE_TYPE];
-            entity.dateString = [[NSDate date] dateString];
-            entity.deviceName = deviceInfo.deviceName;
-            entity.headImage = deviceInfo.headImage;
-            
-            if ([entity.pathExtension.lowercaseString isEqualToString:@"png"] ||
-                [entity.pathExtension.lowercaseString isEqualToString:@"jpg"] ||
-                [entity.pathExtension.lowercaseString isEqualToString:@"jpeg"]) {
-                entity.fileType = STFileTypePicture;
-            } else if ([entity.pathExtension.lowercaseString isEqualToString:@"mov"] ||
-                       [entity.pathExtension.lowercaseString isEqualToString:@"3gp"] ||
-                       [entity.pathExtension.lowercaseString isEqualToString:@"mp4"]) {
-                entity.fileType = STFileTypeVideo;
-            } else if ([entity.pathExtension.lowercaseString isEqualToString:@"vcard"]) {
-                entity.fileType = STFileTypeContact;
-            } else if ([entity.pathExtension.lowercaseString isEqualToString:@"mp3"] ||
-                      [entity.pathExtension.lowercaseString isEqualToString:@"mp3"]) {
-                entity.fileType = STFileTypeMusic;
-            } else {
-                NSLog(@"未知文件类型");
-                continue;
-            }
-            
-            [tempArry addObject:entity];
-        }
-        
-        [[STFileTransferModel shareInstant] receiveItems:tempArry];
-        
-        return [GCDWebServerResponse responseWithStatusCode:200];
-    }];
     
     [_webServer addHandlerForMethod:@"POST" path:@"/cancel" requestClass:[GCDWebServerDataRequest class] processBlock:^GCDWebServerResponse *(GCDWebServerRequest *request) {
         NSString *ip = nil;
@@ -407,6 +392,52 @@ HT_DEF_SINGLETON(STWebServerModel, shareInstant);
 									return [GCDWebServerDataResponse responseWithHTMLTemplate:[websitePath stringByAppendingPathComponent:@"recive.html"]
 																					variables:variables];
 								}];
+        
+        // File upload
+        [self.webServer2 addHandlerForMethod:@"POST" path:@"/upload" requestClass:[GCDWebServerMultiPartFormRequest class] processBlock:^GCDWebServerResponse *(GCDWebServerRequest* request) {
+            GCDWebServerMultiPartFormRequest *multiPartFormRequest = (GCDWebServerMultiPartFormRequest *)request;
+            
+            NSRange range = [[request.headers objectForKey:@"Accept"] rangeOfString:@"application/json" options:NSCaseInsensitiveSearch];
+            NSString* contentType = (range.location != NSNotFound ? @"application/json" : @"text/plain; charset=utf-8");  // Required when using iFrame transport (see https://github.com/blueimp/jQuery-File-Upload/wiki/Setup)
+            
+            GCDWebServerMultiPartFile *file = [multiPartFormRequest firstFileForControlName:@"fileToUpload"];
+            if (([file.fileName hasPrefix:@"."]) || ![weakSelf checkFileExtension:file.fileName]) {
+                return [GCDWebServerErrorResponse responseWithClientError:kGCDWebServerHTTPStatusCode_Forbidden message:@"Uploaded file name \"%@\" is not allowed", file.fileName];
+            }
+            
+            NSString* relativePath = [[multiPartFormRequest firstArgumentForControlName:@"path"] string];
+            NSString* absolutePath = [weakSelf uniquePathForPath:[[[ZZPath tmpReceivedPath] stringByAppendingPathComponent:relativePath] stringByAppendingPathComponent:file.fileName]];
+            if (![weakSelf checkSandboxedPath:absolutePath]) {
+                return [GCDWebServerErrorResponse responseWithClientError:kGCDWebServerHTTPStatusCode_NotFound message:@"\"%@\" does not exist", relativePath];
+            }
+            
+            NSError* error = nil;
+            if (![[NSFileManager defaultManager] moveItemAtPath:file.temporaryPath toPath:absolutePath error:&error]) {
+                return [GCDWebServerErrorResponse responseWithServerError:kGCDWebServerHTTPStatusCode_InternalServerError underlyingError:error message:@"Failed moving uploaded file to \"%@\"", relativePath];
+            }
+            
+            // 上传成功
+            STFileTransferInfo *entity = [[STFileTransferInfo alloc] init];
+            entity.identifier = [NSString uniqueID];
+            entity.transferType = STFileTransferTypeReceive;
+            entity.transferStatus = STFileTransferStatusReceived;
+            entity.url = absolutePath;
+            entity.fileName = file.fileName;
+            entity.fileSize = [request.headers doubleForKey:@"Content-Length"];
+            entity.pathExtension = [file.fileName pathExtension];
+            entity.dateString = [[NSDate date] dateString];
+            
+            NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"http://%@", request.remoteAddressString]];
+            entity.deviceName = url.host;
+            
+            STFileType fileType = [weakSelf fileTypeWithPathExtension:entity.pathExtension];
+            entity.fileType = fileType;
+            
+            [[STFileTransferModel shareInstant] receiveItems:@[entity]];
+            
+            return [GCDWebServerDataResponse responseWithJSONObject:@{} contentType:contentType];
+        }];
+
 	}
 	
 	NSDictionary *options = @{GCDWebServerOption_Port: @(KSERVERPORT2)};
