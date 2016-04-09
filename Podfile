@@ -7,6 +7,7 @@ pod "GCDObjC"
 pod 'dyci', :git => 'https://github.com/DyCI/dyci-main.git'
 pod 'FMDB'
 pod 'GCDWebServer', '~> 3.3'
+pod 'GCDWebServer/WebUploader', '~> 3.0'
 pod 'CocoaAsyncSocket'
 pod 'AFNetworking', '~> 3.0'
 

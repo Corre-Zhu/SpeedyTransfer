@@ -27,6 +27,8 @@ PODS:
   - GCDWebServer (3.3):
     - GCDWebServer/Core (= 3.3)
   - GCDWebServer/Core (3.3)
+  - GCDWebServer/WebUploader (3.3):
+    - GCDWebServer/Core
 
 DEPENDENCIES:
   - AFNetworking (~> 3.0)
@@ -35,6 +37,7 @@ DEPENDENCIES:
   - FMDB
   - GCDObjC
   - GCDWebServer (~> 3.3)
+  - GCDWebServer/WebUploader (~> 3.0)
 
 EXTERNAL SOURCES:
   dyci:
