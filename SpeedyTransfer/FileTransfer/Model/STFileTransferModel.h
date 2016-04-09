@@ -27,6 +27,7 @@ HT_AS_SINGLETON(STFileTransferModel, shareInstant);
 
 @property (nonatomic, strong) NSArray *devicesArray; // 发现的所有设备
 @property (nonatomic, strong) NSArray *selectedDevicesArray; // 选择发送的所有设备
+- (void)removeAllSelectedDevices;
 
 // 所有文件传输记录
 @property (nonatomic, strong) NSArray *transferFiles;

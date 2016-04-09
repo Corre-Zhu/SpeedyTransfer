@@ -49,6 +49,7 @@ static NSString *cellIdentifier = @"CellIdentifier";
     UIAlertController *alertController = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"不再传输其它文件，确认退出？", nil) message:nil preferredStyle: UIAlertControllerStyleAlert];
     UIAlertAction *action1 = [UIAlertAction actionWithTitle:NSLocalizedString(@"确认", nil) style:UIAlertActionStyleDestructive handler:^(UIAlertAction * _Nonnull action) {
         [[STFileTransferModel shareInstant] cancelAllTransferFile];
+        [[STFileTransferModel shareInstant] removeAllSelectedDevices];
         [self.navigationController popToRootViewControllerAnimated:YES];
     }];
     [alertController addAction:action1];

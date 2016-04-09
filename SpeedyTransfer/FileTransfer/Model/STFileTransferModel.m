@@ -16,6 +16,7 @@
 #import "AppDelegate.h"
 #import <AFNetworking/AFNetworking.h>
 #import "STWebServerModel.h"
+#import <AddressBook/AddressBook.h>
 
 #define ALBUM_TITLE @"点传"
 
@@ -158,6 +159,10 @@ HT_DEF_SINGLETON(STFileTransferModel, shareInstant);
     } else {
         completionHandler(toSaveCollection);
     }
+}
+
+- (void)removeAllSelectedDevices {
+    self.selectedDevicesArray = nil;
 }
 
 #pragma mark - Broadcast
@@ -564,6 +569,26 @@ withFilterContext:(id)filterContext {
             } else if (_currentReceivingInfo.fileType == STFileTypeVideo && [[NSUserDefaults standardUserDefaults] boolForKey:AutoImportVideo]) {
                 // 导入视频到系统相册
                 [self writeToSavedPhotosAlbum:downloadPath isImage:NO];
+            } else if (_currentReceivingInfo.fileType == STFileTypeContact) {
+                // 导入联系人到通讯录
+                if ([[NSFileManager defaultManager] fileExistsAtPath:downloadPath]) {
+                    NSData *vcard = [[NSData alloc] initWithContentsOfFile:downloadPath];
+                    if (vcard.length > 0) {
+                        CFDataRef vCardData = CFDataCreate(NULL, [vcard bytes], [vcard length]);
+                        if (vCardData) {
+                            ABAddressBookRef book = ABAddressBookCreate();
+                            ABRecordRef defaultSource = ABAddressBookCopyDefaultSource(book);
+                            CFArrayRef vCardPeople = ABPersonCreatePeopleInSourceWithVCardRepresentation(defaultSource, vCardData);
+                            if (CFArrayGetCount(vCardPeople) > 0) {
+                                ABRecordRef person = CFArrayGetValueAtIndex(vCardPeople, 0);
+                                ABAddressBookAddRecord(book, person, NULL);
+                                ABAddressBookSave(book, NULL);
+                            }
+                        }
+                        
+                        
+                    }
+                }
             } else {
                 _currentReceivingInfo = nil;
                 [self startDownload];
@@ -721,12 +746,11 @@ withFilterContext:(id)filterContext {
             NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:cancelUrl]];
             request.HTTPMethod = @"POST";
             
-            NSHTTPURLResponse *response = nil;
-            NSError *error = nil;
-            [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&error];
-            if (response.statusCode != 200) {
-                NSLog(@"cancel error: %@", error);
-            }
+            [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue new] completionHandler:^(NSURLResponse * _Nullable response, NSData * _Nullable data, NSError * _Nullable connectionError) {
+                if (connectionError) {
+                    NSLog(@"cancel error: %@", connectionError);
+                }
+            }];
         }
     }
 }

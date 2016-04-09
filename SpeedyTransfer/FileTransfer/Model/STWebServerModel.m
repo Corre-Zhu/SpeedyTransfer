@@ -362,7 +362,7 @@ HT_DEF_SINGLETON(STWebServerModel, shareInstant);
 
 - (void)startWebServer2 {
 	if (!self.constVariable) {
-		self.constVariable = [NSDictionary dictionaryWithObjectsAndKeys:NSLocalizedString(@"", nil), @"title", NSLocalizedString(@"接收", nil), @"recv", NSLocalizedString(@"传送", nil), @"send", NSLocalizedString(@"更多", nil), @"more", nil];
+		self.constVariable = [NSDictionary dictionaryWithObjectsAndKeys:NSLocalizedString(@"", nil), @"title", NSLocalizedString(@"接收", nil), @"recv", NSLocalizedString(@"传送", nil), @"send", NSLocalizedString(@"更多", nil), @"more", NSLocalizedString(@"选择文件发给好友", nil), @"selectFiles", nil];
 	}
 	
 	if (!_webServer2) {

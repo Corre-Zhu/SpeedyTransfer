@@ -14,5 +14,6 @@
 + (NSString *)headImagePath;
 + (NSString *)downloadPath;
 + (NSString *)tmpUploadPath;
++ (NSString *)tmpReceivedPath; // 通过浏览器post接收到的文件
 
 @end

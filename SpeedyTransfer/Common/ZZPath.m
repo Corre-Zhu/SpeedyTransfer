@@ -58,4 +58,17 @@
     return uploadPath;
 }
 
++ (NSString *)tmpReceivedPath {
+    static NSString *receivedPath;
+    if (!receivedPath) {
+        receivedPath = [NSTemporaryDirectory() stringByAppendingPathComponent:@"Received"];
+    }
+    
+    if (![[NSFileManager defaultManager] fileExistsAtPath:receivedPath]) {
+        [[NSFileManager defaultManager] createDirectoryAtPath:receivedPath withIntermediateDirectories:YES attributes:NULL error:NULL];
+    }
+    
+    return receivedPath;
+}
+
 @end
