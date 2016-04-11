@@ -54,12 +54,22 @@
         if ([object isKindOfClass:[PHAsset class]]) {
             PHAsset *asset = object;
             NSString *localIdentifier = asset.localIdentifier;
-            [[PHImageManager defaultManager] requestImageDataForAsset:asset options:nil resultHandler:^(NSData * _Nullable imageData, NSString * _Nullable dataUTI, UIImageOrientation orientation, NSDictionary * _Nullable info) {
-                NSURL *url = [info objectForKey:@"PHImageFileURLKey"];
-                if (url.absoluteString.length > 0 && imageData.length > 0 && address.length > 0) {
-                    NSString *fileName = [url.absoluteString lastPathComponent];
-                    NSUInteger fileSize = imageData.length;
-                    NSString *fileType = [url.absoluteString pathExtension];
+            if (IOS9 && asset.mediaType == PHAssetMediaTypeVideo) {
+                [[PHImageManager defaultManager] requestAVAssetForVideo:asset options:nil resultHandler:^(AVAsset * _Nullable asset, AVAudioMix * _Nullable audioMix, NSDictionary * _Nullable info) {
+                    
+                    NSArray *tracks = [asset tracks];
+                    float estimatedSize = 0.0 ;
+                    for (AVAssetTrack * track in tracks) {
+                        float rate = ([track estimatedDataRate] / 8); // convert bits per second to bytes per second
+                        float seconds = CMTimeGetSeconds([track timeRange].duration);
+                        estimatedSize += seconds * rate;
+                    }
+                    
+                    
+                    NSString *temp = [info stringForKey:@"PHImageFileSandboxExtensionTokenKey"];
+                    NSString *fileName = [temp.lastPathComponent uppercaseString];
+                    NSUInteger fileSize = estimatedSize;
+                    NSString *fileType = [fileName pathExtension];
                     NSString *fileUrl = [NSString stringWithFormat:@"http://%@:%@/image/origin/%@", address, @(KSERVERPORT), localIdentifier];
                     NSString *thumbnailUrl = [NSString stringWithFormat:@"http://%@:%@/image/thumbnail/%@", address, @(KSERVERPORT), localIdentifier];
                     
@@ -72,8 +82,31 @@
                                                ICON_URL: thumbnailUrl,
                                                ASSET_ID: localIdentifier};
                     [self setObject:fileInfo forKey:object];
-                
-                }}];
+                    
+                }];
+
+            } else {
+                [[PHImageManager defaultManager] requestImageDataForAsset:asset options:nil resultHandler:^(NSData * _Nullable imageData, NSString * _Nullable dataUTI, UIImageOrientation orientation, NSDictionary * _Nullable info) {
+                    NSURL *url = [info objectForKey:@"PHImageFileURLKey"];
+                    if (url.absoluteString.length > 0 && imageData.length > 0 && address.length > 0) {
+                        NSString *fileName = [url.absoluteString lastPathComponent];
+                        NSUInteger fileSize = imageData.length;
+                        NSString *fileType = [url.absoluteString pathExtension];
+                        NSString *fileUrl = [NSString stringWithFormat:@"http://%@:%@/image/origin/%@", address, @(KSERVERPORT), localIdentifier];
+                        NSString *thumbnailUrl = [NSString stringWithFormat:@"http://%@:%@/image/thumbnail/%@", address, @(KSERVERPORT), localIdentifier];
+                        
+                        NSLog(@"file size = %@", @(fileSize));
+                        
+                        NSDictionary *fileInfo = @{FILE_NAME: fileName,
+                                                   FILE_TYPE: fileType,
+                                                   FILE_SIZE: @(fileSize),
+                                                   FILE_URL: fileUrl,
+                                                   ICON_URL: thumbnailUrl,
+                                                   ASSET_ID: localIdentifier};
+                        [self setObject:fileInfo forKey:object];
+                        
+                    }}];
+            }
         } else if ([object isKindOfClass:[STContactInfo class]]) {
             STContactInfo *contactInfo = object;
             NSString *fileName = contactInfo.name;

@@ -177,17 +177,41 @@ static NSString *PopupCellIdentifier = @"PopupCellIdentifier";
     for (id object in tempDataSource) {
         if ([object isKindOfClass:[PHAsset class]]) {
             PHAsset *asset = object;
-            [[PHImageManager defaultManager] requestImageDataForAsset:asset options:nil resultHandler:^(NSData * _Nullable imageData, NSString * _Nullable dataUTI, UIImageOrientation orientation, NSDictionary * _Nullable info) {
-                [caculatingQueue queueBlock:^{
-                    size += imageData.length;
-                    caculatingIndex++;
-                    if (caculatingIndex == tempDataSource.count) {
-                        caculating = NO;
-                        totalSize = size;
-                        [self caculateCompleted];
-                    }
+            if (IOS9 && asset.mediaType == PHAssetMediaTypeVideo) {
+                [[PHImageManager defaultManager] requestAVAssetForVideo:asset options:nil resultHandler:^(AVAsset * _Nullable asset, AVAudioMix * _Nullable audioMix, NSDictionary * _Nullable info) {
+                    [caculatingQueue queueBlock:^{
+                        NSArray *tracks = [asset tracks];
+                        float estimatedSize = 0.0 ;
+                        for (AVAssetTrack * track in tracks) {
+                            float rate = ([track estimatedDataRate] / 8); // convert bits per second to bytes per second
+                            float seconds = CMTimeGetSeconds([track timeRange].duration);
+                            estimatedSize += seconds * rate;
+                        }
+
+                        
+                        size += estimatedSize;
+                        caculatingIndex++;
+                        if (caculatingIndex == tempDataSource.count) {
+                            caculating = NO;
+                            totalSize = size;
+                            [self caculateCompleted];
+                        }
+                    }];
+                    
                 }];
-            }];
+            } else {
+                [[PHImageManager defaultManager] requestImageDataForAsset:asset options:nil resultHandler:^(NSData * _Nullable imageData, NSString * _Nullable dataUTI, UIImageOrientation orientation, NSDictionary * _Nullable info) {
+                    [caculatingQueue queueBlock:^{
+                        size += imageData.length;
+                        caculatingIndex++;
+                        if (caculatingIndex == tempDataSource.count) {
+                            caculating = NO;
+                            totalSize = size;
+                            [self caculateCompleted];
+                        }
+                    }];
+                }];
+            }
         } else if ([object isKindOfClass:[STMusicInfo class]]) {
             STMusicInfo *model = object;
             size += model.fileSize;
@@ -213,10 +237,29 @@ static NSString *PopupCellIdentifier = @"PopupCellIdentifier";
 }
 
 - (void)removeAsset:(PHAsset *)asset {
-    [self.imageManager requestImageDataForAsset:asset options:nil resultHandler:^(NSData * _Nullable imageData, NSString * _Nullable dataUTI, UIImageOrientation orientation, NSDictionary * _Nullable info) {
-        totalSize -= imageData.length;
-        [self reloadTitle];
-    }];
+    if (IOS9 && asset.mediaType == PHAssetMediaTypeVideo) {
+        [[PHImageManager defaultManager] requestAVAssetForVideo:asset options:nil resultHandler:^(AVAsset * _Nullable asset, AVAudioMix * _Nullable audioMix, NSDictionary * _Nullable info) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                NSArray *tracks = [asset tracks];
+                float estimatedSize = 0.0 ;
+                for (AVAssetTrack * track in tracks) {
+                    float rate = ([track estimatedDataRate] / 8); // convert bits per second to bytes per second
+                    float seconds = CMTimeGetSeconds([track timeRange].duration);
+                    estimatedSize += seconds * rate;
+                }
+                
+                totalSize -= estimatedSize;
+                [self reloadTitle];
+            });
+            
+            
+        }];
+    } else {
+        [self.imageManager requestImageDataForAsset:asset options:nil resultHandler:^(NSData * _Nullable imageData, NSString * _Nullable dataUTI, UIImageOrientation orientation, NSDictionary * _Nullable info) {
+            totalSize -= imageData.length;
+            [self reloadTitle];
+        }];
+    }
 }
 
 - (void)setDataSource:(NSMutableArray *)dataSource {
@@ -323,13 +366,42 @@ static NSString *PopupCellIdentifier = @"PopupCellIdentifier";
         cell.tag = currentTag;
 		
 		@autoreleasepool {
-			[self.imageManager requestImageDataForAsset:asset options:nil resultHandler:^(NSData * _Nullable imageData, NSString * _Nullable dataUTI, UIImageOrientation orientation, NSDictionary * _Nullable info) {
-				if (cell.tag == currentTag) {
-					cell.size = imageData.length;
-					NSURL *url = [info objectForKey:@"PHImageFileURLKey"];
-					cell.title = [url.absoluteString lastPathComponent];
-				}
-			}];
+            if (IOS9 && asset.mediaType == PHAssetMediaTypeVideo) {
+                [[PHImageManager defaultManager] requestAVAssetForVideo:asset options:nil resultHandler:^(AVAsset * _Nullable asset, AVAudioMix * _Nullable audioMix, NSDictionary * _Nullable info) {
+                    
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        if (cell.tag == currentTag) {
+                            NSArray *tracks = [asset tracks];
+                            float estimatedSize = 0.0 ;
+                            for (AVAssetTrack * track in tracks) {
+                                float rate = ([track estimatedDataRate] / 8); // convert bits per second to bytes per second
+                                float seconds = CMTimeGetSeconds([track timeRange].duration);
+                                estimatedSize += seconds * rate;
+                            }
+                            
+                            
+                            NSString *temp = [info stringForKey:@"PHImageFileSandboxExtensionTokenKey"];
+                            NSString *fileName = temp.lastPathComponent;
+
+                            
+                            cell.size = estimatedSize;
+                            cell.title = fileName;
+                        }
+                        
+                        
+                    });
+                    
+                    
+                }];
+            } else {
+                [self.imageManager requestImageDataForAsset:asset options:nil resultHandler:^(NSData * _Nullable imageData, NSString * _Nullable dataUTI, UIImageOrientation orientation, NSDictionary * _Nullable info) {
+                    if (cell.tag == currentTag) {
+                        cell.size = imageData.length;
+                        NSURL *url = [info objectForKey:@"PHImageFileURLKey"];
+                        cell.title = [[url.absoluteString lastPathComponent] uppercaseString];
+                    }
+                }];
+            }
 			
 			CGFloat scale = [UIScreen mainScreen].scale;
 			CGSize size = CGSizeMake(72.0f * scale, 72.0f * scale);

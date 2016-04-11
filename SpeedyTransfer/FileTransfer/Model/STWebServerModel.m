@@ -170,16 +170,40 @@ HT_DEF_SINGLETON(STWebServerModel, shareInstant);
 					PHFetchResult *savedAssets = [PHAsset fetchAssetsWithLocalIdentifiers:@[assetIdentifier] options:nil];
 					if (savedAssets.count > 0) {
 						PHAsset *asset = savedAssets.firstObject;
-						[[PHImageManager defaultManager] requestImageDataForAsset:asset options:nil resultHandler:^(NSData * _Nullable imageData, NSString * _Nullable dataUTI, UIImageOrientation orientation, NSDictionary * _Nullable info) {
-							if (imageData.length > 0) {
-								NSURL *url = [info objectForKey:@"PHImageFileURLKey"];
-								NSString *path = [[ZZPath tmpUploadPath] stringByAppendingPathComponent:[url.absoluteString lastPathComponent]];
-								[imageData writeToFile:path atomically:YES];
-								completionBlock([GCDWebServerFileResponse responseWithFile:path]);
-							} else {
-								completionBlock([GCDWebServerResponse responseWithStatusCode:kGCDWebServerHTTPStatusCode_NotFound]);
-							}
-						}];
+                        if (IOS9 && asset.mediaType == PHAssetMediaTypeVideo) {
+                            [[PHImageManager defaultManager] requestAVAssetForVideo:asset options:nil resultHandler:^(AVAsset * _Nullable asset, AVAudioMix * _Nullable audioMix, NSDictionary * _Nullable info) {
+                                NSString *temp = [info stringForKey:@"PHImageFileSandboxExtensionTokenKey"];
+                                NSString *fileName = temp.lastPathComponent;                               NSString *path = [[ZZPath tmpUploadPath] stringByAppendingPathComponent:fileName];
+                                if ([[NSFileManager defaultManager] fileExistsAtPath:path]) {
+                                    [[NSFileManager defaultManager] removeItemAtPath:path error:NULL];
+                                }
+                                NSURL *outputURL = [NSURL fileURLWithPath:path];
+                                AVAssetExportSession *session = [[AVAssetExportSession alloc] initWithAsset:asset presetName:AVAssetExportPresetHighestQuality];
+                                session.outputURL = outputURL;
+                                session.outputFileType = AVFileTypeQuickTimeMovie;
+                                [session exportAsynchronouslyWithCompletionHandler:^(void) {
+                                    switch (session.status) {
+                                        case AVAssetExportSessionStatusCompleted:
+                                            completionBlock([GCDWebServerFileResponse responseWithFile:path]);
+                                            break;
+                                        default:
+                                            completionBlock([GCDWebServerResponse responseWithStatusCode:kGCDWebServerHTTPStatusCode_NotFound]);
+                                            break;
+                                    }
+                                }];
+                            }];
+                        } else {
+                            [[PHImageManager defaultManager] requestImageDataForAsset:asset options:nil resultHandler:^(NSData * _Nullable imageData, NSString * _Nullable dataUTI, UIImageOrientation orientation, NSDictionary * _Nullable info) {
+                                if (imageData.length > 0) {
+                                    NSURL *url = [info objectForKey:@"PHImageFileURLKey"];
+                                    NSString *path = [[ZZPath tmpUploadPath] stringByAppendingPathComponent:[url.absoluteString lastPathComponent]];
+                                    [imageData writeToFile:path atomically:YES];
+                                    completionBlock([GCDWebServerFileResponse responseWithFile:path]);
+                                } else {
+                                    completionBlock([GCDWebServerResponse responseWithStatusCode:kGCDWebServerHTTPStatusCode_NotFound]);
+                                }
+                            }];
+                        }
 						return;
 					}
 				}

@@ -190,7 +190,7 @@
     dateLabel.left = IPHONE_WIDTH - 16.0f - dateLabel.width;
     dateLabel.top = 13.0f;
     
-    fileNameLabel.frame = CGRectMake(coverImageView.right + 10.0f, 12.0f, IPHONE_WIDTH - coverImageView.right - dateLabel.width - 26.0f, 15.0f);
+    fileNameLabel.frame = CGRectMake(coverImageView.right + 10.0f, 12.0f, IPHONE_WIDTH - coverImageView.right - dateLabel.width - 26.0f, 17.0f);
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSString *,id> *)change context:(void *)context {

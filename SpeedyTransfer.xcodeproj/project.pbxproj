@@ -732,7 +732,7 @@
 				TargetAttributes = {
 					CED62A291C094FDD00270EDB = {
 						CreatedOnToolsVersion = 7.1.1;
-						DevelopmentTeam = 9UU37VNQKP;
+						DevelopmentTeam = 6443RH2762;
 					};
 				};
 			};
@@ -990,9 +990,9 @@
 				INFOPLIST_FILE = "$(SRCROOT)/SpeedyTransfer/Supporting Files/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.santikeji.dianchuan2;
+				PRODUCT_BUNDLE_IDENTIFIER = com.santikeji.dianchuan;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "b3e30d9a-b2e4-44cb-9b92-7831f11e5757";
 			};
 			name = Debug;
 		};
@@ -1002,15 +1002,15 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				GCC_PREFIX_HEADER = "SpeedyTransfer/Supporting Files/SpeedyTransfer-Prefix.pch";
 				INFOPLIST_FILE = "$(SRCROOT)/SpeedyTransfer/Supporting Files/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.santikeji.dianchuan2;
+				PRODUCT_BUNDLE_IDENTIFIER = com.santikeji.dianchuan;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "8ec036bc-38ed-41a2-a8dc-23971b694462";
 			};
 			name = Release;
 		};

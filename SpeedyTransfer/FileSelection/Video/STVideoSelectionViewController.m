@@ -81,16 +81,42 @@ static NSString *VideoSelectionCellIdentifier = @"VideoSelectionCellIdentifier";
                                       cell.image = result;
                                   }
                               }];
-	
-    [[PHImageManager defaultManager] requestImageDataForAsset:asset options:nil resultHandler:^(NSData *imageData, NSString *dataUTI, UIImageOrientation orientation, NSDictionary *info) {
-        if (cell.tag == currentTag) {
-            float imageSize = imageData.length;
-            imageSize = imageSize/(1024*1024);
-            cell.subTitle = [NSString stringWithFormat:@"%.2fMB", imageSize];
-            NSURL *url = [info objectForKey:@"PHImageFileURLKey"];
-            cell.title = [url.absoluteString lastPathComponent];
-        }
-    }];
+    
+    if (IOS9 && asset.mediaType == PHAssetMediaTypeVideo) {
+        [[PHImageManager defaultManager] requestAVAssetForVideo:asset options:nil resultHandler:^(AVAsset * _Nullable asset, AVAudioMix * _Nullable audioMix, NSDictionary * _Nullable info) {
+            
+            dispatch_async(dispatch_get_main_queue(), ^{
+                if (cell.tag == currentTag) {
+                    NSArray *tracks = [asset tracks];
+                    float estimatedSize = 0.0 ;
+                    for (AVAssetTrack * track in tracks) {
+                        float rate = ([track estimatedDataRate] / 8); // convert bits per second to bytes per second
+                        float seconds = CMTimeGetSeconds([track timeRange].duration);
+                        estimatedSize += seconds * rate;
+                    }
+                    float sizeInMB = estimatedSize / 1024.0f / 1024.0f;
+                    cell.subTitle = [NSString stringWithFormat:@"%.2fMB", sizeInMB];
+                    
+                    
+                    NSString *temp = [info stringForKey:@"PHImageFileSandboxExtensionTokenKey"];
+                    NSString *df = temp.lastPathComponent;
+                    
+                    cell.title = [df uppercaseString];
+                }
+            });
+            
+        }];
+    } else {
+        [[PHImageManager defaultManager] requestImageDataForAsset:asset options:nil resultHandler:^(NSData *imageData, NSString *dataUTI, UIImageOrientation orientation, NSDictionary *info) {
+            if (cell.tag == currentTag) {
+                float imageSize = imageData.length;
+                imageSize = imageSize/(1024*1024);
+                cell.subTitle = [NSString stringWithFormat:@"%.2fMB", imageSize];
+                NSURL *url = [info objectForKey:@"PHImageFileURLKey"];
+                cell.title = [url.absoluteString lastPathComponent];
+            }
+        }];
+    }
     
     if ([self.fileSelectionTabController isSelectedWithVideoAsset:asset]) {
         cell.checked = YES;

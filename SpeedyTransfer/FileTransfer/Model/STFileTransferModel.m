@@ -724,11 +724,9 @@ withFilterContext:(id)filterContext {
 
 // 取消所有发送
 - (void)cancelAllSendItems {
-    @synchronized(self) {
-        NSArray *selectedDevices = [NSArray arrayWithArray:self.selectedDevicesArray];
-        for (STDeviceInfo *info in selectedDevices) {
-            [info cancelSendItemsAndPostCancel:YES];
-        }
+    NSArray *selectedDevices = [NSArray arrayWithArray:self.selectedDevicesArray];
+    for (STDeviceInfo *info in selectedDevices) {
+        [info cancelSendItemsAndPostCancel:YES];
     }
 }
 
