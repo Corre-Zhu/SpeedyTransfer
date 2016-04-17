@@ -82,25 +82,11 @@ static NSString *VideoSelectionCellIdentifier = @"VideoSelectionCellIdentifier";
                                   }
                               }];
     
-//    if (IOS9 && asset.mediaType == PHAssetMediaTypeVideo) {
-    if (NO) {
-        
+    if (IOS9 && asset.mediaType == PHAssetMediaTypeVideo) {
         [[PHImageManager defaultManager] requestAVAssetForVideo:asset options:nil resultHandler:^(AVAsset * _Nullable asset, AVAudioMix * _Nullable audioMix, NSDictionary * _Nullable info) {
             
             dispatch_async(dispatch_get_main_queue(), ^{
                 if (cell.tag == currentTag) {
-                    
-                    if ([asset isKindOfClass:[AVURLAsset class]]) {
-                        AVURLAsset* urlAsset = (AVURLAsset*)asset;
-                        
-                        NSNumber *size;
-                        
-                        [urlAsset.URL getResourceValue:&size forKey:NSURLFileSizeKey error:nil];
-                        NSLog(@"size is %f",[size floatValue]/(1024.0*1024.0)); //size is 43.703005
-                        
-                    }
-                    
-                    
                     NSArray *tracks = [asset tracks];
                     float estimatedSize = 0.0 ;
                     for (AVAssetTrack * track in tracks) {
