@@ -44,6 +44,9 @@
     toolView.image = [[UIImage imageNamed:@"xuanze_bg"] resizableImageWithCapInsets:UIEdgeInsetsMake(7.0f, 7.0f, 7.0f, 7.0f)];
     toolView.userInteractionEnabled = YES;
     [self.view addSubview:toolView];
+    [toolView autoSetDimensionsToSize:CGSizeMake(175.0f, 40.0f)];
+    [toolView autoAlignAxisToSuperviewAxis:ALAxisVertical];
+    [toolView autoPinEdgeToSuperviewEdge:ALEdgeBottom withInset:52.0f];
     toolView.hidden = YES;
     
     deleteButton = [UIButton buttonWithType:UIButtonTypeCustom];

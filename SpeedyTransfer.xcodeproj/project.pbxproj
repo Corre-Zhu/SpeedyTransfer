@@ -992,7 +992,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.santikeji.dianchuan;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "b3e30d9a-b2e4-44cb-9b92-7831f11e5757";
+				PROVISIONING_PROFILE = "fa5cf4ac-1bce-4b5e-921a-70eb62e52f15";
 			};
 			name = Debug;
 		};

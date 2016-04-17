@@ -317,7 +317,9 @@
     
     if (tempArr.count > 0) {
         [STFileTransferModel shareInstant].selectedDevicesArray = [NSArray arrayWithArray:tempArr];
-//        [[STFileTransferModel shareInstant] startSendFile];
+        
+        [[STFileTransferModel shareInstant] sendItems:[self.fileSelectionTabController allSelectedFiles]];
+        [self.fileSelectionTabController removeAllSelectedFiles];
         
         STFileTransferViewController *fileTransferVc = [[STFileTransferViewController alloc] init];
         [self.navigationController pushViewController:fileTransferVc animated:YES];
@@ -341,7 +343,7 @@
 			return;
 		}
 		
-		address = [NSString stringWithFormat:@"%@:%@", address, @(KSERVERPORT2)];
+		address = [NSString stringWithFormat:@"http://%@:%@", address, @(KSERVERPORT2)];
 		[button setImage:[UIImage imageNamed:@"ic_keyboard_arrow_up_grey600"] forState:UIControlStateNormal];
 		qrcodeView.hidden = NO;
 		whiteView2.frame = CGRectMake(16.0f, 49.0f, IPHONE_WIDTH - 32.0f, 328.0f);
