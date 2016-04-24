@@ -79,7 +79,8 @@ HT_DEF_SINGLETON(STDeviceInfo, shareInstant);
             UIImage *image = [[UIImage alloc] initWithData:data];
             if (error || !image) {
                 NSLog(@"devInfoUrl: %@, error: %@", devInfoUrl, error);
-                return NO;
+                self.headImage = nil;
+//                return NO;
             } else {
                 NSString *headPath = [[ZZPath headImagePath] stringByAppendingFormat:@"/%@", self.deviceName];
                 if ([[NSFileManager defaultManager] fileExistsAtPath:headPath isDirectory:NULL]) {

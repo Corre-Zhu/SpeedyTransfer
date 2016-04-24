@@ -86,6 +86,10 @@ static NSString *VideoSelectionCellIdentifier = @"VideoSelectionCellIdentifier";
         [[PHImageManager defaultManager] requestAVAssetForVideo:asset options:nil resultHandler:^(AVAsset * _Nullable asset, AVAudioMix * _Nullable audioMix, NSDictionary * _Nullable info) {
             
             dispatch_async(dispatch_get_main_queue(), ^{
+                if ([asset isKindOfClass:[AVComposition class]]) {
+                    
+                }
+                
                 if (cell.tag == currentTag) {
                     NSArray *tracks = [asset tracks];
                     float estimatedSize = 0.0 ;

@@ -301,7 +301,8 @@ HT_DEF_SINGLETON(STWebServerModel, shareInstant);
 		
 		[_webServer addHandlerForMethod:@"POST" path:@"/recv" requestClass:[GCDWebServerDataRequest class] processBlock:^GCDWebServerResponse *(GCDWebServerRequest *request) {
 			GCDWebServerDataRequest *dataRequest = (GCDWebServerDataRequest *)request;
-			NSArray *items = [[[NSString alloc] initWithData:dataRequest.data encoding:NSUTF8StringEncoding] jsonArray];
+            NSString *dataString = [[NSString alloc] initWithData:dataRequest.data encoding:NSUTF8StringEncoding];
+			NSArray *items = [dataString jsonArray];
 			NSMutableArray *tempArry = [NSMutableArray array];
 			for (NSDictionary *fileInfo in items) {
 				NSString *file_url = [fileInfo stringForKey:FILE_URL];
