@@ -179,7 +179,8 @@ HT_DEF_SINGLETON(STDeviceInfo, shareInstant);
         }
 		
 		if (!self.isBrowser) {
-			NSString *itemsString = [fileInfos jsonString];
+			NSDictionary *itemsDic = @{@"items": fileInfos};
+			NSString *itemsString = [itemsDic jsonString];
 			NSData *postData = [itemsString dataUsingEncoding:NSUTF8StringEncoding];
 			NSString *postLength = @(postData.length).stringValue;
 			
