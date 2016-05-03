@@ -46,13 +46,14 @@
         		border-radius:4px;
 				margin-top:10px;
         	}
-			#sendCan div dl dd.middle span.top{
+	#sendCan div dl dd.middle span.top{
+        		clear:both;
         		width:0%;
         		height:3px;
         		background:#01cc99;
 				position:absolute;
 				border-radius:4px;
-				margin-top:10px;
+				margin-top:0px;
         	}
         	#sendCan div dl dd span.state{
         		float: right;
@@ -61,11 +62,14 @@
   color: #999999;
   text-align: center
         	}
-			.sname{
+			.sname{width:100%;
 				font-size: 1.4em;
-  padding-bottom: 8px;
+  padding-bottom: 10px;
   overflow:hidden;
   text-overflow:ellipsis;
+  display:block;
+ word-break:keap-all;
+ white-space:nowrap;
         	}
         	.prop,.speed{
 				color:#969696;

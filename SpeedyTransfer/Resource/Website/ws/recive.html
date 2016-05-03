@@ -2,15 +2,20 @@
 <html>
 <head>
 <meta charset="utf-8">
-<title>${title}-${more}</title>
+<title>${title}-${recv}</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<script type="text/javascript" charset="utf-8" src="js/jquery.js"></script>
 <link rel="stylesheet" type="text/css" href="wj.css">
 <style>
-.titleL{display:block;}
-.titleR{display:none;}
+em{display:block;}
+	.ios_note{color:#ccc;
+			font-size:1.2em;
+			margin-left:16px;
+			margin-right:16px;
+			padding-top:5px;
+			display: none;}
 </style>
-<script type="text/javascript" charset="utf-8" src="send.js"></script>
-        <script>
+      <script>
         	var uploadPath='/ws/upload';//'/ws/upload';
 	      //函数区
 	    	var base={
@@ -102,13 +107,13 @@
 				    var name,ksize;
 				    if(!fi){
 				    	fd=null;
-				    	alert('上传失败,请重试');
+				    	alert('${uploadFailed}');
 				    	return;
 				    }
 				    for(i in this.hasSend){
 				    	if(this.hasSend[i]==name){
 				    		fd=null;
-					    	alert('此文件已上传');
+					    	alert('${uploaded}');
 					    	return;
 				    	}
 				    }
@@ -148,11 +153,11 @@
 				    }
 				},
 				uploadComplete:function (evt,name) {
-					base.getEleFromCls(base.getEle(name),'state')[0].innerHTML='已发送';
+					base.getEleFromCls(base.getEle(name),'state')[0].innerHTML='${sent}';
 					this.hasSend.push(name);
 				},
 				uploadFailed:function (evt,name) {
-					base.getEleFromCls(base.getEle(name),'state')[0].innerHTML="已失败";
+					base.getEleFromCls(base.getEle(name),'state')[0].innerHTML="${failed}";
 				},
 				addItems:function(name,size,file,type){
 					var str='<div id="'+base.sToHex(name)+'"><dl>'+
@@ -165,7 +170,7 @@
 								'</dd>'+
 								'<dd>'+
 									'<span class="ssize">'+size+'</span>'+
-									'<span class="state">等待</span>'+
+									'<span class="state">${waiting}</span>'+
 								'</dd>'+
 								'<p style="clear:both;"></p>'+
 							'</dl></div>'+
@@ -195,71 +200,100 @@
 <div class="header_container">
 <ul class="header">
 	<li><a href="send.html">${send}</a></li>
-    <li><a href="recive.html">${recv}</a></li>
-    <li style="padding-right:0;" class="recent"><a href="more.html">${more}</a></li>
+    <li class="recent"><a href="recive.html">${recv}</a></li>
+    <li style="padding-right:0;"><a href="more.html">${more}</a></li>
 </ul>
 </div>
-<div class="container_wj" id="container_wj">
-     <a href="about.html"><div class="apk_68dp">
-    	<div class="icon"><img src="images/ic_advice_purple_40dp.png"></div>
-        <div class="apk_text1">${about}</div>
-        <div class="xz"><img src="images/ic_arrow_left_gray_24dp.png"></div>
+<div class="friend_phone">
+        <img src="images/phone_red_24dp.png">
+        <div class="phone_text">${summary}</div>
         <div class="line"></div>
+    </div>
+<!-- $BeginBlock categories -->
+<div class="container1">
+<div class="container_wj">
+    <div class="apk_container">
+    	<img src="${category_icon}">
+    	<div class="apk_text">${category}</div>
+    </div>
+    <!-- $BeginBlock files -->
+   <a href="${fileType}?fp=${path}"> <div class="apk_68dp">
+    	<div class="icon"><img src="${icon}"></div>
+        <div class="apk_text1">${name}</div>
+        <div class="xz"><img src="images/xz.png"></div>
+        <div class="apk_text2">${length}</div> 
+         <div class="line"></div>
     </div>
     </a>
-
- <!--   <div class="title"  id="title">
-    	<div class="titleL">
-          <a href="DianChuan.apk"><div class="apk_68dp">
-    	<div class="icon"><img src="images/ic_friend_red_20dp.png"></div>
-       <div class="apk_text1">零流量邀请安装</div>
-        <div class="xz"><img src="images/ic_arrow_left_gray_24dp.png"></div>
-        <div class="line"></div>
-    </div>
-    </a>
-    </div>
-    </div>
--->
- <div id="title" class="title"><div class="titleL"><a id="aa" href="http://3tkj.cn"><a id="ab" href="http://baidu.com"><div class="apk_68dp">
-    	<div class="icon"><img src="images/ic_friend_red_20dp.png"></div>
-       <div class="apk_text1">${zero_mobile_data}</div>
-        <div class="xz"><img src="images/ic_arrow_left_gray_24dp.png"></div>
-        <div class="line"></div>
-    </div></a></a></div>
-    </div>
-    
-         <a href="faq.html"><div class="apk_68dp">
-    	<div class="icon"><img src="images/question.png"></div>
-       <div class="apk_text1">${faq}</div>
-        <div class="xz"><img src="images/ic_arrow_left_gray_24dp.png"></div>
-        <div class="line"></div>
-    </div>
-    </a>
-
+	<!-- $EndBlock files -->
 </div>
-
+<div class="jiange">
+	<div class="line1"></div>
+    <div class="jianxi"></div>
+    <div class="line1"></div>
+</div>
+</div>
+<!-- $EndBlock categories -->
 </body>
-<script>  
+<script>
 
-    	
+ /*   //苹果手机展示提示
+        	if (navigator.userAgent.match(/iPhone/i)) {
+        		base.getEle('iosNote').setAttribute("style", "display: block");
+        	}
+        	*/ 
+			
+        	//点击事件
+        	var hasItem=false;
+        	var sendButton=base.getEle('sendButton');
+        	var revButton=base.getEle('revButton');
+        	var sendDiv=base.getEle('send');
+        	var recDiv=base.getEle('receive');
+        	
+        	sendButton.onclick=function(){
+        		recDiv.style.display='none';
+        		sendDiv.style.display="block";
+        		base.addCls(sendButton,'navact');
+        		base.delCls(revButton,'navact');
+        	}
+        	
+			revButton.onclick=function(){
+				recDiv.style.display='block';
+				sendDiv.style.display='none';
+				base.addCls(revButton,'navact');
+				base.delCls(sendButton,'navact');
+        	}
+        	
+        	if(hasItem){
+        		revButton.onclick();
+        	}else{
+        		sendButton.onclick();
+        	}
+        	
+        	//发送等base.getEleFromCls(base.getEle('sendCan'),'sname')
+        	var fileInput=base.getEle('file')
+        	fileInput.onchange=function(){
+        		file.uploadFile(this);
+        	}
+        	base.getEle('sendButCan').onclick=function(){
+        		fileInput.click();
+        	}
+        	
         	//点击下载
         	var title=base.getEle('title');
         	var l=base.getEleFromCls(title,'titleL')[0].getElementsByTagName('a')[0];
-
+        	var r=base.getEleFromCls(title,'titleR')[0].getElementsByTagName('a')[0];
         	
-        	l.onclick=function(evt){
+        	l.onclick=r.onclick=function(evt){
         		evt=base.fixevt(evt);
         		if (navigator.userAgent.match(/Android/i)) {
-        		base.getEle('aa').setAttribute("style", "display:block");
-				base.getEle('ab').setAttribute("style", "display: none");
+        			var sign=confirm('是否零流量下载点传APP');
         		}else{
-        		base.getEle('aa').setAttribute("style", "display:none");
-				base.getEle('aa').setAttribute("style", "display:block");
-			
-
+        			var sign=confirm('抱歉,当前点传只支持安卓系统,是否继续零流量下载点传APP');
         		}
         		if(!sign)
         			evt.preventDefault();
         	}
+    
 </script>
 </html>
