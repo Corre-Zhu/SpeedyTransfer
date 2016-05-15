@@ -58,7 +58,7 @@
     }
 }
 
-- (void)sendFeedback:(NSString *)feedback {
+- (void)sendFeedback:(NSString *)feedback email:(NSString *)email {
     STFeedbackInfo *entity = [[STFeedbackInfo alloc] init];
     entity.messageID = [NSString uniqueID];
     entity.messageType = STFeedbackMessageTypeText;
@@ -80,6 +80,30 @@
     }
     
     [self addTransferFile:entity];
+    
+    // post
+    NSMutableDictionary *itemsDic = [NSMutableDictionary dictionary];
+    [itemsDic setObject:feedback forKey:@"content"];
+    if (email.length > 0) {
+        [itemsDic setObject:email forKey:@"email"];
+    }
+    NSString *itemsString = [itemsDic jsonString];
+    NSData *postData = [itemsString dataUsingEncoding:NSUTF8StringEncoding];
+    NSString *postLength = @(postData.length).stringValue;
+    
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:@"http://dianchuan.3tkj.cn:8087/dcshare/api/feedback.php?hl=zh&cp=IS001"]];
+    request.HTTPMethod = @"POST";
+    [request setValue:postLength forHTTPHeaderField:@"Content-Length"];
+    [request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+    [request setHTTPBody:postData];
+    
+    NSError *error = nil;
+    [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue new] completionHandler:^(NSURLResponse * _Nullable response, NSData * _Nullable data, NSError * _Nullable connectionError) {
+        NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *)response;
+        if (httpResponse.statusCode != 200) {
+            NSLog(@"post feedback error: %@", error);
+        }
+    }];
 }
 
 @end

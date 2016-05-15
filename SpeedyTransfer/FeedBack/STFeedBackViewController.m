@@ -62,7 +62,7 @@ static NSString *FeedbackCellIdentifier = @"FeedbackCellIdentifier";
 
 - (void)sendButtonClick {
     if (inputView.text.length > 0) {
-        [model sendFeedback:inputView.text];
+        [model sendFeedback:inputView.text email:inputView.email];
         [self.tableView reloadData];
         [self scrollToBottomAnimated:NO];
         [inputView clearText];

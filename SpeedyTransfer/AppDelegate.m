@@ -10,6 +10,8 @@
 #import "STHomeViewController.h"
 #import "HTFMDatabase.h"
 #import <FMDatabaseAdditions.h>
+#import "WXApi.h"
+#import <TencentOpenAPI/TencentOAuth.h>
 
 NSString * const dbName = @"FileTransfer.sqlite";
 
@@ -46,7 +48,9 @@ NSString * const dbName = @"FileTransfer.sqlite";
     [[UITabBar appearance] setTintColor:RGBFromHex(0xeb694a)];
 //    [self setupStartingView];
     [self setupDatabase];
-
+    [WXApi registerApp:KWeChatAppId];
+    [[TencentOAuth alloc] initWithAppId:KQQAppId andDelegate:nil]; //注册
+    
     return YES;
 }
 
@@ -157,6 +161,23 @@ NSString * const dbName = @"FileTransfer.sqlite";
     } while (!succeed && tryTimes > 0);
     
     return succeed;
+}
+
+- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation
+{
+    if ([WXApi handleOpenURL:url delegate:nil]) {
+        return YES;
+    } else {
+        return [TencentOAuth HandleOpenURL:url];
+    }
+}
+
+- (BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)url {
+    if ([WXApi handleOpenURL:url delegate:nil]) {
+        return YES;
+    } else {
+        return [TencentOAuth HandleOpenURL:url];
+    }
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application {

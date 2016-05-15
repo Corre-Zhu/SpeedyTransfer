@@ -14,7 +14,7 @@
             buildForArchiving = "YES">
             <BuildableReference
                BuildableIdentifier = 'primary'
-               BlueprintIdentifier = '0AFAC99A71D6D431FB68CD7B'
+               BlueprintIdentifier = '17CA40BE8BCF9BBB6CFC73B6'
                BlueprintName = 'dyci'
                ReferencedContainer = 'container:Pods.xcodeproj'
                BuildableName = 'libdyci.a'>

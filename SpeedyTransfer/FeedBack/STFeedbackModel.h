@@ -12,6 +12,6 @@
 
 @property (nonatomic, strong) NSArray *dataSource;
 
-- (void)sendFeedback:(NSString *)feedback;
+- (void)sendFeedback:(NSString *)feedback email:(NSString *)email;
 
 @end

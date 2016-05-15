@@ -20,5 +20,6 @@
 #import "NSDate+ZZ.h"
 #import "UIImage+ZZ.h"
 #import "HTJSONAdapter.h"
+#import "UIAlertController+HT.h"
 
 #endif

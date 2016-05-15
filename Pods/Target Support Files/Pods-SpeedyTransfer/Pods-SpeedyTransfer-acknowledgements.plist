@@ -150,6 +150,15 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 		</dict>
 		<dict>
 			<key>FooterText</key>
+			<string>Copyright (c) 2014 Tencent. All rights reserved.
+</string>
+			<key>Title</key>
+			<string>TencentOpenApiSDK</string>
+			<key>Type</key>
+			<string>PSGroupSpecifier</string>
+		</dict>
+		<dict>
+			<key>FooterText</key>
 			<string>The MIT License (MIT)
 
 Copyright (c) 2014 Stanfy LLC

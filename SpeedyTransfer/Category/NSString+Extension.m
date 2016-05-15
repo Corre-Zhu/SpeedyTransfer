@@ -423,7 +423,8 @@ static char firstLetterArray[HANZI_COUNT] =
 	
 	//3.将NSData传递给滤镜（通过KVC的方式，设置inputMessage）
 	[filter setValue:data forKey:@"inputMessage"];
-	
+    [filter setValue:@"H" forKey:@"inputCorrectionLevel"];
+
 	//4.由filter输出图像
 	CIImage *outputImage = [filter outputImage];
 	

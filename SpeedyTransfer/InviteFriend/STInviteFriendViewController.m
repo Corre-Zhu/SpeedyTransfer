@@ -7,12 +7,24 @@
 //
 
 #import "STInviteFriendViewController.h"
+#import <MessageUI/MessageUI.h>
+#import "HTEmailViewController.h"
+#import "MBProgressHUD.h"
+#import <Social/Social.h>
+#import "WeiboSDK.h"
+#import "WXApi.h"
+#import <TencentOpenAPI/QQApiInterface.h>
+#import <TencentOpenAPI/TencentOAuth.h>
+
+#define KShareContent @"Hi我一直在用@点传，不仅文件传输速度快，而且传输过程完全无需流量、为批量极速传输大文件的利器，快去下载吧！https://appsto.re/cn/isUdcb.i"
 
 @interface STInviteFriendViewController ()
 {
     UILabel *label;
     UISwitch *switchCon;
     UIImageView *imageView;
+    UIImageView *subImageView;
+
 }
 
 @end
@@ -102,27 +114,141 @@
     label4.textAlignment = NSTextAlignmentCenter;
     [self.view addSubview:label4];
 
+    switchCon = [[UISwitch alloc] init];
+    switchCon.top = view2.bottom - 60.0f;
+    switchCon.left = IPHONE_WIDTH / 2.0f - switchCon.width / 2.0f;
+    [switchCon addTarget:self action:@selector(switchConClick) forControlEvents:UIControlEventValueChanged];
+    [self.view addSubview:switchCon];
+    switchCon.on = YES;
     
+    imageView = [[UIImageView alloc] initWithFrame:CGRectMake((IPHONE_WIDTH - 110.0f) / 2.0f, line1.bottom + 50.0f, 110.0f, 110.0f)];
+    UIImage *image = [KIOSDownloadUrl createRRcode];
+    if (image.size.width < 110.0f) {
+        image = [image resizeImage:image withQuality:kCGInterpolationNone rate:110.0f / image.size.width];
+    }
+    imageView.image = image;
+    [self.view addSubview:imageView];
     
+    subImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"apple-0"]];
+    [imageView addSubview:subImageView];
+    [subImageView autoCenterInSuperview];
+    
+    label = [[UILabel alloc] initWithFrame:CGRectMake(imageView.left - 5.0f, imageView.bottom +  8.0f, imageView.width + 10.0f, 18.0f)];
+    label.text = NSLocalizedString(@"点击切换至安卓版", nil);
+    label.font = [UIFont systemFontOfSize:15.0f];
+    label.textColor = [UIColor grayColor];
+    label.textAlignment = NSTextAlignmentCenter;
+    [self.view addSubview:label];
 }
 
 - (void)leftBarButtonItemClick {
     [self.navigationController popViewControllerAnimated:YES];
 }
 
-- (void)emailButtonClick {
+- (void)showSuccessHUD {
+    UIWindow *keyWindow = [[UIApplication sharedApplication] keyWindow];
+    MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithWindow:keyWindow];
     
+    [keyWindow addSubview:HUD];
+    
+    HUD.customView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"success"]];
+    HUD.minSize = CGSizeMake(100, 100);
+    HUD.mode = MBProgressHUDModeCustomView;
+    HUD.labelText = NSLocalizedString(@"OK", @"OK");
+    
+    [HUD show:YES];
+    [HUD hide:YES afterDelay:1.0];
+}
+
+- (void)switchConClick {
+    if (switchCon.on) {
+        UIImage *image = [KIOSDownloadUrl createRRcode];
+        if (image.size.width < 110.0f) {
+            image = [image resizeImage:image withQuality:kCGInterpolationNone rate:110.0f / image.size.width];
+        }
+        imageView.image = image;
+        subImageView.image = [UIImage imageNamed:@"apple-0"];
+        label.text = NSLocalizedString(@"点击切换至安卓版", nil);
+    } else {
+        UIImage *image = [KAndroidDownloadUrl createRRcode];
+        if (image.size.width < 110.0f) {
+            image = [image resizeImage:image withQuality:kCGInterpolationNone rate:110.0f / image.size.width];
+        }
+        imageView.image = image;
+        subImageView.image = [UIImage imageNamed:@"android"];
+        label.text = NSLocalizedString(@"点击切换至IOS版", nil);
+    }
+}
+
+- (void)emailButtonClick {
+    if (![MFMailComposeViewController canSendMail]) {
+        [UIAlertController showMessage:NSLocalizedString(@"您还没有设置电子邮件帐户", nil) inViewController:self];
+        return;
+    }
+    
+    HTEmailViewController *emailVC = [[HTEmailViewController alloc] init];
+    [emailVC setSubject:NSLocalizedString(@"点传", nil)];
+    [emailVC setMessageBody:KShareContent isHTML:NO];
+    emailVC.block = ^(MFMailComposeViewController *controller,MFMailComposeResult result,NSError *error) {
+        if (result == MFMailComposeResultSent) {
+            [self showSuccessHUD];
+        }
+        [controller dismissViewControllerAnimated:YES completion:NULL];
+    };
+    
+    [self presentViewController:emailVC animated:YES completion:NULL];
 }
 
 - (void)weiboButtonClick {
-    
+    if ([SLComposeViewController isAvailableForServiceType:SLServiceTypeSinaWeibo]) {
+        SLComposeViewController *sinaweiboSheet = [SLComposeViewController composeViewControllerForServiceType:SLServiceTypeSinaWeibo];
+        [sinaweiboSheet setInitialText:KShareContent];
+        sinaweiboSheet.completionHandler = ^(SLComposeViewControllerResult result) {
+            [self dismissViewControllerAnimated:YES completion:NULL];
+        };
+        [self presentViewController:sinaweiboSheet animated:YES completion:NULL];
+    }
+    else if ([WeiboSDK isWeiboAppInstalled]) {
+        WBMessageObject *object = [WBMessageObject message];
+        object.text = KShareContent;
+        WBSendMessageToWeiboRequest *request = [WBSendMessageToWeiboRequest requestWithMessage:object];
+        [WeiboSDK sendRequest:request];
+    } else {
+        [UIAlertController showMessage:NSLocalizedString(@"您还没有安装新浪微博", nil) inViewController:self];
+    }
 }
 
 - (void)weixinButtonClick {
-    
+    if ([WXApi isWXAppInstalled]) {
+        WXMediaMessage *mediaMessage = [WXMediaMessage message];
+        mediaMessage.title = KShareContent;
+        
+        WXImageObject *imageObject = [WXImageObject object];
+        imageObject.imageData = UIImageJPEGRepresentation([UIImage imageNamed:@"dcshare"], 0.8);
+        
+        mediaMessage.mediaObject = imageObject;
+        
+        SendMessageToWXReq* req = [[SendMessageToWXReq alloc] init];
+        req.bText = NO;
+        req.message = mediaMessage;
+        req.scene = WXSceneSession;
+        
+        [WXApi sendReq:req];
+
+    } else {
+        [UIAlertController showMessage:NSLocalizedString(@"您还没有安装微信", nil) inViewController:self];
+    }
 }
 
 - (void)qqButtonClick {
+    if ([TencentOAuth iphoneQQInstalled]) {
+        QQApiTextObject *txtObj = [QQApiTextObject objectWithText:KShareContent];
+        SendMessageToQQReq *req = [SendMessageToQQReq reqWithContent:txtObj];
+        //将内容分享到qq
+        QQApiSendResultCode sent = [QQApiInterface sendReq:req];
+    } else {
+        [UIAlertController showMessage:NSLocalizedString(@"您还没有安装QQ", nil) inViewController:self];
+    }
     
 }
 

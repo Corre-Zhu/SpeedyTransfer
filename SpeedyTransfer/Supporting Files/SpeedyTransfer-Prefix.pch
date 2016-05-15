@@ -19,3 +19,12 @@
 #define KUDPPORT 3333
 #define KSERVERPORT 8080
 #define KSERVERPORT2 8081
+
+#define KWeChatAppId        @"wxbe41ebca760466e"
+#define KWeChatAppKey       @"270e045bf66d6515309e13e71dceb707"
+
+#define KQQAppId        @"1105400506"
+#define KQQAppKey       @"8wMHgb0Afd5CmoT1"
+
+#define KIOSDownloadUrl @"https://appsto.re/cn/isUdcb.i"
+#define KAndroidDownloadUrl @"http://www.3tkj.cn/phone"
