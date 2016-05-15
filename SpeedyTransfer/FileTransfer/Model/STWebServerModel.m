@@ -425,6 +425,15 @@ HT_DEF_SINGLETON(STWebServerModel, shareInstant);
 									return [GCDWebServerDataResponse responseWithHTMLTemplate:[websitePath stringByAppendingPathComponent:@"recive.html"]
 																					variables:variables];
 								}];
+		
+		[self.webServer2 addHandlerForMethod:@"GET"
+								   pathRegex:@"/.*\\.js"
+								requestClass:[GCDWebServerRequest class]
+								processBlock:^GCDWebServerResponse *(GCDWebServerRequest* request) {
+									
+									return [GCDWebServerDataResponse responseWithHTMLTemplate:[websitePath stringByAppendingPathComponent:request.path]
+																					variables:nil];
+								}];
         
         // File upload
         [self.webServer2 addHandlerForMethod:@"POST" path:@"/upload" requestClass:[GCDWebServerMultiPartFormRequest class] processBlock:^GCDWebServerResponse *(GCDWebServerRequest* request) {

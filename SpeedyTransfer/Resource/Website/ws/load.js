@@ -1,17 +1,5 @@
-<!doctype html>
-<html>
-<head>
-<meta charset="utf-8">
-<title>${title}-${more}</title>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" type="text/css" href="wj.css">
-<style>
-.titleL{display:block;}
-.titleR{display:none;}
-</style>
-<script type="text/javascript" charset="utf-8" src="send.js"></script>
-        <script>
-        	var uploadPath='/ws/upload';//'/ws/upload';
+// JavaScript Document
+var uploadPath='upload';//'/ws/upload';
 	      //函数区
 	    	var base={
 	        	getEle:function (name,obj){  //以ID获取元素节点
@@ -141,8 +129,9 @@
 						this[name+'per']=percentComplete;
 						
 						base.getEleFromCls(base.getEle(name),'prop')[0].innerHTML=percentComplete.toString() + '%';
-						base.getEleFromCls(base.getEle(name),'speed')[0].innerHTML=speed + 'KB/s';
+						//base.getEleFromCls(base.getEle(name),'speed')[0].innerHTML=speed + 'KB/s';
 						base.getEleFromCls(base.getEle(name),'top')[0].style.width=percentComplete.toString() + '%';
+						
 				    }else {
 				    	this.uploadFailed(evt,name);
 				    }
@@ -150,21 +139,26 @@
 				uploadComplete:function (evt,name) {
 					base.getEleFromCls(base.getEle(name),'state')[0].innerHTML='已发送';
 					this.hasSend.push(name);
+					document.getElementById('top').style.background="#01cc99";
+					
 				},
 				uploadFailed:function (evt,name) {
 					base.getEleFromCls(base.getEle(name),'state')[0].innerHTML="已失败";
 				},
 				addItems:function(name,size,file,type){
 					var str='<div id="'+base.sToHex(name)+'"><dl>'+
-								'<dd style="overflow:hidden"><img class="show" src="default.png"/></dd>'+
+								'<dd style="overflow:hidden ;margin-left:0;"class="img_border"><img class="show" src="images/question.png"/></dd>'+
 								'<dd class="middle">'+
 									'<span class="sname">'+name+'</span>'+
-									'<span class="prop">0%</span>'+
-									'<span class="back"><span class="top"></span></span>'+
-									'<span class="speed">0%</span>'+
-								'</dd>'+
-								'<dd>'+
 									'<span class="ssize">'+size+'</span>'+
+									'<span class="prop">0%</span>'+
+									'<span class="back" id="mycolor"><span class="top"></span></span>'+
+									
+									//'<span class="speed">0%</span>'+
+									
+								'</dd>'+
+								'<dd class="state_text">'+
+									
 									'<span class="state">等待</span>'+
 								'</dd>'+
 								'<p style="clear:both;"></p>'+
@@ -175,91 +169,33 @@
 				},
 				preview:function(name,file,type){
 					var img=base.getEleFromCls(base.getEle(base.sToHex(name)),'show')[0];
+				
+					var str = name;
+					var kk = str.split(".");//以逗号作为分隔字符串
+					var number=kk.length-1;
 					if(/image/i.test(type)){
 						var img;
 						var url=URL.createObjectURL(file)
-						img.src=url;
+						img.src=url;					
 					}else if(/video/i.test(type)){
-						img.src='video.png';
+						img.src='images/ic_select_video.png';
 					}else if(/audio/i.test(type)){
-						img.src='music.png';
+						img.src='images/ic_music_purple_40dp.png';
+					}else if(/zip/i.test(type)){
+						img.src='images/ic_ysb_red40dp.png';
+					}else if(/text/i.test(type)){
+						img.src='images/ic_select_txt.png';
 					}else{
-						img.src='default.png';
+						if(kk[number] == "api" || kk[number]== "mp4"|| kk[number]== "wmv"|| kk[number]== "rm"|| kk[number]== "rmvb"|| kk[number]== "mpg"|| kk[number]== "mpeg"){
+							img.src='images/ic_select_video.png';}
+							else if(kk[number] == "wma" || kk[number]== "mp3"|| kk[number]== "wav"|| kk[number]== "amr"){
+							img.src='images/ic_music_purple_40dp.png';}
+							else if(kk[number] == "apk"){img.src='images/ic_sdk_blue_40dp.png';}
+						else{
+						img.src='images/question.png';}
 					}
 				}
-	      	} 
-        </script>
-</head>
-
-<body>
-<div class="header_container">
-<ul class="header">
-	<li><a href="send.html">${send}</a></li>
-    <li><a href="recive.html">${recv}</a></li>
-    <li style="padding-right:0;" class="recent"><a href="more.html">${more}</a></li>
-</ul>
-</div>
-<div class="container_wj" id="container_wj">
-     <a href="about.html"><div class="apk_68dp">
-    	<div class="icon"><img src="images/ic_advice_purple_40dp.png"></div>
-        <div class="apk_text1">${about}</div>
-        <div class="xz"><img src="images/ic_arrow_left_gray_24dp.png"></div>
-        <div class="line"></div>
-    </div>
-    </a>
-
- <!--   <div class="title"  id="title">
-    	<div class="titleL">
-          <a href="DianChuan.apk"><div class="apk_68dp">
-    	<div class="icon"><img src="images/ic_friend_red_20dp.png"></div>
-       <div class="apk_text1">零流量邀请安装</div>
-        <div class="xz"><img src="images/ic_arrow_left_gray_24dp.png"></div>
-        <div class="line"></div>
-    </div>
-    </a>
-    </div>
-    </div>
--->
- <div id="title" class="title"><div class="titleL"><a id="aa" href="http://3tkj.cn"><a id="ab" href="http://baidu.com"><div class="apk_68dp">
-    	<div class="icon"><img src="images/ic_friend_red_20dp.png"></div>
-       <div class="apk_text1">${zero_mobile_data}</div>
-        <div class="xz"><img src="images/ic_arrow_left_gray_24dp.png"></div>
-        <div class="line"></div>
-    </div></a></a></div>
-    </div>
-    
-         <a href="faq.html"><div class="apk_68dp">
-    	<div class="icon"><img src="images/question.png"></div>
-       <div class="apk_text1">${faq}</div>
-        <div class="xz"><img src="images/ic_arrow_left_gray_24dp.png"></div>
-        <div class="line"></div>
-    </div>
-    </a>
-
-</div>
-
-</body>
-<script>  
-
-    	
-        	//点击下载
-        	var title=base.getEle('title');
-        	var l=base.getEleFromCls(title,'titleL')[0].getElementsByTagName('a')[0];
-
-        	
-        	l.onclick=function(evt){
-        		evt=base.fixevt(evt);
-        		if (navigator.userAgent.match(/Android/i)) {
-        		base.getEle('aa').setAttribute("style", "display:block");
-				base.getEle('ab').setAttribute("style", "display: none");
-        		}else{
-        		base.getEle('aa').setAttribute("style", "display:none");
-				base.getEle('aa').setAttribute("style", "display:block");
-			
-
-        		}
-        		if(!sign)
-        			evt.preventDefault();
-        	}
-</script>
-</html>
+				
+			}
+					
+		
