@@ -380,7 +380,7 @@ HT_DEF_SINGLETON(STWebServerModel, shareInstant);
 
 - (void)startWebServer2 {
 	if (!self.constVariable) {
-		self.constVariable = [NSDictionary dictionaryWithObjectsAndKeys:NSLocalizedString(@"无界传送", nil), @"title", NSLocalizedString(@"接收", nil), @"recv", NSLocalizedString(@"传送", nil), @"send", NSLocalizedString(@"更多", nil), @"more", NSLocalizedString(@"选择文件发给好友", nil), @"selectFiles", NSLocalizedString(@"关于", nil), @"about", NSLocalizedString(@"常见问题", nil), @"faq", NSLocalizedString(@"邀请安装", nil), @"zero_mobile_data", NSLocalizedString(@"邀请安装", nil), @"yqaz", NSLocalizedString(@"无界互传是一种灵活的，不受操作系统限制的文件传输方式。通过无界互传，可以在Android、IOS、Windows等系统的设备之间极速互传文件。", nil), @"adword", NSLocalizedString(@"1.传输速度慢？", nil), @"q1", NSLocalizedString(@"尽量在网络环境简单的地方使用，如果附近的wifi比较多，可能会造成干扰。\n尽量少使用UC等浏览器来传输，建议使用为chrome浏览器来传输。\n将设备的扩展卡更换为速度更快的扩展卡。", nil), @"a1", NSLocalizedString(@"2.启动VPN后无法进行发送接收？", nil), @"q2", NSLocalizedString(@"设备开启VPN后，会导致双方无法连接并互传资料，请在进行文件传输前退出VPN。", nil), @"a2", NSLocalizedString(@"3.找不到接收到的文件保存位置？", nil), @"q3", NSLocalizedString(@"Chrome浏览器接收的文件默认保存在设备的Download文件夹中。\n其它浏览器接收的文件保存在该浏览器默认的下载目录中,可在该浏览器的设置中查看具体的下载目录。", nil), @"a3", NSLocalizedString(@"4.发送文件时每次只能选择一个？", nil), @"q4", NSLocalizedString(@"每次只能选择一个文件发送，是因为浏览器的限制，如需批量发送文件请安装点传。", nil), @"a4", NSLocalizedString(@"5.接收文件时每个文件都需要点击下载？", nil), @"q5", NSLocalizedString(@"浏览器无法支持批量下载，只能单独点击文件下载。如需批量发送文件请安装点传。", nil), @"a5", NSLocalizedString(@"6.IOS常见问题", nil), @"q6", NSLocalizedString(@"因IOS系统限制，音乐和视频可播放但不能下载，图片可保存至本地。", nil), @"a6", nil];
+		self.constVariable = [NSDictionary dictionaryWithObjectsAndKeys:NSLocalizedString(@"无界传送", nil), @"title", NSLocalizedString(@"接收", nil), @"recv", NSLocalizedString(@"传送", nil), @"send", NSLocalizedString(@"更多", nil), @"more", NSLocalizedString(@"选择文件发给好友", nil), @"selectFiles", NSLocalizedString(@"关于", nil), @"about", NSLocalizedString(@"常见问题", nil), @"faq", NSLocalizedString(@"邀请安装", nil), @"zero_mobile_data", NSLocalizedString(@"邀请安装", nil), @"yqaz", NSLocalizedString(@"无界互传是一种灵活的，不受操作系统限制的文件传输方式。通过无界互传，可以在Android、IOS、Windows等系统的设备之间极速互传文件。", nil), @"adword", NSLocalizedString(@"1.传输速度慢？", nil), @"q1", NSLocalizedString(@"尽量在网络环境简单的地方使用，如果附近的wifi比较多，可能会造成干扰。<br>尽量少使用UC等浏览器来传输，建议使用为chrome浏览器来传输。<br>将设备的扩展卡更换为速度更快的扩展卡。", nil), @"a1", NSLocalizedString(@"2.启动VPN后无法进行发送接收？", nil), @"q2", NSLocalizedString(@"设备开启VPN后，会导致双方无法连接并互传资料，请在进行文件传输前退出VPN。", nil), @"a2", NSLocalizedString(@"3.找不到接收到的文件保存位置？", nil), @"q3", NSLocalizedString(@"Chrome浏览器接收的文件默认保存在设备的Download文件夹中。<br>其它浏览器接收的文件保存在该浏览器默认的下载目录中,可在该浏览器的设置中查看具体的下载目录。", nil), @"a3", NSLocalizedString(@"4.发送文件时每次只能选择一个？", nil), @"q4", NSLocalizedString(@"每次只能选择一个文件发送，是因为浏览器的限制，如需批量发送文件请安装点传。", nil), @"a4", NSLocalizedString(@"5.接收文件时每个文件都需要点击下载？", nil), @"q5", NSLocalizedString(@"浏览器无法支持批量下载，只能单独点击文件下载。如需批量发送文件请安装点传。", nil), @"a5", NSLocalizedString(@"6.IOS常见问题", nil), @"q6", NSLocalizedString(@"因IOS系统限制，音乐和视频可播放但不能下载，图片可保存至本地。", nil), @"a6", NSLocalizedString(@"好友联网扫描二维码直接下载<br>或在浏览器输入网址<br>http://www.3tkj.cn", nil), @"invite_desc", nil];
 	}
 	
 	if (!_webServer2) {
@@ -426,15 +426,6 @@ HT_DEF_SINGLETON(STWebServerModel, shareInstant);
 																					variables:variables];
 								}];
 		
-		[self.webServer2 addHandlerForMethod:@"GET"
-								   pathRegex:@"/.*\\.js"
-								requestClass:[GCDWebServerRequest class]
-								processBlock:^GCDWebServerResponse *(GCDWebServerRequest* request) {
-									
-									return [GCDWebServerDataResponse responseWithHTMLTemplate:[websitePath stringByAppendingPathComponent:request.path]
-																					variables:nil];
-								}];
-        
         // File upload
         [self.webServer2 addHandlerForMethod:@"POST" path:@"/upload" requestClass:[GCDWebServerMultiPartFormRequest class] processBlock:^GCDWebServerResponse *(GCDWebServerRequest* request) {
             GCDWebServerMultiPartFormRequest *multiPartFormRequest = (GCDWebServerMultiPartFormRequest *)request;

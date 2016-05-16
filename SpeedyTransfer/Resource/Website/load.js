@@ -1,5 +1,5 @@
 // JavaScript Document
-var uploadPath='http://192.168.2.19/mumu/test2.php';//'/ws/upload';
+var uploadPath='upload';//'/ws/upload';
 	      //函数区
 	    	var base={
 	        	getEle:function (name,obj){  //以ID获取元素节点
@@ -131,6 +131,7 @@ var uploadPath='http://192.168.2.19/mumu/test2.php';//'/ws/upload';
 						base.getEleFromCls(base.getEle(name),'prop')[0].innerHTML=percentComplete.toString() + '%';
 						//base.getEleFromCls(base.getEle(name),'speed')[0].innerHTML=speed + 'KB/s';
 						base.getEleFromCls(base.getEle(name),'top')[0].style.width=percentComplete.toString() + '%';
+						
 				    }else {
 				    	this.uploadFailed(evt,name);
 				    }
@@ -138,18 +139,21 @@ var uploadPath='http://192.168.2.19/mumu/test2.php';//'/ws/upload';
 				uploadComplete:function (evt,name) {
 					base.getEleFromCls(base.getEle(name),'state')[0].innerHTML='已发送';
 					this.hasSend.push(name);
+					document.getElementById('top').style.background="#01cc99";
+					
 				},
 				uploadFailed:function (evt,name) {
 					base.getEleFromCls(base.getEle(name),'state')[0].innerHTML="已失败";
 				},
 				addItems:function(name,size,file,type){
 					var str='<div id="'+base.sToHex(name)+'"><dl>'+
-								'<dd style="overflow:hidden ;margin-left:0;"class="img_border"><img class="show" src="default.png"/></dd>'+
+								'<dd style="overflow:hidden ;margin-left:0;"class="img_border"><img class="show" src="images/question.png"/></dd>'+
 								'<dd class="middle">'+
 									'<span class="sname">'+name+'</span>'+
 									'<span class="ssize">'+size+'</span>'+
 									'<span class="prop">0%</span>'+
-									'<span class="back"><span class="top"></span></span>'+
+									'<span class="back" id="mycolor"><span class="top"></span></span>'+
+									
 									//'<span class="speed">0%</span>'+
 									
 								'</dd>'+
@@ -165,16 +169,30 @@ var uploadPath='http://192.168.2.19/mumu/test2.php';//'/ws/upload';
 				},
 				preview:function(name,file,type){
 					var img=base.getEleFromCls(base.getEle(base.sToHex(name)),'show')[0];
+				
+					var str = name;
+					var kk = str.split(".");//以逗号作为分隔字符串
+					var number=kk.length-1;
 					if(/image/i.test(type)){
 						var img;
 						var url=URL.createObjectURL(file)
 						img.src=url;					
 					}else if(/video/i.test(type)){
-						img.src='video.png';
+						img.src='images/ic_select_video.png';
 					}else if(/audio/i.test(type)){
-						img.src='music.png';
+						img.src='images/ic_music_purple_40dp.png';
+					}else if(/zip/i.test(type)){
+						img.src='images/ic_ysb_red40dp.png';
+					}else if(/text/i.test(type)){
+						img.src='images/ic_select_txt.png';
 					}else{
-						img.src='default.png';
+						if(kk[number] == "api" || kk[number]== "mp4"|| kk[number]== "wmv"|| kk[number]== "rm"|| kk[number]== "rmvb"|| kk[number]== "mpg"|| kk[number]== "mpeg"){
+							img.src='images/ic_select_video.png';}
+							else if(kk[number] == "wma" || kk[number]== "mp3"|| kk[number]== "wav"|| kk[number]== "amr"){
+							img.src='images/ic_music_purple_40dp.png';}
+							else if(kk[number] == "apk"){img.src='images/ic_sdk_blue_40dp.png';}
+						else{
+						img.src='images/question.png';}
 					}
 				}
 				
