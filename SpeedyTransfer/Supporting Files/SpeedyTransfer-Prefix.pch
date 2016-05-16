@@ -20,8 +20,8 @@
 #define KSERVERPORT 8080
 #define KSERVERPORT2 8081
 
-#define KWeChatAppId        @"wxbe41ebca760466e"
-#define KWeChatAppKey       @"270e045bf66d6515309e13e71dceb707"
+#define KWeChatAppId        @"wxbb111851c6a6de52"
+#define KWeChatAppKey       @"3fc6093bb934ee5c9da5b56a87cfbca6"
 
 #define KQQAppId        @"1105400506"
 #define KQQAppKey       @"8wMHgb0Afd5CmoT1"

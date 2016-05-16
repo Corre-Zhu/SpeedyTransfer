@@ -221,16 +221,17 @@
 - (void)weixinButtonClick {
     if ([WXApi isWXAppInstalled]) {
         WXMediaMessage *mediaMessage = [WXMediaMessage message];
-        mediaMessage.title = KShareContent;
-        
-        WXImageObject *imageObject = [WXImageObject object];
-        imageObject.imageData = UIImageJPEGRepresentation([UIImage imageNamed:@"dcshare"], 0.8);
-        
-        mediaMessage.mediaObject = imageObject;
-        
+        mediaMessage.description = KShareContent;
+//        
+//        WXImageObject *imageObject = [WXImageObject object];
+//        imageObject.imageData = UIImageJPEGRepresentation([UIImage imageNamed:@"dcshare"], 0.8);
+		
+//        mediaMessage.mediaObject = imageObject;
+		
         SendMessageToWXReq* req = [[SendMessageToWXReq alloc] init];
-        req.bText = NO;
-        req.message = mediaMessage;
+		req.text = KShareContent;
+        req.bText = YES;
+//        req.message = mediaMessage;
         req.scene = WXSceneSession;
         
         [WXApi sendReq:req];

@@ -19,7 +19,6 @@
 		81B11DB05739291B2827F0AD /* libPods-SpeedyTransfer.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 43A35BB86492F999A43AE1F4 /* libPods-SpeedyTransfer.a */; };
 		CE1A6E2B1CE82128006795E7 /* libWeiboSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CE1A6E281CE82128006795E7 /* libWeiboSDK.a */; };
 		CE1A6E2C1CE82128006795E7 /* WeiboSDK.bundle in Resources */ = {isa = PBXBuildFile; fileRef = CE1A6E291CE82128006795E7 /* WeiboSDK.bundle */; };
-		CE1A6E311CE822F0006795E7 /* libWeChatSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CE1A6E2E1CE822F0006795E7 /* libWeChatSDK.a */; };
 		CE2AD7AB1C4A340D00C67D1D /* HTJSONAdapter.m in Sources */ = {isa = PBXBuildFile; fileRef = CE2AD7AA1C4A340D00C67D1D /* HTJSONAdapter.m */; };
 		CE2AD7AD1C4A985F00C67D1D /* test.png in Resources */ = {isa = PBXBuildFile; fileRef = CE2AD7AC1C4A985F00C67D1D /* test.png */; };
 		CE2AD7AF1C4AA15D00C67D1D /* IMG_7551.JPG in Resources */ = {isa = PBXBuildFile; fileRef = CE2AD7AE1C4AA15D00C67D1D /* IMG_7551.JPG */; };
@@ -116,9 +115,6 @@
 		CE1A6E281CE82128006795E7 /* libWeiboSDK.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libWeiboSDK.a; sourceTree = "<group>"; };
 		CE1A6E291CE82128006795E7 /* WeiboSDK.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = WeiboSDK.bundle; sourceTree = "<group>"; };
 		CE1A6E2A1CE82128006795E7 /* WeiboSDK.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WeiboSDK.h; sourceTree = "<group>"; };
-		CE1A6E2E1CE822F0006795E7 /* libWeChatSDK.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libWeChatSDK.a; sourceTree = "<group>"; };
-		CE1A6E2F1CE822F0006795E7 /* WXApi.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WXApi.h; sourceTree = "<group>"; };
-		CE1A6E301CE822F0006795E7 /* WXApiObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WXApiObject.h; sourceTree = "<group>"; };
 		CE2AD7A91C4A340D00C67D1D /* HTJSONAdapter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HTJSONAdapter.h; sourceTree = "<group>"; };
 		CE2AD7AA1C4A340D00C67D1D /* HTJSONAdapter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HTJSONAdapter.m; sourceTree = "<group>"; };
 		CE2AD7AC1C4A985F00C67D1D /* test.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = test.png; sourceTree = "<group>"; };
@@ -274,7 +270,6 @@
 			files = (
 				CE1A6E2B1CE82128006795E7 /* libWeiboSDK.a in Frameworks */,
 				CE8975671C284D89002E11F8 /* AddressBookUI.framework in Frameworks */,
-				CE1A6E311CE822F0006795E7 /* libWeChatSDK.a in Frameworks */,
 				CE86491D1C2592BE0072518B /* AddressBook.framework in Frameworks */,
 				CED0D1131C1D53ED00F5C0E3 /* Photos.framework in Frameworks */,
 				81B11DB05739291B2827F0AD /* libPods-SpeedyTransfer.a in Frameworks */,
@@ -339,7 +334,6 @@
 		CE1A6E261CE82128006795E7 /* SNS */ = {
 			isa = PBXGroup;
 			children = (
-				CE1A6E2D1CE822F0006795E7 /* WeChat */,
 				CE1A6E271CE82128006795E7 /* libWeiboSDK */,
 			);
 			path = SNS;
@@ -353,16 +347,6 @@
 				CE1A6E2A1CE82128006795E7 /* WeiboSDK.h */,
 			);
 			path = libWeiboSDK;
-			sourceTree = "<group>";
-		};
-		CE1A6E2D1CE822F0006795E7 /* WeChat */ = {
-			isa = PBXGroup;
-			children = (
-				CE1A6E2E1CE822F0006795E7 /* libWeChatSDK.a */,
-				CE1A6E2F1CE822F0006795E7 /* WXApi.h */,
-				CE1A6E301CE822F0006795E7 /* WXApiObject.h */,
-			);
-			path = WeChat;
 			sourceTree = "<group>";
 		};
 		CE6536A61C2E8AB400C1E8A3 /* FileReceive */ = {
@@ -1041,10 +1025,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				ENABLE_BITCODE = NO;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/SpeedyTransfer/ThirdParty/SNS/QQ",
-				);
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				GCC_PREFIX_HEADER = "SpeedyTransfer/Supporting Files/SpeedyTransfer-Prefix.pch";
 				INFOPLIST_FILE = "$(SRCROOT)/SpeedyTransfer/Supporting Files/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
@@ -1069,10 +1050,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				ENABLE_BITCODE = NO;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/SpeedyTransfer/ThirdParty/SNS/QQ",
-				);
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				GCC_PREFIX_HEADER = "SpeedyTransfer/Supporting Files/SpeedyTransfer-Prefix.pch";
 				INFOPLIST_FILE = "$(SRCROOT)/SpeedyTransfer/Supporting Files/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
@@ -1084,7 +1062,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.santikeji.dianchuan;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "1c1b078c-dec2-47ac-8c89-ef2ffca20c83";
 			};
 			name = Release;
 		};
