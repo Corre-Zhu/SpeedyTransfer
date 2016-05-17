@@ -1,8 +1,8 @@
 //
 //  HTSQLBuffer.h
-//  HelloTalk_Binary
+//  
 //
-//  Created by 任健生 on 13-6-22.
+//  Created by zz on 13-6-22.
 //  Copyright (c) 2013年 HT. All rights reserved.
 //
 

@@ -1,6 +1,6 @@
 //
 //  UIAlertController+HT.m
-//  HelloTalk_Binary
+//  
 //
 //  Created by zhuzhi on 15/6/3.
 //  Copyright © 2015年 HT. All rights reserved.

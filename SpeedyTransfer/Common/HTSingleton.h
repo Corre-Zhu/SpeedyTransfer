@@ -1,8 +1,8 @@
 //
 //  HTSingleton.h
-//  helloTalk
+//  
 //
-//  Created by 任健生 on 13-3-1.
+//  Created by zz on 13-3-1.
 //
 
 #define HT_AS_SINGLETON( __class , __method) \
