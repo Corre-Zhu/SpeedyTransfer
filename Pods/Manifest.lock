@@ -30,6 +30,7 @@ PODS:
   - GCDWebServer/WebUploader (3.3):
     - GCDWebServer/Core
   - libWeChatSDK (1.6.2)
+  - SVWebViewController (1.0)
   - TencentOpenApiSDK (2.9.5):
     - TencentOpenApiSDK/Basic (= 2.9.5)
   - TencentOpenApiSDK/Basic (2.9.5)
@@ -43,6 +44,7 @@ DEPENDENCIES:
   - GCDWebServer (~> 3.3)
   - GCDWebServer/WebUploader (~> 3.0)
   - libWeChatSDK (~> 1.6)
+  - SVWebViewController
   - TencentOpenApiSDK (~> 2.9.5)
 
 EXTERNAL SOURCES:
@@ -62,6 +64,7 @@ SPEC CHECKSUMS:
   GCDObjC: adcd9941029e3628de539347d3a6777470a65998
   GCDWebServer: 106463756391d814b6f506927bee0d6a75a0b427
   libWeChatSDK: fb6496d5fcf98d05fb70674d7da71f9e8c2ec3a3
+  SVWebViewController: c36dda7326e81fcae0abf5d02bf7bbf7e41be901
   TencentOpenApiSDK: a0d7716edd6eb438d65828168e8e5137301b436d
 
 COCOAPODS: 0.39.0

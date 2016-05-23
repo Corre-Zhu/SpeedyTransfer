@@ -19,6 +19,7 @@
 #import "STFeedBackViewController.h"
 #import "STPersonalSettingViewController.h"
 #import "STWebServerModel.h"
+#import <SVWebViewController.h>
 
 @interface STHomeViewController ()
 {
@@ -202,8 +203,14 @@
 }
 
 - (void)discoverButtonClick {
-    STFindViewController *findViewc = [[STFindViewController alloc] init];
-    [self.navigationController pushViewController:findViewc animated:YES];
+	NSString *urlString = [NSString stringWithFormat:@"http://www.3tkj.cn/jurl/j.php?id=%@", [[UIDevice currentDevice] openUDID]];
+	NSURL *url = [NSURL URLWithString:urlString];
+	self.navigationController.view.backgroundColor = [UIColor whiteColor];
+	SVWebViewController *webVC = [[SVWebViewController alloc] initWithURL:url];
+	[self.navigationController pushViewController:webVC animated:YES];
+	
+//    STFindViewController *findViewc = [[STFindViewController alloc] init];
+//    [self.navigationController pushViewController:findViewc animated:YES];
 }
 
 - (void)settingButtonClick {

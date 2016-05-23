@@ -46,6 +46,7 @@ NSString * const dbName = @"FileTransfer.sqlite";
                                                           [UIFont boldSystemFontOfSize:17.0f],NSFontAttributeName,nil]];
     
     [[UITabBar appearance] setTintColor:RGBFromHex(0xeb694a)];
+	[[UIToolbar appearance] setTintColor:RGBFromHex(0xeb694a)];
     [self setupStartingView];
     [self setupDatabase];
     [WXApi registerApp:KWeChatAppId];

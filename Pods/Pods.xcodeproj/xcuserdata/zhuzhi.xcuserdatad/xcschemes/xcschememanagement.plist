@@ -34,6 +34,11 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
+		<key>SVWebViewController.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>dyci.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -67,12 +72,17 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>AE39378F0F59768E3C8D3C8D10919090</key>
+		<key>A99D8295E859257D9CCB38AF4F124F86</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
 		<key>ECFE0958DDB7FEC79B3AA1C9337BC941</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>FF4803C1253F8E9AEE51BA0D82B53A75</key>
 		<dict>
 			<key>primary</key>
 			<true/>
