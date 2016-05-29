@@ -66,6 +66,8 @@ static NSString *FeedbackCellIdentifier = @"FeedbackCellIdentifier";
         [self.tableView reloadData];
         [self scrollToBottomAnimated:NO];
         [inputView clearText];
+        
+        [inputView resignFirstResponder];
     }
 }
 

@@ -2,6 +2,15 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+		<string>weibosdk</string>
+		<string>sinaweibo</string>
+		<string>mqqapi</string>
+		<string>mqqwpa</string>
+		<string>mqq</string>
+		<string>weixin</string>
+	</array>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>zh_CN</string>
 	<key>CFBundleExecutable</key>
@@ -25,6 +34,7 @@
 			<string>com.santikeji.dianchuan</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
+				<string>wb1890650152</string>
 				<string>tencent1105400506</string>
 				<string>com.santikeji.dianchuan</string>
 				<string>wxbb111851c6a6de52</string>

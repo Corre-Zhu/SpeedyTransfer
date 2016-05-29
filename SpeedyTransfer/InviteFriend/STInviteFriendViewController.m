@@ -121,7 +121,7 @@
     [self.view addSubview:switchCon];
     switchCon.on = YES;
     
-    imageView = [[UIImageView alloc] initWithFrame:CGRectMake((IPHONE_WIDTH - 110.0f) / 2.0f, line1.bottom + 50.0f, 110.0f, 110.0f)];
+    imageView = [[UIImageView alloc] initWithFrame:CGRectMake((IPHONE_WIDTH - 110.0f) / 2.0f, line1.bottom + 60.0f, 110.0f, 110.0f)];
     UIImage *image = [KIOSDownloadUrl createRRcode];
     if (image.size.width < 110.0f) {
         image = [image resizeImage:image withQuality:kCGInterpolationNone rate:110.0f / image.size.width];
@@ -133,7 +133,7 @@
     [imageView addSubview:subImageView];
     [subImageView autoCenterInSuperview];
     
-    label = [[UILabel alloc] initWithFrame:CGRectMake(imageView.left - 5.0f, imageView.bottom +  8.0f, imageView.width + 10.0f, 18.0f)];
+    label = [[UILabel alloc] initWithFrame:CGRectMake(imageView.left - 5.0f, imageView.bottom + 8.0f, imageView.width + 10.0f, 18.0f)];
     label.text = NSLocalizedString(@"点击切换至安卓版", nil);
     label.font = [UIFont systemFontOfSize:15.0f];
     label.textColor = [UIColor grayColor];
@@ -208,7 +208,8 @@
         };
         [self presentViewController:sinaweiboSheet animated:YES completion:NULL];
     }
-    else if ([WeiboSDK isWeiboAppInstalled]) {
+    else
+        if ([WeiboSDK isWeiboAppInstalled]) {
         WBMessageObject *object = [WBMessageObject message];
         object.text = KShareContent;
         WBSendMessageToWeiboRequest *request = [WBSendMessageToWeiboRequest requestWithMessage:object];

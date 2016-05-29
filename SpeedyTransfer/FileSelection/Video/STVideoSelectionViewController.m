@@ -46,13 +46,17 @@ static NSString *VideoSelectionCellIdentifier = @"VideoSelectionCellIdentifier";
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    [self setupFetchResults];
+    
+    if ([PHPhotoLibrary authorizationStatus] == PHAuthorizationStatusAuthorized) {
+        [self setupFetchResults];
+        _imageManager = [[PHCachingImageManager alloc] init];
+    }
+
     self.tableView.allowsMultipleSelection = YES;
     self.tableView.tableFooterView = [UIView new];
     self.tableView.contentInset = UIEdgeInsetsMake(0.0f, 0.0f, 49.0f, 0.0f);
     self.tableView.scrollIndicatorInsets = UIEdgeInsetsMake(0.0f, 0.0f, 49.0f, 0.0f);
     [self.tableView registerClass:[STVideoSelectionCell class] forCellReuseIdentifier:VideoSelectionCellIdentifier];
-    _imageManager = [[PHCachingImageManager alloc] init];
 }
 
 #pragma mark - Table view data source

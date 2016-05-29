@@ -1037,7 +1037,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.santikeji.dianchuan;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "ba080ac6-e23f-4dce-aa36-87735011fa0c";
+				PROVISIONING_PROFILE = "4935128a-4d63-47fb-9620-fa1a8970959e";
 			};
 			name = Debug;
 		};
@@ -1062,7 +1062,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.santikeji.dianchuan;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "15ae6bf3-8091-4e45-8c40-9eba95cadc29";
+				PROVISIONING_PROFILE = "";
 			};
 			name = Release;
 		};

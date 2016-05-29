@@ -357,10 +357,10 @@ withFilterContext:(id)filterContext {
             entity.url = [fileInfo stringForKey:ASSET_ID];
         } else if ([fileUrl containsString:@"/contact"]) {
             entity.fileType = STFileTypeContact;
-            entity.url = [fileInfo stringForKey:RECORD_ID];
+            entity.url = @([fileInfo integerForKey:RECORD_ID]).stringValue;
         } else if ([fileUrl containsString:@"/music"]) {
             entity.fileType = STFileTypeMusic;
-            entity.url = [fileInfo stringForKey:RECORD_ID];
+            entity.url = @([fileInfo longLongForKey:RECORD_ID]).stringValue;
         }
          
         entity.deviceName = deviceInfo.deviceName;

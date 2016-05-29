@@ -110,10 +110,10 @@ static NSString *PopupCellIdentifier = @"PopupCellIdentifier";
         backView.userInteractionEnabled = YES;
         [self addSubview:backView];
         
-        titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(58.0f, 0.0f, IPHONE_WIDTH - 116.0f, 44.0f)];
+        titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(10.0f, 0.0f, IPHONE_WIDTH - 116.0f, 44.0f)];
         titleLabel.textColor = [UIColor whiteColor];
         titleLabel.font = [UIFont systemFontOfSize:14.0f];
-        titleLabel.textAlignment = NSTextAlignmentCenter;
+        titleLabel.textAlignment = NSTextAlignmentLeft;
         [backView addSubview:titleLabel];
         
         deleteButton = [UIButton buttonWithType:UIButtonTypeCustom];

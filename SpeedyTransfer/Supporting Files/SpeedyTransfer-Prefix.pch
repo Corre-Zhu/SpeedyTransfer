@@ -23,8 +23,12 @@
 #define KWeChatAppId        @"wxbb111851c6a6de52"
 #define KWeChatAppKey       @"3fc6093bb934ee5c9da5b56a87cfbca6"
 
-#define KQQAppId        @"1105400506"
+#define KQQAppId        @"1890650152"
 #define KQQAppKey       @"8wMHgb0Afd5CmoT1"
+
+#define HT_WEIBO_APP_KEY            @"1890650152"
+#define HT_WEIBO_APP_SECRET         @"dc3d388bac050d961df309228ef01fe5"
+#define HT_WEIBO_APP_REDIRECTURI    @"https://api.weibo.com/oauth2/default.html"
 
 #define KIOSDownloadUrl @"https://appsto.re/cn/isUdcb.i"
 #define KAndroidDownloadUrl @"http://www.3tkj.cn/phone"

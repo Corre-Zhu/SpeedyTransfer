@@ -249,11 +249,19 @@ static NSString * const CollectionViewCellReuseIdentifier = @"CollectionViewCell
 - (void)viewDidLoad {
     [super viewDidLoad];
     [[PHPhotoLibrary sharedPhotoLibrary] registerChangeObserver:self];
-    _imageManager = [[PHCachingImageManager alloc] init];
-    [self setupSmartCollections];
-    [self setupAlbumCollections];
-    [self setupFetchResults];
-    [self setupHeaderModel];
+    
+    if ([PHPhotoLibrary authorizationStatus] == PHAuthorizationStatusNotDetermined) {
+        [PHPhotoLibrary requestAuthorization:^(PHAuthorizationStatus status) {
+            
+        }];
+    } else if ([PHPhotoLibrary authorizationStatus] == PHAuthorizationStatusAuthorized) {
+        _imageManager = [[PHCachingImageManager alloc] init];
+        [self setupSmartCollections];
+        [self setupAlbumCollections];
+        [self setupFetchResults];
+        [self setupHeaderModel];
+    }
+    
     self.collectionView.backgroundColor = [UIColor whiteColor];
     self.collectionView.allowsMultipleSelection = YES;
     self.collectionView.contentInset = UIEdgeInsetsMake(0.0f, 0.0f, 49.0f, 0.0f);
@@ -446,6 +454,16 @@ static NSString * const CollectionViewCellReuseIdentifier = @"CollectionViewCell
 
 - (void)photoLibraryDidChange:(PHChange *)changeInstance {
     dispatch_async(dispatch_get_main_queue(), ^{
+        
+        BOOL needReload = NO;
+        if (!_imageManager) {
+            _imageManager = [[PHCachingImageManager alloc] init];
+            [self setupSmartCollections];
+            [self setupAlbumCollections];
+            [self setupFetchResults];
+            [self setupHeaderModel];
+            needReload = YES;
+        }
         NSMutableArray *updatedFetchResultsArray = [self.fetchResultsArray mutableCopy];
         __block BOOL reloadRequired2 = NO;
         [self.fetchResultsArray enumerateObjectsUsingBlock:^(PHFetchResult *collectionsFetchResult, NSUInteger index, BOOL *stop) {
@@ -508,7 +526,7 @@ static NSString * const CollectionViewCellReuseIdentifier = @"CollectionViewCell
             [self setupFetchResults];
         }
 
-        if (reloadRequired || reloadRequired2) {
+        if (reloadRequired || reloadRequired2 || needReload) {
             [self setupHeaderModel];
             [self.collectionView reloadData];
             [self.fileSelectionTabController photoLibraryDidChange];

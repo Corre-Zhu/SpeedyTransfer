@@ -114,8 +114,13 @@ HT_DEF_SINGLETON(STWebServerModel, shareInstant);
     } else if ([fileType.lowercaseString isEqualToString:@"vcard"]) {
         return STFileTypeContact;
     } else if ([fileType.lowercaseString isEqualToString:@"mp3"] ||
-               [fileType.lowercaseString isEqualToString:@"mp3"] ||
-			   [fileType.lowercaseString isEqualToString:@"audio"]) {
+			   [fileType.lowercaseString isEqualToString:@"audio"] ||
+               [fileType.lowercaseString isEqualToString:@"wav"] ||
+               [fileType.lowercaseString isEqualToString:@"wma"] ||
+               [fileType.lowercaseString isEqualToString:@"ogg"] ||
+               [fileType.lowercaseString isEqualToString:@"ape"] ||
+               [fileType.lowercaseString isEqualToString:@"acc"] ||
+               [fileType.lowercaseString isEqualToString:@"aac"]) {
         return STFileTypeMusic;
     } else {
         NSLog(@"未知文件类型");

@@ -225,7 +225,7 @@ HT_DEF_SINGLETON(STDeviceInfo, shareInstant);
             }
             
             NSString *requestPath = [userInfo stringForKey:REQUEST_PATH];
-            if ([requestPath containsString:info.url]) {
+            if (info.url.length > 0 && [requestPath containsString:info.url]) {
                 NSUInteger totalBytesWritten = [userInfo integerForKey:TOTAL_BYTES_WRITTEN];
                 float progress = MIN(1.0f, (totalBytesWritten + 248) / info.fileSize);
                 

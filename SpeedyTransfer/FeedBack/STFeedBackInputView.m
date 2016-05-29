@@ -58,6 +58,13 @@
     return self;
 }
 
+- (BOOL)resignFirstResponder {
+    [_emailTextField resignFirstResponder];
+    [_inputTextField resignFirstResponder];
+    
+    return [super resignFirstResponder];
+}
+
 - (void)clearText {
     _inputTextField.text = nil;
     _emailTextField.text = nil;

@@ -12,6 +12,7 @@
 #import <FMDatabaseAdditions.h>
 #import "WXApi.h"
 #import <TencentOpenAPI/TencentOAuth.h>
+#import "WeiboSDK.h"
 
 NSString * const dbName = @"FileTransfer.sqlite";
 
@@ -51,7 +52,7 @@ NSString * const dbName = @"FileTransfer.sqlite";
     [self setupDatabase];
     [WXApi registerApp:KWeChatAppId];
     [[TencentOAuth alloc] initWithAppId:KQQAppId andDelegate:nil]; //注册
-    
+    [WeiboSDK registerApp:HT_WEIBO_APP_KEY];
     return YES;
 }
 
