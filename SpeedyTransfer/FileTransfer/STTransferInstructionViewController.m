@@ -32,6 +32,7 @@
     UILabel *sendLabel;
     NSMutableArray *deviceButtons;
     
+    BOOL viewDidLoad;
     BOOL viewDidAppear;
 }
 
@@ -40,7 +41,9 @@
 @implementation STTransferInstructionViewController
 
 - (void)dealloc {
-    [[STFileTransferModel shareInstant] removeObserver:self forKeyPath:@"devicesArray"];
+    if (viewDidLoad) {
+        [[STFileTransferModel shareInstant] removeObserver:self forKeyPath:@"devicesArray"];
+    }
 }
 
 - (void)setupDeviceView {
@@ -296,6 +299,8 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self setupUI];
+    
+    viewDidLoad = YES;
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -357,7 +362,7 @@
 		ipLabel.text = address;
 		[scrollView setContentOffset:CGPointMake(0.0f, scrollView.contentSize.height - scrollView.height) animated:YES];
 		
-		[self setupVariablesAndStartWebServer];
+        [self setupVariablesAndStartWebServer:[self.fileSelectionTabController allSelectedFiles]];
 	} else {
 		[button setImage:[UIImage imageNamed:@"ic_keyboard_arrow_down_grey600"] forState:UIControlStateNormal];
 		qrcodeView.hidden = YES;
@@ -410,9 +415,9 @@
 	return htmlString;
 }
 
-- (void)setupVariablesAndStartWebServer {
+- (void)setupVariablesAndStartWebServer:(NSArray *)files {
 	ZZFileUtility *fileUtility = [[ZZFileUtility alloc] init];
-	[fileUtility fileInfoWithItems:[self.fileSelectionTabController allSelectedFiles] completionBlock:^(NSArray *fileInfos) {
+	[fileUtility fileInfoWithItems:files completionBlock:^(NSArray *fileInfos) {
 		NSMutableArray *picArray = [NSMutableArray arrayWithCapacity:fileInfos.count];
 		NSMutableArray *musicArray = [NSMutableArray arrayWithCapacity:fileInfos.count];
 		NSMutableArray *videoArray = [NSMutableArray arrayWithCapacity:fileInfos.count];
@@ -456,9 +461,14 @@
 		NSString *summary = [NSString stringWithFormat:@"%@给您发送了%@个文件", [UIDevice currentDevice].name, @([self.fileSelectionTabController allSelectedFiles].count)];
 		[[STWebServerModel shareInstant] setVariables:@{@"summary": summary,
 														@"fileInfo": htmlString}];
-		[[STWebServerModel shareInstant] startWebServer2]; // 启动无界传输
-		
-	}];
+        
+        if (![[STWebServerModel shareInstant] isWebServer2Running]) {
+            [[STWebServerModel shareInstant] startWebServer2]; // 启动无界传输
+            [[STWebServerModel shareInstant] startWebServer]; // 启动文件传输服务
+
+        }
+        
+    }];
 
 }
 

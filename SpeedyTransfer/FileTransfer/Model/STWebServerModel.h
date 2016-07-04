@@ -20,5 +20,6 @@ HT_AS_SINGLETON(STWebServerModel, shareInstant);
 @property (nonatomic, strong) NSDictionary *variables;
 - (void)startWebServer2;
 - (void)stopWebServer2;
+- (BOOL)isWebServer2Running;
 
 @end

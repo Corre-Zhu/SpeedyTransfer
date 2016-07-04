@@ -19,6 +19,7 @@
 #import "STWifiNotConnectedPopupView2.h"
 #import "MBProgressHUD.h"
 #import "STHomeViewController.h"
+#import "STWebServerModel.h"
 
 static NSString *sendHeaderIdentifier = @"sendHeaderIdentifier";
 static NSString *receiveHeaderIdentifier = @"receiveHeaderIdentifier";
@@ -43,6 +44,8 @@ static NSString *cellIdentifier = @"CellIdentifier";
 - (void)dealloc {
     [_model removeObserver:self forKeyPath:@"transferFiles"];
     [[NSNotificationCenter defaultCenter] removeObserver:self];
+    
+    [UIApplication sharedApplication].idleTimerDisabled = NO;
 }
 
 - (void)leftBarButtonItemClick {
@@ -108,6 +111,16 @@ static NSString *cellIdentifier = @"CellIdentifier";
     [_model addObserver:self forKeyPath:@"transferFiles" options:NSKeyValueObservingOptionNew context:NULL];
     
     _model.sectionTransferFiles = [_model sortTransferInfo:_model.transferFiles];
+    
+    [UIApplication sharedApplication].idleTimerDisabled = YES;
+    
+    if (self.isFromReceive) {
+        // 启动webserver
+        [[STWebServerModel shareInstant] startWebServer];
+        
+        // 开始发送udp广播
+        [[STFileReceiveModel shareInstant] startBroadcast];
+    }
 }
 
 - (void)reachabilityStatusChange:(NSNotification *)notification {

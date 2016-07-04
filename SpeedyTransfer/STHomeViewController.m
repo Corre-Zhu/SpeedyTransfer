@@ -89,7 +89,7 @@
     [backView addSubview:button];
     
     UILabel *descLabel1 = [[UILabel alloc] initWithFrame:CGRectMake(16.0f, 20.0f, 200.0f, 21.0f)];
-    descLabel1.text = NSLocalizedString(@"无界传送", nil);
+    descLabel1.text = NSLocalizedString(@"无界发送", nil);
     descLabel1.textColor = [UIColor whiteColor];
     descLabel1.font = [UIFont systemFontOfSize:18.0f];
     [button addSubview:descLabel1];
@@ -107,17 +107,17 @@
     CGFloat inset = IPHONE_WIDTH / 375.0f * 65.0f;
     
     [self addButtonWithImage:@"home3" title:NSLocalizedString(@"我要接收", nil) frame:CGRectMake(IPHONE_WIDTH / 2.0f - 30.0f, backView.bottom, 60.0f, 90.0f) selector:@selector(receiveButtonClick)];
-    [self addButtonWithImage:@"home1" title:NSLocalizedString(@"无界传送", nil) frame:CGRectMake(IPHONE_WIDTH / 2.0f - 90.0f - inset, backView.bottom, 60.0f, 90.0f) selector:@selector(transferButtonClick)];
+    [self addButtonWithImage:@"home1" title:NSLocalizedString(@"无界发送", nil) frame:CGRectMake(IPHONE_WIDTH / 2.0f - 90.0f - inset, backView.bottom, 60.0f, 90.0f) selector:@selector(transferButtonClick)];
     [self addButtonWithImage:@"home2" title:NSLocalizedString(@"邀请好友", nil) frame:CGRectMake(IPHONE_WIDTH / 2.0f + 30.0f + inset, backView.bottom, 60.0f, 90.0f) selector:@selector(inviteFriendButtonClick)];
     [self addButtonWithImage:@"home5" title:NSLocalizedString(@"设置", nil) frame:CGRectMake(IPHONE_WIDTH / 2.0f - 30.0f, backView.bottom + 123.0f, 60.0f, 90.0f) selector:@selector(settingButtonClick)];
     [self addButtonWithImage:@"home4" title:NSLocalizedString(@"发现", nil) frame:CGRectMake(IPHONE_WIDTH / 2.0f - 90.0f - inset, backView.bottom + 123.0f, 60.0f, 90.0f) selector:@selector(discoverButtonClick)];
     [self addButtonWithImage:@"home6" title:NSLocalizedString(@"反馈", nil) frame:CGRectMake(IPHONE_WIDTH / 2.0f + 30.0f + inset, backView.bottom + 123.0f, 60.0f, 90.0f) selector:@selector(feedbackButtonClick)];
     
-    // 启动webserver
-    [[STWebServerModel shareInstant] startWebServer];
+//    // 启动webserver
+//    [[STWebServerModel shareInstant] startWebServer];
     
-    // 开始发送udp广播
-    [[STFileReceiveModel shareInstant] startBroadcast];
+//    // 开始发送udp广播
+//    [[STFileReceiveModel shareInstant] startBroadcast];
     
     // 开始监听udp广播
     [[STFileTransferModel shareInstant] startListenBroadcast];

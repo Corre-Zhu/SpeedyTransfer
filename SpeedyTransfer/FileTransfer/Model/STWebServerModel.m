@@ -488,4 +488,8 @@ HT_DEF_SINGLETON(STWebServerModel, shareInstant);
 	self.variables = nil;
 }
 
+- (BOOL)isWebServer2Running {
+    return _webServer2.isRunning;
+}
+
 @end

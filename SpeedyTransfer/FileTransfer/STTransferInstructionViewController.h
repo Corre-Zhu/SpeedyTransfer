@@ -10,4 +10,6 @@
 
 @interface STTransferInstructionViewController : UIViewController
 
+- (void)setupVariablesAndStartWebServer:(NSArray *)files;
+
 @end

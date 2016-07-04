@@ -371,6 +371,12 @@ static NSString * const CollectionViewCellReuseIdentifier = @"CollectionViewCell
         [collectionView deselectItemAtIndexPath:indexPath animated:NO];
     }
     
+    if (model.fetchResult.count == [self.fileSelectionTabController selectedPhotosCountInCollection:model.localIdentifier]) {
+        model.selectedAll = YES;
+    } else {
+        model.selectedAll = NO;
+    }
+    
     return cell;
     
 }

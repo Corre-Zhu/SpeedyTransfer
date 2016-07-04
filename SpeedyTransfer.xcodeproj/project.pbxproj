@@ -90,6 +90,7 @@
 		CED62A531C09719500270EDB /* UIView+ZZ.m in Sources */ = {isa = PBXBuildFile; fileRef = CED62A521C09719500270EDB /* UIView+ZZ.m */; };
 		CED62A561C09721F00270EDB /* UIDevice+ZZ.m in Sources */ = {isa = PBXBuildFile; fileRef = CED62A551C09721F00270EDB /* UIDevice+ZZ.m */; };
 		CED62A5F1C099C6000270EDB /* UIColor+ZZ.m in Sources */ = {isa = PBXBuildFile; fileRef = CED62A5E1C099C6000270EDB /* UIColor+ZZ.m */; };
+		CEDF05AC1D2ABDB200D48D58 /* ZZFunction.m in Sources */ = {isa = PBXBuildFile; fileRef = CEDF05AB1D2ABDB200D48D58 /* ZZFunction.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -260,6 +261,8 @@
 		CED62A5D1C099C6000270EDB /* UIColor+ZZ.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+ZZ.h"; sourceTree = "<group>"; };
 		CED62A5E1C099C6000270EDB /* UIColor+ZZ.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+ZZ.m"; sourceTree = "<group>"; };
 		CED62A611C09A53F00270EDB /* ZZMacros.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZZMacros.h; sourceTree = "<group>"; };
+		CEDF05AA1D2ABDB200D48D58 /* ZZFunction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZZFunction.h; sourceTree = "<group>"; };
+		CEDF05AB1D2ABDB200D48D58 /* ZZFunction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZZFunction.m; sourceTree = "<group>"; };
 		FBFC0383354923B95659CB9F /* Pods-SpeedyTransfer.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SpeedyTransfer.release.xcconfig"; path = "Pods/Target Support Files/Pods-SpeedyTransfer/Pods-SpeedyTransfer.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -728,6 +731,8 @@
 				CE6536DD1C2ED74600C1E8A3 /* ZZPath.h */,
 				CE6536DE1C2ED74600C1E8A3 /* ZZPath.m */,
 				CE6536ED1C2F0A8A00C1E8A3 /* HTSingleton.h */,
+				CEDF05AA1D2ABDB200D48D58 /* ZZFunction.h */,
+				CEDF05AB1D2ABDB200D48D58 /* ZZFunction.m */,
 			);
 			name = Common;
 			path = SpeedyTransfer/Common;
@@ -921,6 +926,7 @@
 				CE9C91B21C39697D0075CB06 /* STPersonalSettingViewController.m in Sources */,
 				4558BFCF1C746862002F5718 /* STDeviceInfo.m in Sources */,
 				CED0D1211C1D576D00F5C0E3 /* STMusicSelectionViewController.m in Sources */,
+				CEDF05AC1D2ABDB200D48D58 /* ZZFunction.m in Sources */,
 				4558BFC81C7453F1002F5718 /* HTSFHFKeychainUtils.m in Sources */,
 				CE6536CB1C2ECD3400C1E8A3 /* STWifiNotConnectedPopupView.m in Sources */,
 				CE6536FC1C31955000C1E8A3 /* ZZNavigationController.m in Sources */,
