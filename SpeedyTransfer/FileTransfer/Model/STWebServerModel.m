@@ -390,6 +390,10 @@ HT_DEF_SINGLETON(STWebServerModel, shareInstant);
 	
 }
 
+- (BOOL)isWebServerRunning {
+	return _webServer.isRunning;
+}
+
 // 设置无界传输变量值
 - (NSString *)htmlForFileInfo:(NSArray *)fileInfos category:(NSString *)category image:(NSString *)imageName icon:(NSString *)iconName {
 	NSMutableString *htmlString = [NSMutableString string];

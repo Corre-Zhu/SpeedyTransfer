@@ -15,6 +15,7 @@ HT_AS_SINGLETON(STWebServerModel, shareInstant);
 
 - (void)startWebServer;
 - (void)stopWebServer;
+- (BOOL)isWebServerRunning;
 
 // 无界传输
 - (void)addTransferFiles:(NSArray *)files;
