@@ -17,5 +17,7 @@ HT_AS_SINGLETON(STFileReceiveModel, shareInstant)
  开始广播
  */
 - (void)startBroadcast;
+- (void)stopBroadcast;
+
 
 @end

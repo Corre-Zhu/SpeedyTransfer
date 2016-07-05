@@ -772,7 +772,7 @@
 				TargetAttributes = {
 					CED62A291C094FDD00270EDB = {
 						CreatedOnToolsVersion = 7.1.1;
-						DevelopmentTeam = 6443RH2762;
+						DevelopmentTeam = 9UU37VNQKP;
 					};
 				};
 			};
@@ -1041,9 +1041,9 @@
 					"$(PROJECT_DIR)/SpeedyTransfer/ThirdParty/SNS/libWeiboSDK",
 					"$(PROJECT_DIR)/SpeedyTransfer/ThirdParty/SNS/WeChat",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.santikeji.dianchuan;
+				PRODUCT_BUNDLE_IDENTIFIER = com.zz.dianchuan;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "4935128a-4d63-47fb-9620-fa1a8970959e";
+				PROVISIONING_PROFILE = "";
 			};
 			name = Debug;
 		};
@@ -1066,9 +1066,9 @@
 					"$(PROJECT_DIR)/SpeedyTransfer/ThirdParty/SNS/libWeiboSDK",
 					"$(PROJECT_DIR)/SpeedyTransfer/ThirdParty/SNS/WeChat",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.santikeji.dianchuan;
+				PRODUCT_BUNDLE_IDENTIFIER = com.zz.dianchuan;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "8b454425-012f-4920-b6b3-1998dac4598a";
+				PROVISIONING_PROFILE = "";
 			};
 			name = Release;
 		};

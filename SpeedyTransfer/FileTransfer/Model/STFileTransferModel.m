@@ -690,6 +690,8 @@ withFilterContext:(id)filterContext {
     [self cancelAllReceiveItems];
 	[self removeAllBrowser];
 	[[STWebServerModel shareInstant] stopWebServer2];
+	[[STWebServerModel shareInstant] stopWebServer];
+	[[STFileReceiveModel shareInstant] stopBroadcast];
 }
 
 - (void)cancelSendItemsTo:(NSString *)ip {

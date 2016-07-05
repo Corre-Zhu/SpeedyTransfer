@@ -28,6 +28,8 @@
 
 @property (nonatomic, strong) GCDWebServer *webServer2;
 @property (nonatomic, strong) NSDictionary *constVariable;
+@property (nonatomic, strong) NSDictionary *variables;
+@property (nonatomic, strong) NSMutableArray *transferFiles;
 
 @end
 
@@ -380,7 +382,110 @@ HT_DEF_SINGLETON(STWebServerModel, shareInstant);
 }
 
 - (void)stopWebServer {
-	[self.webServer stop];
+	@autoreleasepool {
+		[self.webServer stop];
+		[self.webServer removeAllHandlers];
+		self.webServer = nil;
+	}
+	
+}
+
+// 设置无界传输变量值
+- (NSString *)htmlForFileInfo:(NSArray *)fileInfos category:(NSString *)category image:(NSString *)imageName icon:(NSString *)iconName {
+	NSMutableString *htmlString = [NSMutableString string];
+	
+	[htmlString appendFormat:@"<div class=\"container1\"> \
+	 <div class=\"container_wj\"> \
+	 <div class=\"apk_container\"> \
+	 <img src=\"%@\"> \
+	 <div class=\"apk_text\">%@(%@)</div> \
+	 </div>", imageName, category, @(fileInfos.count)];
+	
+	for (NSDictionary *fileInfo in fileInfos) {
+		NSString *url = [fileInfo stringForKey:FILE_URL];
+		NSString *iconUrl = [fileInfo stringForKey:ICON_URL];
+		if (!iconUrl) {
+			iconUrl = iconName;
+		}
+		NSString *fileName = [fileInfo stringForKey:FILE_NAME];
+		double fileSize = [fileInfo doubleForKey:FILE_SIZE];
+		NSString *fileSizeString = [NSString formatSize:fileSize];
+		[htmlString appendFormat:@"<a href=\"%@\"> <div class=\"apk_68dp\"> \
+		 <div class=\"icon\"><img src=\"%@\"></div> \
+		 <div class=\"apk_text1\">%@</div> \
+		 <div class=\"xz\"><img src=\"images/xz.png\"></div> \
+		 <div class=\"apk_text2\">%@</div> \
+		 <div class=\"line\"></div> \
+		 </div> \
+		 </a>", url, iconUrl, fileName, fileSizeString];
+	}
+	
+	[htmlString appendFormat:@" </div> \
+	 <div class=\"jiange\"> \
+	 <div class=\"line1\"></div> \
+	 <div class=\"jianxi\"></div> \
+	 <div class=\"line1\"></div> \
+	 </div> \
+	 </div>"];
+	
+	return htmlString;
+}
+
+- (void)setupVariables {
+	NSMutableArray *picArray = [NSMutableArray arrayWithCapacity:self.transferFiles.count];
+	NSMutableArray *musicArray = [NSMutableArray arrayWithCapacity:self.transferFiles.count];
+	NSMutableArray *videoArray = [NSMutableArray arrayWithCapacity:self.transferFiles.count];
+	NSMutableArray *contactArray = [NSMutableArray arrayWithCapacity:self.transferFiles.count];
+	for (NSDictionary *fileInfo in self.transferFiles) {
+		NSString *url = [fileInfo stringForKey:FILE_URL];
+		NSString *fileType = [fileInfo stringForKey:FILE_TYPE];
+		if ([url containsString:@"/image/"]) {
+			if ([fileType.lowercaseString isEqualToString:@"mov"] ||
+				[fileType.lowercaseString isEqualToString:@"3gp"] ||
+				[fileType.lowercaseString isEqualToString:@"mp4"]) {
+				[videoArray addObject:fileInfo];
+			} else {
+				[picArray addObject:fileInfo];
+			}
+		} else if ([url containsString:@"/contact/"]) {
+			[contactArray addObject:fileInfo];
+		} else if ([url containsString:@"/music/"]) {
+			[musicArray addObject:fileInfo];
+		}
+	}
+	
+	NSMutableString *htmlString = [NSMutableString string];
+	
+	if (picArray.count > 0) {
+		[htmlString appendString:[self htmlForFileInfo:picArray category:@"图片" image:@"images/ic_picture_red_24dp.png" icon:nil]];
+	}
+	
+	if (musicArray.count > 0) {
+		[htmlString appendString:[self htmlForFileInfo:musicArray category:@"音乐" image:@"images/ic_picture_green_12dp.png" icon:@"images/ic_music_purple_40dp.png"]];
+	}
+	
+	if (videoArray.count > 0) {
+		[htmlString appendString:[self htmlForFileInfo:videoArray category:@"视频" image:@"images/ic_picture_green_12dp.png" icon:nil]];
+	}
+	
+	if (contactArray.count > 0) {
+		[htmlString appendString:[self htmlForFileInfo:contactArray category:@"联系人" image:@"images/ic_picture_green_12dp.png" icon:@"images/wendang.png"]];
+	}
+	
+	NSString *summary = [NSString stringWithFormat:@"%@给您发送了%@个文件", [UIDevice currentDevice].name, @(self.transferFiles.count)];
+	[[STWebServerModel shareInstant] setVariables:@{@"summary": summary,
+													@"fileInfo": htmlString}];
+	
+}
+
+- (void)addTransferFiles:(NSArray *)files {
+	if (!self.transferFiles) {
+		self.transferFiles = [NSMutableArray array];
+	}
+	
+	[self.transferFiles addObjectsFromArray:files];
+	
+	[self setupVariables];
 }
 
 - (void)startWebServer2 {
@@ -484,8 +589,15 @@ HT_DEF_SINGLETON(STWebServerModel, shareInstant);
 }
 
 - (void)stopWebServer2 {
-	[self.webServer2 stop];
-	self.variables = nil;
+	@autoreleasepool {
+		[self.webServer2 stop];
+		[self.webServer2 removeAllHandlers];
+		self.webServer2 = nil;
+		
+		[self.transferFiles removeAllObjects];
+		self.variables = nil;
+	}
+	
 }
 
 - (BOOL)isWebServer2Running {

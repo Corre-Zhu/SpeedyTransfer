@@ -314,9 +314,9 @@
 
 - (void)sendButtonClick {
     NSMutableArray *tempArr = [NSMutableArray array];
-    for (STDeviceButton *button in deviceButtons) {
-        if ([button isSelected] && !button.hidden) {
-            [tempArr addObject:button.deviceInfo];
+    for (STDeviceButton *but in deviceButtons) {
+        if ([but isSelected] && !but.hidden) {
+            [tempArr addObject:but.deviceInfo];
         }
     }
     
@@ -370,97 +370,15 @@
 		scrollView.contentSize = CGSizeMake(IPHONE_WIDTH, 550.0f);
 		
 		[[STWebServerModel shareInstant] stopWebServer2]; // 停止无界传输
+		[[STWebServerModel shareInstant] stopWebServer]; // 停止文件传输服务
 		[[STFileTransferModel shareInstant] removeAllBrowser];
 	}
-}
-
-// 设置无界传输变量值
-- (NSString *)htmlForFileInfo:(NSArray *)fileInfos category:(NSString *)category image:(NSString *)imageName icon:(NSString *)iconName {
-	NSMutableString *htmlString = [NSMutableString string];
-
-	[htmlString appendFormat:@"<div class=\"container1\"> \
-	 <div class=\"container_wj\"> \
-	 <div class=\"apk_container\"> \
-	 <img src=\"%@\"> \
-	 <div class=\"apk_text\">%@(%@)</div> \
-	 </div>", imageName, category, @(fileInfos.count)];
-	
-	for (NSDictionary *fileInfo in fileInfos) {
-		NSString *url = [fileInfo stringForKey:FILE_URL];
-		NSString *iconUrl = [fileInfo stringForKey:ICON_URL];
-		if (!iconUrl) {
-			iconUrl = iconName;
-		}
-		NSString *fileName = [fileInfo stringForKey:FILE_NAME];
-		double fileSize = [fileInfo doubleForKey:FILE_SIZE];
-		NSString *fileSizeString = [NSString formatSize:fileSize];
-		[htmlString appendFormat:@"<a href=\"%@\"> <div class=\"apk_68dp\"> \
-		 <div class=\"icon\"><img src=\"%@\"></div> \
-		 <div class=\"apk_text1\">%@</div> \
-		 <div class=\"xz\"><img src=\"images/xz.png\"></div> \
-		 <div class=\"apk_text2\">%@</div> \
-		 <div class=\"line\"></div> \
-		 </div> \
-		 </a>", url, iconUrl, fileName, fileSizeString];
-	}
-	
-	[htmlString appendFormat:@" </div> \
-	 <div class=\"jiange\"> \
-	 <div class=\"line1\"></div> \
-	 <div class=\"jianxi\"></div> \
-	 <div class=\"line1\"></div> \
-	 </div> \
-	 </div>"];
-	
-	return htmlString;
 }
 
 - (void)setupVariablesAndStartWebServer:(NSArray *)files {
 	ZZFileUtility *fileUtility = [[ZZFileUtility alloc] init];
 	[fileUtility fileInfoWithItems:files completionBlock:^(NSArray *fileInfos) {
-		NSMutableArray *picArray = [NSMutableArray arrayWithCapacity:fileInfos.count];
-		NSMutableArray *musicArray = [NSMutableArray arrayWithCapacity:fileInfos.count];
-		NSMutableArray *videoArray = [NSMutableArray arrayWithCapacity:fileInfos.count];
-		NSMutableArray *contactArray = [NSMutableArray arrayWithCapacity:fileInfos.count];
-		for (NSDictionary *fileInfo in fileInfos) {
-			NSString *url = [fileInfo stringForKey:FILE_URL];
-			NSString *fileType = [fileInfo stringForKey:FILE_TYPE];
-			if ([url containsString:@"/image/"]) {
-				if ([fileType.lowercaseString isEqualToString:@"mov"] ||
-					[fileType.lowercaseString isEqualToString:@"3gp"] ||
-					[fileType.lowercaseString isEqualToString:@"mp4"]) {
-					[videoArray addObject:fileInfo];
-				} else {
-					[picArray addObject:fileInfo];
-				}
-			} else if ([url containsString:@"/contact/"]) {
-				[contactArray addObject:fileInfo];
-			} else if ([url containsString:@"/music/"]) {
-				[musicArray addObject:fileInfo];
-			}
-		}
-		
-		NSMutableString *htmlString = [NSMutableString string];
-
-		if (picArray.count > 0) {
-			[htmlString appendString:[self htmlForFileInfo:picArray category:@"图片" image:@"images/ic_picture_red_24dp.png" icon:nil]];
-		}
-		
-		if (musicArray.count > 0) {
-			[htmlString appendString:[self htmlForFileInfo:musicArray category:@"音乐" image:@"images/ic_picture_green_12dp.png" icon:@"images/ic_music_purple_40dp.png"]];
-		}
-		
-		if (videoArray.count > 0) {
-			[htmlString appendString:[self htmlForFileInfo:videoArray category:@"视频" image:@"images/ic_picture_green_12dp.png" icon:nil]];
-		}
-		
-		if (contactArray.count > 0) {
-			[htmlString appendString:[self htmlForFileInfo:contactArray category:@"联系人" image:@"images/ic_picture_green_12dp.png" icon:@"images/wendang.png"]];
-		}
-
-		NSString *summary = [NSString stringWithFormat:@"%@给您发送了%@个文件", [UIDevice currentDevice].name, @([self.fileSelectionTabController allSelectedFiles].count)];
-		[[STWebServerModel shareInstant] setVariables:@{@"summary": summary,
-														@"fileInfo": htmlString}];
+		[[STWebServerModel shareInstant] addTransferFiles:fileInfos];
         
         if (![[STWebServerModel shareInstant] isWebServer2Running]) {
             [[STWebServerModel shareInstant] startWebServer2]; // 启动无界传输

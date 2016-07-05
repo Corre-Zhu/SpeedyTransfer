@@ -12,6 +12,7 @@
 @interface STFileReceiveModel ()<GCDAsyncUdpSocketDelegate>
 {
     NSTimer *broadcastTimer;
+	BOOL broadcasting;
 }
 
 @property (nonatomic, strong)GCDAsyncUdpSocket *udpSocket;
@@ -58,7 +59,15 @@ HT_DEF_SINGLETON(STFileReceiveModel, shareInstant);
 }
 
 - (void)startBroadcast {
+	broadcasting = YES;
     broadcastTimer = [NSTimer scheduledTimerWithTimeInterval:1.0f target:self selector:@selector(doBroadcast) userInfo:nil repeats:YES];
+}
+
+- (void)stopBroadcast {
+	broadcasting = NO;
+	[self invalidTimer];
+	[_udpSocket close];
+	_udpSocket = nil;
 }
 
 - (void)invalidTimer {
@@ -74,7 +83,9 @@ HT_DEF_SINGLETON(STFileReceiveModel, shareInstant);
 
 - (void)willEnterForegroundNotification {
     [self invalidTimer];
-    [self startBroadcast];
+	if (broadcasting) {
+		[self startBroadcast];
+	}
 }
 
 #pragma mark - GCDAsyncUdpSocketDelegate

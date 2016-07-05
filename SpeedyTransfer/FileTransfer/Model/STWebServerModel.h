@@ -17,7 +17,8 @@ HT_AS_SINGLETON(STWebServerModel, shareInstant);
 - (void)stopWebServer;
 
 // 无界传输
-@property (nonatomic, strong) NSDictionary *variables;
+- (void)addTransferFiles:(NSArray *)files;
+
 - (void)startWebServer2;
 - (void)stopWebServer2;
 - (BOOL)isWebServer2Running;
