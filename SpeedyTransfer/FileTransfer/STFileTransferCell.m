@@ -164,8 +164,11 @@
         
     } else if (_transferInfo.fileType == STFileTypeMusic) {
         coverImageView.image = [UIImage imageNamed:@"music_bg"];
-    }
-    
+	} else {
+		// 未知文件类型
+		coverImageView.image = [UIImage imageNamed:@"question"];
+	}
+	
     if (_transferInfo.transferStatus == STFileTransferStatusSending ||
         _transferInfo.transferStatus == STFileTransferStatusReceiving) {
         succeedImageView.hidden = YES;

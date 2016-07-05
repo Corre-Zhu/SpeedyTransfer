@@ -544,10 +544,10 @@ HT_DEF_SINGLETON(STWebServerModel, shareInstant);
             NSString* contentType = (range.location != NSNotFound ? @"application/json" : @"text/plain; charset=utf-8");  // Required when using iFrame transport (see https://github.com/blueimp/jQuery-File-Upload/wiki/Setup)
             
             GCDWebServerMultiPartFile *file = [multiPartFormRequest firstFileForControlName:@"fileToUpload"];
-            if (([file.fileName hasPrefix:@"."]) || ![weakSelf checkFileExtension:file.fileName]) {
+			if ([file.fileName hasPrefix:@"."]) { // || ![weakSelf checkFileExtension:file.fileName]) {
                 return [GCDWebServerErrorResponse responseWithClientError:kGCDWebServerHTTPStatusCode_Forbidden message:@"Uploaded file name \"%@\" is not allowed", file.fileName];
             }
-            
+			
             NSString* relativePath = [[multiPartFormRequest firstArgumentForControlName:@"path"] string];
             NSString* absolutePath = [weakSelf uniquePathForPath:[[[ZZPath tmpReceivedPath] stringByAppendingPathComponent:relativePath] stringByAppendingPathComponent:file.fileName]];
             if (![weakSelf checkSandboxedPath:absolutePath]) {
