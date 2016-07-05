@@ -106,6 +106,7 @@ HT_DEF_SINGLETON(STWebServerModel, shareInstant);
     if ([fileType.lowercaseString isEqualToString:@"png"] ||
         [fileType.lowercaseString isEqualToString:@"jpg"] ||
         [fileType.lowercaseString isEqualToString:@"jpeg"] ||
+        [fileType.lowercaseString isEqualToString:@"gif"] ||
 		[fileType.lowercaseString isEqualToString:@"photo"]) {
         return STFileTypePicture;
     } else if ([fileType.lowercaseString isEqualToString:@"mov"] ||
@@ -139,6 +140,10 @@ HT_DEF_SINGLETON(STWebServerModel, shareInstant);
 }
 
 - (void)startWebServer {
+    if (_webServer.isRunning) {
+        return;
+    }
+    
 	if (!_webServer) {
 		// Create server
 		_webServer = [[GCDWebServer alloc] init];
@@ -327,6 +332,7 @@ HT_DEF_SINGLETON(STWebServerModel, shareInstant);
 					NSLog(@"deviceInfo setup error");
 					continue;
 				}
+                [[STFileTransferModel shareInstant] addDevice:deviceInfo];
 				
 				STFileTransferInfo *entity = [[STFileTransferInfo alloc] init];
 				entity.identifier = [NSString uniqueID];
@@ -340,7 +346,7 @@ HT_DEF_SINGLETON(STWebServerModel, shareInstant);
 					entity.pathExtension = entity.url.pathExtension;
 				} else {
 					entity.pathExtension = [fileInfo stringForKey:FILE_TYPE];
-				}
+	 			}
 				entity.dateString = [[NSDate date] dateString];
 				entity.deviceName = deviceInfo.deviceName;
 				entity.headImage = deviceInfo.headImage;

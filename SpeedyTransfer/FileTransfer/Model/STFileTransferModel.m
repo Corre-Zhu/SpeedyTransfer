@@ -188,7 +188,7 @@ HT_DEF_SINGLETON(STFileTransferModel, shareInstant);
                 BOOL timeout = NO;
                 BOOL deviceNotConnected = NO;
                 for (STDeviceInfo *deviceInfo in tempArr) {
-                    if (!deviceInfo.isBrowser && [[NSDate date] timeIntervalSince1970] - deviceInfo.lastUpdateTimestamp > 15) {
+                    if (!deviceInfo.isBrowser && deviceInfo.lastUpdateTimestamp > 0.0f && [[NSDate date] timeIntervalSince1970] - deviceInfo.lastUpdateTimestamp > 15) {
                         // 15秒之内没有收到udp广播，默认当做离线处理
                         timeout = YES;
                         [tempDevicesArry removeObject:deviceInfo];
@@ -325,6 +325,27 @@ withFilterContext:(id)filterContext {
 			}
 		}
 	}
+}
+
+- (void)addDevice:(STDeviceInfo *)newDeviceInfo {
+    @synchronized(self) {
+        @autoreleasepool {
+            if (newDeviceInfo.ip.length > 0 && ![[UIDevice getAllIpAddresses].allValues containsObject:newDeviceInfo.ip]) {
+                BOOL find = NO;
+                NSArray *tempArr = [NSArray arrayWithArray:self.devicesArray];
+                for (STDeviceInfo *deviceInfo in tempArr) {
+                    if ([deviceInfo.ip isEqualToString:newDeviceInfo.ip]) {
+                        find = YES;
+                        break;
+                    }
+                }
+                
+                if (!find) {
+                    self.devicesArray = [tempArr arrayByAddingObject:newDeviceInfo];
+                }
+            }
+        }
+    }
 }
 
 #pragma mark - Send file

@@ -57,4 +57,7 @@ HT_AS_SINGLETON(STFileTransferModel, shareInstant);
 - (void)addNewBrowser:(NSString *)host;
 - (void)removeAllBrowser; // 移除所有无界设备
 
+// 通过接收文件发现的设备
+- (void)addDevice:(STDeviceInfo *)deviceInfo;
+
 @end
