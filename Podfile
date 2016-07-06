@@ -13,5 +13,7 @@ pod 'AFNetworking', '~> 3.0'
 pod 'TencentOpenApiSDK', '~> 2.9.5'
 pod 'libWeChatSDK', '~> 1.6'
 pod 'SVWebViewController'
+pod 'Fabric'
+pod 'Crashlytics'
 
 end
