@@ -15,9 +15,12 @@ PODS:
   - AFNetworking/UIKit (3.0.4):
     - AFNetworking/NSURLSession
   - CocoaAsyncSocket (7.4.2)
+  - Crashlytics (3.7.1):
+    - Fabric (~> 1.6.3)
   - dyci (0.1.5.6):
     - dyci/Injections (= 0.1.5.6)
   - dyci/Injections (0.1.5.6)
+  - Fabric (1.6.7)
   - FMDB (2.5):
     - FMDB/standard (= 2.5)
   - FMDB/common (2.5)
@@ -38,7 +41,9 @@ PODS:
 DEPENDENCIES:
   - AFNetworking (~> 3.0)
   - CocoaAsyncSocket
+  - Crashlytics
   - dyci (from `https://github.com/DyCI/dyci-main.git`)
+  - Fabric
   - FMDB
   - GCDObjC
   - GCDWebServer (~> 3.3)
@@ -59,7 +64,9 @@ CHECKOUT OPTIONS:
 SPEC CHECKSUMS:
   AFNetworking: a0075feb321559dc78d9d85b55d11caa19eabb93
   CocoaAsyncSocket: f5783bdedd232d91b89769bc4b5a1580aed518ad
+  Crashlytics: 3cdd4c9655be68032a0cf0379e0fb5ef6af22cad
   dyci: 099c2e6dc98abb8f21b370cabbf1443ff700608a
+  Fabric: caf7580c725e64db144f610ac65cd60956911dc7
   FMDB: 96e8f1bcc1329e269330f99770ad4285d9003e52
   GCDObjC: adcd9941029e3628de539347d3a6777470a65998
   GCDWebServer: 106463756391d814b6f506927bee0d6a75a0b427
@@ -67,4 +74,6 @@ SPEC CHECKSUMS:
   SVWebViewController: c36dda7326e81fcae0abf5d02bf7bbf7e41be901
   TencentOpenApiSDK: a0d7716edd6eb438d65828168e8e5137301b436d
 
-COCOAPODS: 0.39.0
+PODFILE CHECKSUM: 89c33e767ddf801aa59a98f33cc10575c342de4a
+
+COCOAPODS: 1.0.1
