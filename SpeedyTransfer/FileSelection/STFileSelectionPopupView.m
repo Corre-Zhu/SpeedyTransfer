@@ -33,7 +33,7 @@
     if (self) {
         self.selectionStyle = UITableViewCellSelectionStyleNone;
         
-        coverImageView = [[UIImageView alloc] initWithFrame:CGRectMake(9.0f, 5.0f, 73.0f, 73.0f)];
+        coverImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0.0f, 5.0f, 73.0f, 73.0f)];
         [self.contentView addSubview:coverImageView];
         
         titleLabel = [[UILabel alloc] init];
@@ -49,7 +49,7 @@
         [self.contentView addSubview:subTitleLabel];
         
         _deleteButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        _deleteButton.frame = CGRectMake(IPHONE_WIDTH - 86.0f, 24.0f, 35.0f, 35.0f);
+        _deleteButton.frame = CGRectMake(IPHONE_WIDTH - 102.0f, 24.0f, 35.0f, 35.0f);
         [_deleteButton setImage:[UIImage imageNamed:@"delete_gray"] forState:UIControlStateNormal];
         [self.contentView addSubview:_deleteButton];
     }
@@ -110,7 +110,7 @@ static NSString *PopupCellIdentifier = @"PopupCellIdentifier";
         backView.userInteractionEnabled = YES;
         [self addSubview:backView];
         
-        titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(10.0f, 0.0f, IPHONE_WIDTH - 116.0f, 44.0f)];
+        titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(16.0f, 0.0f, IPHONE_WIDTH - 116.0f, 44.0f)];
         titleLabel.textColor = [UIColor whiteColor];
         titleLabel.font = [UIFont systemFontOfSize:14.0f];
         titleLabel.textAlignment = NSTextAlignmentLeft;
@@ -132,8 +132,10 @@ static NSString *PopupCellIdentifier = @"PopupCellIdentifier";
         maskLayer.path = maskPath.CGPath;
         whiteView.layer.mask = maskLayer;
         
-        _tableView = [[UITableView alloc] initWithFrame:whiteView.bounds style:UITableViewStylePlain];
+        _tableView = [[UITableView alloc] initWithFrame:CGRectMake(16.0f, 0.0f, whiteView.width - 16.0f, whiteView.height) style:UITableViewStylePlain];
         _tableView.backgroundColor = [UIColor whiteColor];
+        _tableView.separatorInset = UIEdgeInsetsZero;
+        _tableView.layoutMargins = UIEdgeInsetsZero;
         _tableView.dataSource = self;
         _tableView.delegate = self;
         [_tableView registerClass:[STFileSelectionPopupCell class] forCellReuseIdentifier:PopupCellIdentifier];
@@ -437,6 +439,11 @@ static NSString *PopupCellIdentifier = @"PopupCellIdentifier";
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     return 83.0f;
+}
+
+- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
+        [cell setSeparatorInset:UIEdgeInsetsZero];
+        [cell setLayoutMargins:UIEdgeInsetsZero];
 }
 
 @end

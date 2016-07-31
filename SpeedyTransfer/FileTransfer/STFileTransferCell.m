@@ -60,11 +60,11 @@
         sizeLabel.font = [UIFont systemFontOfSize:12.0f];
         [self.contentView addSubview:sizeLabel];
         
-        progressView = [[UIProgressView alloc] initWithFrame:CGRectMake(coverImageView.right + 10.0f, 75.0f, 140.0f, 8.0f)];
+        progressView = [[UIProgressView alloc] initWithFrame:CGRectMake(coverImageView.right + 10.0f, 75.0f, 140.0f, 0.0f)];
         progressView.trackTintColor = RGBFromHex(0xe0e1de);
         progressView.progressTintColor = RGBFromHex(0x4adb61);
         [self.contentView addSubview:progressView];
-        [progressView setTransform:CGAffineTransformMakeScale(1.0, 4.0)];
+        [progressView setTransform:CGAffineTransformMakeScale(1.0, 2.2)];
         
         rateLabel = [[UILabel alloc] initWithFrame:CGRectMake(progressView.right + 16.0f, 66.0f, IPHONE_WIDTH - progressView.right - 32.0f, 16.0f)];
         if (IPHONE_WIDTH == 320.0f) {
@@ -88,7 +88,7 @@
         [self.contentView addSubview:failedLabel];
         failedLabel.hidden = YES;
         
-        UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 91.5f, IPHONE_WIDTH, 0.5f)];
+        UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(16.0f, 91.5f, IPHONE_WIDTH, 0.5f)];
         lineView.backgroundColor = [UIColor lightGrayColor];
         [self.contentView addSubview:lineView];
     }
@@ -190,10 +190,12 @@
     progressView.progress = _transferInfo.progress;
 
     [dateLabel sizeToFit];
-    dateLabel.left = IPHONE_WIDTH - 16.0f - dateLabel.width;
-    dateLabel.top = 13.0f;
+    dateLabel.left = coverImageView.right + 10.0f;
+    dateLabel.top = 42.0f;
     
-    fileNameLabel.frame = CGRectMake(coverImageView.right + 10.0f, 12.0f, IPHONE_WIDTH - coverImageView.right - dateLabel.width - 26.0f, 17.0f);
+    sizeLabel.left = dateLabel.right + 16.0f;
+    
+    fileNameLabel.frame = CGRectMake(coverImageView.right + 10.0f, 12.0f, IPHONE_WIDTH - coverImageView.right - 26.0f, 17.0f);
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSString *,id> *)change context:(void *)context {

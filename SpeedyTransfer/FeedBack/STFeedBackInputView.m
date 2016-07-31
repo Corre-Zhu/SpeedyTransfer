@@ -20,6 +20,10 @@
 
 @implementation STFeedBackInputView
 
+- (void)dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
 - (instancetype)init {
     self = [super initWithFrame:CGRectMake(0.0f, 0.0f, IPHONE_WIDTH, 83.0f)];
     if (self) {
@@ -53,6 +57,7 @@
         _sendButton.titleLabel.font = [UIFont systemFontOfSize:17.0f];
         [self addSubview:_sendButton];
         
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(textDidChangeNotification:) name:UITextFieldTextDidChangeNotification object:_inputTextField];
     }
     
     return self;
@@ -68,6 +73,8 @@
 - (void)clearText {
     _inputTextField.text = nil;
     _emailTextField.text = nil;
+    
+    [self textDidChangeNotification:nil];
 }
 
 - (NSString *)text {
@@ -76,6 +83,16 @@
 
 - (NSString *)email {
     return _emailTextField.text;
+}
+
+- (void)textDidChangeNotification:(NSNotification *)noti {
+    if (_inputTextField.text.length > 0) {
+        _sendButton.backgroundColor = RGBFromHex(0xeb684b);
+        [_sendButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    } else {
+        _sendButton.backgroundColor = RGBFromHex(0x858f99);
+        [_sendButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    }
 }
 
 @end

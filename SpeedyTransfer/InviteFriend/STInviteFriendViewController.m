@@ -44,7 +44,7 @@
     
     UIView *view2 = [[UIView alloc] initWithFrame:CGRectMake((IPHONE_WIDTH - 183.0f) / 2.0f, line1.bottom + 41.0f, 183.0f, 183.0f)];
     view2.backgroundColor = [UIColor whiteColor];
-    view2.layer.borderColor = RGBFromHex(0x646464).CGColor;
+    view2.layer.borderColor = RGBFromHex(0xd9d9d9).CGColor;
     view2.layer.borderWidth = 1.0f;
     view2.layer.cornerRadius = 10.0f;
     view2.transform = CGAffineTransformMakeRotation(M_PI_4);

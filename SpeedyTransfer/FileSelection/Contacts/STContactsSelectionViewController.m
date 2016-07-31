@@ -107,12 +107,14 @@ static NSString *headerIdentifier = @"ContactsHeaderView";
 
 - (NSArray *)sectionIndexTitlesForTableView:(UITableView *)tableView
 {
-    NSMutableArray *arr = [NSMutableArray arrayWithCapacity:_contactModels.count];
-    for (NSDictionary *dic in _contactModels) {
-        [arr addObject:dic.allKeys.firstObject];
-    }
+//    NSMutableArray *arr = [NSMutableArray arrayWithCapacity:_contactModels.count];
+//    for (NSDictionary *dic in _contactModels) {
+//        [arr addObject:dic.allKeys.firstObject];
+//    }
+//    
+//    return arr;
     
-    return arr;
+    return nil;
 }
 
 -(CGFloat)tableView:(UITableView*)tableView heightForHeaderInSection:(NSInteger)section {

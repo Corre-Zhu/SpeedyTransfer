@@ -52,7 +52,7 @@
         _expandButton = [UIButton buttonWithType:UIButtonTypeCustom];
         [self addSubview:_expandButton];
         
-        lineView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 95.5f, IPHONE_WIDTH, 0.5f)];
+        lineView = [[UIView alloc] initWithFrame:CGRectMake(16.0f, 95.5f, IPHONE_WIDTH - 16.0f, 0.5f)];
         lineView.backgroundColor = [UIColor lightGrayColor];
         [self addSubview:lineView];
     }
