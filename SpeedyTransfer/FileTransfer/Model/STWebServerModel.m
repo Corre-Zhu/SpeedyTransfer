@@ -363,7 +363,8 @@ HT_DEF_SINGLETON(STWebServerModel, shareInstant);
 			
 			[[STFileTransferModel shareInstant] receiveItems:tempArry];
 			
-			return [GCDWebServerResponse responseWithStatusCode:200];
+//			return [GCDWebServerResponse responseWithStatusCode:200];
+			return [GCDWebServerDataResponse responseWithJSONObject:@{@"msg": @"ok"}];
 		}];
 	}
     
@@ -377,7 +378,8 @@ HT_DEF_SINGLETON(STWebServerModel, shareInstant);
         
         [[STFileTransferModel shareInstant] cancelSendItemsTo:ip];
         [[STFileTransferModel shareInstant] cancelReceiveItemsFrom:ip];
-        return [GCDWebServerResponse responseWithStatusCode:200];
+//        return [GCDWebServerResponse responseWithStatusCode:200];
+		return [GCDWebServerDataResponse responseWithJSONObject:@{@"msg": @"ok"}];
     }];
 
     
