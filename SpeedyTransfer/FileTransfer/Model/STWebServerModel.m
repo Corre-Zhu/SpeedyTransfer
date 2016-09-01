@@ -199,7 +199,7 @@ HT_DEF_SINGLETON(STWebServerModel, shareInstant);
                                 [session exportAsynchronouslyWithCompletionHandler:^(void) {
                                     switch (session.status) {
                                         case AVAssetExportSessionStatusCompleted:
-                                            completionBlock([GCDWebServerFileResponse responseWithFile:path]);
+                                            completionBlock([GCDWebServerFileResponse responseWithFile:path isAttachment:YES]);
                                             break;
                                         default:
                                             completionBlock([GCDWebServerResponse responseWithStatusCode:kGCDWebServerHTTPStatusCode_NotFound]);
@@ -213,7 +213,7 @@ HT_DEF_SINGLETON(STWebServerModel, shareInstant);
                                     NSURL *url = [info objectForKey:@"PHImageFileURLKey"];
                                     NSString *path = [[ZZPath tmpUploadPath] stringByAppendingPathComponent:[url.absoluteString lastPathComponent]];
                                     [imageData writeToFile:path atomically:YES];
-                                    completionBlock([GCDWebServerFileResponse responseWithFile:path]);
+                                    completionBlock([GCDWebServerFileResponse responseWithFile:path isAttachment:YES]);
                                 } else {
                                     completionBlock([GCDWebServerResponse responseWithStatusCode:kGCDWebServerHTTPStatusCode_NotFound]);
                                 }
@@ -293,7 +293,7 @@ HT_DEF_SINGLETON(STWebServerModel, shareInstant);
 						 {
 							 switch (exporter.status) {
 								 case AVAssetExportSessionStatusCompleted: {
-									 completionBlock([GCDWebServerFileResponse responseWithFile:exportPath]);
+									 completionBlock([GCDWebServerFileResponse responseWithFile:exportPath isAttachment:YES]);
 									 NSLog (@"AVAssetExportSessionStatusCompleted");
 									 break;
 								 }
