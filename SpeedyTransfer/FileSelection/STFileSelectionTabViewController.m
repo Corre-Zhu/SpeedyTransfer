@@ -72,6 +72,11 @@
 	
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reachabilityStatusChange:) name:kHTReachabilityChangedNotification object:nil];
 
+	// 启动webserver
+	[[STWebServerModel shareInstant] startWebServer];
+
+	// 开始发送udp广播
+	[[STFileReceiveModel shareInstant] startBroadcast];
 }
 
 - (void)configToolView {

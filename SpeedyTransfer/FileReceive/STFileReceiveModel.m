@@ -59,6 +59,10 @@ HT_DEF_SINGLETON(STFileReceiveModel, shareInstant);
 }
 
 - (void)startBroadcast {
+	if (broadcastTimer.valid) {
+		return;
+	}
+	
 	broadcasting = YES;
     broadcastTimer = [NSTimer scheduledTimerWithTimeInterval:1.0f target:self selector:@selector(doBroadcast) userInfo:nil repeats:YES];
 }

@@ -391,9 +391,12 @@ HT_DEF_SINGLETON(STWebServerModel, shareInstant);
 
 - (void)stopWebServer {
 	@autoreleasepool {
-		[self.webServer stop];
-		[self.webServer removeAllHandlers];
-		self.webServer = nil;
+		if (self.webServer) {
+			[self.webServer stop];
+			[self.webServer removeAllHandlers];
+			self.webServer = nil;
+		}
+		
 	}
 	
 }

@@ -70,7 +70,8 @@
         sendLabel.textColor = [UIColor grayColor];
         sendLabel.textAlignment = NSTextAlignmentCenter;
         [devicesView addSubview:sendLabel];
-        
+		
+		
         UIImageView *imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"我要发送"]];
         imageView.top = sendButton.top - imageView.height + 170.0f;
         imageView.left = (IPHONE_WIDTH - imageView.width) / 2.0f;
@@ -370,7 +371,6 @@
 		scrollView.contentSize = CGSizeMake(IPHONE_WIDTH, 550.0f);
 		
 		[[STWebServerModel shareInstant] stopWebServer2]; // 停止无界传输
-		[[STWebServerModel shareInstant] stopWebServer]; // 停止文件传输服务
 		[[STFileTransferModel shareInstant] removeAllBrowser];
 	}
 }
@@ -382,8 +382,6 @@
         
         if (![[STWebServerModel shareInstant] isWebServer2Running]) {
             [[STWebServerModel shareInstant] startWebServer2]; // 启动无界传输
-            [[STWebServerModel shareInstant] startWebServer]; // 启动文件传输服务
-
         }
         
     }];

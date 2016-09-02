@@ -114,12 +114,10 @@ static NSString *cellIdentifier = @"CellIdentifier";
     
     [UIApplication sharedApplication].idleTimerDisabled = YES;
 	
-	// 启动webserver
-	if (![[STWebServerModel shareInstant] isWebServerRunning]) {
-		[[STWebServerModel shareInstant] startWebServer];
-	}
-	
     if (self.isFromReceive) {
+		// 启动webserver
+		[[STWebServerModel shareInstant] startWebServer];
+		
         // 开始发送udp广播
         [[STFileReceiveModel shareInstant] startBroadcast];
     }
