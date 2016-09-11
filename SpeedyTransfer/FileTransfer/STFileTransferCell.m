@@ -75,15 +75,16 @@
         [self.contentView addSubview:rateLabel];
         
         succeedImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"check_green"]];
-        succeedImageView.left = IPHONE_WIDTH - 38.0f;
-        succeedImageView.centerY = 46.0f;
+        succeedImageView.left = progressView.right + 10.0f;
+        succeedImageView.centerY = progressView.centerY - 2.0f;
         [self.contentView addSubview:succeedImageView];
         succeedImageView.hidden = YES;
         
-        failedLabel = [[UILabel alloc] initWithFrame:CGRectMake(IPHONE_WIDTH - 96.0f, 37.0f, 80.0f, 17.0f)];
+        failedLabel = [[UILabel alloc] initWithFrame:CGRectMake(progressView.right + 10.0f, 0.0f, 80.0f, 17.0f)];
+        failedLabel.centerY = progressView.centerY - 2.0f;
         failedLabel.textColor = RGBFromHex(0xff3b30);
         failedLabel.font = [UIFont systemFontOfSize:14.0f];
-        failedLabel.textAlignment = NSTextAlignmentRight;
+        failedLabel.textAlignment = NSTextAlignmentLeft;
         failedLabel.text = NSLocalizedString(@"传输失败", nil);
         [self.contentView addSubview:failedLabel];
         failedLabel.hidden = YES;
@@ -173,14 +174,17 @@
         _transferInfo.transferStatus == STFileTransferStatusReceiving) {
         succeedImageView.hidden = YES;
         failedLabel.hidden = YES;
+        rateLabel.hidden = NO;
     } else if (_transferInfo.transferStatus == STFileTransferStatusSendFailed ||
                _transferInfo.transferStatus == STFileTransferStatusReceiveFailed) {
         succeedImageView.hidden = YES;
         failedLabel.hidden = NO;
+        rateLabel.hidden = YES;
     } else if (_transferInfo.transferStatus == STFileTransferStatusSent ||
                _transferInfo.transferStatus == STFileTransferStatusReceived) {
         succeedImageView.hidden = NO;
         failedLabel.hidden = YES;
+        rateLabel.hidden = YES;
     }
     
     fileNameLabel.text = _transferInfo.fileName;

@@ -52,7 +52,7 @@ static NSString *cellIdentifier = @"CellIdentifier";
     UIAlertController *alertController = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"不再传输其它文件，确认退出？", nil) message:nil preferredStyle: UIAlertControllerStyleAlert];
     UIAlertAction *action1 = [UIAlertAction actionWithTitle:NSLocalizedString(@"确认", nil) style:UIAlertActionStyleDestructive handler:^(UIAlertAction * _Nonnull action) {
         [[STFileTransferModel shareInstant] cancelAllTransferFile];
-        [[STFileTransferModel shareInstant] removeAllSelectedDevices];
+        [[STFileTransferModel shareInstant] removeAllDevices];
         [self.navigationController popToRootViewControllerAnimated:YES];
     }];
     [alertController addAction:action1];
@@ -154,7 +154,8 @@ static NSString *cellIdentifier = @"CellIdentifier";
         NSString *deviceName = [notification.userInfo stringForKey:DEVICE_NAME];
         MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
         HUD.mode = MBProgressHUDModeText;
-        HUD.labelText = [NSString stringWithFormat:@"%@%@", deviceName, NSLocalizedString(@"已退出共享网络", nil)];
+        HUD.detailsLabelText = [NSString stringWithFormat:@"%@%@", deviceName, NSLocalizedString(@"已退出共享网络", nil)];
+        HUD.detailsLabelFont = [UIFont boldSystemFontOfSize:16.f];
         HUD.removeFromSuperViewOnHide = YES;
         [self.view addSubview:HUD];
         [HUD show:YES];

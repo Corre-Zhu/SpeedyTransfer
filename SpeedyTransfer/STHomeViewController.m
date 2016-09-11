@@ -107,7 +107,7 @@
     CGFloat inset = (IPHONE_WIDTH - 32.0f) / 2.0f;
     
     [self addButtonWithImage:@"home3" title:NSLocalizedString(@"我要接收", nil) frame:CGRectMake(IPHONE_WIDTH / 2.0f - 30.0f, backView.bottom, 60.0f, 90.0f) selector:@selector(receiveButtonClick)];
-    [self addButtonWithImage:@"home1" title:NSLocalizedString(@"无界发送", nil) frame:CGRectMake(16.0f, backView.bottom, 60.0f, 90.0f) selector:@selector(transferButtonClick)];
+    [self addButtonWithImage:@"home1" title:NSLocalizedString(@"我要发送", nil) frame:CGRectMake(16.0f, backView.bottom, 60.0f, 90.0f) selector:@selector(transferButtonClick)];
     [self addButtonWithImage:@"home2" title:NSLocalizedString(@"邀请好友", nil) frame:CGRectMake(IPHONE_WIDTH - 76.0f, backView.bottom, 60.0f, 90.0f) selector:@selector(inviteFriendButtonClick)];
     [self addButtonWithImage:@"home5" title:NSLocalizedString(@"设置", nil) frame:CGRectMake(IPHONE_WIDTH / 2.0f - 30.0f, backView.bottom + 123.0f, 60.0f, 90.0f) selector:@selector(settingButtonClick)];
     [self addButtonWithImage:@"home4" title:NSLocalizedString(@"发现", nil) frame:CGRectMake(16.0f, backView.bottom + 123.0f, 60.0f, 90.0f) selector:@selector(discoverButtonClick)];
