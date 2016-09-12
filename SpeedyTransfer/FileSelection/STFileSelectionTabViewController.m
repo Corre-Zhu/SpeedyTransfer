@@ -77,6 +77,9 @@
 
 	// 开始发送udp广播
 	[[STFileReceiveModel shareInstant] startBroadcast];
+    
+    // 开始监听udp广播
+    [[STFileTransferModel shareInstant] startListenBroadcast];
 }
 
 - (void)configToolView {

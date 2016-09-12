@@ -24,6 +24,7 @@ HT_AS_SINGLETON(STFileTransferModel, shareInstant);
  开始监听广播
  */
 - (void)startListenBroadcast;
+- (void)stopListenBroadcast;
 
 @property (nonatomic, strong) NSArray *devicesArray; // 发现的所有设备
 @property (nonatomic, strong) NSArray *selectedDevicesArray; // 选择发送的所有设备

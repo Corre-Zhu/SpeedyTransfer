@@ -52,7 +52,6 @@ static NSString *cellIdentifier = @"CellIdentifier";
     UIAlertController *alertController = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"不再传输其它文件，确认退出？", nil) message:nil preferredStyle: UIAlertControllerStyleAlert];
     UIAlertAction *action1 = [UIAlertAction actionWithTitle:NSLocalizedString(@"确认", nil) style:UIAlertActionStyleDestructive handler:^(UIAlertAction * _Nonnull action) {
         [[STFileTransferModel shareInstant] cancelAllTransferFile];
-        [[STFileTransferModel shareInstant] removeAllDevices];
         [self.navigationController popToRootViewControllerAnimated:YES];
     }];
     [alertController addAction:action1];
@@ -120,6 +119,9 @@ static NSString *cellIdentifier = @"CellIdentifier";
 		
         // 开始发送udp广播
         [[STFileReceiveModel shareInstant] startBroadcast];
+        
+        // 开始监听udp广播
+        [[STFileTransferModel shareInstant] startListenBroadcast];
     }
 }
 
