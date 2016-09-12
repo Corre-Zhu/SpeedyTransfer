@@ -27,7 +27,8 @@ HT_AS_SINGLETON(STFileTransferModel, shareInstant);
 
 @property (nonatomic, strong) NSArray *devicesArray; // 发现的所有设备
 @property (nonatomic, strong) NSArray *selectedDevicesArray; // 选择发送的所有设备
-- (void)removeAllSelectedDevices;
+- (void)removeAllDevices; // 移除所有发现的设备
+- (void)removeDevicesWithIp:(NSString *)ip; // 收到cancel时移除该设备
 
 // 所有文件传输记录
 @property (nonatomic, strong) NSArray *transferFiles;

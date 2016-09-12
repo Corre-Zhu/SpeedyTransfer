@@ -161,8 +161,33 @@ HT_DEF_SINGLETON(STFileTransferModel, shareInstant);
     }
 }
 
-- (void)removeAllSelectedDevices {
-    self.selectedDevicesArray = nil;
+- (void)removeAllDevices {
+    self.devicesArray = [NSArray array];
+    self.selectedDevicesArray = [NSArray array];
+}
+
+- (void)removeDevicesWithIp:(NSString *)ip {
+    @synchronized(self) {
+        @autoreleasepool {
+            NSArray *tempArr = [NSArray arrayWithArray:self.devicesArray];
+            NSMutableArray *tempDevicesArry = [NSMutableArray arrayWithArray:self.devicesArray];
+            NSMutableArray *tempSelectedDevicesArray = [NSMutableArray arrayWithArray:self.selectedDevicesArray];
+            BOOL find = NO;
+            for (STDeviceInfo *deviceInfo in tempArr) {
+                if (!deviceInfo.isBrowser && [deviceInfo.ip isEqualToString:ip]) {
+                    [tempDevicesArry removeObject:deviceInfo];
+                    [tempSelectedDevicesArray removeObject:deviceInfo];
+                    find = YES;
+                }
+            }
+         
+            if (find) {
+                self.devicesArray = [NSArray arrayWithArray:tempDevicesArry];
+                self.selectedDevicesArray = [NSArray arrayWithArray:tempSelectedDevicesArray];
+            }
+            
+        }
+    }
 }
 
 #pragma mark - Broadcast
@@ -707,12 +732,12 @@ withFilterContext:(id)filterContext {
 #pragma mark - Cancel transfer
 
 - (void)cancelAllTransferFile {
+    [[STFileReceiveModel shareInstant] stopBroadcast];
     [self cancelAllSendItems];
     [self cancelAllReceiveItems];
 	[self removeAllBrowser];
 	[[STWebServerModel shareInstant] stopWebServer2];
 	[[STWebServerModel shareInstant] stopWebServer];
-	[[STFileReceiveModel shareInstant] stopBroadcast];
 }
 
 - (void)cancelSendItemsTo:(NSString *)ip {

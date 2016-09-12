@@ -378,6 +378,7 @@ HT_DEF_SINGLETON(STWebServerModel, shareInstant);
         
         [[STFileTransferModel shareInstant] cancelSendItemsTo:ip];
         [[STFileTransferModel shareInstant] cancelReceiveItemsFrom:ip];
+        [[STFileTransferModel shareInstant] removeDevicesWithIp:ip];
 //        return [GCDWebServerResponse responseWithStatusCode:200];
 		return [GCDWebServerDataResponse responseWithJSONObject:@{@"msg": @"ok"}];
     }];

@@ -10,6 +10,7 @@
 #import "STFeedBackInputView.h"
 #import "STFeedbackCell.h"
 #import "STFeedbackModel.h"
+#import "ZZReachability.h"
 
 static NSString *FeedbackCellIdentifier = @"FeedbackCellIdentifier";
 
@@ -61,6 +62,11 @@ static NSString *FeedbackCellIdentifier = @"FeedbackCellIdentifier";
 }
 
 - (void)sendButtonClick {
+    if ([ZZReachability shareInstance].currentReachabilityStatus == NotReachable) {
+        [UIAlertController showMessage:NSLocalizedString(@"网络不通，请检查", nil) inViewController:self];
+        return;
+    }
+    
     if (inputView.text.length > 0) {
         [model sendFeedback:inputView.text email:inputView.email];
         [self.tableView reloadData];

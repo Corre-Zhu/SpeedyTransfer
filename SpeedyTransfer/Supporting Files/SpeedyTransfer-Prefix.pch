@@ -31,4 +31,4 @@
 #define HT_WEIBO_APP_REDIRECTURI    @"https://api.weibo.com/oauth2/default.html"
 
 #define KIOSDownloadUrl @"https://appsto.re/cn/isUdcb.i"
-#define KAndroidDownloadUrl @"http://www.3tkj.cn/phone"
+#define KAndroidDownloadUrl @"http://www.3tkj.cn"
