@@ -193,6 +193,10 @@ HT_DEF_SINGLETON(STFileTransferModel, shareInstant);
 #pragma mark - Broadcast
 
 - (void)startListenBroadcast {
+    if (_udpSocket) {
+        [self stopListenBroadcast];
+    }
+    
     NSError *error = nil;
     if (![self.udpSocket bindToPort:KUDPPORT error:&error]) {
         NSLog(@"bind to port error: %@", error);
@@ -201,6 +205,11 @@ HT_DEF_SINGLETON(STFileTransferModel, shareInstant);
     if (![self.udpSocket beginReceiving:&error]) {
         NSLog(@"Error starting server (recv): %@", error);
     }
+}
+
+- (void)stopListenBroadcast {
+    [self.udpSocket close];
+    _udpSocket = nil;
 }
 
 - (void)timeout {
@@ -213,7 +222,7 @@ HT_DEF_SINGLETON(STFileTransferModel, shareInstant);
                 BOOL timeout = NO;
                 BOOL deviceNotConnected = NO;
                 for (STDeviceInfo *deviceInfo in tempArr) {
-                    if (!deviceInfo.isBrowser && deviceInfo.lastUpdateTimestamp > 0.0f && [[NSDate date] timeIntervalSince1970] - deviceInfo.lastUpdateTimestamp > 15) {
+                    if (!deviceInfo.isBrowser && deviceInfo.lastUpdateTimestamp > 0.0f && [[NSDate date] timeIntervalSince1970] - deviceInfo.lastUpdateTimestamp > 10) {
                         // 15秒之内没有收到udp广播，默认当做离线处理
                         timeout = YES;
                         [tempDevicesArry removeObject:deviceInfo];
@@ -733,6 +742,8 @@ withFilterContext:(id)filterContext {
 
 - (void)cancelAllTransferFile {
     [[STFileReceiveModel shareInstant] stopBroadcast];
+    [[STFileTransferModel shareInstant] stopListenBroadcast];
+    [[STFileTransferModel shareInstant] removeAllDevices];
     [self cancelAllSendItems];
     [self cancelAllReceiveItems];
 	[self removeAllBrowser];
