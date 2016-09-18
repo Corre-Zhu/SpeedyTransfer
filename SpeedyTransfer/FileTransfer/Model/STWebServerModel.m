@@ -342,8 +342,8 @@ HT_DEF_SINGLETON(STWebServerModel, shareInstant);
 				entity.thumbnailUrl = thumbnailUrl;
 				entity.fileName = [fileInfo stringForKey:FILE_NAME];
 				entity.fileSize = [fileInfo doubleForKey:FILE_SIZE];
-				if (entity.url.pathExtension.length > 0) {
-					entity.pathExtension = entity.url.pathExtension;
+				if (entity.fileName.pathExtension.length > 0) {
+					entity.pathExtension = entity.fileName.pathExtension;
 				} else {
 					entity.pathExtension = [fileInfo stringForKey:FILE_TYPE];
 	 			}
