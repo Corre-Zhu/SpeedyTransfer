@@ -749,9 +749,9 @@
 				CED62A261C094FDD00270EDB /* Sources */,
 				CED62A271C094FDD00270EDB /* Frameworks */,
 				CED62A281C094FDD00270EDB /* Resources */,
-				453131FC1D2CE74D007B5291 /* ShellScript */,
 				875B37F7A51701662778E17B /* [CP] Embed Pods Frameworks */,
 				7369C4B00B72D9CD14B5E5E9 /* [CP] Copy Pods Resources */,
+				C65B6FDA35E9FE9C4B243127 /* Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -812,19 +812,6 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		453131FC1D2CE74D007B5291 /* ShellScript */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Fabric/run\" 71357d14bafe162f9a5211a7f7ef0b7d2c5438eb 5c8af767d1d603f9a99783af71d85b127d0f8535d340362e2422158b6bbccec4";
-		};
 		7369C4B00B72D9CD14B5E5E9 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -848,6 +835,21 @@
 			inputPaths = (
 			);
 			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-SpeedyTransfer/Pods-SpeedyTransfer-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		C65B6FDA35E9FE9C4B243127 /* Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Embed Pods Frameworks";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;

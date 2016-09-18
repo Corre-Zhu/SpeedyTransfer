@@ -13,8 +13,6 @@
 #import "WXApi.h"
 #import <TencentOpenAPI/TencentOAuth.h>
 #import "WeiboSDK.h"
-#import <Fabric/Fabric.h>
-#import <Crashlytics/Crashlytics.h>
 
 NSString * const dbName = @"FileTransfer.sqlite";
 
@@ -55,8 +53,6 @@ NSString * const dbName = @"FileTransfer.sqlite";
     [WXApi registerApp:KWeChatAppId];
     [[TencentOAuth alloc] initWithAppId:KQQAppId andDelegate:nil]; //注册
     [WeiboSDK registerApp:HT_WEIBO_APP_KEY];
-	
-	[Fabric with:@[[Crashlytics class]]];
 
     return YES;
 }
