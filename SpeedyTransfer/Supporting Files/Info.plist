@@ -36,6 +36,7 @@
 	<string>1</string>
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
+		<string>prefs</string>
 		<string>weibosdk</string>
 		<string>sinaweibo</string>
 		<string>mqqapi</string>

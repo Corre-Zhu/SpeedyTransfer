@@ -20,10 +20,16 @@
 #import "STPersonalSettingViewController.h"
 #import "STWebServerModel.h"
 #import <SVWebViewController.h>
+#import "ZZReachability.h"
+#import "STLeftPanelView.h"
 
 @interface STHomeViewController ()
 {
     UIImageView *headImageView;
+    UIButton *wifiButton;
+    UIImageView *wifiPromptView;
+    STLeftPanelView *leftView;
+    UIView *maskView;
 }
 @end
 
@@ -48,69 +54,117 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.navigationItem.title = NSLocalizedString(@"点传", nil);
     self.view.backgroundColor = [UIColor whiteColor];
+
+    UIView *backView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, IPHONE_WIDTH, 392.0f)];
+    backView.backgroundColor = [UIColor whiteColor];//RGB(233, 105, 79)
+    [self.view addSubview:backView];
     
-    UIButton *customView = [[UIButton alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 45.0f, 36.0f)];
+    UIImageView *imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"bg_img000"]];
+    imageView.frame = CGRectMake(0.0f, 0.0f, IPHONE_WIDTH, 392.0f);
+    [backView addSubview:imageView];
+    
+    UIButton *customView = [[UIButton alloc] initWithFrame:CGRectMake(16.0f, 23.0f, 100.0f, 80.0f)];
     customView.backgroundColor = [UIColor clearColor];
     [customView addTarget:self action:@selector(personalSettingClick) forControlEvents:UIControlEventTouchUpInside];
-    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:customView];
+    [self.view addSubview:customView];
     
     UIImageView *dotImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"ic_overflow_light"]];
-    dotImageView.top = 10.0f;
+    dotImageView.top = 12.0f;
     [customView addSubview:dotImageView];
     
     headImageView = [[UIImageView alloc] init];
-    headImageView.left = 9.0f;
-    headImageView.top = 4.0f;
-    headImageView.width = 28.0f;
-    headImageView.height = 28.0f;
-    headImageView.layer.cornerRadius = 14.0f;
-    headImageView.layer.borderWidth = 1.5f;
-    headImageView.layer.borderColor = [UIColor whiteColor].CGColor;
+    headImageView.left = 10.0f;
+    headImageView.top = 0.0f;
+    headImageView.width = 40.0f;
+    headImageView.height = 40.0f;
+    headImageView.layer.cornerRadius = 20.0f;
     headImageView.contentMode = UIViewContentModeScaleAspectFill;
     headImageView.layer.masksToBounds = YES;
     headImageView.clipsToBounds = YES;
     [customView addSubview:headImageView];
     
-    UIView *backView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, IPHONE_WIDTH, 240.0f)];
-    backView.backgroundColor = RGBFromHex(0xeb694a);//RGB(233, 105, 79)
-    [self.view addSubview:backView];
+    wifiButton = [[UIButton alloc] initWithFrame:CGRectMake(IPHONE_WIDTH - 49.0f, 20.0f, 44, 44)];
+    wifiButton.backgroundColor = [UIColor clearColor];
+    [wifiButton addTarget:self action:@selector(wifiButtonClick) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:wifiButton];
+    if ([ZZReachability shareInstance].currentReachabilityStatus != ReachableViaWiFi) {
+        [wifiButton setImage:[UIImage imageNamed:@"img_wifi"] forState:UIControlStateNormal];
+        
+        if (![[NSUserDefaults standardUserDefaults] boolForKey:@"wifiPrompt"]) {
+            wifiPromptView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"bg_dianjikaiqi"]];
+            [self.view addSubview:wifiPromptView];
+            wifiPromptView.top = wifiButton.bottom - 3.0f;
+            wifiPromptView.left = IPHONE_WIDTH - wifiPromptView.width - 18.0f;
+            
+            UILabel *wifiPromptLabel = [[UILabel alloc] initWithFrame:CGRectMake(0.0f, 13.0f, wifiPromptView.width, 15.0f)];
+            wifiPromptLabel.textAlignment = NSTextAlignmentCenter;
+            wifiPromptLabel.font = [UIFont systemFontOfSize:12.0f];
+            wifiPromptLabel.textColor = RGBFromHex(0x333333);
+            wifiPromptLabel.text = NSLocalizedString(@"点击开启Wi-Fi", nil);
+            [wifiPromptView addSubview:wifiPromptLabel];
+            
+            [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"wifiPrompt"];
+            [[NSUserDefaults standardUserDefaults] synchronize];
+        }
+    } else {
+        [wifiButton setImage:[UIImage imageNamed:@"ic_wifi_on"] forState:UIControlStateNormal];
+    }
     
-    UIImageView *imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"dc_bg"]];
-    imageView.frame = CGRectMake(0.0f, 160.0f, IPHONE_WIDTH, 80.0f);
-    [backView addSubview:imageView];
+    UIButton *inviteButton = [[UIButton alloc] initWithFrame:CGRectMake(wifiButton.left - 46.0f, 20.0f, 44, 44)];
+    inviteButton.backgroundColor = [UIColor clearColor];
+    [inviteButton setImage:[UIImage imageNamed:@"ic_yaoqing_white"] forState:UIControlStateNormal];
+    [inviteButton addTarget:self action:@selector(inviteFriendButtonClick) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:inviteButton];
     
-    UIImage *image = [[UIImage imageNamed:@"webshare_bg"] resizableImageWithCapInsets:UIEdgeInsetsMake(9, 13, 9, 13)];
-    UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
-    [button setBackgroundImage:image forState:UIControlStateNormal];
-    button.frame = CGRectMake(16.0f, 40.0f, IPHONE_WIDTH - 30.0f, 80.0f);
-    [button addTarget:self action:@selector(transferButtonClick) forControlEvents:UIControlEventTouchUpInside];
-    [backView addSubview:button];
+    UILabel *promptLabel = [[UILabel alloc] initWithFrame:CGRectMake(0.0f, backView.height - 70.0f, backView.width, 20.0f)];
+    promptLabel.textAlignment = NSTextAlignmentCenter;
+    promptLabel.font = [UIFont systemFontOfSize:16.0f];
+    promptLabel.textColor = [UIColor whiteColor];
+    promptLabel.text = NSLocalizedString(@"面对面极速互传", nil);
+    [backView addSubview:promptLabel];
     
-    UILabel *descLabel1 = [[UILabel alloc] initWithFrame:CGRectMake(16.0f, 18.0f, 200.0f, 21.0f)];
-    descLabel1.text = NSLocalizedString(@"无界发送", nil);
-    descLabel1.textColor = [UIColor whiteColor];
-    descLabel1.font = [UIFont systemFontOfSize:18.0f];
-    [button addSubview:descLabel1];
+    NSArray *images = @[@"ic_fsend", @"ic_freceive", @"ic_faxian"];
+    NSArray *titles = @[@"我要发送", @"我要接收", @"发现"];
+
+    for (int i = 0; i < 3; i++) {
+        UIButton *sendButton = [[UIButton alloc] initWithFrame:CGRectMake(0.0, backView.bottom + i * 80.0f, IPHONE_WIDTH, 80.0f)];
+        sendButton.backgroundColor = [UIColor clearColor];
+        [sendButton addTarget:self action:@selector(actionBtnClick:) forControlEvents:UIControlEventTouchUpInside];
+        sendButton.tag = i;
+        [self.view addSubview:sendButton];
+        
+        UIImageView *sendIcon = [[UIImageView alloc] initWithImage:[UIImage imageNamed:images[i]]];
+        [sendButton addSubview:sendIcon];
+        sendIcon.top = 16.0;
+        sendIcon.left = 20.0f;
+        
+        UILabel *sendLabel = [[UILabel alloc] initWithFrame:CGRectMake(sendIcon.right + 20.0f, 30.0f, backView.width, 20.0f)];
+        sendLabel.font = [UIFont systemFontOfSize:16.0f];
+        sendLabel.textColor = RGBFromHex(0x333333);
+        sendLabel.text = titles[i];
+        [sendButton addSubview:sendLabel];
+
+        if (i < 2) {
+            UIImageView *seprate = [[UIImageView alloc] initWithFrame:CGRectMake(0.0f, sendButton.height - 0.5f, IPHONE_WIDTH, 0.5f)];
+            seprate.backgroundColor = RGBFromHex(0xcacaca);
+            [sendButton addSubview:seprate];
+        }
+    }
     
-    UILabel *descLabel2 = [[UILabel alloc] initWithFrame:CGRectMake(16.0f, 43.0f, 200.0f, 15.0f)];
-    descLabel2.text = NSLocalizedString(@"好友无需安装点传，零流量互传文件", nil);
-    descLabel2.textColor = [UIColor whiteColor];
-    descLabel2.font = [UIFont systemFontOfSize:12.0f];
-    [button addSubview:descLabel2];
+    maskView = [[UIView alloc] initWithFrame:self.view.bounds];
+    maskView.hidden = YES;
+    [self.view addSubview:maskView];
+    UITapGestureRecognizer *tapGes = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(maskViewTap)];
+    [maskView addGestureRecognizer:tapGes];
     
-    UIImageView *transferImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"transfer"]];
-    transferImageView.frame = CGRectMake(button.width - 80.0f, 7.5f, 63.0f, 63.0f);
-    [button addSubview:transferImageView];
-    
-    [self addButtonWithImage:@"home3" title:NSLocalizedString(@"我要接收", nil) frame:CGRectMake(IPHONE_WIDTH / 2.0f - 30.0f, backView.bottom, 60.0f, 90.0f) selector:@selector(receiveButtonClick)];
-    [self addButtonWithImage:@"home1" title:NSLocalizedString(@"我要发送", nil) frame:CGRectMake(16.0f, backView.bottom, 60.0f, 90.0f) selector:@selector(transferButtonClick)];
-    [self addButtonWithImage:@"home2" title:NSLocalizedString(@"邀请好友", nil) frame:CGRectMake(IPHONE_WIDTH - 76.0f, backView.bottom, 60.0f, 90.0f) selector:@selector(inviteFriendButtonClick)];
-    [self addButtonWithImage:@"home5" title:NSLocalizedString(@"设置", nil) frame:CGRectMake(IPHONE_WIDTH / 2.0f - 30.0f, backView.bottom + 123.0f, 60.0f, 90.0f) selector:@selector(settingButtonClick)];
-    [self addButtonWithImage:@"home4" title:NSLocalizedString(@"发现", nil) frame:CGRectMake(16.0f, backView.bottom + 123.0f, 60.0f, 90.0f) selector:@selector(discoverButtonClick)];
-    [self addButtonWithImage:@"home6" title:NSLocalizedString(@"反馈", nil) frame:CGRectMake(IPHONE_WIDTH - 76.0f, backView.bottom + 123.0f, 60.0f, 90.0f) selector:@selector(feedbackButtonClick)];
-    
+    leftView = [[STLeftPanelView alloc] init];
+    leftView.hidden = YES;
+    leftView.parentViewController = self;
+    [self.view addSubview:leftView];
+
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reachabilityStatusChange:) name:kHTReachabilityChangedNotification object:nil];
+
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(receiveFileNotification) name:KReceiveFileNotification object:nil];
 }
 
@@ -122,6 +176,14 @@
     } else {
         headImageView.image = [UIImage imageNamed:headImage];
     }
+    leftView.headImageView.image = headImageView.image;
+    
+    [self.navigationController setNavigationBarHidden:YES animated:YES];
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+    [self.navigationController setNavigationBarHidden:NO animated:YES];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -133,9 +195,60 @@
     // Dispose of any resources that can be recreated.
 }
 
+- (void)reachabilityStatusChange:(NSNotification *)notification {
+    NetworkStatus status = [ZZReachability shareInstance].currentReachabilityStatus;
+    switch (status) {
+        case ReachableViaWiFi: {
+            [wifiButton setImage:[UIImage imageNamed:@"ic_wifi_on"] forState:UIControlStateNormal];
+            [wifiPromptView removeFromSuperview];
+        }
+            break;
+            
+        default:
+            return;
+    }
+}
+
+- (void)maskViewTap {
+    [UIView animateWithDuration:0.25f delay:0.0f options:UIViewAnimationOptionCurveEaseInOut animations:^{
+        leftView.left = -leftView.width;
+        maskView.backgroundColor = [UIColor clearColor];
+    } completion:^(BOOL finished) {
+        leftView.hidden = YES;
+        maskView.hidden = YES;
+    }];
+}
+
 - (void)personalSettingClick {
+    leftView.hidden = NO;
+    leftView.left = -leftView.width;
+    maskView.backgroundColor = [UIColor clearColor];
+    maskView.hidden = NO;
+    [UIView animateWithDuration:0.25f delay:0.0f options:UIViewAnimationOptionCurveEaseInOut animations:^{
+        leftView.left = 0.0f;
+        maskView.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.5f];
+    } completion:^(BOOL finished) {
+        
+    }];
+}
+
+- (void)setHeadImageButtonClick {
     STPersonalSettingViewController *personalSettingVc = [[STPersonalSettingViewController alloc] init];
     [self.navigationController pushViewController:personalSettingVc animated:YES];
+}
+
+- (void)wifiButtonClick {
+    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"prefs:root=WIFI"]];
+}
+
+- (void)actionBtnClick:(UIButton *)button {
+    if (button.tag == 0) {
+        [self transferButtonClick];
+    } else if (button.tag == 1) {
+        [self receiveButtonClick];
+    } else if (button.tag == 2) {
+        [self discoverButtonClick];
+    }
 }
 
 - (void)transferButtonClick {
@@ -210,6 +323,10 @@
 - (void)feedbackButtonClick {
     STFeedBackViewController *feedBackVc = [[STFeedBackViewController alloc] init];
     [self.navigationController pushViewController:feedBackVc animated:YES];
+}
+
+- (void)mineFilesButtonClick {
+    
 }
 
 @end

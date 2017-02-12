@@ -70,6 +70,8 @@
 		CEB29E7C1C230BA400F17804 /* UIViewController+ST.m in Sources */ = {isa = PBXBuildFile; fileRef = CEB29E7B1C230BA400F17804 /* UIViewController+ST.m */; };
 		CEB29E821C253C4D00F17804 /* STPictureCollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CEB29E811C253C4D00F17804 /* STPictureCollectionViewController.m */; };
 		CEB29E851C253F4800F17804 /* STPictureCollectionReusableView.m in Sources */ = {isa = PBXBuildFile; fileRef = CEB29E841C253F4800F17804 /* STPictureCollectionReusableView.m */; };
+		CEB7C7B81E502EC600E924D4 /* STWalkThroughView.m in Sources */ = {isa = PBXBuildFile; fileRef = CEB7C7B71E502EC600E924D4 /* STWalkThroughView.m */; };
+		CEB7C7BB1E50736000E924D4 /* STLeftPanelView.m in Sources */ = {isa = PBXBuildFile; fileRef = CEB7C7BA1E50736000E924D4 /* STLeftPanelView.m */; };
 		CEBB14731C33CCD300874142 /* STSettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CEBB14721C33CCD300874142 /* STSettingViewController.m */; };
 		CEBB14761C33DB5C00874142 /* STAboutViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CEBB14751C33DB5C00874142 /* STAboutViewController.m */; };
 		CECE97731C2653E900190AE2 /* STFileSelectionPopupView.m in Sources */ = {isa = PBXBuildFile; fileRef = CECE97721C2653E900190AE2 /* STFileSelectionPopupView.m */; };
@@ -219,6 +221,10 @@
 		CEB29E811C253C4D00F17804 /* STPictureCollectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STPictureCollectionViewController.m; sourceTree = "<group>"; };
 		CEB29E831C253F4800F17804 /* STPictureCollectionReusableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STPictureCollectionReusableView.h; sourceTree = "<group>"; };
 		CEB29E841C253F4800F17804 /* STPictureCollectionReusableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STPictureCollectionReusableView.m; sourceTree = "<group>"; };
+		CEB7C7B61E502EC600E924D4 /* STWalkThroughView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STWalkThroughView.h; sourceTree = "<group>"; };
+		CEB7C7B71E502EC600E924D4 /* STWalkThroughView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STWalkThroughView.m; sourceTree = "<group>"; };
+		CEB7C7B91E50736000E924D4 /* STLeftPanelView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STLeftPanelView.h; sourceTree = "<group>"; };
+		CEB7C7BA1E50736000E924D4 /* STLeftPanelView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STLeftPanelView.m; sourceTree = "<group>"; };
 		CEBB14711C33CCD300874142 /* STSettingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STSettingViewController.h; sourceTree = "<group>"; };
 		CEBB14721C33CCD300874142 /* STSettingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STSettingViewController.m; sourceTree = "<group>"; };
 		CEBB14741C33DB5C00874142 /* STAboutViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STAboutViewController.h; sourceTree = "<group>"; };
@@ -652,8 +658,12 @@
 			children = (
 				CED62A301C094FDD00270EDB /* AppDelegate.h */,
 				CED62A311C094FDD00270EDB /* AppDelegate.m */,
+				CEB7C7B61E502EC600E924D4 /* STWalkThroughView.h */,
+				CEB7C7B71E502EC600E924D4 /* STWalkThroughView.m */,
 				CED62A331C094FDD00270EDB /* STHomeViewController.h */,
 				CED62A341C094FDD00270EDB /* STHomeViewController.m */,
+				CEB7C7B91E50736000E924D4 /* STLeftPanelView.h */,
+				CEB7C7BA1E50736000E924D4 /* STLeftPanelView.m */,
 				CE6536BB1C2ECD3400C1E8A3 /* FileTransfer */,
 				CE6536A61C2E8AB400C1E8A3 /* FileReceive */,
 				CED0D1021C1D3C8B00F5C0E3 /* FileSelection */,
@@ -910,6 +920,7 @@
 				CEA74C2F1C79D65F00E1B34C /* STSendHeaderView.m in Sources */,
 				CED62A481C09512100270EDB /* main.m in Sources */,
 				CEB29E751C21B8BE00F17804 /* NSLayoutConstraint+PureLayout.m in Sources */,
+				CEB7C7BB1E50736000E924D4 /* STLeftPanelView.m in Sources */,
 				CEB29E7C1C230BA400F17804 /* UIViewController+ST.m in Sources */,
 				CE6536C91C2ECD3400C1E8A3 /* STFileTransferViewController.m in Sources */,
 				CE6536D61C2ECEC300C1E8A3 /* STFileTransferInfo.m in Sources */,
@@ -937,6 +948,7 @@
 				CE9C91A31C390DAB0075CB06 /* STFeedBackViewController.m in Sources */,
 				CEA74C2C1C78656400E1B34C /* STDeviceButton.m in Sources */,
 				CED0D12D1C1D77DF00F5C0E3 /* HZAssetCollectionViewCell.m in Sources */,
+				CEB7C7B81E502EC600E924D4 /* STWalkThroughView.m in Sources */,
 				4558BFD51C747483002F5718 /* STWebServerModel.m in Sources */,
 				CEB29E741C21B8BE00F17804 /* NSArray+PureLayout.m in Sources */,
 				CE9C91B21C39697D0075CB06 /* STPersonalSettingViewController.m in Sources */,

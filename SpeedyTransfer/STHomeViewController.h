@@ -11,6 +11,10 @@
 @interface STHomeViewController : UIViewController
 
 - (void)transferButtonClick;
+- (void)mineFilesButtonClick;
+- (void)inviteFriendButtonClick;
+- (void)feedbackButtonClick;
+- (void)setHeadImageButtonClick;
 
 @end
 

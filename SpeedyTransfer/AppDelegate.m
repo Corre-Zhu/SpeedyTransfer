@@ -13,6 +13,7 @@
 #import "WXApi.h"
 #import <TencentOpenAPI/TencentOAuth.h>
 #import "WeiboSDK.h"
+#import "STWalkThroughView.h"
 
 NSString * const dbName = @"FileTransfer.sqlite";
 
@@ -38,6 +39,18 @@ NSString * const dbName = @"FileTransfer.sqlite";
     self.window = window;
     [self.window makeKeyAndVisible];
     
+    // 闪屏页面
+    if ([[NSUserDefaults standardUserDefaults] integerForKey:@"walkThroughVersion"] < 2) {
+        STWalkThroughView *walkthroughView = [[STWalkThroughView alloc] init];
+        walkthroughView.backgroundColor = [UIColor lightGrayColor];
+        [nav.view addSubview:walkthroughView];
+        [walkthroughView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero];
+        
+        [[NSUserDefaults standardUserDefaults] setInteger:2 forKey:@"walkThroughVersion"];
+        [[NSUserDefaults standardUserDefaults] synchronize];
+    }
+    
+    
     [[UIApplication sharedApplication] setStatusBarHidden:NO];
     [[UINavigationBar appearance] setBarTintColor:RGBFromHex(0xeb694a)];
     [[UINavigationBar appearance] setTintColor:[UIColor whiteColor]];
@@ -58,6 +71,7 @@ NSString * const dbName = @"FileTransfer.sqlite";
 }
 
 - (void)setupStartingView {
+#ifndef DEBUG
     int height = [[UIScreen mainScreen] currentMode].size.height;
     if (height == 2001) {
         height = 1334;
@@ -88,6 +102,7 @@ NSString * const dbName = @"FileTransfer.sqlite";
         
         [self performSelector:@selector(dismissStartingView) withObject:nil afterDelay:3.0f];
     }
+#endif
 }
 
 - (void)dismissStartingView {
