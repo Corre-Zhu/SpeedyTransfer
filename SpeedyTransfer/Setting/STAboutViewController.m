@@ -37,7 +37,7 @@
     [headView addSubview:label2];
     
     UILabel *label3 = [[UILabel alloc] initWithFrame:CGRectMake(0.0f, label2.bottom + 10.0f, IPHONE_WIDTH, 19.0f)];
-    label3.textColor = RGBFromHex(0x929292);
+    label3.textColor = RGBFromHex(0x333333);
     label3.font = [UIFont systemFontOfSize:14.0f];
     label3.textAlignment = NSTextAlignmentCenter;
     NSString *version = [[[NSBundle mainBundle] infoDictionary] stringForKey:@"CFBundleShortVersionString"];
@@ -62,7 +62,7 @@
         cell.selectionStyle = UITableViewCellSelectionStyleGray;
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         cell.textLabel.font = [UIFont systemFontOfSize:16.0f];
-        cell.textLabel.textColor = RGBFromHex(0x323232);
+        cell.textLabel.textColor = RGBFromHex(0x333333);
     }
     
     if (indexPath.row == 0) {

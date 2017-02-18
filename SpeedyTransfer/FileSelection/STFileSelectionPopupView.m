@@ -44,7 +44,7 @@
         
         subTitleLabel = [[UILabel alloc] init];
         subTitleLabel.frame = CGRectMake(coverImageView.right + 10.0f, 42.0f, IPHONE_WIDTH - 170.0f, 15.0f);
-        subTitleLabel.textColor = RGBFromHex(0x929292);
+        subTitleLabel.textColor = RGBFromHex(0x333333);
         subTitleLabel.font = [UIFont systemFontOfSize:13.0f];
         [self.contentView addSubview:subTitleLabel];
         

@@ -22,6 +22,7 @@
 #import <SVWebViewController.h>
 #import "ZZReachability.h"
 #import "STLeftPanelView.h"
+#import "STFileSelectionViewController.h"
 
 @interface STHomeViewController ()
 {
@@ -43,7 +44,7 @@
     [button setImage:[UIImage imageNamed:name] forState:UIControlStateNormal];
     [button setTitle:title forState:UIControlStateNormal];
     button.frame = frame;
-    [button setTitleColor:RGBFromHex(0x323232) forState:UIControlStateNormal];
+    [button setTitleColor:RGBFromHex(0x333333) forState:UIControlStateNormal];
     button.titleLabel.font = [UIFont systemFontOfSize:14.0f];
     [button addTarget:self action:selector forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:button];
@@ -183,6 +184,11 @@
 
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
+    
+    if ([self.navigationController.topViewController isKindOfClass:NSClassFromString(@"STFileSelectionViewController")]) {
+        return;
+    }
+    
     [self.navigationController setNavigationBarHidden:NO animated:YES];
 }
 
@@ -252,7 +258,16 @@
 }
 
 - (void)transferButtonClick {
+    STFileSelectionViewController *vc = [[STFileSelectionViewController alloc] init];
+    if (self.navigationController.topViewController != self) {
+        [self.navigationController setViewControllers:@[self, vc] animated:YES];
+    } else {
+        [self.navigationController pushViewController:vc animated:YES];
+    }
+    
+    /*
     STFileSelectionTabViewController *fileSelectionVc = [[STFileSelectionTabViewController alloc] init];
+    
     STPictureCollectionViewController *picVC = [[STPictureCollectionViewController alloc] initWithCollectionViewLayout:[UICollectionViewFlowLayout new]];
 
     STMusicSelectionViewController *musicVC = [[STMusicSelectionViewController alloc] init];
@@ -276,12 +291,8 @@
     [contactVC.tabBarItem setSelectedImage:[UIImage imageNamed:@"contact_block"]];
     
     fileSelectionVc.viewControllers = @[picVC,musicVC,videoVC,contactVC];
-    
-    if (self.navigationController.topViewController != self) {
-        [self.navigationController setViewControllers:@[self, fileSelectionVc] animated:YES];
-    } else {
-        [self.navigationController pushViewController:fileSelectionVc animated:YES];
-    }
+    */
+
 }
 
 - (void)receiveButtonClick {

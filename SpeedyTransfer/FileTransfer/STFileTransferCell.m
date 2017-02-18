@@ -46,17 +46,17 @@
         [self.contentView addSubview:coverImageView];
         
         fileNameLabel = [[UILabel alloc] init];
-        fileNameLabel.textColor = RGBFromHex(0x323232);
+        fileNameLabel.textColor = RGBFromHex(0x333333);
         fileNameLabel.font = [UIFont systemFontOfSize:14.0f];
         [self.contentView addSubview:fileNameLabel];
         
         dateLabel = [[UILabel alloc] init];
-        dateLabel.textColor = RGBFromHex(0x929292);
+        dateLabel.textColor = RGBFromHex(0x333333);
         dateLabel.font = [UIFont systemFontOfSize:12.0f];
         [self.contentView addSubview:dateLabel];
         
         sizeLabel = [[UILabel alloc] initWithFrame:CGRectMake(coverImageView.right + 10.0f, 42.0f, 100.0f, 15.0f)];
-        sizeLabel.textColor = RGBFromHex(0x929292);
+        sizeLabel.textColor = RGBFromHex(0x333333);
         sizeLabel.font = [UIFont systemFontOfSize:12.0f];
         [self.contentView addSubview:sizeLabel];
         
@@ -70,7 +70,7 @@
         if (IPHONE_WIDTH == 320.0f) {
             rateLabel.frame = CGRectMake(progressView.right + 10.0f, 66.0f, IPHONE_WIDTH - progressView.right - 20.0f, 16.0f);
         }
-        rateLabel.textColor = RGBFromHex(0x929292);
+        rateLabel.textColor = RGBFromHex(0x333333);
         rateLabel.font = [UIFont systemFontOfSize:12.0f];
         [self.contentView addSubview:rateLabel];
         

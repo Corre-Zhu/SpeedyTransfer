@@ -19,9 +19,11 @@
 		458C7B5E1C97A3AD00CA8017 /* Website in Resources */ = {isa = PBXBuildFile; fileRef = 458C7B5D1C97A3AD00CA8017 /* Website */; };
 		CE1A6E2B1CE82128006795E7 /* libWeiboSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CE1A6E281CE82128006795E7 /* libWeiboSDK.a */; };
 		CE1A6E2C1CE82128006795E7 /* WeiboSDK.bundle in Resources */ = {isa = PBXBuildFile; fileRef = CE1A6E291CE82128006795E7 /* WeiboSDK.bundle */; };
+		CE285AEA1E583849002FC6A1 /* STFilesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE285AE91E583849002FC6A1 /* STFilesViewController.m */; };
 		CE2AD7AB1C4A340D00C67D1D /* HTJSONAdapter.m in Sources */ = {isa = PBXBuildFile; fileRef = CE2AD7AA1C4A340D00C67D1D /* HTJSONAdapter.m */; };
 		CE2AD7AD1C4A985F00C67D1D /* test.png in Resources */ = {isa = PBXBuildFile; fileRef = CE2AD7AC1C4A985F00C67D1D /* test.png */; };
 		CE2AD7AF1C4AA15D00C67D1D /* IMG_7551.JPG in Resources */ = {isa = PBXBuildFile; fileRef = CE2AD7AE1C4AA15D00C67D1D /* IMG_7551.JPG */; };
+		CE3AC9B81E581750004638E3 /* STFileSelectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE3AC9B71E581750004638E3 /* STFileSelectionViewController.m */; };
 		CE6536AC1C2E8D1B00C1E8A3 /* STWifiNotConnectedPopupView2.m in Sources */ = {isa = PBXBuildFile; fileRef = CE6536AB1C2E8D1B00C1E8A3 /* STWifiNotConnectedPopupView2.m */; };
 		CE6536B01C2E92C200C1E8A3 /* MCTransceiver.m in Sources */ = {isa = PBXBuildFile; fileRef = CE6536AF1C2E92C200C1E8A3 /* MCTransceiver.m */; };
 		CE6536C81C2ECD3400C1E8A3 /* STFileTransferCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CE6536C01C2ECD3400C1E8A3 /* STFileTransferCell.m */; };
@@ -72,6 +74,7 @@
 		CEB29E851C253F4800F17804 /* STPictureCollectionReusableView.m in Sources */ = {isa = PBXBuildFile; fileRef = CEB29E841C253F4800F17804 /* STPictureCollectionReusableView.m */; };
 		CEB7C7B81E502EC600E924D4 /* STWalkThroughView.m in Sources */ = {isa = PBXBuildFile; fileRef = CEB7C7B71E502EC600E924D4 /* STWalkThroughView.m */; };
 		CEB7C7BB1E50736000E924D4 /* STLeftPanelView.m in Sources */ = {isa = PBXBuildFile; fileRef = CEB7C7BA1E50736000E924D4 /* STLeftPanelView.m */; };
+		CEB7C7BE1E508E3400E924D4 /* STFileSegementControl.m in Sources */ = {isa = PBXBuildFile; fileRef = CEB7C7BD1E508E3400E924D4 /* STFileSegementControl.m */; };
 		CEBB14731C33CCD300874142 /* STSettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CEBB14721C33CCD300874142 /* STSettingViewController.m */; };
 		CEBB14761C33DB5C00874142 /* STAboutViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CEBB14751C33DB5C00874142 /* STAboutViewController.m */; };
 		CECE97731C2653E900190AE2 /* STFileSelectionPopupView.m in Sources */ = {isa = PBXBuildFile; fileRef = CECE97721C2653E900190AE2 /* STFileSelectionPopupView.m */; };
@@ -118,10 +121,14 @@
 		CE1A6E281CE82128006795E7 /* libWeiboSDK.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libWeiboSDK.a; sourceTree = "<group>"; };
 		CE1A6E291CE82128006795E7 /* WeiboSDK.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = WeiboSDK.bundle; sourceTree = "<group>"; };
 		CE1A6E2A1CE82128006795E7 /* WeiboSDK.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WeiboSDK.h; sourceTree = "<group>"; };
+		CE285AE81E583849002FC6A1 /* STFilesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STFilesViewController.h; sourceTree = "<group>"; };
+		CE285AE91E583849002FC6A1 /* STFilesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STFilesViewController.m; sourceTree = "<group>"; };
 		CE2AD7A91C4A340D00C67D1D /* HTJSONAdapter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HTJSONAdapter.h; sourceTree = "<group>"; };
 		CE2AD7AA1C4A340D00C67D1D /* HTJSONAdapter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HTJSONAdapter.m; sourceTree = "<group>"; };
 		CE2AD7AC1C4A985F00C67D1D /* test.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = test.png; sourceTree = "<group>"; };
 		CE2AD7AE1C4AA15D00C67D1D /* IMG_7551.JPG */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = IMG_7551.JPG; sourceTree = "<group>"; };
+		CE3AC9B61E581750004638E3 /* STFileSelectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STFileSelectionViewController.h; sourceTree = "<group>"; };
+		CE3AC9B71E581750004638E3 /* STFileSelectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STFileSelectionViewController.m; sourceTree = "<group>"; };
 		CE6536AA1C2E8D1B00C1E8A3 /* STWifiNotConnectedPopupView2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STWifiNotConnectedPopupView2.h; sourceTree = "<group>"; };
 		CE6536AB1C2E8D1B00C1E8A3 /* STWifiNotConnectedPopupView2.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STWifiNotConnectedPopupView2.m; sourceTree = "<group>"; };
 		CE6536AE1C2E92C200C1E8A3 /* MCTransceiver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MCTransceiver.h; sourceTree = "<group>"; };
@@ -225,6 +232,8 @@
 		CEB7C7B71E502EC600E924D4 /* STWalkThroughView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STWalkThroughView.m; sourceTree = "<group>"; };
 		CEB7C7B91E50736000E924D4 /* STLeftPanelView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STLeftPanelView.h; sourceTree = "<group>"; };
 		CEB7C7BA1E50736000E924D4 /* STLeftPanelView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STLeftPanelView.m; sourceTree = "<group>"; };
+		CEB7C7BC1E508E3400E924D4 /* STFileSegementControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STFileSegementControl.h; sourceTree = "<group>"; };
+		CEB7C7BD1E508E3400E924D4 /* STFileSegementControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STFileSegementControl.m; sourceTree = "<group>"; };
 		CEBB14711C33CCD300874142 /* STSettingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STSettingViewController.h; sourceTree = "<group>"; };
 		CEBB14721C33CCD300874142 /* STSettingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STSettingViewController.m; sourceTree = "<group>"; };
 		CEBB14741C33DB5C00874142 /* STAboutViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STAboutViewController.h; sourceTree = "<group>"; };
@@ -356,6 +365,15 @@
 				CE1A6E2A1CE82128006795E7 /* WeiboSDK.h */,
 			);
 			path = libWeiboSDK;
+			sourceTree = "<group>";
+		};
+		CE285AE71E583827002FC6A1 /* Files */ = {
+			isa = PBXGroup;
+			children = (
+				CE285AE81E583849002FC6A1 /* STFilesViewController.h */,
+				CE285AE91E583849002FC6A1 /* STFilesViewController.m */,
+			);
+			path = Files;
 			sourceTree = "<group>";
 		};
 		CE6536A61C2E8AB400C1E8A3 /* FileReceive */ = {
@@ -569,14 +587,19 @@
 		CED0D1021C1D3C8B00F5C0E3 /* FileSelection */ = {
 			isa = PBXGroup;
 			children = (
+				CE3AC9B61E581750004638E3 /* STFileSelectionViewController.h */,
+				CE3AC9B71E581750004638E3 /* STFileSelectionViewController.m */,
 				CED0D1031C1D3D7B00F5C0E3 /* STFileSelectionTabViewController.h */,
 				CED0D1041C1D3D7B00F5C0E3 /* STFileSelectionTabViewController.m */,
+				CEB7C7BC1E508E3400E924D4 /* STFileSegementControl.h */,
+				CEB7C7BD1E508E3400E924D4 /* STFileSegementControl.m */,
 				CECE97711C2653E900190AE2 /* STFileSelectionPopupView.h */,
 				CECE97721C2653E900190AE2 /* STFileSelectionPopupView.m */,
 				CED0D11A1C1D576D00F5C0E3 /* Picture */,
 				CED0D1171C1D576D00F5C0E3 /* Music */,
 				CED0D11D1C1D576D00F5C0E3 /* Video */,
 				CED0D1141C1D576D00F5C0E3 /* Contacts */,
+				CE285AE71E583827002FC6A1 /* Files */,
 			);
 			path = FileSelection;
 			sourceTree = "<group>";
@@ -891,6 +914,7 @@
 			files = (
 				CED0D1051C1D3D7B00F5C0E3 /* STFileSelectionTabViewController.m in Sources */,
 				CEB29E851C253F4800F17804 /* STPictureCollectionReusableView.m in Sources */,
+				CE3AC9B81E581750004638E3 /* STFileSelectionViewController.m in Sources */,
 				CE6536CA1C2ECD3400C1E8A3 /* STTransferInstructionViewController.m in Sources */,
 				CEB29E671C21B7C000F17804 /* HTDrawView.m in Sources */,
 				4558BFC41C74538B002F5718 /* HTKeychainUtil.m in Sources */,
@@ -941,6 +965,7 @@
 				CE6536DC1C2ED0AF00C1E8A3 /* STFileTransferModel.m in Sources */,
 				CE6536C81C2ECD3400C1E8A3 /* STFileTransferCell.m in Sources */,
 				CEBB14731C33CCD300874142 /* STSettingViewController.m in Sources */,
+				CE285AEA1E583849002FC6A1 /* STFilesViewController.m in Sources */,
 				CE6536AC1C2E8D1B00C1E8A3 /* STWifiNotConnectedPopupView2.m in Sources */,
 				CE6536E91C2F096600C1E8A3 /* HTFMDatabase.m in Sources */,
 				CEA12C491C29ABCB00328CEF /* Reachability.m in Sources */,
@@ -955,6 +980,7 @@
 				4558BFCF1C746862002F5718 /* STDeviceInfo.m in Sources */,
 				CED0D1211C1D576D00F5C0E3 /* STMusicSelectionViewController.m in Sources */,
 				CEDF05AC1D2ABDB200D48D58 /* ZZFunction.m in Sources */,
+				CEB7C7BE1E508E3400E924D4 /* STFileSegementControl.m in Sources */,
 				4558BFC81C7453F1002F5718 /* HTSFHFKeychainUtils.m in Sources */,
 				CE6536CB1C2ECD3400C1E8A3 /* STWifiNotConnectedPopupView.m in Sources */,
 				CE6536FC1C31955000C1E8A3 /* ZZNavigationController.m in Sources */,

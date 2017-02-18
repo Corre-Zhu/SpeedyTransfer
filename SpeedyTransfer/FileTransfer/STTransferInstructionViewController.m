@@ -124,7 +124,7 @@
     topContainerView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, IPHONE_WIDTH, 373.0f)];
     UILabel *descLabel1 = [[UILabel alloc] initWithFrame:CGRectMake(16.0f, 20.0f, 200.0f, 21.0f)];
     descLabel1.text = NSLocalizedString(@"第一步", nil);
-    descLabel1.textColor = RGBFromHex(0xeb694a);
+    descLabel1.textColor = RGBFromHex(0x01cc99);
     descLabel1.font = [UIFont systemFontOfSize:14.0f];
     [scrollView addSubview:descLabel1];
     
@@ -168,7 +168,7 @@
     
     UILabel *descLabel3 = [[UILabel alloc] initWithFrame:CGRectMake(16.0f, 20.0f, 200.0f, 21.0f)];
     descLabel3.text = NSLocalizedString(@"第二步", nil);
-    descLabel3.textColor = RGBFromHex(0xeb694a);
+    descLabel3.textColor = RGBFromHex(0x01cc99);
     descLabel3.font = [UIFont systemFontOfSize:14.0f];
     [bottomContainerView addSubview:descLabel3];
     
@@ -183,7 +183,7 @@
     
     NSMutableAttributedString *string = [[NSMutableAttributedString alloc] initWithString:NSLocalizedString(@"请好友打开点传 > 我要接收", nil)];
     [string addAttribute:NSForegroundColorAttributeName value:[UIColor blackColor] range:NSMakeRange(0, string.length)];
-    [string addAttribute:NSForegroundColorAttributeName value:RGBFromHex(0xeb694a) range:NSMakeRange(10, 4)];
+    [string addAttribute:NSForegroundColorAttributeName value:RGBFromHex(0x01cc99) range:NSMakeRange(10, 4)];
     
     UILabel *descLabel4 = [[UILabel alloc] initWithFrame:CGRectMake(10.0f, 19.0f, 200.0f, 20.0f)];
     descLabel4.attributedText = string;
@@ -192,7 +192,7 @@
     
     NSMutableAttributedString *string2 = [[NSMutableAttributedString alloc] initWithString:NSLocalizedString(@"若好友没有点传，请点击这里", nil)];
     [string2 addAttribute:NSForegroundColorAttributeName value:[UIColor blackColor] range:NSMakeRange(0, string2.length)];
-    [string2 addAttribute:NSForegroundColorAttributeName value:RGBFromHex(0xeb694a) range:NSMakeRange(3, 2)];
+    [string2 addAttribute:NSForegroundColorAttributeName value:RGBFromHex(0x01cc99) range:NSMakeRange(3, 2)];
 
     UILabel *descLabel5 = [[UILabel alloc] initWithFrame:CGRectMake(10.0f, 65.0f, 200.0f, 20.0f)];
     descLabel5.attributedText = string2;

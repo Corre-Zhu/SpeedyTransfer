@@ -52,15 +52,15 @@ NSString * const dbName = @"FileTransfer.sqlite";
     
     
     [[UIApplication sharedApplication] setStatusBarHidden:NO];
-    [[UINavigationBar appearance] setBarTintColor:RGBFromHex(0xeb694a)];
-    [[UINavigationBar appearance] setTintColor:[UIColor whiteColor]];
+    [[UINavigationBar appearance] setBarTintColor:[UIColor whiteColor]];
+    [[UINavigationBar appearance] setTintColor:RGBFromHex(0x01cc99)];
     [[UINavigationBar appearance] setTranslucent:NO];
     [[UINavigationBar appearance] setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:
-                                                          [UIColor whiteColor],NSForegroundColorAttributeName,
-                                                          [UIFont boldSystemFontOfSize:17.0f],NSFontAttributeName,nil]];
+                                                          RGBFromHex(0x333333),NSForegroundColorAttributeName,
+                                                          [UIFont systemFontOfSize:19.0f],NSFontAttributeName,nil]];
     
-    [[UITabBar appearance] setTintColor:RGBFromHex(0xeb694a)];
-	[[UIToolbar appearance] setTintColor:RGBFromHex(0xeb694a)];
+    [[UITabBar appearance] setTintColor:RGBFromHex(0x01cc99)];
+	[[UIToolbar appearance] setTintColor:RGBFromHex(0x01cc99)];
     [self setupStartingView];
     [self setupDatabase];
     [WXApi registerApp:KWeChatAppId];

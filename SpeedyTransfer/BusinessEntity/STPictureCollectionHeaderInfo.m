@@ -11,7 +11,7 @@
 @implementation STPictureCollectionHeaderInfo
 
 - (CGFloat)height {
-    return _expand ? 44.0f : 96.0f;
+    return _expand ? 40.0f : 108.0f;
 }
 
 @end

@@ -25,23 +25,23 @@
     if (self) {
         self.selectionStyle = UITableViewCellSelectionStyleNone;
         
-        coverImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"music_bg"]];
-        coverImageView.frame = CGRectMake(16.0f, 9.0f, 48.0f, 48.0f);
+        coverImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"ic_tongxunlu"]];
+        coverImageView.frame = CGRectMake(16.0f, 16.0f, 48.0f, 48.0f);
         [self.contentView addSubview:coverImageView];
         
         titleLabel = [[UILabel alloc] init];
-        titleLabel.frame = CGRectMake(coverImageView.right + 15.0f, 11.0f, IPHONE_WIDTH - 148.0f, 19.0f);
-        titleLabel.textColor = RGBFromHex(0x323232);
+        titleLabel.frame = CGRectMake(coverImageView.right + 16.0f, 20.0f, IPHONE_WIDTH - 148.0f, 19.0f);
+        titleLabel.textColor = RGBFromHex(0x333333);
         titleLabel.font = [UIFont systemFontOfSize:16.0f];
         [self.contentView addSubview:titleLabel];
         
         subTitleLabel = [[UILabel alloc] init];
-        subTitleLabel.frame = CGRectMake(coverImageView.right + 15.0f, 42.0f, IPHONE_WIDTH - 148.0f, 15.0f);
-        subTitleLabel.textColor = RGBFromHex(0x929292);
+        subTitleLabel.frame = CGRectMake(coverImageView.right + 16.0f, 42.0f, IPHONE_WIDTH - 148.0f, 15.0f);
+        subTitleLabel.textColor = RGBFromHex(0x333333);
         subTitleLabel.font = [UIFont systemFontOfSize:12.0f];
         [self.contentView addSubview:subTitleLabel];
         
-        checkImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"check_gray"]];
+        checkImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"ic_select_off"]];
         checkImageView.frame = CGRectMake(IPHONE_WIDTH - 54.0f, 22.0f, 22.0f, 22.0f);
         [self.contentView addSubview:checkImageView];
     }
@@ -66,9 +66,9 @@
 - (void)setChecked:(BOOL)checked {
     _checked = checked;
     if (!checked) {
-        checkImageView.image = [UIImage imageNamed:@"check_gray"];
+        checkImageView.image = [UIImage imageNamed:@"ic_select_off"];
     } else {
-        checkImageView.image = [UIImage imageNamed:@"check_yellow"];
+        checkImageView.image = [UIImage imageNamed:@"ic_select_on"];
     }
     
 }

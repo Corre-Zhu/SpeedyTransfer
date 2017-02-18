@@ -26,7 +26,7 @@
         [self.contentView addSubview:imageView];
         
         titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0.0f, imageView.bottom + 8.0f, self.width, 17.0f)];
-        titleLabel.textColor = RGBFromHex(0x323232);
+        titleLabel.textColor = RGBFromHex(0x333333);
         titleLabel.font = [UIFont systemFontOfSize:14.0f];
         titleLabel.textAlignment = NSTextAlignmentCenter;
         [self.contentView addSubview:titleLabel];

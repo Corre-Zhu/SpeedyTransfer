@@ -51,14 +51,14 @@
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
             
             UILabel *label1 = [[UILabel alloc] initWithFrame:CGRectMake(16.0f, 11.0f, 200.0f, 19.0f)];
-            label1.textColor = RGBFromHex(0x323232);
+            label1.textColor = RGBFromHex(0x333333);
             label1.font = [UIFont systemFontOfSize:16.0f];
             label1.textAlignment = NSTextAlignmentLeft;
             [cell.contentView addSubview:label1];
             label1.tag = 10;
             
             UILabel *label2 = [[UILabel alloc] initWithFrame:CGRectMake(16.0f, label1.bottom + 8.0f, 200.0f, 19.0f)];
-            label2.textColor = RGBFromHex(0x929292);
+            label2.textColor = RGBFromHex(0x333333);
             label2.font = [UIFont systemFontOfSize:14.0f];
             label2.textAlignment = NSTextAlignmentLeft;
             [cell.contentView addSubview:label2];
@@ -95,7 +95,7 @@
         cell.selectionStyle = UITableViewCellSelectionStyleGray;
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         cell.textLabel.font = [UIFont systemFontOfSize:16.0f];
-        cell.textLabel.textColor = RGBFromHex(0x323232);
+        cell.textLabel.textColor = RGBFromHex(0x333333);
     }
     
     if (indexPath.row == 2) {

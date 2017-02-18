@@ -36,14 +36,14 @@
         _inputTextField = [[UITextField alloc] initWithFrame:CGRectMake(8.0f, 9.0f, IPHONE_WIDTH - 80.0f, 28.0f)];
         _inputTextField.borderStyle = UITextBorderStyleRoundedRect;
         _inputTextField.font = [UIFont systemFontOfSize:14.0f];
-        _inputTextField.textColor = RGBFromHex(0x929292);
+        _inputTextField.textColor = RGBFromHex(0x333333);
         _inputTextField.backgroundColor = [UIColor clearColor];
         [self addSubview:_inputTextField];
         
         _emailTextField = [[UITextField alloc] initWithFrame:CGRectMake(8.0f, _inputTextField.bottom + 9.0f, IPHONE_WIDTH - 80.0f, 28.0f)];
         _emailTextField.borderStyle = UITextBorderStyleRoundedRect;
         _emailTextField.font = [UIFont systemFontOfSize:14.0f];
-        _emailTextField.textColor = RGBFromHex(0x929292);
+        _emailTextField.textColor = RGBFromHex(0x333333);
         _emailTextField.backgroundColor = [UIColor clearColor];
         _emailTextField.placeholder = NSLocalizedString(@"联系方式（可填写您的邮箱或QQ号）", nil);
         [self addSubview:_emailTextField];

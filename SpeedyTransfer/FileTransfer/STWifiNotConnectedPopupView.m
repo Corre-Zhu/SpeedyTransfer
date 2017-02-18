@@ -64,17 +64,17 @@
         [whiteView addSubview:lineView2];
         
         whiteView.drawBlock = ^(void) {
-            [NSLocalizedString(@"请按照以下步骤打开本机的个人热点", nil) drawAtPoint:CGPointMake(16.0f, 17.0f) withAttributes:@{NSFontAttributeName: [UIFont systemFontOfSize:14.0f], NSForegroundColorAttributeName: RGBFromHex(0x323232)}];
+            [NSLocalizedString(@"请按照以下步骤打开本机的个人热点", nil) drawAtPoint:CGPointMake(16.0f, 17.0f) withAttributes:@{NSFontAttributeName: [UIFont systemFontOfSize:14.0f], NSForegroundColorAttributeName: RGBFromHex(0x333333)}];
             [[UIImage imageNamed:@"number1"] drawAtPoint:CGPointMake(16.0f, 50.0f)];
-            [NSLocalizedString(@"打开  系统设置", nil) drawAtPoint:CGPointMake(58.0f, 53.0f) withAttributes:@{NSFontAttributeName: [UIFont systemFontOfSize:14.0f], NSForegroundColorAttributeName: RGBFromHex(0x323232)}];
+            [NSLocalizedString(@"打开  系统设置", nil) drawAtPoint:CGPointMake(58.0f, 53.0f) withAttributes:@{NSFontAttributeName: [UIFont systemFontOfSize:14.0f], NSForegroundColorAttributeName: RGBFromHex(0x333333)}];
             
             [[UIImage imageNamed:@"number2"] drawAtPoint:CGPointMake(16.0f, 102.0f)];
-            [NSLocalizedString(@"进入  移动蜂窝网络", nil) drawAtPoint:CGPointMake(58.0f, 105.0f) withAttributes:@{NSFontAttributeName: [UIFont systemFontOfSize:14.0f], NSForegroundColorAttributeName: RGBFromHex(0x323232)}];
-            [NSLocalizedString(@"（1）开启蜂窝网络", nil) drawAtPoint:CGPointMake(86.0f, 132.0f) withAttributes:@{NSFontAttributeName: [UIFont systemFontOfSize:12.0f], NSForegroundColorAttributeName: RGBFromHex(0x323232)}];
-            [NSLocalizedString(@"（2）打开“个人热点”", nil) drawAtPoint:CGPointMake(86.0f, 152.5f) withAttributes:@{NSFontAttributeName: [UIFont systemFontOfSize:12.0f], NSForegroundColorAttributeName: RGBFromHex(0x323232)}];
+            [NSLocalizedString(@"进入  移动蜂窝网络", nil) drawAtPoint:CGPointMake(58.0f, 105.0f) withAttributes:@{NSFontAttributeName: [UIFont systemFontOfSize:14.0f], NSForegroundColorAttributeName: RGBFromHex(0x333333)}];
+            [NSLocalizedString(@"（1）开启蜂窝网络", nil) drawAtPoint:CGPointMake(86.0f, 132.0f) withAttributes:@{NSFontAttributeName: [UIFont systemFontOfSize:12.0f], NSForegroundColorAttributeName: RGBFromHex(0x333333)}];
+            [NSLocalizedString(@"（2）打开“个人热点”", nil) drawAtPoint:CGPointMake(86.0f, 152.5f) withAttributes:@{NSFontAttributeName: [UIFont systemFontOfSize:12.0f], NSForegroundColorAttributeName: RGBFromHex(0x333333)}];
             
             [[UIImage imageNamed:@"number3"] drawAtPoint:CGPointMake(16.0f, 195.0f)];
-            [NSLocalizedString(@"返回  点传", nil) drawAtPoint:CGPointMake(58.0f, 198.0f) withAttributes:@{NSFontAttributeName: [UIFont systemFontOfSize:14.0f], NSForegroundColorAttributeName: RGBFromHex(0x323232)}];
+            [NSLocalizedString(@"返回  点传", nil) drawAtPoint:CGPointMake(58.0f, 198.0f) withAttributes:@{NSFontAttributeName: [UIFont systemFontOfSize:14.0f], NSForegroundColorAttributeName: RGBFromHex(0x333333)}];
         };
         
     }

@@ -12,7 +12,10 @@
 
 static NSString *VideoSelectionCellIdentifier = @"VideoSelectionCellIdentifier";
 
-@interface STVideoSelectionViewController ()<PHPhotoLibraryChangeObserver,UIImagePickerControllerDelegate,UINavigationControllerDelegate>
+@interface STVideoSelectionViewController ()<PHPhotoLibraryChangeObserver,UIImagePickerControllerDelegate,UINavigationControllerDelegate> {
+    UIView *headerView;
+    UILabel *headerLabel;
+}
 
 @property (nonatomic, strong) PHFetchResult *fetchResult;
 @property (strong) PHCachingImageManager *imageManager;
@@ -59,6 +62,10 @@ static NSString *VideoSelectionCellIdentifier = @"VideoSelectionCellIdentifier";
     [self.tableView registerClass:[STVideoSelectionCell class] forCellReuseIdentifier:VideoSelectionCellIdentifier];
 }
 
+- (void)selectAll {
+    
+}
+
 #pragma mark - Table view data source
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
@@ -76,15 +83,15 @@ static NSString *VideoSelectionCellIdentifier = @"VideoSelectionCellIdentifier";
 	PHImageRequestOptions *options = [[PHImageRequestOptions alloc] init];
 	options.resizeMode = PHImageRequestOptionsResizeModeExact;
 	options.deliveryMode = PHImageRequestOptionsDeliveryModeOpportunistic;
-    [_imageManager requestImageForAsset:asset
-                                 targetSize:CGSizeMake([UIScreen mainScreen].scale * 68.0f, [UIScreen mainScreen].scale * 52.0f)
-                                contentMode:PHImageContentModeAspectFill
-                                    options:options
-                              resultHandler:^(UIImage *result, NSDictionary *info) {
-                                  if (cell.tag == currentTag) {
-                                      cell.image = result;
-                                  }
-                              }];
+//    [_imageManager requestImageForAsset:asset
+//                                 targetSize:CGSizeMake([UIScreen mainScreen].scale * 68.0f, [UIScreen mainScreen].scale * 52.0f)
+//                                contentMode:PHImageContentModeAspectFill
+//                                    options:options
+//                              resultHandler:^(UIImage *result, NSDictionary *info) {
+//                                  if (cell.tag == currentTag) {
+//                                      cell.image = result;
+//                                  }
+//                              }];
     
     if (IOS9 && asset.mediaType == PHAssetMediaTypeVideo) {
         [[PHImageManager defaultManager] requestAVAssetForVideo:asset options:nil resultHandler:^(AVAsset * _Nullable asset, AVAudioMix * _Nullable audioMix, NSDictionary * _Nullable info) {
@@ -138,7 +145,36 @@ static NSString *VideoSelectionCellIdentifier = @"VideoSelectionCellIdentifier";
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return 72.0f;
+    return 80.0f;
+}
+
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
+    if (!headerView) {
+        headerView = [[UIView alloc] init];
+        headerView.backgroundColor = RGBFromHex(0xf4f4f4);
+        
+        headerLabel = [[UILabel alloc] init];
+        headerLabel.font = [UIFont systemFontOfSize:16];
+        headerLabel.textColor = RGBFromHex(0x333333);
+        headerLabel.frame = CGRectMake(0, 0, 200, 40);
+        [headerView addSubview:headerLabel];
+        
+        UIButton *_selectAllButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        [_selectAllButton setTitle:NSLocalizedString(@"全选", nil) forState:UIControlStateNormal];
+        [_selectAllButton setTitle:NSLocalizedString(@"取消", nil) forState:UIControlStateSelected];
+        [_selectAllButton setTitleColor:RGBFromHex(0x01cc99) forState:UIControlStateNormal];
+        [_selectAllButton setTitleColor:RGBFromHex(0x01cc99) forState:UIControlStateSelected];
+        _selectAllButton.frame = CGRectMake(IPHONE_WIDTH - 96, 0, 80.0f, 40.0f);
+        _selectAllButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentRight;
+        [headerView addSubview:_selectAllButton];
+        [_selectAllButton addTarget:self action:@selector(selectAll)forControlEvents:UIControlEventTouchUpInside];
+    }
+    headerLabel.text = [NSString stringWithFormat:@"    %@个视频",@(_fetchResult.count)];
+    return headerView;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+    return 40;
 }
 
 #pragma mark - Table view delegate

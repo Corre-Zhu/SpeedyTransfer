@@ -43,7 +43,7 @@
     if (transferInfo.deviceName.length > 0) {
         NSString *text = [NSString stringWithFormat:@"我发送给%@", transferInfo.deviceName];
         NSMutableAttributedString *string = [[NSMutableAttributedString alloc] initWithString:text];
-        [string addAttributes:@{NSForegroundColorAttributeName: RGBFromHex(0x323232)} range:NSMakeRange(0, 4)];
+        [string addAttributes:@{NSForegroundColorAttributeName: RGBFromHex(0x333333)} range:NSMakeRange(0, 4)];
         [string addAttributes:@{NSForegroundColorAttributeName: RGBFromHex(0xeb684b)} range:NSMakeRange(4, text.length - 4)];
         label.attributedText = string;
     } else {

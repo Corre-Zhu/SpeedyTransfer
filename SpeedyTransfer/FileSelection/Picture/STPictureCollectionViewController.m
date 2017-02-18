@@ -213,7 +213,7 @@ static NSString * const CollectionViewCellReuseIdentifier = @"CollectionViewCell
         PHAsset *asset = result.firstObject;
         if (result.count > 0) {
             NSInteger scale = [UIScreen mainScreen].scale;
-            CGSize size = CGSizeMake(72 * scale, 72 * scale);
+            CGSize size = CGSizeMake(88 * scale, 88 * scale);
             PHImageRequestOptions *options = [[PHImageRequestOptions alloc] init];
             options.resizeMode = PHImageRequestOptionsResizeModeExact;
             options.deliveryMode = PHImageRequestOptionsDeliveryModeOpportunistic;
@@ -236,7 +236,7 @@ static NSString * const CollectionViewCellReuseIdentifier = @"CollectionViewCell
     layout.minimumLineSpacing = KItemPadding;
     layout.minimumInteritemSpacing = KItemPadding;
     CGFloat width = (IPHONE_WIDTH - (ASSET_PER_ROW + 1) * KItemPadding) / (float)ASSET_PER_ROW;
-    CGFloat height = 100.0f / 88.0f * width;
+    CGFloat height = width;
     layout.itemSize = CGSizeMake(width, height);
     layout.sectionInset = UIEdgeInsetsMake(0.0f, KItemPadding, KItemPadding, KItemPadding);
     self = [super initWithCollectionViewLayout:layout];
@@ -265,8 +265,6 @@ static NSString * const CollectionViewCellReuseIdentifier = @"CollectionViewCell
     
     self.collectionView.backgroundColor = [UIColor whiteColor];
     self.collectionView.allowsMultipleSelection = YES;
-    self.collectionView.contentInset = UIEdgeInsetsMake(0.0f, 0.0f, 49.0f, 0.0f);
-    self.collectionView.scrollIndicatorInsets = UIEdgeInsetsMake(0.0f, 0.0f, 49.0f, 0.0f);
     [self.collectionView registerClass:[STPictureCollectionReusableView class] forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:collectionReusableViewIdenfifier];
     [self.collectionView registerClass:[HZAssetCollectionViewCell class] forCellWithReuseIdentifier:CollectionViewCellReuseIdentifier];
 }
@@ -335,7 +333,7 @@ static NSString * const CollectionViewCellReuseIdentifier = @"CollectionViewCell
     cell.isCameraRoll = NO;
     if (model.isCameraRoll) {
         if (item == 0) {
-            cell.thumbnailImage = [UIImage imageNamed:@"相机"];
+            cell.thumbnailImage = [UIImage imageNamed:@"ic_xiangji"];
             cell.isCameraRoll = YES;
             [cell setup];
             return cell;

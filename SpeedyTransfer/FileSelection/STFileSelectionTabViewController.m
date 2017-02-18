@@ -17,9 +17,11 @@
 #import "STContactInfo.h"
 #import "STDeviceInfo.h"
 #import "STWebServerModel.h"
+#import "STFileSegementControl.h"
 
 @interface STFileSelectionTabViewController ()
 {
+    STFileSegementControl *segementControl;
     UIImageView *toolView;
     UIButton *deleteButton;
     UIButton *transferButton;
@@ -42,6 +44,9 @@
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"left_white"] style:UIBarButtonItemStylePlain target:self action:@selector(leftBarButtonItemClick)];
     self.navigationItem.title = NSLocalizedString(@"选择文件", nil);
     self.view.backgroundColor = [UIColor whiteColor];
+    
+    segementControl = [[STFileSegementControl alloc] init];
+    [self.view addSubview:segementControl];
     
     toolView = [[UIImageView alloc] initWithFrame:CGRectMake((IPHONE_WIDTH - 175.0f) / 2.0f, IPHONE_HEIGHT_WITHOUTTOPBAR - 92.0f, 175.0f, 40.0f)];
     toolView.image = [[UIImage imageNamed:@"xuanze_bg"] resizableImageWithCapInsets:UIEdgeInsetsMake(7.0f, 7.0f, 7.0f, 7.0f)];
@@ -80,6 +85,14 @@
     
     // 开始监听udp广播
     [[STFileTransferModel shareInstant] startListenBroadcast];
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
 }
 
 - (void)configToolView {

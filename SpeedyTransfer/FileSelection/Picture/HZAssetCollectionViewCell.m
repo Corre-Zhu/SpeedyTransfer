@@ -33,7 +33,7 @@
 	[super setSelected:selected];
 	if (selected) {
 		if (!_selectedView) {
-			UIImage *image = [UIImage imageNamed:@"check_yellow"];
+			UIImage *image = [UIImage imageNamed:@"ic_select_on"];
 			_selectedView = [[UIImageView alloc] initWithImage:image];
             _selectedView.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.45f];
             _selectedView.contentMode = UIViewContentModeCenter;

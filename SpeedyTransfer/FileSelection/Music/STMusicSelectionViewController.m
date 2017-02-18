@@ -27,7 +27,7 @@ static NSString *headerIdentifier = @"ContactsHeaderView";
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.tableView.allowsMultipleSelection = YES;
-    self.tableView.sectionIndexColor = RGBFromHex(0xeb694a);
+    self.tableView.sectionIndexColor = RGBFromHex(0x01cc99);
     self.tableView.tableFooterView = [UIView new];
     self.tableView.contentInset = UIEdgeInsetsMake(0.0f, 0.0f, 49.0f, 0.0f);
     self.tableView.scrollIndicatorInsets = UIEdgeInsetsMake(0.0f, 0.0f, 49.0f, 0.0f);

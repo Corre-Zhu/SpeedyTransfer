@@ -27,7 +27,7 @@ static NSString *headerIdentifier = @"ContactsHeaderView";
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.tableView.allowsMultipleSelection = YES;
-    self.tableView.sectionIndexColor = RGBFromHex(0xeb694a);
+    self.tableView.sectionIndexColor = RGBFromHex(0x01cc99);
     self.tableView.tableFooterView = [UIView new];
     self.tableView.contentInset = UIEdgeInsetsMake(0.0f, 0.0f, 49.0f, 0.0f);
     self.tableView.scrollIndicatorInsets = UIEdgeInsetsMake(0.0f, 0.0f, 49.0f, 0.0f);
@@ -88,7 +88,7 @@ static NSString *headerIdentifier = @"ContactsHeaderView";
     STContactInfo *model = [dic.allValues.firstObject objectAtIndex:indexPath.row];
     cell.title = model.name;
     cell.subTitle = model.phone;
-    cell.image = [UIImage imageNamed:@"phone_bg"];
+    cell.image = [UIImage imageNamed:@"ic_tongxunlu"];
     if ([self.fileSelectionTabController isSelectedWithContact:model]) {
         cell.checked = YES;
         [tableView selectRowAtIndexPath:indexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
@@ -102,7 +102,7 @@ static NSString *headerIdentifier = @"ContactsHeaderView";
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return 66.0f;
+    return 80.0f;
 }
 
 - (NSArray *)sectionIndexTitlesForTableView:(UITableView *)tableView
@@ -118,7 +118,11 @@ static NSString *headerIdentifier = @"ContactsHeaderView";
 }
 
 -(CGFloat)tableView:(UITableView*)tableView heightForHeaderInSection:(NSInteger)section {
-    return 44.0f;
+    if (section == 0) {
+        return 72;
+    }
+    
+    return 32.0f;
 }
 
 -(UIView*)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
@@ -137,7 +141,29 @@ static NSString *headerIdentifier = @"ContactsHeaderView";
     } else {
         headerView.selected = NO;
     }
-    return headerView;
+    
+    if (section == 0) {
+        UIView *headerView2 = [[UIView alloc] init];
+        headerView2.backgroundColor = RGBFromHex(0xf4f4f4);
+        
+        UILabel *headerLabel = [[UILabel alloc] init];
+        headerLabel.font = [UIFont systemFontOfSize:16];
+        headerLabel.textColor = RGBFromHex(0x333333);
+        headerLabel.frame = CGRectMake(0, 0, 200, 40);
+        [headerView2 addSubview:headerLabel];
+        
+        NSInteger count = 0;
+        for (NSDictionary *dic in _contactModels) {
+            count += [dic.allValues.firstObject count];
+        }
+        headerLabel.text = [NSString stringWithFormat:@"    %@个联系人",@(count)];
+
+        [headerView2 addSubview:headerView];
+        headerView.top = 40;
+        return headerView2;
+    } else {
+        return headerView;
+    }
 }
 
 #pragma mark - Table view delegate

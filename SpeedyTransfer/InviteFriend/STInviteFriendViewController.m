@@ -64,7 +64,7 @@
 
     UILabel *label1 = [[UILabel alloc] initWithFrame:CGRectMake(0.0f, view2.top - 14.0f, IPHONE_WIDTH / 2.0f, 18.0f)];
     label1.text = NSLocalizedString(@"邮件", nil);
-    label1.textColor = RGBFromHex(0x323232);
+    label1.textColor = RGBFromHex(0x333333);
     label1.font = [UIFont systemFontOfSize:14.0f];
     label1.textAlignment = NSTextAlignmentCenter;
     [self.view addSubview:label1];
@@ -77,7 +77,7 @@
     
     UILabel *label2 = [[UILabel alloc] initWithFrame:CGRectMake(IPHONE_WIDTH / 2.0f, view2.top - 14.0f, IPHONE_WIDTH / 2.0f, 18.0f)];
     label2.text = NSLocalizedString(@"微博", nil);
-    label2.textColor = RGBFromHex(0x323232);
+    label2.textColor = RGBFromHex(0x333333);
     label2.font = [UIFont systemFontOfSize:14.0f];
     label2.textAlignment = NSTextAlignmentCenter;
     [self.view addSubview:label2];
@@ -96,7 +96,7 @@
     
     UILabel *label3 = [[UILabel alloc] initWithFrame:CGRectMake(0.0f, button3.bottom + 9.0f, IPHONE_WIDTH / 2.0f, 18.0f)];
     label3.text = NSLocalizedString(@"微信", nil);
-    label3.textColor = RGBFromHex(0x323232);
+    label3.textColor = RGBFromHex(0x333333);
     label3.font = [UIFont systemFontOfSize:14.0f];
     label3.textAlignment = NSTextAlignmentCenter;
     [self.view addSubview:label3];
@@ -109,7 +109,7 @@
     
     UILabel *label4 = [[UILabel alloc] initWithFrame:CGRectMake(IPHONE_WIDTH / 2.0f, button4.bottom + 9.0f, IPHONE_WIDTH / 2.0f, 18.0f)];
     label4.text = NSLocalizedString(@"腾讯QQ", nil);
-    label4.textColor = RGBFromHex(0x323232);
+    label4.textColor = RGBFromHex(0x333333);
     label4.font = [UIFont systemFontOfSize:14.0f];
     label4.textAlignment = NSTextAlignmentCenter;
     [self.view addSubview:label4];

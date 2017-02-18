@@ -31,18 +31,9 @@
         __block __weak HTContactsHeaderView *sself = self;
         _titleView.drawBlock = ^{
             [RGBFromHex(0x646464) set];
-            [sself.titleString drawInRect:CGRectMake(16.0f, 12, IPHONE_WIDTH - 120, 20) withAttributes:@{NSFontAttributeName: [UIFont systemFontOfSize:16.0f], }];
+            [sself.titleString drawInRect:CGRectMake(7.0f, 6, IPHONE_WIDTH - 120, 20) withAttributes:@{NSFontAttributeName: [UIFont systemFontOfSize:16.0f], }];
         };
         [self.contentView addSubview:_titleView];
-        
-        _selectAllButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        [_selectAllButton setTitle:NSLocalizedString(@"全选", nil) forState:UIControlStateNormal];
-        [_selectAllButton setTitle:NSLocalizedString(@"取消", nil) forState:UIControlStateSelected];
-        [_selectAllButton setTitleColor:RGBFromHex(0xeb694a) forState:UIControlStateNormal];
-        [_selectAllButton setTitleColor:RGBFromHex(0xeb694a) forState:UIControlStateSelected];
-        _selectAllButton.frame = CGRectMake(IPHONE_WIDTH - 90.0f, 0.0f, 80.0f, 44.0f);
-        _selectAllButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentCenter;
-        [self.contentView addSubview:_selectAllButton];
     }
     return self;
 }
