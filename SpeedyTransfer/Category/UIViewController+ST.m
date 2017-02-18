@@ -10,14 +10,14 @@
 
 @implementation UIViewController (ST)
 
-- (STFileSelectionTabViewController *)fileSelectionTabController {
-    if ([self.tabBarController isKindOfClass:[STFileSelectionTabViewController class]]) {
-        return (STFileSelectionTabViewController *)self.tabBarController;
+- (STFileSelectionViewController *)fileSelectionTabController {
+    if ([self.parentViewController isKindOfClass:[STFileSelectionViewController class]]) {
+        return (STFileSelectionViewController *)self.parentViewController;
     }
     
     for (UIViewController *viewC in self.navigationController.viewControllers) {
-        if ([viewC isKindOfClass:[STFileSelectionTabViewController class]]) {
-            return (STFileSelectionTabViewController *)viewC;
+        if ([viewC isKindOfClass:[STFileSelectionViewController class]]) {
+            return (STFileSelectionViewController *)viewC;
         }
     }
     

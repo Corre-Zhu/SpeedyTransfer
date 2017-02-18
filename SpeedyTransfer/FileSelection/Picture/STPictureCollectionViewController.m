@@ -384,7 +384,7 @@ static NSString * const CollectionViewCellReuseIdentifier = @"CollectionViewCell
     if (kind == UICollectionElementKindSectionHeader)
     {
         STPictureCollectionReusableView *headerView = (STPictureCollectionReusableView *)[collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:collectionReusableViewIdenfifier forIndexPath:indexPath];
-        headerView.tabViewController = (STFileSelectionTabViewController *)self.tabBarController;
+        headerView.tabViewController = (STFileSelectionViewController *)self.fileSelectionTabController;
         headerView.collectionView = self.collectionView;
         if (![headerView.expandButton.allTargets containsObject:self]) {
             [headerView.expandButton addTarget:self action:@selector(expandButtonClick:) forControlEvents:UIControlEventTouchUpInside];

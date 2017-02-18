@@ -15,6 +15,7 @@ static NSString *VideoSelectionCellIdentifier = @"VideoSelectionCellIdentifier";
 @interface STVideoSelectionViewController ()<PHPhotoLibraryChangeObserver,UIImagePickerControllerDelegate,UINavigationControllerDelegate> {
     UIView *headerView;
     UILabel *headerLabel;
+    UIButton *selectAllButton;
 }
 
 @property (nonatomic, strong) PHFetchResult *fetchResult;
@@ -62,8 +63,22 @@ static NSString *VideoSelectionCellIdentifier = @"VideoSelectionCellIdentifier";
     [self.tableView registerClass:[STVideoSelectionCell class] forCellReuseIdentifier:VideoSelectionCellIdentifier];
 }
 
+- (void)setupSelectAllButton {
+    if (self.fileSelectionTabController.selectedVideoAssetsArr.count >= _fetchResult.count) {
+        selectAllButton.selected = YES;
+    } else {
+        selectAllButton.selected = NO;
+    }
+}
+
 - (void)selectAll {
+    if (selectAllButton.selected) {
+        [self.fileSelectionTabController removeAllVideoAssets];
+    } else {
+        [self.fileSelectionTabController addVideoAssets:[_fetchResult objectsAtIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, _fetchResult.count)]]];
+    }
     
+    [self.tableView reloadData];
 }
 
 #pragma mark - Table view data source
@@ -156,20 +171,22 @@ static NSString *VideoSelectionCellIdentifier = @"VideoSelectionCellIdentifier";
         headerLabel = [[UILabel alloc] init];
         headerLabel.font = [UIFont systemFontOfSize:16];
         headerLabel.textColor = RGBFromHex(0x333333);
-        headerLabel.frame = CGRectMake(0, 0, 200, 40);
+        headerLabel.frame = CGRectMake(16, 0, 200, 40);
         [headerView addSubview:headerLabel];
         
-        UIButton *_selectAllButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        [_selectAllButton setTitle:NSLocalizedString(@"全选", nil) forState:UIControlStateNormal];
-        [_selectAllButton setTitle:NSLocalizedString(@"取消", nil) forState:UIControlStateSelected];
-        [_selectAllButton setTitleColor:RGBFromHex(0x01cc99) forState:UIControlStateNormal];
-        [_selectAllButton setTitleColor:RGBFromHex(0x01cc99) forState:UIControlStateSelected];
-        _selectAllButton.frame = CGRectMake(IPHONE_WIDTH - 96, 0, 80.0f, 40.0f);
-        _selectAllButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentRight;
-        [headerView addSubview:_selectAllButton];
-        [_selectAllButton addTarget:self action:@selector(selectAll)forControlEvents:UIControlEventTouchUpInside];
+        selectAllButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        [selectAllButton setTitle:NSLocalizedString(@"全选", nil) forState:UIControlStateNormal];
+        [selectAllButton setTitle:NSLocalizedString(@"取消", nil) forState:UIControlStateSelected];
+        [selectAllButton setTitleColor:RGBFromHex(0x01cc99) forState:UIControlStateNormal];
+        [selectAllButton setTitleColor:RGBFromHex(0x01cc99) forState:UIControlStateSelected];
+        selectAllButton.frame = CGRectMake(IPHONE_WIDTH - 96, 0, 80.0f, 40.0f);
+        selectAllButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentRight;
+        [headerView addSubview:selectAllButton];
+        [selectAllButton addTarget:self action:@selector(selectAll)forControlEvents:UIControlEventTouchUpInside];
     }
-    headerLabel.text = [NSString stringWithFormat:@"    %@个视频",@(_fetchResult.count)];
+    headerLabel.text = [NSString stringWithFormat:@"%@个视频", @(_fetchResult.count)];
+    [self setupSelectAllButton];
+    
     return headerView;
 }
 
@@ -184,6 +201,7 @@ static NSString *VideoSelectionCellIdentifier = @"VideoSelectionCellIdentifier";
     [self.fileSelectionTabController addVideoAsset:asset];
     STVideoSelectionCell *cell = [tableView cellForRowAtIndexPath:indexPath];
     cell.checked = YES;
+    [self setupSelectAllButton];
 }
 
 - (void)tableView:(UITableView *)tableView didDeselectRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -191,6 +209,7 @@ static NSString *VideoSelectionCellIdentifier = @"VideoSelectionCellIdentifier";
     [self.fileSelectionTabController removeVideoAsset:asset];
     STVideoSelectionCell *cell = [tableView cellForRowAtIndexPath:indexPath];
     cell.checked = NO;
+    [self setupSelectAllButton];
 }
 
 #pragma mark - PHPhotoLibraryChangeObserver

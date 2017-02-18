@@ -8,6 +8,51 @@
 
 #import <UIKit/UIKit.h>
 
+@class PHAsset;
+@class PHFetchResult;
+@class STMusicInfo;
+@class STContactInfo;
+
 @interface STFileSelectionViewController : UIViewController
+
+// All
+- (void)selectedFilesCountChanged;
+- (NSArray *)allSelectedFiles;
+- (void)removeAllSelectedFiles;
+
+// 图片
+@property (nonatomic, strong, readonly) NSMutableArray *selectedAssetsArr;
+- (NSInteger)selectedPhotosCountInCollection:(NSString *)collection;
+- (void)addAsset:(PHAsset *)asset inCollection:(NSString *)collection;
+- (void)addAssets:(NSArray *)assets inCollection:(NSString *)collection;
+- (void)removeAsset:(PHAsset *)asset inCollection:(NSString *)collection;
+- (void)removeAssets:(NSArray *)assets inCollection:(NSString *)collection;
+- (void)removeAllAssetsInCollection:(NSString *)collection;
+- (BOOL)isSelectedWithAsset:(PHAsset *)asset inCollection:(NSString *)collection;
+
+// 视频
+@property (nonatomic, strong, readonly) NSMutableOrderedSet *selectedVideoAssetsArr;
+- (void)addVideoAsset:(PHAsset *)asset;
+- (void)addVideoAssets:(NSArray *)assets;
+- (void)removeVideoAsset:(PHAsset *)asset;
+- (void)removeAllVideoAssets;
+- (BOOL)isSelectedWithVideoAsset:(PHAsset *)asset;
+
+// 联系人
+@property (nonatomic, strong, readonly) NSMutableArray *selectedContactsArr;
+- (void)addContact:(STContactInfo *)contact;
+- (void)addContacts:(NSArray *)contacts;
+- (void)removeContact:(STContactInfo *)contact;
+- (void)removeContacts:(NSArray *)contacts;
+- (void)removeAllContacts;
+- (BOOL)isSelectedWithContact:(STContactInfo *)contact;
+- (BOOL)isSelectedWithContacts:(NSArray *)contacts;
+
+// 界面刷新
+- (void)photoLibraryDidChange;
+- (void)reloadAssetsTableView;
+- (void)reloadVideosTableView;
+- (void)reloadContactsTableView;
+- (void)reloadFilesTableView;
 
 @end

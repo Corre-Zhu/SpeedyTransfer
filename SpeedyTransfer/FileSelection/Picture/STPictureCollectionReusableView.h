@@ -9,13 +9,13 @@
 #import <UIKit/UIKit.h>
 
 @class PHFetchResult;
-@class STFileSelectionTabViewController;
+@class STFileSelectionViewController;
 @class STPictureCollectionHeaderInfo;
 
 @interface STPictureCollectionReusableView : UICollectionReusableView
 
 @property (nonatomic, weak) UICollectionView *collectionView;
-@property (nonatomic, weak) STFileSelectionTabViewController *tabViewController;
+@property (nonatomic, weak) STFileSelectionViewController *tabViewController;
 @property (nonatomic, strong) STPictureCollectionHeaderInfo *model;
 @property (nonatomic, strong) UIButton *expandButton;
 

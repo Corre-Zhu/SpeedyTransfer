@@ -16,6 +16,10 @@ static NSString *headerIdentifier = @"ContactsHeaderView";
 @interface STContactsSelectionViewController ()
 {
     UIActivityIndicatorView *activityIndicatorView;
+    
+    UIView *topHeaderView;
+    UILabel *topHeaderLabel;
+    UIButton *selectAllButton;
 }
 
 @property (nonatomic, strong) NSArray *contactModels;
@@ -53,16 +57,15 @@ static NSString *headerIdentifier = @"ContactsHeaderView";
 }
 
 - (void)selectAllButtonClick:(UIButton *)sender {
-    NSInteger section = sender.tag;
-    NSDictionary *dic = [_contactModels objectAtIndex:section];
-    if (!sender.selected) {
-        [self.fileSelectionTabController removeContacts:dic.allValues.firstObject];
-        [self.fileSelectionTabController addContacts:dic.allValues.firstObject];
-        sender.selected = YES;
+    if (sender.selected) {
+        [self.fileSelectionTabController removeAllContacts];
     } else {
-        [self.fileSelectionTabController removeContacts:dic.allValues.firstObject];
-        sender.selected = NO;
+        for (NSDictionary *dic in _contactModels) {
+            [self.fileSelectionTabController removeContacts:dic.allValues.firstObject];
+            [self.fileSelectionTabController addContacts:dic.allValues.firstObject];
+        }
     }
+    
     [self.tableView reloadData];
 }
 
@@ -127,41 +130,47 @@ static NSString *headerIdentifier = @"ContactsHeaderView";
 
 -(UIView*)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
-    HTContactsHeaderView *headerView = [tableView dequeueReusableHeaderFooterViewWithIdentifier:headerIdentifier];
-    if (![headerView.selectAllButton.allTargets containsObject:self]) {
-        [headerView.selectAllButton addTarget:self action:@selector(selectAllButtonClick:) forControlEvents:UIControlEventTouchUpInside];
-    }
-    headerView.selectAllButton.tag = section;
-    
     NSDictionary *dic = [_contactModels objectAtIndex:section];
-    headerView.titleString = dic.allKeys.firstObject;
-    
-    if ([self.fileSelectionTabController isSelectedWithContacts:dic.allValues.firstObject]) {
-        headerView.selected = YES;
-    } else {
-        headerView.selected = NO;
-    }
     
     if (section == 0) {
-        UIView *headerView2 = [[UIView alloc] init];
-        headerView2.backgroundColor = RGBFromHex(0xf4f4f4);
-        
-        UILabel *headerLabel = [[UILabel alloc] init];
-        headerLabel.font = [UIFont systemFontOfSize:16];
-        headerLabel.textColor = RGBFromHex(0x333333);
-        headerLabel.frame = CGRectMake(0, 0, 200, 40);
-        [headerView2 addSubview:headerLabel];
+        if (!topHeaderView) {
+            topHeaderView = [[UIView alloc] init];
+            topHeaderView.backgroundColor = RGBFromHex(0xf4f4f4);
+            
+            topHeaderLabel = [[UILabel alloc] init];
+            topHeaderLabel.font = [UIFont systemFontOfSize:16];
+            topHeaderLabel.textColor = RGBFromHex(0x333333);
+            topHeaderLabel.frame = CGRectMake(16, 0, 200, 72);
+            topHeaderLabel.numberOfLines = 0;
+            [topHeaderView addSubview:topHeaderLabel];
+            
+            selectAllButton = [UIButton buttonWithType:UIButtonTypeCustom];
+            [selectAllButton setTitle:NSLocalizedString(@"全选", nil) forState:UIControlStateNormal];
+            [selectAllButton setTitle:NSLocalizedString(@"取消", nil) forState:UIControlStateSelected];
+            [selectAllButton setTitleColor:RGBFromHex(0x01cc99) forState:UIControlStateNormal];
+            [selectAllButton setTitleColor:RGBFromHex(0x01cc99) forState:UIControlStateSelected];
+            selectAllButton.frame = CGRectMake(IPHONE_WIDTH - 96, 0, 80.0f, 40.0f);
+            selectAllButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentRight;
+            [topHeaderView addSubview:selectAllButton];
+            [selectAllButton addTarget:self action:@selector(selectAllButtonClick:)forControlEvents:UIControlEventTouchUpInside];
+        }
         
         NSInteger count = 0;
         for (NSDictionary *dic in _contactModels) {
             count += [dic.allValues.firstObject count];
         }
-        headerLabel.text = [NSString stringWithFormat:@"    %@个联系人",@(count)];
-
-        [headerView2 addSubview:headerView];
-        headerView.top = 40;
-        return headerView2;
+        topHeaderLabel.text = [NSString stringWithFormat:@"%@个联系人\n\n%@",@(count), dic.allKeys.firstObject];
+        
+        selectAllButton.selected = count <= self.fileSelectionTabController.selectedContactsArr.count;
+        
+        return topHeaderView;
     } else {
+        HTContactsHeaderView *headerView = [tableView dequeueReusableHeaderFooterViewWithIdentifier:headerIdentifier];
+        if (![headerView.selectAllButton.allTargets containsObject:self]) {
+            [headerView.selectAllButton addTarget:self action:@selector(selectAllButtonClick:) forControlEvents:UIControlEventTouchUpInside];
+        }
+        headerView.titleString = dic.allKeys.firstObject;
+        headerView.selectAllButton.tag = section;
         return headerView;
     }
 }

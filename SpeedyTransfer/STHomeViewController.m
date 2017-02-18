@@ -7,9 +7,7 @@
 //
 
 #import "STHomeViewController.h"
-#import "STFileSelectionTabViewController.h"
 #import "STPictureCollectionViewController.h"
-#import "STMusicSelectionViewController.h"
 #import "STVideoSelectionViewController.h"
 #import "STContactsSelectionViewController.h"
 #import "STFileTransferViewController.h"

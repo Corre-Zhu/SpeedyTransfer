@@ -7,10 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "STFileSelectionTabViewController.h"
+#import "STFileSelectionViewController.h"
 
 @interface UIViewController (ST)
 
-- (STFileSelectionTabViewController *)fileSelectionTabController;
+- (STFileSelectionViewController *)fileSelectionTabController;
 
 @end
