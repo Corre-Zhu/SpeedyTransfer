@@ -10,6 +10,6 @@
 
 @interface ZZFunction : NSObject
 
-
++ (UIImage *)qrCodeImageWithStr:(NSString *)string withSize:(CGFloat)size topImage:(UIImage *)topImage;
 
 @end

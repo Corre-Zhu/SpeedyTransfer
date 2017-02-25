@@ -77,6 +77,7 @@
 		CEB7C7BE1E508E3400E924D4 /* STFileSegementControl.m in Sources */ = {isa = PBXBuildFile; fileRef = CEB7C7BD1E508E3400E924D4 /* STFileSegementControl.m */; };
 		CEBB14731C33CCD300874142 /* STSettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CEBB14721C33CCD300874142 /* STSettingViewController.m */; };
 		CEBB14761C33DB5C00874142 /* STAboutViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CEBB14751C33DB5C00874142 /* STAboutViewController.m */; };
+		CEBF5C501E61999A0072C06B /* STEstablishConnectViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CEBF5C4F1E61999A0072C06B /* STEstablishConnectViewController.m */; };
 		CED003121C0B2766005146A4 /* UIButton+ZZ.m in Sources */ = {isa = PBXBuildFile; fileRef = CED003111C0B2766005146A4 /* UIButton+ZZ.m */; };
 		CED0D1131C1D53ED00F5C0E3 /* Photos.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CED0D1121C1D53ED00F5C0E3 /* Photos.framework */; };
 		CED0D1201C1D576D00F5C0E3 /* STContactsSelectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CED0D1161C1D576D00F5C0E3 /* STContactsSelectionViewController.m */; };
@@ -235,6 +236,8 @@
 		CEBB14721C33CCD300874142 /* STSettingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STSettingViewController.m; sourceTree = "<group>"; };
 		CEBB14741C33DB5C00874142 /* STAboutViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STAboutViewController.h; sourceTree = "<group>"; };
 		CEBB14751C33DB5C00874142 /* STAboutViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STAboutViewController.m; sourceTree = "<group>"; };
+		CEBF5C4E1E61999A0072C06B /* STEstablishConnectViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STEstablishConnectViewController.h; sourceTree = "<group>"; };
+		CEBF5C4F1E61999A0072C06B /* STEstablishConnectViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STEstablishConnectViewController.m; sourceTree = "<group>"; };
 		CED003101C0B2766005146A4 /* UIButton+ZZ.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIButton+ZZ.h"; sourceTree = "<group>"; };
 		CED003111C0B2766005146A4 /* UIButton+ZZ.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIButton+ZZ.m"; sourceTree = "<group>"; };
 		CED0D1121C1D53ED00F5C0E3 /* Photos.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Photos.framework; path = System/Library/Frameworks/Photos.framework; sourceTree = SDKROOT; };
@@ -390,6 +393,8 @@
 		CE6536BB1C2ECD3400C1E8A3 /* FileTransfer */ = {
 			isa = PBXGroup;
 			children = (
+				CEBF5C4E1E61999A0072C06B /* STEstablishConnectViewController.h */,
+				CEBF5C4F1E61999A0072C06B /* STEstablishConnectViewController.m */,
 				CE6536D91C2ED09100C1E8A3 /* Model */,
 				CE6536C11C2ECD3400C1E8A3 /* STFileTransferViewController.h */,
 				CE6536C21C2ECD3400C1E8A3 /* STFileTransferViewController.m */,
@@ -957,6 +962,7 @@
 				CEB7C7BE1E508E3400E924D4 /* STFileSegementControl.m in Sources */,
 				4558BFC81C7453F1002F5718 /* HTSFHFKeychainUtils.m in Sources */,
 				CE6536CB1C2ECD3400C1E8A3 /* STWifiNotConnectedPopupView.m in Sources */,
+				CEBF5C501E61999A0072C06B /* STEstablishConnectViewController.m in Sources */,
 				CE6536FC1C31955000C1E8A3 /* ZZNavigationController.m in Sources */,
 				CE6536F01C2FBB2300C1E8A3 /* NSDate+ZZ.m in Sources */,
 				CED62A321C094FDD00270EDB /* AppDelegate.m in Sources */,

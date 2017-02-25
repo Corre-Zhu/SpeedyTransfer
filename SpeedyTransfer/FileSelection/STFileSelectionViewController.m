@@ -21,6 +21,7 @@
 #import "STContactInfo.h"
 #import "STDeviceInfo.h"
 #import "STWebServerModel.h"
+#import "STEstablishConnectViewController.h"
 
 @interface STFileSelectionViewController ()<STFileSegementControlDelegate> {
     STFileSegementControl *segementControl;
@@ -195,6 +196,9 @@
 }
 
 - (void)transferButtonClick {
+    STEstablishConnectViewController *vc = [[STEstablishConnectViewController alloc] init];
+    [self.navigationController pushViewController:vc animated:YES];
+    /*
     BOOL hotspotEnable = [UIDevice isPersonalHotspotEnabled];
     if ([ZZReachability shareInstance].currentReachabilityStatus != ReachableViaWiFi && !hotspotEnable) {
         if (!wifiNotConnectedPopupView) {
@@ -228,6 +232,7 @@
         }
         
     }
+     */
 }
 
 #pragma mark - Send file
