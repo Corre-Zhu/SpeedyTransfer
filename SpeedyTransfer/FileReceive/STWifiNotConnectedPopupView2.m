@@ -10,8 +10,6 @@
 
 @interface STWifiNotConnectedPopupView2 ()
 {
-    UIImageView *backView;
-    UILabel *titleLabel;
     HTDrawView *whiteView;
 }
 
@@ -26,59 +24,67 @@
         UITapGestureRecognizer *tapGes = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tap:)];
         [self addGestureRecognizer:tapGes];
         
-        UIView *blackView = [[UIView alloc] init];
-        blackView.backgroundColor = [UIColor blackColor];
-        blackView.layer.cornerRadius = 4.0f;
-        blackView.frame = CGRectMake((IPHONE_WIDTH - 270.0f) / 2.0f + 2.0f, (IPHONE_HEIGHT - 273.0f) / 2.0f, 266.0f, 273.0f);
-        [self addSubview:blackView];
-        
-        UIImage *backImage = [[UIImage imageNamed:@"xuanze_bg"] resizableImageWithCapInsets:UIEdgeInsetsMake(7.0f, 7.0f, 7.0f, 7.0f)];
-        backView = [[UIImageView alloc] initWithImage:backImage];
-        backView.frame = CGRectMake((IPHONE_WIDTH - 270.0f) / 2.0f, (IPHONE_HEIGHT - 273.0f) / 2.0f - 1.0f, 270.0f, 275.0f);
-        backView.userInteractionEnabled = YES;
-        [self addSubview:backView];
-        
-        titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0.0f, 0.0f, backView.width, 37.0f)];
-        titleLabel.textColor = [UIColor whiteColor];
-        titleLabel.font = [UIFont systemFontOfSize:17.0f];
-        titleLabel.textAlignment = NSTextAlignmentCenter;
-        titleLabel.text = NSLocalizedString(@"当前无WI-FI连接", nil);
-        [backView addSubview:titleLabel];
-        
-        whiteView = [[HTDrawView alloc] initWithFrame:CGRectMake(1.0f, 37.0f, backView.width - 3.0f, backView.height - 37.0f)];
+        whiteView = [[HTDrawView alloc] initWithFrame:CGRectMake(44, 180, IPHONE_WIDTH - 88, 208)];
         whiteView.backgroundColor = [UIColor whiteColor];
         whiteView.layer.masksToBounds = YES;
-        [backView addSubview:whiteView];
-        UIBezierPath *maskPath = [UIBezierPath bezierPathWithRoundedRect:whiteView.bounds byRoundingCorners:UIRectCornerBottomLeft | UIRectCornerBottomRight cornerRadii:CGSizeMake(4.0f, 4.0f)];
-        CAShapeLayer *maskLayer = [[CAShapeLayer alloc] init];
-        maskLayer.frame = whiteView.bounds;
-        maskLayer.path = maskPath.CGPath;
-        whiteView.layer.mask = maskLayer;
+        whiteView.layer.cornerRadius = 5;
+        [self addSubview:whiteView];
         
-        UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(8.0f, 87.0f, whiteView.width - 16.0f, 0.5f)];
-        lineView.backgroundColor = RGBFromHex(0xc8c7cc);
+        UIImageView *imag = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"img_wifi"]];
+        imag.frame = CGRectMake((whiteView.width - 32) / 2.0, 28, 32, 32);
+        [whiteView addSubview:imag];
+        
+        UILabel *label9 = [[UILabel alloc] initWithFrame:CGRectMake(0, imag.bottom + 12, whiteView.width, 17)];
+        label9.text = @"请按提示连接";
+        label9.textColor = RGBFromHex(0xff6600);
+        label9.font = [UIFont systemFontOfSize:14.0f];
+        label9.textAlignment = NSTextAlignmentCenter;
+        [whiteView addSubview:label9];
+        
+        NSMutableAttributedString *df = [[NSMutableAttributedString alloc] initWithString:@"1.请双方打开WiFi即可"];
+        [df addAttribute:NSForegroundColorAttributeName value:RGBFromHex(0x333333) range:NSMakeRange(0, df.string.length)];
+        [df addAttribute:NSForegroundColorAttributeName value:RGBFromHex(0xff3333) range:NSMakeRange(7, 4)];
+        [df addAttribute:NSFontAttributeName value:[UIFont systemFontOfSize:14] range:NSMakeRange(0, df.string.length)];
+        UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(30, label9.bottom + 12, whiteView.width - 60, 0)];
+        label.attributedText = df;
+        label.numberOfLines = 0;
+        [whiteView addSubview:label];
+        [label sizeToFit];
+        label.left = 30;
+        label.top = label9.bottom + 12;
+        
+        UILabel *label2 = [[UILabel alloc] initWithFrame:CGRectMake(30, imag.bottom + 12, whiteView.width - 60, 0)];
+        label2.text = @"2.返回点传，再次扫码即可接收文件";
+        label2.textColor = RGBFromHex(0x333333);
+        label2.font = [UIFont systemFontOfSize:14.0f];
+        label2.numberOfLines = 0;
+        [whiteView addSubview:label2];
+        [label2 sizeToFit];
+        label2.left = 30;
+        label2.top = label.bottom + 12;
+        
+        UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, label2.bottom + 28, whiteView.width, 0.5f)];
+        lineView.backgroundColor = RGBFromHex(0xbdbdbd);
         [whiteView addSubview:lineView];
         
-        UIView *lineView2 = [[UIView alloc] initWithFrame:CGRectMake(8.0f, 180.0f, whiteView.width - 16.0f, 0.5f)];
-        lineView2.backgroundColor = RGBFromHex(0xc8c7cc);
-        [whiteView addSubview:lineView2];
+        UIButton *hotspotButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        [hotspotButton addTarget:self action:@selector(hotspotButtonClick) forControlEvents:UIControlEventTouchUpInside];
+        [whiteView addSubview:hotspotButton];
+        hotspotButton.frame = CGRectMake(0, lineView.bottom, whiteView.width, 40);
+        hotspotButton.layer.cornerRadius = 2;
+        [hotspotButton setTitle:@"去打开WIFI" forState:UIControlStateNormal];
+        [hotspotButton setTitleColor:RGBFromHex(0x01cc99) forState:UIControlStateNormal];
+        hotspotButton.titleLabel.font = [UIFont systemFontOfSize:16];
         
-        whiteView.drawBlock = ^(void) {
-            [NSLocalizedString(@"请按照以下步骤打开本机网络", nil) drawAtPoint:CGPointMake(16.0f, 17.0f) withAttributes:@{NSFontAttributeName: [UIFont systemFontOfSize:14.0f], NSForegroundColorAttributeName: RGBFromHex(0x333333)}];
-            [[UIImage imageNamed:@"number1"] drawAtPoint:CGPointMake(16.0f, 50.0f)];
-            [NSLocalizedString(@"打开  系统设置", nil) drawAtPoint:CGPointMake(58.0f, 53.0f) withAttributes:@{NSFontAttributeName: [UIFont systemFontOfSize:14.0f], NSForegroundColorAttributeName: RGBFromHex(0x333333)}];
-            
-            [[UIImage imageNamed:@"number2"] drawAtPoint:CGPointMake(16.0f, 102.0f)];
-            [NSLocalizedString(@"进入  Wi-Fi", nil) drawAtPoint:CGPointMake(58.0f, 105.0f) withAttributes:@{NSFontAttributeName: [UIFont systemFontOfSize:14.0f], NSForegroundColorAttributeName: RGBFromHex(0x333333)}];
-            [NSLocalizedString(@"（1）加入对方所示网络", nil) drawAtPoint:CGPointMake(86.0f, 132.0f) withAttributes:@{NSFontAttributeName: [UIFont systemFontOfSize:12.0f], NSForegroundColorAttributeName: RGBFromHex(0x333333)}];
-            
-            [[UIImage imageNamed:@"number3"] drawAtPoint:CGPointMake(16.0f, 195.0f)];
-            [NSLocalizedString(@"返回  点传 > 我要接收", nil) drawAtPoint:CGPointMake(58.0f, 198.0f) withAttributes:@{NSFontAttributeName: [UIFont systemFontOfSize:14.0f], NSForegroundColorAttributeName: RGBFromHex(0x333333)}];
-        };
+        whiteView.height = hotspotButton.bottom;
         
     }
     
     return self;
+}
+
+- (void)hotspotButtonClick {
+    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"prefs:root=WIFI"]];
 }
 
 - (void)showInView:(UIView *)view {
@@ -93,7 +99,7 @@
 
 - (void)tap:(UITapGestureRecognizer *)tap {
     CGPoint point = [tap locationInView:self];
-    if (!CGRectContainsPoint(backView.frame, point)) {
+    if (!CGRectContainsPoint(whiteView.frame, point)) {
         [self removeFromSuperview];
     }
 }

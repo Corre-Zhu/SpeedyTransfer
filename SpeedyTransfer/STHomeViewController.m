@@ -21,6 +21,7 @@
 #import "ZZReachability.h"
 #import "STLeftPanelView.h"
 #import "STFileSelectionViewController.h"
+#import "STScanQRCodeViewController.h"
 
 @interface STHomeViewController ()
 {
@@ -294,9 +295,11 @@
 }
 
 - (void)receiveButtonClick {
-    STFileTransferViewController *fileTransferVc = [[STFileTransferViewController alloc] init];
-    fileTransferVc.isFromReceive = YES;
-    [self.navigationController pushViewController:fileTransferVc animated:YES];
+    STScanQRCodeViewController *vc = [[STScanQRCodeViewController alloc] init];
+    [self.navigationController pushViewController:vc animated:YES];
+//    STFileTransferViewController *fileTransferVc = [[STFileTransferViewController alloc] init];
+//    fileTransferVc.isFromReceive = YES;
+//    [self.navigationController pushViewController:fileTransferVc animated:YES];
 }
 
 - (void)receiveFileNotification {

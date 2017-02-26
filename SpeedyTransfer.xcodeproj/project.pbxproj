@@ -78,6 +78,7 @@
 		CEBB14731C33CCD300874142 /* STSettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CEBB14721C33CCD300874142 /* STSettingViewController.m */; };
 		CEBB14761C33DB5C00874142 /* STAboutViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CEBB14751C33DB5C00874142 /* STAboutViewController.m */; };
 		CEBF5C501E61999A0072C06B /* STEstablishConnectViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CEBF5C4F1E61999A0072C06B /* STEstablishConnectViewController.m */; };
+		CEBF5C531E61B7050072C06B /* STScanQRCodeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CEBF5C521E61B7050072C06B /* STScanQRCodeViewController.m */; };
 		CED003121C0B2766005146A4 /* UIButton+ZZ.m in Sources */ = {isa = PBXBuildFile; fileRef = CED003111C0B2766005146A4 /* UIButton+ZZ.m */; };
 		CED0D1131C1D53ED00F5C0E3 /* Photos.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CED0D1121C1D53ED00F5C0E3 /* Photos.framework */; };
 		CED0D1201C1D576D00F5C0E3 /* STContactsSelectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CED0D1161C1D576D00F5C0E3 /* STContactsSelectionViewController.m */; };
@@ -238,6 +239,8 @@
 		CEBB14751C33DB5C00874142 /* STAboutViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STAboutViewController.m; sourceTree = "<group>"; };
 		CEBF5C4E1E61999A0072C06B /* STEstablishConnectViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STEstablishConnectViewController.h; sourceTree = "<group>"; };
 		CEBF5C4F1E61999A0072C06B /* STEstablishConnectViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STEstablishConnectViewController.m; sourceTree = "<group>"; };
+		CEBF5C511E61B7050072C06B /* STScanQRCodeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STScanQRCodeViewController.h; sourceTree = "<group>"; };
+		CEBF5C521E61B7050072C06B /* STScanQRCodeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STScanQRCodeViewController.m; sourceTree = "<group>"; };
 		CED003101C0B2766005146A4 /* UIButton+ZZ.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIButton+ZZ.h"; sourceTree = "<group>"; };
 		CED003111C0B2766005146A4 /* UIButton+ZZ.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIButton+ZZ.m"; sourceTree = "<group>"; };
 		CED0D1121C1D53ED00F5C0E3 /* Photos.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Photos.framework; path = System/Library/Frameworks/Photos.framework; sourceTree = SDKROOT; };
@@ -377,6 +380,8 @@
 				CE6536F21C2FD53600C1E8A3 /* STFileReceiveModel.m */,
 				CE6536AA1C2E8D1B00C1E8A3 /* STWifiNotConnectedPopupView2.h */,
 				CE6536AB1C2E8D1B00C1E8A3 /* STWifiNotConnectedPopupView2.m */,
+				CEBF5C511E61B7050072C06B /* STScanQRCodeViewController.h */,
+				CEBF5C521E61B7050072C06B /* STScanQRCodeViewController.m */,
 			);
 			path = FileReceive;
 			sourceTree = "<group>";
@@ -789,6 +794,7 @@
 					CED62A291C094FDD00270EDB = {
 						CreatedOnToolsVersion = 7.1.1;
 						DevelopmentTeam = 9UU37VNQKP;
+						ProvisioningStyle = Automatic;
 					};
 				};
 			};
@@ -907,6 +913,7 @@
 				CEA74C321C79D68100E1B34C /* STReceiveHeaderView.m in Sources */,
 				CED62A351C094FDD00270EDB /* STHomeViewController.m in Sources */,
 				CE2AD7AB1C4A340D00C67D1D /* HTJSONAdapter.m in Sources */,
+				CEBF5C531E61B7050072C06B /* STScanQRCodeViewController.m in Sources */,
 				CE9C91A01C390AD60075CB06 /* STFindViewController.m in Sources */,
 				CED0D1231C1D576D00F5C0E3 /* STVideoSelectionViewController.m in Sources */,
 				CE6536D81C2ECEC300C1E8A3 /* STPictureCollectionHeaderInfo.m in Sources */,
@@ -1064,6 +1071,7 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEVELOPMENT_TEAM = 9UU37VNQKP;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				GCC_PREFIX_HEADER = "SpeedyTransfer/Supporting Files/SpeedyTransfer-Prefix.pch";
@@ -1075,9 +1083,10 @@
 					"$(PROJECT_DIR)/SpeedyTransfer/ThirdParty/SNS/libWeiboSDK",
 					"$(PROJECT_DIR)/SpeedyTransfer/ThirdParty/SNS/WeChat",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.santikeji.dianchuan;
+				PRODUCT_BUNDLE_IDENTIFIER = com.santikeji.dianchuan1;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "26547452-1626-419e-b3b6-98d45d500be6";
+				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 			};
 			name = Debug;
 		};
@@ -1088,7 +1097,8 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEVELOPMENT_TEAM = 9UU37VNQKP;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				GCC_PREFIX_HEADER = "SpeedyTransfer/Supporting Files/SpeedyTransfer-Prefix.pch";
@@ -1100,9 +1110,10 @@
 					"$(PROJECT_DIR)/SpeedyTransfer/ThirdParty/SNS/libWeiboSDK",
 					"$(PROJECT_DIR)/SpeedyTransfer/ThirdParty/SNS/WeChat",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.santikeji.dianchuan;
+				PRODUCT_BUNDLE_IDENTIFIER = com.santikeji.dianchuan1;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "26547452-1626-419e-b3b6-98d45d500be6";
+				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 			};
 			name = Release;
 		};

@@ -51,6 +51,12 @@
 		<key>NSAllowsArbitraryLoads</key>
 		<true/>
 	</dict>
+	<key>NSCameraUsageDescription</key>
+	<string>需要访问相机</string>
+	<key>NSContactsUsageDescription</key>
+	<string>需要访问通讯录</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>需要访问图片</string>
 	<key>UIRequiredDeviceCapabilities</key>
 	<array>
 		<string>armv7</string>
@@ -65,11 +71,5 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
-	<key>NSPhotoLibraryUsageDescription</key>
-	<string>需要访问图片</string>
-	<key>NSCameraUsageDescription</key>
-	<string>需要访问相机</string>
-	<key>NSContactsUsageDescription</key>
-	<string>需要访问通讯录</string>
 </dict>
 </plist>
