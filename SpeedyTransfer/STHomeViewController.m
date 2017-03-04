@@ -22,6 +22,7 @@
 #import "STLeftPanelView.h"
 #import "STFileSelectionViewController.h"
 #import "STScanQRCodeViewController.h"
+#import "ZZFunction.h"
 
 @interface STHomeViewController ()
 {
@@ -210,6 +211,7 @@
             break;
             
         default:
+            [wifiButton setImage:[UIImage imageNamed:@"ic_wifi_off"] forState:UIControlStateNormal];
             return;
     }
 }
@@ -243,7 +245,7 @@
 }
 
 - (void)wifiButtonClick {
-    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"prefs:root=WIFI"]];
+    [ZZFunction goToWifiPref];
 }
 
 - (void)actionBtnClick:(UIButton *)button {

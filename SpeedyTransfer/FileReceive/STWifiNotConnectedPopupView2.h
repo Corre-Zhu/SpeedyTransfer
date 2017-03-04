@@ -8,8 +8,11 @@
 
 #import <UIKit/UIKit.h>
 
+typedef void(^CompletionBlock)(void);
+
 @interface STWifiNotConnectedPopupView2 : UIView
 
 - (void)showInView:(UIView *)view;
+- (void)showInView:(UIView *)view hiddenBlock:(CompletionBlock)block;
 
 @end

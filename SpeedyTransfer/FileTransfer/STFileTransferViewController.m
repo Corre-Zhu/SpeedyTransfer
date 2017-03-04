@@ -115,13 +115,13 @@ static NSString *cellIdentifier = @"CellIdentifier";
 	
     if (self.isFromReceive) {
 		// 启动webserver
-		[[STWebServerModel shareInstant] startWebServer];
+		//[[STWebServerModel shareInstant] startWebServer];
 		
         // 开始发送udp广播
-        [[STFileReceiveModel shareInstant] startBroadcast];
+        //[[STFileReceiveModel shareInstant] startBroadcast];
         
         // 开始监听udp广播
-        [[STFileTransferModel shareInstant] startListenBroadcast];
+        //[[STFileTransferModel shareInstant] startListenBroadcast];
     }
 }
 

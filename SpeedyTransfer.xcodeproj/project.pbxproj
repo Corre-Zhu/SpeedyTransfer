@@ -60,6 +60,7 @@
 		CE9C91B51C3970D60075CB06 /* STPersonalSettingCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CE9C91B41C3970D60075CB06 /* STPersonalSettingCell.m */; };
 		CE9C91B81C397C210075CB06 /* UIImage+ZZ.m in Sources */ = {isa = PBXBuildFile; fileRef = CE9C91B71C397C210075CB06 /* UIImage+ZZ.m */; };
 		CEA12C491C29ABCB00328CEF /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = CEA12C481C29ABCB00328CEF /* Reachability.m */; };
+		CEA4965C1E62DB4C00B97BD5 /* STMultiPeerTransferModel.m in Sources */ = {isa = PBXBuildFile; fileRef = CEA4965B1E62DB4C00B97BD5 /* STMultiPeerTransferModel.m */; };
 		CEA74C2C1C78656400E1B34C /* STDeviceButton.m in Sources */ = {isa = PBXBuildFile; fileRef = CEA74C2B1C78656400E1B34C /* STDeviceButton.m */; };
 		CEA74C2F1C79D65F00E1B34C /* STSendHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = CEA74C2E1C79D65F00E1B34C /* STSendHeaderView.m */; };
 		CEA74C321C79D68100E1B34C /* STReceiveHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = CEA74C311C79D68100E1B34C /* STReceiveHeaderView.m */; };
@@ -199,6 +200,8 @@
 		CE9C91B71C397C210075CB06 /* UIImage+ZZ.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+ZZ.m"; sourceTree = "<group>"; };
 		CEA12C471C29ABCB00328CEF /* Reachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Reachability.h; sourceTree = "<group>"; };
 		CEA12C481C29ABCB00328CEF /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Reachability.m; sourceTree = "<group>"; };
+		CEA4965A1E62DB4C00B97BD5 /* STMultiPeerTransferModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STMultiPeerTransferModel.h; sourceTree = "<group>"; };
+		CEA4965B1E62DB4C00B97BD5 /* STMultiPeerTransferModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STMultiPeerTransferModel.m; sourceTree = "<group>"; };
 		CEA74C2A1C78656400E1B34C /* STDeviceButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STDeviceButton.h; sourceTree = "<group>"; };
 		CEA74C2B1C78656400E1B34C /* STDeviceButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STDeviceButton.m; sourceTree = "<group>"; };
 		CEA74C2D1C79D65F00E1B34C /* STSendHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STSendHeaderView.h; sourceTree = "<group>"; };
@@ -449,6 +452,8 @@
 				4558BFD31C747483002F5718 /* STWebServerModel.m */,
 				CE6536DA1C2ED0AF00C1E8A3 /* STFileTransferModel.h */,
 				CE6536DB1C2ED0AF00C1E8A3 /* STFileTransferModel.m */,
+				CEA4965A1E62DB4C00B97BD5 /* STMultiPeerTransferModel.h */,
+				CEA4965B1E62DB4C00B97BD5 /* STMultiPeerTransferModel.m */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -941,6 +946,7 @@
 				CE9C91B81C397C210075CB06 /* UIImage+ZZ.m in Sources */,
 				CED0D13D1C21A59200F5C0E3 /* AVURLAsset+Extension.m in Sources */,
 				CE9C91AF1C39537C0075CB06 /* STFeedbackCell.m in Sources */,
+				CEA4965C1E62DB4C00B97BD5 /* STMultiPeerTransferModel.m in Sources */,
 				CED003121C0B2766005146A4 /* UIButton+ZZ.m in Sources */,
 				4558BFD41C747483002F5718 /* STWebServerConnection.m in Sources */,
 				CE9C91A61C390EAA0075CB06 /* STFeedBackInputView.m in Sources */,

@@ -12,4 +12,6 @@
 
 + (UIImage *)qrCodeImageWithStr:(NSString *)string withSize:(CGFloat)size topImage:(UIImage *)topImage;
 
++ (void)goToWifiPref;
+
 @end

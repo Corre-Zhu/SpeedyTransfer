@@ -7,11 +7,14 @@
 //
 
 #import "STWifiNotConnectedPopupView2.h"
+#import "ZZFunction.h"
 
 @interface STWifiNotConnectedPopupView2 ()
 {
     HTDrawView *whiteView;
 }
+
+@property (nonatomic, copy) CompletionBlock block;
 
 @end
 
@@ -84,7 +87,8 @@
 }
 
 - (void)hotspotButtonClick {
-    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"prefs:root=WIFI"]];
+    [ZZFunction goToWifiPref];
+    _block();
 }
 
 - (void)showInView:(UIView *)view {
@@ -97,10 +101,17 @@
     }];
 }
 
+- (void)showInView:(UIView *)view hiddenBlock:(void (^)(void))block {
+    self.block = block;
+    [self showInView:view];
+}
+
 - (void)tap:(UITapGestureRecognizer *)tap {
     CGPoint point = [tap locationInView:self];
     if (!CGRectContainsPoint(whiteView.frame, point)) {
         [self removeFromSuperview];
+        
+        _block();
     }
 }
 

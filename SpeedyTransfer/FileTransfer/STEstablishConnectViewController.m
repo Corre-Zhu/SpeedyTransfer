@@ -8,6 +8,7 @@
 
 #import "STEstablishConnectViewController.h"
 #import "ZZFunction.h"
+#import "STFileTransferViewController.h"
 
 @interface STEstablishConnectViewController () {
     UIScrollView *scrollView;
@@ -21,6 +22,11 @@
 @end
 
 @implementation STEstablishConnectViewController
+
+- (void)dealloc {
+    [[STMultiPeerTransferModel shareInstant] removeObserver:self forKeyPath:@"state"];
+    [[STMultiPeerTransferModel shareInstant] reset];
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -179,6 +185,12 @@
     hotspotView.hidden = YES;
     
     [self generateQrcode];
+    
+    // 开始广播
+    [[STMultiPeerTransferModel shareInstant] startAdvertising];
+    
+    [[STMultiPeerTransferModel shareInstant] addObserver:self forKeyPath:@"state" options:NSKeyValueObservingOptionNew context:NULL];
+
 }
 
 - (void)didReceiveMemoryWarning {
@@ -186,11 +198,16 @@
 }
 
 - (void)generateQrcode {
-    qrcodeView.image = [ZZFunction qrCodeImageWithStr:@"Hello World" withSize:180 topImage:nil];
+    // 根据设备名称生成二维码
+    NSString *deviceName = [[UIDevice currentDevice] name];
+    qrcodeView.image = [ZZFunction qrCodeImageWithStr:deviceName withSize:180 topImage:nil];
 }
 
 - (void)leftBarButtonItemClick {
     [self.navigationController popViewControllerAnimated:YES];
+    
+    // 停止广播，断开连接
+    [[STMultiPeerTransferModel shareInstant] reset];
 }
 
 - (void)arrowButtonClick {
@@ -213,6 +230,31 @@
 
 - (void)hotspotButtonClick {
     
+}
+
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSKeyValueChangeKey,id> *)change context:(void *)context {
+    dispatch_async(dispatch_get_main_queue(), ^{
+        if (self.navigationController.topViewController != self) {
+            return;
+        }
+        
+        switch ([STMultiPeerTransferModel shareInstant].state) {
+            case STMultiPeerStateNotConnected:
+                
+                break;
+            case STMultiPeerStateBrowsing:
+            case STMultiPeerStateConnecting:
+                
+                break;
+            case STMultiPeerStateConnected: {
+                STFileTransferViewController *vc = [[STFileTransferViewController alloc] init];
+                [self.navigationController pushViewController:vc animated:YES];
+            }
+                break;
+            default:
+                break;
+        }
+    });
 }
 
 @end

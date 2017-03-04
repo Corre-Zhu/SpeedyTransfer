@@ -15,6 +15,7 @@
 #import "ZZReachability.h"
 #import "STFileTransferModel.h"
 #import "STFileReceiveModel.h"
+#import "STMultiPeerTransferModel.h"
 
 #define KUDPPORT 3333
 #define KSERVERPORT 8080

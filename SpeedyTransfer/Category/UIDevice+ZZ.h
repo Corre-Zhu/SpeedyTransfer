@@ -10,6 +10,7 @@
 
 UIKIT_EXTERN NSString *const UIStatusBarOrientationDidChangeNotification;
 
+#define IOS10 [[UIDevice currentDevice] isIOS10]
 #define IOS9 [[UIDevice currentDevice] isIOS9]
 #define IOS8 [[UIDevice currentDevice] isIOS8]
 #define IOS7 [[UIDevice currentDevice] isIOS7]
@@ -27,6 +28,7 @@ UIKIT_EXTERN NSString *const UIStatusBarOrientationDidChangeNotification;
 - (BOOL)isIOS7;
 - (BOOL)isIOS8;
 - (BOOL)isIOS9;
+- (BOOL)isIOS10;
 - (BOOL)isPortrait;
 - (BOOL)isLandscape;
 
@@ -40,5 +42,6 @@ UIKIT_EXTERN NSString *const UIStatusBarOrientationDidChangeNotification;
 + (NSDictionary *)getAllIpAddresses;
 + (BOOL)isPersonalHotspotEnabled;
 + (NSString *)hotspotAddress;
++ (BOOL)isWiFiEnabled; // 判断WiFi开关是否打开
 
 @end

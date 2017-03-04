@@ -8,11 +8,16 @@
 
 #import "STScanQRCodeViewController.h"
 #import "STWifiNotConnectedPopupView2.h"
+#import "ZZReachability.h"
+#import "STFileTransferViewController.h"
 
 @interface STScanQRCodeViewController ()<AVCaptureMetadataOutputObjectsDelegate> {
     UIImageView *scanBackgroundView;
     UILabel *tipLabel;
     UIView *alertView;
+    
+    UIView *connectingView;
+    UILabel *connectingLabel;
 }
 
 @property (nonatomic, strong) AVCaptureSession *session;
@@ -23,6 +28,8 @@
 
 - (void)dealloc {
     [_session stopRunning];
+    [[STMultiPeerTransferModel shareInstant] removeObserver:self forKeyPath:@"state"];
+    [[STMultiPeerTransferModel shareInstant] reset];
 }
 
 - (void)viewDidLoad {
@@ -105,6 +112,8 @@
     knowButton.backgroundColor = RGB(181,185,249);
     [knowButton setTitle:@"我知道了" forState:UIControlStateNormal];
     [knowButton setTitleColor:RGBFromHex(0x2a16c1) forState:UIControlStateNormal];
+    
+    [[STMultiPeerTransferModel shareInstant] addObserver:self forKeyPath:@"state" options:NSKeyValueObservingOptionNew context:NULL];
 }
 
 - (void)knowButtonClick {
@@ -196,15 +205,72 @@
 
 -(void)captureOutput:(AVCaptureOutput *)captureOutput didOutputMetadataObjects:(NSArray *)metadataObjects fromConnection:(AVCaptureConnection *)connection {
     if (metadataObjects.count > 0) {
-        AVMetadataMachineReadableCodeObject * metadataObject = [metadataObjects objectAtIndex:0];
-//        [self handleResult:metadataObject.stringValue];
+        AVMetadataMachineReadableCodeObject *metadataObject = [metadataObjects objectAtIndex:0];
+        NSString *result = metadataObject.stringValue;
+        if (result.length > 0) {
+            // 扫描的是iPhone的二维码
+            if (![UIDevice isWiFiEnabled]) {
+                STWifiNotConnectedPopupView2 *popupView = [[STWifiNotConnectedPopupView2 alloc] init];
+                [popupView showInView:self.navigationController.view hiddenBlock:^{
+                    [self beginScanning];
+                }];
+            } else {
+                [[STMultiPeerTransferModel shareInstant] startBrowsingForName:result];
+            }
+            
+            [self stopScanning];
+        }
         
-        // 扫描的是iPhone的二维码
-        STWifiNotConnectedPopupView2 *popupView = [[STWifiNotConnectedPopupView2 alloc] init];
-        [popupView showInView:self.navigationController.view];
     } else {
         
     }
+}
+
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSKeyValueChangeKey,id> *)change context:(void *)context {
+    dispatch_async(dispatch_get_main_queue(), ^{
+        if (self.navigationController.topViewController != self) {
+            return;
+        }
+        
+        if (!connectingView) {
+            connectingView = [[UIView alloc] initWithFrame:self.view.bounds];
+            connectingView.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.8];
+            [self.view addSubview:connectingView];
+                                               
+            connectingLabel = [[UILabel alloc] initWithFrame:self.view.bounds];
+            connectingLabel.textColor = [UIColor whiteColor];
+            connectingLabel.font = [UIFont systemFontOfSize:17.0f];
+            connectingLabel.textAlignment = NSTextAlignmentCenter;
+            [connectingView addSubview:connectingLabel];
+            
+            UIActivityIndicatorView *ind = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
+            [connectingView addSubview:ind];
+            ind.left = (self.view.width - ind.width) / 2.;
+            ind.top = self.view.height / 2. - 38;
+            [ind startAnimating];
+        }
+        
+        connectingView.hidden = NO;
+        switch ([STMultiPeerTransferModel shareInstant].state) {
+            case STMultiPeerStateNotConnected:
+                connectingLabel.text = @"连接失败";
+                break;
+            case STMultiPeerStateBrowsing:
+            case STMultiPeerStateConnecting:
+                connectingLabel.text = @"连接中...";
+                break;
+            case STMultiPeerStateConnected:{
+                connectingLabel.text = @"连接成功";
+                
+                STFileTransferViewController *vc = [[STFileTransferViewController alloc] init];
+                [self.navigationController pushViewController:vc animated:YES];
+            }
+
+                break;
+            default:
+                break;
+        }
+    });
 }
 
 @end
