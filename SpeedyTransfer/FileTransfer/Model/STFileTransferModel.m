@@ -10,27 +10,19 @@
 #import <CocoaAsyncSocket/GCDAsyncUdpSocket.h>
 #import <Photos/Photos.h>
 #import <GCDWebServerFunctions.h>
-#import "STDeviceInfo.h"
-#import "HTFMDatabase.h"
-#import "HTSQLBuffer.h"
-#import "AppDelegate.h"
 #import <AFNetworking/AFNetworking.h>
 #import "STWebServerModel.h"
 #import <AddressBook/AddressBook.h>
-
-#define ALBUM_TITLE @"点传"
 
 NSString *const KDeviceNotConnectedNotification = @"DeviceNotConnectedNotification"; // 设备退出共享网络通知
 
 @interface STFileTransferModel ()<GCDAsyncUdpSocketDelegate>
 {
     NSTimer *timeoutTimer;
-    HTFMDatabase *database;
     NSTimeInterval downloadStartTimestamp;
     NSTimeInterval lastTimestamp;
     float lastProgress;
     
-    __block PHAssetCollection *toSaveCollection;
     NSURLSessionDownloadTask *thumbDownloadTask; // 当前缩略图下载任务
     NSURLSessionDownloadTask *origindownloadTask; // 当前大图下载任务
 }
@@ -43,40 +35,9 @@ NSString *const KDeviceNotConnectedNotification = @"DeviceNotConnectedNotificati
 
 HT_DEF_SINGLETON(STFileTransferModel, shareInstant);
 
-- (void)dealloc {
-    [database close];
-}
-
 - (instancetype)init {
     self = [super init];
     if (self) {
-        NSString *defaultDbPath = [[ZZPath documentPath] stringByAppendingPathComponent:dbName];
-        database = [[HTFMDatabase alloc] initWithPath:defaultDbPath];
-        [database open];
-        
-        // 发送中的或者接收中的状态置为传输失败
-        HTSQLBuffer *sqlBuffer = [[HTSQLBuffer alloc] init];
-        sqlBuffer.UPDATE(DBFileTransfer._tableName).SET(DBFileTransfer._transferStatus, @(STFileTransferStatusSendFailed)).WHERE(SQLFieldEqual(DBFileTransfer._transferStatus, @(STFileTransferStatusSending)));
-        [database executeUpdate:sqlBuffer.sql];
-        
-        sqlBuffer = [[HTSQLBuffer alloc] init];
-        sqlBuffer.UPDATE(DBFileTransfer._tableName).SET(DBFileTransfer._transferStatus, @(STFileTransferStatusReceiveFailed)).WHERE(SQLFieldEqual(DBFileTransfer._transferStatus, @(STFileTransferStatusReceiving)));
-        [database executeUpdate:sqlBuffer.sql];
-        
-        NSString *sql = [NSString stringWithFormat:@"SELECT * FROM %@ LEFT JOIN %@ ON %@.%@=%@.%@ ORDER BY %@ DESC", DBFileTransfer._tableName, DBDeviceInfo._tableName, DBFileTransfer._tableName, DBFileTransfer._deviceName, DBDeviceInfo._tableName, DBDeviceInfo._deviceName, DBFileTransfer._id];
-        FMResultSet *result = [database executeQuery:sql];
-        if (result) {
-            NSMutableArray *tempArr = [NSMutableArray array];
-            while ([result next]) {
-                if (result.resultDictionary) {
-                    [tempArr addObject:[[STFileTransferInfo alloc] initWithDictionary:result.resultDictionary]];
-                }
-            }
-            
-            _transferFiles = [NSArray arrayWithArray:tempArr];
-            _sectionTransferFiles = [self sortTransferInfo:_transferFiles];
-        }
-        
         timeoutTimer = [NSTimer scheduledTimerWithTimeInterval:15.0f target:self selector:@selector(timeout) userInfo:nil repeats:YES];
         
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didEnterBackgroundNotification) name:UIApplicationDidEnterBackgroundNotification object:nil];
@@ -103,62 +64,6 @@ HT_DEF_SINGLETON(STFileTransferModel, shareInstant);
 
 - (void)willEnterForegroundNotification {
     [self startListenBroadcast];
-}
-
-- (NSArray *)sortTransferInfo:(NSArray *)infos {
-    NSMutableArray *resultArr = [NSMutableArray array];
-    NSMutableArray *tempArr = [NSMutableArray array];
-    STFileTransferInfo *lastInfo = nil;
-    for (STFileTransferInfo *info in infos) {
-        if (!lastInfo || ([info.deviceName isEqualToString:lastInfo.deviceName] && info.transferType == lastInfo.transferType)) {
-            [tempArr addObject:info];
-        } else {
-            [resultArr addObject:tempArr];
-            
-            tempArr = [NSMutableArray array];
-            [tempArr addObject:info];
-        }
-        
-        lastInfo = info;
-    }
-    
-    if (tempArr.count > 0) {
-        [resultArr addObject:tempArr];
-    }
-    
-    return [NSArray arrayWithArray:resultArr];
-}
-
-- (void)createToSaveCollectionIfNeeded:(void(^)(PHAssetCollection *assetCollection))completionHandler {
-    // 创建相册
-    __block PHObjectPlaceholder *placeholder;
-    
-    PHFetchOptions *fetchOptions = [[PHFetchOptions alloc] init];
-    fetchOptions.predicate = [NSPredicate predicateWithFormat:@"title = %@", ALBUM_TITLE];
-    toSaveCollection = [PHAssetCollection fetchAssetCollectionsWithType:PHAssetCollectionTypeAlbum
-                                                                subtype:PHAssetCollectionSubtypeAny
-                                                                options:fetchOptions].firstObject;
-    
-    if (!toSaveCollection)
-    {
-        [[PHPhotoLibrary sharedPhotoLibrary] performChanges:^{
-            PHAssetCollectionChangeRequest *createAlbum = [PHAssetCollectionChangeRequest creationRequestForAssetCollectionWithTitle:ALBUM_TITLE];
-            placeholder = [createAlbum placeholderForCreatedAssetCollection];
-        } completionHandler:^(BOOL success, NSError *error) {
-            if (success)
-            {
-                PHFetchResult *collectionFetchResult = [PHAssetCollection fetchAssetCollectionsWithLocalIdentifiers:@[placeholder.localIdentifier]
-                                                                                                            options:nil];
-                toSaveCollection = collectionFetchResult.firstObject;
-                completionHandler(toSaveCollection);
-            } else {
-                completionHandler(nil);
-                NSLog(@"create albumn failed");
-            }
-        }];
-    } else {
-        completionHandler(toSaveCollection);
-    }
 }
 
 - (void)removeAllDevices {
@@ -451,17 +356,6 @@ withFilterContext:(id)filterContext {
     return resultArray;
 }
 
-- (void)updateTransferStatus:(STFileTransferStatus)status withIdentifier:(NSString *)identifier {
-    HTSQLBuffer *sql = [[HTSQLBuffer alloc] init];
-    sql.UPDATE(DBFileTransfer._tableName)
-    .WHERE(SQLStringEqual(DBFileTransfer._identifier, identifier))
-    .SET(DBFileTransfer._transferStatus, @(status));
-    
-    if (![database executeUpdate:sql.sql]) {
-        NSLog(@"%@", database.lastError);
-    }
-}
-
 - (void)updateDownloadSpeed:(float)downloadSpeed withIdentifier:(NSString *)identifier {
     HTSQLBuffer *sql = [[HTSQLBuffer alloc] init];
     sql.UPDATE(DBFileTransfer._tableName)
@@ -470,33 +364,6 @@ withFilterContext:(id)filterContext {
     
     if (![database executeUpdate:sql.sql]) {
         NSLog(@"%@", database.lastError);
-    }
-}
-
-- (void)updateAssetIdentifier:(NSString *)assetIdentifier withIdentifier:(NSString *)identifier {
-    HTSQLBuffer *sql = [[HTSQLBuffer alloc] init];
-    sql.UPDATE(DBFileTransfer._tableName)
-    .WHERE(SQLStringEqual(DBFileTransfer._identifier, identifier))
-    .SET(DBFileTransfer._url, assetIdentifier);
-    
-    if (![database executeUpdate:sql.sql]) {
-        NSLog(@"%@", database.lastError);
-    }
-}
-
-- (void)addTransferFile:(STFileTransferInfo *)info {
-    if (!info) {
-        return;
-    }
-    
-    if (!_transferFiles) {
-        self.transferFiles = [NSArray arrayWithObject:info];
-    } else {
-        @autoreleasepool {
-            NSMutableArray *arr = [NSMutableArray arrayWithArray:_transferFiles];
-            [arr insertObject:info atIndex:0];
-            self.transferFiles = [NSArray arrayWithArray:arr];
-        }
     }
 }
 

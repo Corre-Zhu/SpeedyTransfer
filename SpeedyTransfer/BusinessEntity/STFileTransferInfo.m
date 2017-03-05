@@ -8,6 +8,7 @@
 
 #import "STFileTransferInfo.h"
 #import "STDeviceInfo.h"
+#import "ZZFunction.h"
 
 @interface STFileTransferInfo ()
 {
@@ -43,6 +44,32 @@ HT_DEF_SINGLETON(STFileTransferInfo, shareInstant);
     }
     
     return self;
+}
+
+- (instancetype)initWithReceiveFileInfo:(NSDictionary *)fileInfo deviceInfo:(STDeviceInfo *)deviceInfo {
+    self = [super init];
+    if (self) {
+        self.identifier = [fileInfo stringForKey:FILE_IDENTIFIER];
+        self.transferType = STFileTransferTypeReceive;
+        self.transferStatus = STFileTransferStatusReceiving;
+        self.fileName = [fileInfo stringForKey:FILE_NAME];
+        self.fileSize = [fileInfo doubleForKey:FILE_SIZE];
+        if (self.fileName.pathExtension.length > 0) {
+            self.pathExtension = self.fileName.pathExtension;
+        } else {
+            self.pathExtension = [fileInfo stringForKey:FILE_TYPE];
+        }
+        self.dateString = [[NSDate date] dateString];
+        self.deviceName = deviceInfo.deviceName;
+        self.headImage = deviceInfo.headImage;
+        
+        STFileType fileType = [ZZFunction fileTypeWithPathExtension:[fileInfo stringForKey:FILE_TYPE]];
+        self.fileType = fileType;
+    }
+    
+    return self;
+
+    
 }
 
 -(NSString *)_tableName{return @"FileTransfer";}

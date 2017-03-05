@@ -10,7 +10,6 @@
 #import "STFileTransferCell.h"
 #import "STContactInfo.h"
 #import "STMusicInfo.h"
-#import "STFileTransferModel.h"
 #import <AddressBook/AddressBook.h>
 #import <AddressBookUI/AddressBookUI.h>
 #import <Photos/Photos.h>
@@ -20,6 +19,7 @@
 #import "MBProgressHUD.h"
 #import "STHomeViewController.h"
 #import "STWebServerModel.h"
+#import "STFileTransferBaseModel.h"
 
 static NSString *sendHeaderIdentifier = @"sendHeaderIdentifier";
 static NSString *receiveHeaderIdentifier = @"receiveHeaderIdentifier";
@@ -35,7 +35,7 @@ static NSString *cellIdentifier = @"CellIdentifier";
 }
 
 @property (nonatomic, strong) UITableView *tableView;
-@property (nonatomic, strong) STFileTransferModel *model;
+@property (nonatomic, strong) STFileTransferBaseModel *model;
 
 @end
 
@@ -43,6 +43,7 @@ static NSString *cellIdentifier = @"CellIdentifier";
 
 - (void)dealloc {
     [_model removeObserver:self forKeyPath:@"transferFiles"];
+
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     
     [UIApplication sharedApplication].idleTimerDisabled = NO;
@@ -52,6 +53,7 @@ static NSString *cellIdentifier = @"CellIdentifier";
     UIAlertController *alertController = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"不再传输其它文件，确认退出？", nil) message:nil preferredStyle: UIAlertControllerStyleAlert];
     UIAlertAction *action1 = [UIAlertAction actionWithTitle:NSLocalizedString(@"确认", nil) style:UIAlertActionStyleDestructive handler:^(UIAlertAction * _Nonnull action) {
         [[STFileTransferModel shareInstant] cancelAllTransferFile];
+        [[STMultiPeerTransferModel shareInstant] cancelAllTransferFile];
         [self.navigationController popToRootViewControllerAnimated:YES];
     }];
     [alertController addAction:action1];
@@ -105,8 +107,12 @@ static NSString *cellIdentifier = @"CellIdentifier";
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(deviceNotConnectedNotification:) name:KDeviceNotConnectedNotification object:nil];
     }
     
+    if (self.isMultipeerTransfer) {
+        _model = [STMultiPeerTransferModel shareInstant];
+    } else {
+        _model = [STFileTransferModel shareInstant];
+    }
     
-    _model = [STFileTransferModel shareInstant];
     [_model addObserver:self forKeyPath:@"transferFiles" options:NSKeyValueObservingOptionNew context:NULL];
     
     _model.sectionTransferFiles = [_model sortTransferInfo:_model.transferFiles];

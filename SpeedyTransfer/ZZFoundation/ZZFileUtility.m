@@ -11,6 +11,7 @@
 #import "STMusicInfo.h"
 #import "STContactInfo.h"
 #import <GCDWebServerFunctions.h>
+#import "NSString+Extension.h"
 
 @interface ZZFileUtility ()
 
@@ -80,7 +81,8 @@
                                                FILE_SIZE: @(fileSize),
                                                FILE_URL: fileUrl,
                                                ICON_URL: thumbnailUrl,
-                                               ASSET_ID: localIdentifier};
+                                               ASSET_ID: localIdentifier,
+                                               FILE_IDENTIFIER: [NSString uniqueID]};
                     [self setObject:fileInfo forKey:object];
                     
                 }];
@@ -102,7 +104,8 @@
                                                    FILE_SIZE: @(fileSize),
                                                    FILE_URL: fileUrl,
                                                    ICON_URL: thumbnailUrl,
-                                                   ASSET_ID: localIdentifier};
+                                                   ASSET_ID: localIdentifier,
+                                                   FILE_IDENTIFIER: [NSString uniqueID]};
                         [self setObject:fileInfo forKey:object];
                         
                     }}];
@@ -118,7 +121,8 @@
                                        FILE_TYPE: fileType,
                                        FILE_SIZE: @(fileSize),
                                        FILE_URL: fileUrl,
-                                       RECORD_ID: @(contactInfo.recordId)};
+                                       RECORD_ID: @(contactInfo.recordId),
+                                       FILE_IDENTIFIER: [NSString uniqueID]};
             [self setObject:fileInfo forKey:object];
         } else if ([object isKindOfClass:[STMusicInfo class]]) {
             STMusicInfo *musciInfo = object;
@@ -131,7 +135,8 @@
                                        FILE_TYPE: fileType,
                                        FILE_SIZE: @(fileSize),
                                        FILE_URL: fileUrl,
-                                       RECORD_ID: musciInfo.persistentId};
+                                       RECORD_ID: musciInfo.persistentId,
+                                       FILE_IDENTIFIER: [NSString uniqueID]};
             [self setObject:fileInfo forKey:object];
         }
     }

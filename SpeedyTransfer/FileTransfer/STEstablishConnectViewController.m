@@ -9,6 +9,7 @@
 #import "STEstablishConnectViewController.h"
 #import "ZZFunction.h"
 #import "STFileTransferViewController.h"
+#import <GCDWebServerFunctions.h>
 
 @interface STEstablishConnectViewController () {
     UIScrollView *scrollView;
@@ -197,10 +198,39 @@
     [super didReceiveMemoryWarning];
 }
 
+- (NSString *)wifiName {
+    NSString *wifiname = [UIDevice getWifiName];
+    if (wifiname.length == 0 && [UIDevice isPersonalHotspotEnabled]) {
+        wifiname = [[UIDevice currentDevice] name];
+    }
+    if (wifiname.length > 0) {
+        return wifiname;
+    }
+    
+    return @"null";
+}
+
 - (void)generateQrcode {
-    // 根据设备名称生成二维码
-    NSString *deviceName = [[UIDevice currentDevice] name];
-    qrcodeView.image = [ZZFunction qrCodeImageWithStr:deviceName withSize:180 topImage:nil];
+    //http://3tkj.cn/transport/haiwai/?ssid=FreeShare-m2note&s=native&pwd=null&ip=http://192.168.43.1:8080/ws/index.html
+    
+    NSString *wifiname = [self wifiName];
+    NSString *address = GCDWebServerGetPrimaryIPAddress(NO);
+    if (address.length == 0) {
+        // 获取个人热点ip
+        address = [UIDevice hotspotAddress];
+    }
+    
+    if (address.length > 0) {
+        address = [NSString stringWithFormat:@"http://%@:%@", address, @(KSERVERPORT2)];
+    } else {
+        address = @"null";
+    }
+    
+    NSString *codeStr = [NSString stringWithFormat:@"http://3tkj.cn/transport/haiwai/?ssid=%@&s=native&pwd=null&ip=%@&devicename=%@", wifiname, address, [UIDevice currentDevice].name];
+    codeStr = [codeStr stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+    NSLog(@"code: %@", codeStr);
+    
+    qrcodeView.image = [ZZFunction qrCodeImageWithStr:codeStr withSize:180 topImage:nil];
 }
 
 - (void)leftBarButtonItemClick {
@@ -247,8 +277,12 @@
                 
                 break;
             case STMultiPeerStateConnected: {
-                STFileTransferViewController *vc = [[STFileTransferViewController alloc] init];
-                [self.navigationController pushViewController:vc animated:YES];
+                [[STMultiPeerTransferModel shareInstant] addSendItems:[self.fileSelectionTabController allSelectedFiles]];
+                [self.fileSelectionTabController removeAllSelectedFiles];
+                
+                STFileTransferViewController *fileTransferVc = [[STFileTransferViewController alloc] init];
+                fileTransferVc.isMultipeerTransfer = YES;
+                [self.navigationController pushViewController:fileTransferVc animated:YES];
             }
                 break;
             default:

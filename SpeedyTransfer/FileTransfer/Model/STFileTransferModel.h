@@ -6,17 +6,11 @@
 //  Copyright © 2015年 ZZ. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
-#import "STFileTransferInfo.h"
-#import "HTSingleton.h"
-#import "MCTransceiver.h"
-
-@class STContactInfo;
-@class STDeviceInfo;
+#import "STFileTransferBaseModel.h"
 
 extern NSString *const KDeviceNotConnectedNotification;
 
-@interface STFileTransferModel : NSObject
+@interface STFileTransferModel : STFileTransferBaseModel
 
 HT_AS_SINGLETON(STFileTransferModel, shareInstant);
 
@@ -30,11 +24,6 @@ HT_AS_SINGLETON(STFileTransferModel, shareInstant);
 @property (nonatomic, strong) NSArray *selectedDevicesArray; // 选择发送的所有设备
 - (void)removeAllDevices; // 移除所有发现的设备
 - (void)removeDevicesWithIp:(NSString *)ip; // 收到cancel时移除该设备
-
-// 所有文件传输记录
-@property (nonatomic, strong) NSArray *transferFiles;
-@property (nonatomic, strong) NSArray *sectionTransferFiles; // 分好组的
-- (NSArray *)sortTransferInfo:(NSArray *)infos;
 
 // 文件接收
 @property (nonatomic, strong) NSMutableArray *prepareToReceiveFiles; // 收到的的所有文件

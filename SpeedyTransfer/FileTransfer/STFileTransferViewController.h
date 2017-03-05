@@ -12,5 +12,6 @@
 @interface STFileTransferViewController : UIViewController
 
 @property (nonatomic) BOOL isFromReceive; // 是否是点击我要接收进入的
+@property (nonatomic) BOOL isMultipeerTransfer;
 
 @end

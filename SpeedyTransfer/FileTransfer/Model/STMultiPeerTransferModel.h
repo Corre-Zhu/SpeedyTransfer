@@ -6,8 +6,7 @@
 //  Copyright © 2017年 ZZ. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
-#import "HTSingleton.h"
+#import "STFileTransferBaseModel.h"
 
 typedef NS_ENUM (NSInteger, STMultiPeerState) {
     STMultiPeerStateBrowsing = -1,
@@ -16,18 +15,21 @@ typedef NS_ENUM (NSInteger, STMultiPeerState) {
     STMultiPeerStateConnected
 };
 
-@interface STMultiPeerTransferModel : NSObject
+@interface STMultiPeerTransferModel : STFileTransferBaseModel
 
 HT_AS_SINGLETON(STMultiPeerTransferModel, shareInstant);
 
 @property (nonatomic) STMultiPeerState state; // 连接状态
 
-- (void)startAdvertising; // 开始广播
-- (void)startBrowsingForName:(NSString *)name; // 开始监听扫描到的设备
+- (void)startAdvertising; // 发送方开始广播
+- (void)startBrowsingForName:(NSString *)name; // 接收方开始监听扫描到的设备
 - (void)reset; // 停止广播和监听
 
-- (void)sendData:(NSData *)data;
-- (void)sendImage:(NSURL *)imageUrl;
+// 添加待发送文件
+- (void)addSendItems:(NSArray *)items;
+
+// 取消所有文件传输(发送和接收)
+- (void)cancelAllTransferFile;
 
 
 @end

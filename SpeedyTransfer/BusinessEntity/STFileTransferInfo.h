@@ -16,6 +16,7 @@ typedef NS_ENUM(NSInteger, STFileType) {
     STFileTypeMusic          = 1,
     STFileTypeVideo          = 2,
     STFileTypeContact        = 3,
+    STFileTypeOther          = 4,
 };
 
 typedef NS_ENUM(NSInteger, STFileTransferType) {
@@ -64,6 +65,7 @@ HT_AS_SINGLETON(STFileTransferInfo, shareInstant)
 @property (nonatomic) BOOL showDeviceInfo;
 
 - (instancetype)initWithDictionary:(NSDictionary *)dic;
+- (instancetype)initWithReceiveFileInfo:(NSDictionary *)fileInfo deviceInfo:(STDeviceInfo *)deviceInfo;
 
 @property(nonatomic,readonly)NSString *_tableName;
 @property(nonatomic,readonly)NSString *_id;

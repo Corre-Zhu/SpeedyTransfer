@@ -208,14 +208,30 @@
         AVMetadataMachineReadableCodeObject *metadataObject = [metadataObjects objectAtIndex:0];
         NSString *result = metadataObject.stringValue;
         if (result.length > 0) {
-            // 扫描的是iPhone的二维码
-            if (![UIDevice isWiFiEnabled]) {
-                STWifiNotConnectedPopupView2 *popupView = [[STWifiNotConnectedPopupView2 alloc] init];
-                [popupView showInView:self.navigationController.view hiddenBlock:^{
-                    [self beginScanning];
-                }];
-            } else {
-                [[STMultiPeerTransferModel shareInstant] startBrowsingForName:result];
+            NSURL *url = [NSURL URLWithString:result];
+            if (!url) {
+                return;
+            }
+            
+            NSString *devicename = nil;
+            NSArray *queryItems = [url.query componentsSeparatedByString:@"&"];
+            for (NSString *str in queryItems) {
+                NSArray *arr = [str componentsSeparatedByString:@"="];
+                if (arr.count == 2 && [arr.firstObject isEqualToString:@"devicename"]) {
+                    devicename = [arr.lastObject stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+                }
+            }
+            
+            // url中含有设备名称，认为扫描的是iPhone的二维码
+            if (devicename.length > 0) {
+                if (![UIDevice isWiFiEnabled]) {
+                    STWifiNotConnectedPopupView2 *popupView = [[STWifiNotConnectedPopupView2 alloc] init];
+                    [popupView showInView:self.navigationController.view hiddenBlock:^{
+                        [self beginScanning];
+                    }];
+                } else {
+                    [[STMultiPeerTransferModel shareInstant] startBrowsingForName:devicename];
+                }
             }
             
             [self stopScanning];
@@ -263,6 +279,7 @@
                 connectingLabel.text = @"连接成功";
                 
                 STFileTransferViewController *vc = [[STFileTransferViewController alloc] init];
+                vc.isMultipeerTransfer = YES;
                 [self.navigationController pushViewController:vc animated:YES];
             }
 

@@ -14,4 +14,7 @@
 
 + (void)goToWifiPref;
 
++ (STFileType)fileTypeWithPathExtension:(NSString *)fileType;
+
+
 @end

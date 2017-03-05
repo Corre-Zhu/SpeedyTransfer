@@ -40,6 +40,12 @@
 
 @implementation STFileSelectionViewController
 
+- (void)dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    [[STFileTransferModel shareInstant] cancelAllTransferFile];
+    [[STMultiPeerTransferModel shareInstant] cancelAllTransferFile];
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     

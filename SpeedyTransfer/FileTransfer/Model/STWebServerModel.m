@@ -20,6 +20,7 @@
 #import <Photos/Photos.h>
 #import <AddressBook/AddressBook.h>
 #import <MediaPlayer/MediaPlayer.h>
+#import "ZZFunction.h"
 
 @interface STWebServerModel ()
 
@@ -102,37 +103,8 @@ HT_DEF_SINGLETON(STWebServerModel, shareInstant);
     return [[path stringByStandardizingPath] hasPrefix:[ZZPath tmpReceivedPath]];
 }
 
-- (STFileType)fileTypeWithPathExtension:(NSString *)fileType {
-    if ([fileType.lowercaseString isEqualToString:@"png"] ||
-        [fileType.lowercaseString isEqualToString:@"jpg"] ||
-        [fileType.lowercaseString isEqualToString:@"jpeg"] ||
-        [fileType.lowercaseString isEqualToString:@"gif"] ||
-		[fileType.lowercaseString isEqualToString:@"photo"]) {
-        return STFileTypePicture;
-    } else if ([fileType.lowercaseString isEqualToString:@"mov"] ||
-               [fileType.lowercaseString isEqualToString:@"3gp"] ||
-               [fileType.lowercaseString isEqualToString:@"mp4"] ||
-			   [fileType.lowercaseString isEqualToString:@"video"]) {
-        return STFileTypeVideo;
-    } else if ([fileType.lowercaseString isEqualToString:@"vcard"]) {
-        return STFileTypeContact;
-    } else if ([fileType.lowercaseString isEqualToString:@"mp3"] ||
-			   [fileType.lowercaseString isEqualToString:@"audio"] ||
-               [fileType.lowercaseString isEqualToString:@"wav"] ||
-               [fileType.lowercaseString isEqualToString:@"wma"] ||
-               [fileType.lowercaseString isEqualToString:@"ogg"] ||
-               [fileType.lowercaseString isEqualToString:@"ape"] ||
-               [fileType.lowercaseString isEqualToString:@"acc"] ||
-               [fileType.lowercaseString isEqualToString:@"aac"]) {
-        return STFileTypeMusic;
-    } else {
-        NSLog(@"未知文件类型");
-        return -1;
-    }
-}
-
 - (BOOL)checkFileExtension:(NSString*)fileName {
-    if ([self fileTypeWithPathExtension:fileName.pathExtension] >= 0) {
+    if ([ZZFunction fileTypeWithPathExtension:fileName.pathExtension] >= 0) {
         return YES;
     }
     
@@ -351,7 +323,7 @@ HT_DEF_SINGLETON(STWebServerModel, shareInstant);
 				entity.deviceName = deviceInfo.deviceName;
 				entity.headImage = deviceInfo.headImage;
 				
-                STFileType fileType = [weakSelf fileTypeWithPathExtension:[fileInfo stringForKey:FILE_TYPE]];
+                STFileType fileType = [ZZFunction fileTypeWithPathExtension:[fileInfo stringForKey:FILE_TYPE]];
                 if (fileType < 0) {
                     continue;
                 } else {
@@ -589,7 +561,7 @@ HT_DEF_SINGLETON(STWebServerModel, shareInstant);
             NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"http://%@", request.remoteAddressString]];
             entity.deviceName = url.host;
             
-            STFileType fileType = [weakSelf fileTypeWithPathExtension:entity.pathExtension];
+            STFileType fileType = [ZZFunction fileTypeWithPathExtension:entity.pathExtension];
             entity.fileType = fileType;
             
             [[STFileTransferModel shareInstant] receiveItems:@[entity]];

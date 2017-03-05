@@ -73,6 +73,8 @@
 		CEB29E7C1C230BA400F17804 /* UIViewController+ST.m in Sources */ = {isa = PBXBuildFile; fileRef = CEB29E7B1C230BA400F17804 /* UIViewController+ST.m */; };
 		CEB29E821C253C4D00F17804 /* STPictureCollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CEB29E811C253C4D00F17804 /* STPictureCollectionViewController.m */; };
 		CEB29E851C253F4800F17804 /* STPictureCollectionReusableView.m in Sources */ = {isa = PBXBuildFile; fileRef = CEB29E841C253F4800F17804 /* STPictureCollectionReusableView.m */; };
+		CEB74DFF1E6BC73900E58911 /* STFileTransferBaseModel.m in Sources */ = {isa = PBXBuildFile; fileRef = CEB74DFE1E6BC73900E58911 /* STFileTransferBaseModel.m */; };
+		CEB74E021E6BEF0500E58911 /* STPacket.m in Sources */ = {isa = PBXBuildFile; fileRef = CEB74E011E6BEF0500E58911 /* STPacket.m */; };
 		CEB7C7B81E502EC600E924D4 /* STWalkThroughView.m in Sources */ = {isa = PBXBuildFile; fileRef = CEB7C7B71E502EC600E924D4 /* STWalkThroughView.m */; };
 		CEB7C7BB1E50736000E924D4 /* STLeftPanelView.m in Sources */ = {isa = PBXBuildFile; fileRef = CEB7C7BA1E50736000E924D4 /* STLeftPanelView.m */; };
 		CEB7C7BE1E508E3400E924D4 /* STFileSegementControl.m in Sources */ = {isa = PBXBuildFile; fileRef = CEB7C7BD1E508E3400E924D4 /* STFileSegementControl.m */; };
@@ -230,6 +232,10 @@
 		CEB29E811C253C4D00F17804 /* STPictureCollectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STPictureCollectionViewController.m; sourceTree = "<group>"; };
 		CEB29E831C253F4800F17804 /* STPictureCollectionReusableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STPictureCollectionReusableView.h; sourceTree = "<group>"; };
 		CEB29E841C253F4800F17804 /* STPictureCollectionReusableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STPictureCollectionReusableView.m; sourceTree = "<group>"; };
+		CEB74DFD1E6BC73900E58911 /* STFileTransferBaseModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STFileTransferBaseModel.h; sourceTree = "<group>"; };
+		CEB74DFE1E6BC73900E58911 /* STFileTransferBaseModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STFileTransferBaseModel.m; sourceTree = "<group>"; };
+		CEB74E001E6BEF0500E58911 /* STPacket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STPacket.h; sourceTree = "<group>"; };
+		CEB74E011E6BEF0500E58911 /* STPacket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STPacket.m; sourceTree = "<group>"; };
 		CEB7C7B61E502EC600E924D4 /* STWalkThroughView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STWalkThroughView.h; sourceTree = "<group>"; };
 		CEB7C7B71E502EC600E924D4 /* STWalkThroughView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STWalkThroughView.m; sourceTree = "<group>"; };
 		CEB7C7B91E50736000E924D4 /* STLeftPanelView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STLeftPanelView.h; sourceTree = "<group>"; };
@@ -401,11 +407,11 @@
 		CE6536BB1C2ECD3400C1E8A3 /* FileTransfer */ = {
 			isa = PBXGroup;
 			children = (
-				CEBF5C4E1E61999A0072C06B /* STEstablishConnectViewController.h */,
-				CEBF5C4F1E61999A0072C06B /* STEstablishConnectViewController.m */,
 				CE6536D91C2ED09100C1E8A3 /* Model */,
 				CE6536C11C2ECD3400C1E8A3 /* STFileTransferViewController.h */,
 				CE6536C21C2ECD3400C1E8A3 /* STFileTransferViewController.m */,
+				CEBF5C4E1E61999A0072C06B /* STEstablishConnectViewController.h */,
+				CEBF5C4F1E61999A0072C06B /* STEstablishConnectViewController.m */,
 				CE6536C31C2ECD3400C1E8A3 /* STTransferInstructionViewController.h */,
 				CE6536C41C2ECD3400C1E8A3 /* STTransferInstructionViewController.m */,
 				CE6536C51C2ECD3400C1E8A3 /* STWifiNotConnectedPopupView.h */,
@@ -438,6 +444,8 @@
 				CE9C91A81C39414D0075CB06 /* STFeedbackInfo.m */,
 				4558BFCD1C746862002F5718 /* STDeviceInfo.h */,
 				4558BFCE1C746862002F5718 /* STDeviceInfo.m */,
+				CEB74E001E6BEF0500E58911 /* STPacket.h */,
+				CEB74E011E6BEF0500E58911 /* STPacket.m */,
 			);
 			name = BusinessEntity;
 			path = SpeedyTransfer/BusinessEntity;
@@ -450,6 +458,8 @@
 				4558BFD11C747483002F5718 /* STWebServerConnection.m */,
 				4558BFD21C747483002F5718 /* STWebServerModel.h */,
 				4558BFD31C747483002F5718 /* STWebServerModel.m */,
+				CEB74DFD1E6BC73900E58911 /* STFileTransferBaseModel.h */,
+				CEB74DFE1E6BC73900E58911 /* STFileTransferBaseModel.m */,
 				CE6536DA1C2ED0AF00C1E8A3 /* STFileTransferModel.h */,
 				CE6536DB1C2ED0AF00C1E8A3 /* STFileTransferModel.m */,
 				CEA4965A1E62DB4C00B97BD5 /* STMultiPeerTransferModel.h */,
@@ -957,8 +967,10 @@
 				CED62A531C09719500270EDB /* UIView+ZZ.m in Sources */,
 				CE6536DC1C2ED0AF00C1E8A3 /* STFileTransferModel.m in Sources */,
 				CE6536C81C2ECD3400C1E8A3 /* STFileTransferCell.m in Sources */,
+				CEB74E021E6BEF0500E58911 /* STPacket.m in Sources */,
 				CEBB14731C33CCD300874142 /* STSettingViewController.m in Sources */,
 				CE285AEA1E583849002FC6A1 /* STFilesViewController.m in Sources */,
+				CEB74DFF1E6BC73900E58911 /* STFileTransferBaseModel.m in Sources */,
 				CE6536AC1C2E8D1B00C1E8A3 /* STWifiNotConnectedPopupView2.m in Sources */,
 				CE6536E91C2F096600C1E8A3 /* HTFMDatabase.m in Sources */,
 				CEA12C491C29ABCB00328CEF /* Reachability.m in Sources */,
