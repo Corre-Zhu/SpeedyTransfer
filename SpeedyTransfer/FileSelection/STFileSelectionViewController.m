@@ -202,8 +202,17 @@
 }
 
 - (void)transferButtonClick {
-    STEstablishConnectViewController *vc = [[STEstablishConnectViewController alloc] init];
-    [self.navigationController pushViewController:vc animated:YES];
+    if ([STMultiPeerTransferModel shareInstant].state == STMultiPeerStateConnected) {
+        [[STMultiPeerTransferModel shareInstant] addSendItems:[self.fileSelectionTabController allSelectedFiles]];
+        [self.fileSelectionTabController removeAllSelectedFiles];
+        
+        STFileTransferViewController *fileTransferVc = [[STFileTransferViewController alloc] init];
+        fileTransferVc.isMultipeerTransfer = YES;
+        [self.navigationController pushViewController:fileTransferVc animated:YES];
+    } else {
+        STEstablishConnectViewController *vc = [[STEstablishConnectViewController alloc] init];
+        [self.navigationController pushViewController:vc animated:YES];
+    }
     /*
     BOOL hotspotEnable = [UIDevice isPersonalHotspotEnabled];
     if ([ZZReachability shareInstance].currentReachabilityStatus != ReachableViaWiFi && !hotspotEnable) {

@@ -11,6 +11,10 @@
 
 #define DBFileTransfer [STFileTransferInfo shareInstant]
 
+// KVO path strings for observing changes to properties of NSProgress
+static NSString * const kProgressCancelledKeyPath          = @"cancelled";
+static NSString * const kProgressCompletedUnitCountKeyPath = @"completedUnitCount";
+
 typedef NS_ENUM(NSInteger, STFileType) {
     STFileTypePicture        = 0,
     STFileTypeMusic          = 1,
@@ -57,6 +61,8 @@ HT_AS_SINGLETON(STFileTransferInfo, shareInstant)
 @property (nonatomic) double lastProgress; // 用于计算瞬时速度
 @property (nonatomic) BOOL isCanceled; // 是否被取消传输
 @property (nonatomic, strong) NSString *cancelUrl; // 取消发送
+
+@property (nonatomic, strong) NSProgress *nsprogress; // 监听文件发送和接收进度
 
 @property (nonatomic, strong) UIImage *image;
 @property (nonatomic, strong) NSString *fileSizeString;

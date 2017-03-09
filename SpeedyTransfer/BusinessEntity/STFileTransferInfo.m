@@ -100,4 +100,34 @@ HT_DEF_SINGLETON(STFileTransferInfo, shareInstant);
     return [NSString stringWithFormat:@"http://%@:%@/cancel", host, port];
 }
 
+- (void)dealloc {
+    if (_nsprogress) {
+        [_nsprogress removeObserver:self forKeyPath:kProgressCancelledKeyPath];
+        [_nsprogress removeObserver:self forKeyPath:kProgressCompletedUnitCountKeyPath];
+        _nsprogress = nil;
+    }
+}
+
+- (void)setNsprogress:(NSProgress *)nsprogress {
+    if (_nsprogress) {
+        return;
+    }
+    
+    _nsprogress = nsprogress;
+    [_nsprogress addObserver:self forKeyPath:kProgressCancelledKeyPath options:NSKeyValueObservingOptionNew context:NULL];
+    [_nsprogress addObserver:self forKeyPath:kProgressCompletedUnitCountKeyPath options:NSKeyValueObservingOptionNew context:NULL];
+}
+
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
+{
+    NSProgress *progress = object;
+    if ([keyPath isEqualToString:kProgressCompletedUnitCountKeyPath]) {
+        // Notify the delegate of our progress change
+        self.progress = progress.fractionCompleted;
+        if (progress.completedUnitCount == progress.totalUnitCount) {
+            self.progress = 1.0;
+        }
+    }
+}
+
 @end

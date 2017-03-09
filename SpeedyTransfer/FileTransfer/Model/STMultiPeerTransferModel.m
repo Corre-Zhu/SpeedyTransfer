@@ -15,10 +15,6 @@
 
 static NSString *STServiceType = @"STServiceZZ";
 
-// KVO path strings for observing changes to properties of NSProgress
-static NSString * const kProgressCancelledKeyPath          = @"cancelled";
-static NSString * const kProgressCompletedUnitCountKeyPath = @"completedUnitCount";
-
 @interface STMultiPeerTransferModel ()<MCSessionDelegate, MCNearbyServiceAdvertiserDelegate,MCNearbyServiceBrowserDelegate> {
 }
 
@@ -30,7 +26,6 @@ static NSString * const kProgressCompletedUnitCountKeyPath = @"completedUnitCoun
 @property (nonatomic, strong) NSMutableArray *prepareToSendFiles; // 准备要发送的文件
 @property (nonatomic, strong) STFileTransferInfo *sendingTransferInfo; // 正在发送的文件
 @property (nonatomic, strong) id sendingItem; // 正在发送的文件
-@property (nonatomic, strong) NSProgress *sendingProgress; // 发送进度
 
 // 文件接收
 @property (nonatomic, strong) NSMutableArray *prepareToReceiveFiles; // 收到的的所有文件
@@ -139,35 +134,7 @@ HT_DEF_SINGLETON(STMultiPeerTransferModel, shareInstant);
         if ([self sendData:[STPacket initWithFileInfo:fileInfo]]) {
             if ([_sendingItem isKindOfClass:[PHAsset class]]) {
                 PHAsset *asset = (PHAsset *)_sendingItem;
-
-                // 2、发送缩略图
-                PHImageRequestOptions *options = [[PHImageRequestOptions alloc] init];
-                options.resizeMode = PHImageRequestOptionsResizeModeExact;
-                options.deliveryMode = PHImageRequestOptionsDeliveryModeOpportunistic;
-                options.synchronous = YES;
-                
-                [[PHImageManager defaultManager] requestImageForAsset:asset
-                                                           targetSize:CGSizeMake([UIScreen mainScreen].scale * 72.0f, [UIScreen mainScreen].scale * 72.0f)
-                                                          contentMode:PHImageContentModeAspectFill
-                                                              options:options
-                                                        resultHandler:^(UIImage *result, NSDictionary *info) {
-                                                            if (result) {
-                                                                NSData *pngData = UIImageJPEGRepresentation(result, 1.0);
-                                                                
-                                                                NSString *identi = [fileInfo stringForKey:FILE_IDENTIFIER];
-                                                                NSString *filePath = [[ZZPath tmpUploadPath] stringByAppendingPathComponent:[identi stringByAppendingString:@"_thumb"]];
-                                                                [pngData writeToFile:filePath atomically:YES]; // Write the file
-                                                                // Get a URL for this file resource
-                                                                NSURL *imageUrl = [NSURL fileURLWithPath:filePath];
-                                                                [self sendImage:imageUrl];
-                                                                
-                                                            } else {
-                                                                [self sendFaild];
-                                                            }
-                                                            
-                                                        }];
-                
-                // 3、发送大图
+                // 2、发送大图
                 if (IOS9 && asset.mediaType == PHAssetMediaTypeVideo) {
                     [[PHImageManager defaultManager] requestAVAssetForVideo:asset options:nil resultHandler:^(AVAsset * _Nullable asset, AVAudioMix * _Nullable audioMix, NSDictionary * _Nullable info) {
                         NSString *identi = [fileInfo stringForKey:FILE_IDENTIFIER];
@@ -195,11 +162,18 @@ HT_DEF_SINGLETON(STMultiPeerTransferModel, shareInstant);
                         if (imageData.length > 0) {
                             NSString *identi = [fileInfo stringForKey:FILE_IDENTIFIER];
                             NSString *path = [[ZZPath tmpUploadPath] stringByAppendingPathComponent:identi];
-                            [imageData writeToFile:path atomically:YES];
-                            [self sendImage:[NSURL fileURLWithPath:path]];
-                        } else {
-                            [self sendFaild];
+                            if ([[NSFileManager defaultManager] fileExistsAtPath:path]) {
+                                [[NSFileManager defaultManager] removeItemAtPath:path error:NULL];
+                            }
+
+                            if ([imageData writeToFile:path atomically:YES]) {
+                                [self sendImage:[NSURL fileURLWithPath:path]];
+                                return;
+                            }
                         }
+                        
+                        [self sendFaild];
+                        
                     }];
                 }
                 
@@ -215,17 +189,7 @@ HT_DEF_SINGLETON(STMultiPeerTransferModel, shareInstant);
     
 }
 
-- (void)clearProgress {
-    if (_sendingProgress) {
-        [_sendingProgress removeObserver:self forKeyPath:kProgressCancelledKeyPath];
-        [_sendingProgress removeObserver:self forKeyPath:kProgressCompletedUnitCountKeyPath];
-        _sendingProgress = nil;
-    }
-}
-
 - (void)sendSucceed {
-    [self clearProgress];
-    
     [self updateTransferStatus:STFileTransferStatusSent withIdentifier:_sendingTransferInfo.identifier];
     self.sendingTransferInfo.progress = 1.0;
     self.sendingTransferInfo.transferStatus = STFileTransferStatusSent;
@@ -235,8 +199,6 @@ HT_DEF_SINGLETON(STMultiPeerTransferModel, shareInstant);
 }
 
 - (void)sendFaild {
-    [self clearProgress];
-    
     _sendingTransferInfo.transferStatus = STFileTransferStatusSendFailed;
     [self updateTransferStatus:STFileTransferStatusSendFailed withIdentifier:_sendingTransferInfo.identifier];
     
@@ -259,34 +221,23 @@ HT_DEF_SINGLETON(STMultiPeerTransferModel, shareInstant);
 
 - (void)sendImage:(NSURL *)imageUrl {
     __weak typeof(self) weakSelf = self;
-    
-    BOOL isThumb = [[imageUrl absoluteString] hasSuffix:@"_thumb"];
-    
+        
     MCPeerID *connectedPeerId = _session.connectedPeers.firstObject;
     // Send the resource to the remote peer.  The completion handler block will be called at the end of sending or if any errors occur
     NSProgress *progress = [self.session sendResourceAtURL:imageUrl withName:[imageUrl lastPathComponent] toPeer:connectedPeerId withCompletionHandler:^(NSError *error) {
         // Implement this block to know when the sending resource transfer completes and if there is an error.
         if (error) {
             NSLog(@"Send resource to peer [%@] completed with Error [%@]", connectedPeerId.displayName, error);
-            
-            if (!isThumb) {
-                [weakSelf sendFaild];
-            }
+            [weakSelf sendFaild];
         } else {
-            if (!isThumb) {
-                [weakSelf sendSucceed];
-            }
+            [weakSelf sendSucceed];
         }
     }];
     
-    if (!isThumb) {
-        _sendingProgress = progress;
-        [_sendingProgress addObserver:self forKeyPath:kProgressCancelledKeyPath options:NSKeyValueObservingOptionNew context:NULL];
-        [_sendingProgress addObserver:self forKeyPath:kProgressCompletedUnitCountKeyPath options:NSKeyValueObservingOptionNew context:NULL];
-    }
+    _sendingTransferInfo.nsprogress = progress;
 }
 
-- (void)sendHeadPortrait {
+- (BOOL)sendHeadPortrait {
     UIImage *headPortrait = nil;
     
     NSString *headImage = [[NSUserDefaults standardUserDefaults] stringForKey:HeadImage];
@@ -297,8 +248,10 @@ HT_DEF_SINGLETON(STMultiPeerTransferModel, shareInstant);
     }
     
     if (headPortrait) {
-        [self sendData:[STPacket initWithHeadPortrait:headPortrait]];
+        return [self sendData:[STPacket initWithHeadPortrait:headPortrait]];
     }
+    
+    return NO;
 
 }
 
@@ -332,19 +285,6 @@ HT_DEF_SINGLETON(STMultiPeerTransferModel, shareInstant);
     return entity;
 }
 
-- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
-{
-    NSProgress *progress = object;
-    if ([keyPath isEqualToString:kProgressCompletedUnitCountKeyPath]) {
-        // Notify the delegate of our progress change
-        _sendingTransferInfo.progress = progress.fractionCompleted;
-        if (progress.completedUnitCount == progress.totalUnitCount) {
-            _sendingTransferInfo.progress = 1.0;
-        }
-    }
-}
-
-
 #pragma mark - Receiving Files
 
 - (void)receiveFileInfo:(NSDictionary *)fileInfo {
@@ -372,10 +312,9 @@ HT_DEF_SINGLETON(STMultiPeerTransferModel, shareInstant);
 }
 
 - (void)downloadSucceedWithPath:(NSString *)downloadPath info:(STFileTransferInfo *)info {
-    [self updateTransferStatus:STFileTransferStatusReceived withIdentifier:info.identifier];
-    
     info.progress = 1.0f;
     info.transferStatus = STFileTransferStatusReceived;
+    [self updateTransferStatus:STFileTransferStatusReceived withIdentifier:info.identifier];
     
     if (info.fileType == STFileTypePicture && [[NSUserDefaults standardUserDefaults] boolForKey:AutoImportPhoto]) {
         // 导入图片到系统相册
@@ -414,7 +353,7 @@ HT_DEF_SINGLETON(STMultiPeerTransferModel, shareInstant);
                     [[NSFileManager defaultManager] removeItemAtPath:path error:NULL];
                 }
             } else {
-                NSLog(@"%@", error);
+                NSLog(@"writeToSavedPhotosAlbum failed, %@, %@", info.identifier, error);
             }
         }];
     };
@@ -494,11 +433,10 @@ HT_DEF_SINGLETON(STMultiPeerTransferModel, shareInstant);
     
     if (state == MCSessionStateConnected) {
         _deviceInfo.deviceName = peerID.displayName;
-        // 先互相发送头像，再认为连接成功
         [self sendHeadPortrait];
-    } else {
-        self.state = (STMultiPeerState)state;
     }
+    
+    self.state = (STMultiPeerState)state;
 }
 
 // MCSession Delegate callback when receiving data from a peer in a given session
@@ -519,7 +457,6 @@ HT_DEF_SINGLETON(STMultiPeerTransferModel, shareInstant);
             }
             [bodyData writeToFile:headPath atomically:YES];
             _deviceInfo.headImage = image;
-            self.state = STMultiPeerStateConnected;
         }
     } else if (flag == KPacketFileInfoFlag) {
         NSDictionary *dic = [[[NSString alloc] initWithData:bodyData encoding:NSUTF8StringEncoding] jsonDictionary];
@@ -537,6 +474,21 @@ HT_DEF_SINGLETON(STMultiPeerTransferModel, shareInstant);
 {
     NSLog(@"Start receiving resource [%@] from peer %@ with progress [%@]", resourceName, peerID.displayName, progress);
     
+    STFileTransferInfo *receivingInfo = nil;
+    @synchronized (_prepareToReceiveFiles) {
+        for (STFileTransferInfo *info in _prepareToReceiveFiles) {
+            if ([resourceName containsString:info.identifier]) {
+                receivingInfo = info;
+                break;
+            }
+        }
+    }
+    
+    if (!receivingInfo) {
+        return;
+    }
+    
+    receivingInfo.nsprogress = progress;
 }
 
 // MCSession delegate callback when a incoming resource transfer ends (possibly with error)
@@ -556,16 +508,11 @@ HT_DEF_SINGLETON(STMultiPeerTransferModel, shareInstant);
         return;
     }
     
-    BOOL isThumb = [resourceName hasSuffix:@"_thumb"];
-    
     // If error is not nil something went wrong
     if (error)
     {
-        if (!isThumb) {
-            // 接收失败
-            [self receiveFaildWithInfo:receivingInfo];
-        }
-        
+        // 接收失败
+        [self receiveFaildWithInfo:receivingInfo];
         NSLog(@"Error [%@] receiving resource from peer %@ ", [error localizedDescription], peerID.displayName);
     }
     else
@@ -573,30 +520,16 @@ HT_DEF_SINGLETON(STMultiPeerTransferModel, shareInstant);
         // No error so this is a completed transfer.  The resources is located in a temporary location and should be copied to a permenant locatation immediately.
         // Write to documents directory
         NSString *pathExtension = receivingInfo.pathExtension;
-        if (pathExtension.length == 0) {
-            pathExtension = receivingInfo.fileName.pathExtension;
-        }
-        
-        if (pathExtension.length == 0) {
-            pathExtension = @"unknow";
-        }
-        
         NSString *downloadPath = [[ZZPath downloadPath] stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.%@", resourceName, pathExtension]];
         
         if (![[NSFileManager defaultManager] copyItemAtPath:[localURL path] toPath:downloadPath error:nil])
         {
             NSLog(@"Error copying resource to documents directory");
-            if (!isThumb) {
                 // 接收失败
-                [self receiveFaildWithInfo:receivingInfo];
-            }
+            [self receiveFaildWithInfo:receivingInfo];
         }
         else {
-            if (isThumb) {
-                receivingInfo.thumbnailProgress = 1.0f;
-            } else {
-                [self downloadSucceedWithPath:downloadPath info:receivingInfo];
-            }
+            [self downloadSucceedWithPath:downloadPath info:receivingInfo];
         }
     }
 }
