@@ -20,6 +20,7 @@ typedef NS_ENUM (NSInteger, STMultiPeerState) {
 HT_AS_SINGLETON(STMultiPeerTransferModel, shareInstant);
 
 @property (nonatomic) STMultiPeerState state; // 连接状态
+@property (strong, nonatomic) STDeviceInfo *deviceInfo; // 当前连接的设备
 
 - (void)startAdvertising; // 发送方开始广播
 - (void)startBrowsingForName:(NSString *)name; // 接收方开始监听扫描到的设备

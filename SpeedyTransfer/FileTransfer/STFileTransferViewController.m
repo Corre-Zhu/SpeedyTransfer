@@ -43,9 +43,8 @@ static NSString *cellIdentifier = @"CellIdentifier";
 
 - (void)dealloc {
     [_model removeObserver:self forKeyPath:@"transferFiles"];
-
+    [[STMultiPeerTransferModel shareInstant] removeObserver:self forKeyPath:@"state"];
     [[NSNotificationCenter defaultCenter] removeObserver:self];
-    
     [UIApplication sharedApplication].idleTimerDisabled = NO;
 }
 
@@ -107,6 +106,8 @@ static NSString *cellIdentifier = @"CellIdentifier";
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(deviceNotConnectedNotification:) name:KDeviceNotConnectedNotification object:nil];
     }
     
+    [[STMultiPeerTransferModel shareInstant] addObserver:self forKeyPath:@"state" options:NSKeyValueObservingOptionNew context:NULL];
+    
     if (self.isMultipeerTransfer) {
         _model = [STMultiPeerTransferModel shareInstant];
     } else {
@@ -152,20 +153,29 @@ static NSString *cellIdentifier = @"CellIdentifier";
             _model.sectionTransferFiles = [_model sortTransferInfo:_model.transferFiles];
             [self.tableView reloadData];
         });
+    } else if ([keyPath isEqualToString:@"state"]) {
+        if ([STMultiPeerTransferModel shareInstant].state == STMultiPeerStateNotConnected) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self showDeviceNotConnectedAlertWithName:[STMultiPeerTransferModel shareInstant].deviceInfo.deviceName];
+            });
+        }
     }
+}
+
+- (void)showDeviceNotConnectedAlertWithName:(NSString *)name {
+    MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
+    HUD.mode = MBProgressHUDModeText;
+    HUD.detailsLabelText = [NSString stringWithFormat:@"%@%@", name, NSLocalizedString(@"已退出共享网络", nil)];
+    HUD.detailsLabelFont = [UIFont boldSystemFontOfSize:16.f];
+    HUD.removeFromSuperViewOnHide = YES;
+    [self.view addSubview:HUD];
+    [HUD show:YES];
+    [HUD hide:YES afterDelay:2.5f];
 }
 
 - (void)deviceNotConnectedNotification:(NSNotification *)notification {
     dispatch_async(dispatch_get_main_queue(), ^{
-        NSString *deviceName = [notification.userInfo stringForKey:DEVICE_NAME];
-        MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
-        HUD.mode = MBProgressHUDModeText;
-        HUD.detailsLabelText = [NSString stringWithFormat:@"%@%@", deviceName, NSLocalizedString(@"已退出共享网络", nil)];
-        HUD.detailsLabelFont = [UIFont boldSystemFontOfSize:16.f];
-        HUD.removeFromSuperViewOnHide = YES;
-        [self.view addSubview:HUD];
-        [HUD show:YES];
-        [HUD hide:YES afterDelay:2.5f];
+        [self showDeviceNotConnectedAlertWithName:[notification.userInfo stringForKey:DEVICE_NAME]];
     });
     
 }

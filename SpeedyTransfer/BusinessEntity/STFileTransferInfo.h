@@ -63,6 +63,7 @@ HT_AS_SINGLETON(STFileTransferInfo, shareInstant)
 @property (nonatomic, strong) NSString *cancelUrl; // 取消发送
 
 @property (nonatomic, strong) NSProgress *nsprogress; // 监听文件发送和接收进度
+@property (nonatomic) UInt64 lastCompletedUnitCount; // 上一秒完成的传输字节数
 
 @property (nonatomic, strong) UIImage *image;
 @property (nonatomic, strong) NSString *fileSizeString;

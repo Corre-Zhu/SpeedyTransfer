@@ -26,7 +26,6 @@
 
 - (void)dealloc {
     [[STMultiPeerTransferModel shareInstant] removeObserver:self forKeyPath:@"state"];
-    [[STMultiPeerTransferModel shareInstant] reset];
 }
 
 - (void)viewDidLoad {
@@ -282,7 +281,12 @@
                 
                 STFileTransferViewController *fileTransferVc = [[STFileTransferViewController alloc] init];
                 fileTransferVc.isMultipeerTransfer = YES;
-                [self.navigationController pushViewController:fileTransferVc animated:YES];
+                
+                NSMutableArray *controllers = [NSMutableArray arrayWithArray:self.navigationController.viewControllers];
+                [controllers removeLastObject];
+                [controllers addObject:fileTransferVc];
+                
+                [self.navigationController setViewControllers:controllers animated:YES];
             }
                 break;
             default:

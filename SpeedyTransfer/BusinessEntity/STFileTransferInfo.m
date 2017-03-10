@@ -15,6 +15,8 @@
     NSDateFormatter *formatter;
 }
 
+@property (nonatomic, strong) NSTimer *timer; // 用于计算传输速度
+
 @end
 
 @implementation STFileTransferInfo
@@ -116,6 +118,20 @@ HT_DEF_SINGLETON(STFileTransferInfo, shareInstant);
     _nsprogress = nsprogress;
     [_nsprogress addObserver:self forKeyPath:kProgressCancelledKeyPath options:NSKeyValueObservingOptionNew context:NULL];
     [_nsprogress addObserver:self forKeyPath:kProgressCompletedUnitCountKeyPath options:NSKeyValueObservingOptionNew context:NULL];
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        _timer = [NSTimer scheduledTimerWithTimeInterval:0.5 target:self selector:@selector(countTime) userInfo:nil repeats:YES];
+        [[NSRunLoop mainRunLoop] addTimer:_timer forMode:NSRunLoopCommonModes];
+    });
+}
+
+- (void)countTime {
+    NSInteger everySecondFile = _nsprogress.completedUnitCount - self.lastCompletedUnitCount;
+    if (everySecondFile >= 0) {
+        self.downloadSpeed = everySecondFile;
+        self.progress = _nsprogress.fractionCompleted;
+    }
+    self.lastCompletedUnitCount = _nsprogress.completedUnitCount;
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
@@ -128,6 +144,16 @@ HT_DEF_SINGLETON(STFileTransferInfo, shareInstant);
             self.progress = 1.0;
         }
     }
+}
+
+- (void)setTransferStatus:(STFileTransferStatus)transferStatus {
+    _transferStatus = transferStatus;
+    if (transferStatus != STFileTransferStatusSending &&
+        transferStatus != STFileTransferStatusReceiving) {
+        [_timer invalidate];
+        _timer = nil;
+    }
+    
 }
 
 @end

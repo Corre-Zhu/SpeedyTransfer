@@ -29,7 +29,6 @@
 - (void)dealloc {
     [_session stopRunning];
     [[STMultiPeerTransferModel shareInstant] removeObserver:self forKeyPath:@"state"];
-    [[STMultiPeerTransferModel shareInstant] reset];
 }
 
 - (void)viewDidLoad {
@@ -125,6 +124,7 @@
 
 - (void)leftBarButtonItemClick {
     [self.navigationController popViewControllerAnimated:YES];
+    [[STMultiPeerTransferModel shareInstant] reset];
 }
 
 -(void)viewWillAppear:(BOOL)animated{
@@ -146,7 +146,7 @@
         }
     }
     
-    
+    [[STMultiPeerTransferModel shareInstant] startBrowsingForName:nil];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -280,7 +280,14 @@
                 
                 STFileTransferViewController *vc = [[STFileTransferViewController alloc] init];
                 vc.isMultipeerTransfer = YES;
-                [self.navigationController pushViewController:vc animated:YES];
+                vc.isFromReceive = YES;
+                
+                NSMutableArray *controllers = [NSMutableArray arrayWithArray:self.navigationController.viewControllers];
+                [controllers removeLastObject];
+                [controllers addObject:vc];
+                
+                [self.navigationController setViewControllers:controllers animated:YES];
+                
             }
 
                 break;

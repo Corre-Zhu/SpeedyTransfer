@@ -21,7 +21,6 @@ static NSString *STServiceType = @"STServiceZZ";
 @property (strong, nonatomic) MCSession *session;
 @property (strong, nonatomic) MCNearbyServiceAdvertiser *advertiser;
 @property (strong, nonatomic) MCNearbyServiceBrowser *browser;
-@property (strong, nonatomic) STDeviceInfo *deviceInfo; // 当前连接的设备
 
 @property (nonatomic, strong) NSMutableArray *prepareToSendFiles; // 准备要发送的文件
 @property (nonatomic, strong) STFileTransferInfo *sendingTransferInfo; // 正在发送的文件
@@ -221,6 +220,8 @@ HT_DEF_SINGLETON(STMultiPeerTransferModel, shareInstant);
 
 - (void)sendImage:(NSURL *)imageUrl {
     __weak typeof(self) weakSelf = self;
+    
+    NSLog(@"start send imageUrl: %@", imageUrl);
         
     MCPeerID *connectedPeerId = _session.connectedPeers.firstObject;
     // Send the resource to the remote peer.  The completion handler block will be called at the end of sending or if any errors occur
@@ -319,6 +320,9 @@ HT_DEF_SINGLETON(STMultiPeerTransferModel, shareInstant);
     if (info.fileType == STFileTypePicture && [[NSUserDefaults standardUserDefaults] boolForKey:AutoImportPhoto]) {
         // 导入图片到系统相册
         [self writeToSavedPhotosAlbum:downloadPath isImage:YES info:info];
+    } else if (info.fileType == STFileTypeVideo && [[NSUserDefaults standardUserDefaults] boolForKey:AutoImportVideo]) {
+        // 导入视频到系统相册
+        [self writeToSavedPhotosAlbum:downloadPath isImage:NO info:info];
     }
 }
 
@@ -408,10 +412,10 @@ HT_DEF_SINGLETON(STMultiPeerTransferModel, shareInstant);
       withDiscoveryInfo:(nullable NSDictionary<NSString *, NSString *> *)info {
     NSLog(@"Found peer: %@", peerID.displayName);
 
-    if ([peerID.displayName isEqualToString:_deviceInfo.deviceName]) {
+//    if ([peerID.displayName isEqualToString:_deviceInfo.deviceName]) {
         // 找到需要监听的设备
         [browser invitePeer:peerID toSession:_session withContext:nil timeout:20];
-    }
+//    }
 }
 
 // A nearby peer has stopped advertising.
@@ -494,6 +498,8 @@ HT_DEF_SINGLETON(STMultiPeerTransferModel, shareInstant);
 // MCSession delegate callback when a incoming resource transfer ends (possibly with error)
 - (void)session:(MCSession *)session didFinishReceivingResourceWithName:(NSString *)resourceName fromPeer:(MCPeerID *)peerID atURL:(NSURL *)localURL withError:(NSError *)error
 {
+    NSLog(@"Finish receiving resource [%@] from peer %@ error: %@", resourceName, peerID.displayName, error);
+
     STFileTransferInfo *receivingInfo = nil;
     @synchronized (_prepareToReceiveFiles) {
         for (STFileTransferInfo *info in _prepareToReceiveFiles) {

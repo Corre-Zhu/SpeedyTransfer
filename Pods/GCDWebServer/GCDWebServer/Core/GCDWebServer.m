@@ -41,8 +41,6 @@
 #import <dns_sd.h>
 
 #import "GCDWebServerPrivate.h"
-#include <ifaddrs.h>
-#include <arpa/inet.h>
 
 #if TARGET_OS_IPHONE && !TARGET_IPHONE_SIMULATOR
 #define kDefaultPort 80
@@ -807,58 +805,9 @@ static inline NSString* _EncodeBase64(NSString* string) {
 
 @implementation GCDWebServer (Extensions)
 
-// Get All ipv4 interface
-- (NSDictionary *)getAllIpAddresses {
-	NSMutableDictionary *resultDic = [NSMutableDictionary dictionary];
-	
-	struct ifaddrs *interfaces = NULL;
-	struct ifaddrs *temp_addr = NULL;
-	
-	@try {
-		NSInteger success = getifaddrs(&interfaces);
-		if (success == 0) {
-			temp_addr = interfaces;
-			while(temp_addr != NULL) {
-				if(temp_addr->ifa_addr->sa_family == AF_INET) {
-					NSString* ifaName = [NSString stringWithUTF8String:temp_addr->ifa_name];
-					NSString* address = [NSString stringWithUTF8String:inet_ntoa(((struct sockaddr_in *) temp_addr->ifa_addr)->sin_addr)];
-					[resultDic setObject:address forKey:ifaName];
-					
-				}
-				temp_addr = temp_addr->ifa_next;
-			}
-		}
-	}
-	@catch (NSException *exception) {
-	}
-	@finally {
-		// Free memory
-		freeifaddrs(interfaces);
-	}
-	
-	return resultDic;
-}
-
-- (NSString *)hotspotAddress {
-	NSDictionary *dic = [self getAllIpAddresses];
-	for (NSString *name in dic.allKeys) {
-		if ([name hasPrefix:@"bridge"]) {
-			return [dic objectForKey:name];
-		}
-	}
-	
-	return nil;
-}
-
 - (NSURL*)serverURL {
   if (_source4) {
     NSString* ipAddress = _bindToLocalhost ? @"localhost" : GCDWebServerGetPrimaryIPAddress(NO);  // We can't really use IPv6 anyway as it doesn't work great with HTTP URLs in practice
-	  
-	if (ipAddress.length == 0) {
-		// 获取个人热点ip
-		ipAddress = [self hotspotAddress];
-	}
-	  
     if (ipAddress) {
       if (_port != 80) {
         return [NSURL URLWithString:[NSString stringWithFormat:@"http://%@:%i/", ipAddress, (int)_port]];
