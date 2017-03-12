@@ -26,6 +26,15 @@
     return data;
 }
 
++ (NSData *)initWithVcard:(NSData *)vcard recordId:(NSInteger)recordId {
+    NSMutableData *data = [NSMutableData data];
+    [data appendBytes:&KPacketVCardFlag length:1];
+    [data appendBytes:&recordId length:2];
+    [data appendData:vcard];
+    
+    return data;
+}
+
 + (UInt8)getFlagWithData:(NSData *)data {
     UInt8 flag = 0;
     if (data.length > 1) {

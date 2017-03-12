@@ -16,6 +16,8 @@ static UInt8 KPacketVCardFlag =  0xF2;	//联系人
 
 + (NSData *)initWithHeadPortrait:(UIImage *)image;
 + (NSData *)initWithFileInfo:(NSDictionary *)fileInfo;
++ (NSData *)initWithVcard:(NSData *)data recordId:(NSInteger)recordId;
+
 + (UInt8)getFlagWithData:(NSData *)data;
 
 @end

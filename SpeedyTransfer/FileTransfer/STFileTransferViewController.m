@@ -91,7 +91,7 @@ static NSString *cellIdentifier = @"CellIdentifier";
     [continueSendButton addTarget:self action:@selector(continueSendButtonClick) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:continueSendButton];
     
-    if (self.isFromReceive) {
+    if (self.isFromReceive && !self.isMultipeerTransfer) {
         BOOL hotspotEnable = [UIDevice isPersonalHotspotEnabled];
         if ([ZZReachability shareInstance].currentReachabilityStatus != ReachableViaWiFi && !hotspotEnable) {
             if (!popupView) {

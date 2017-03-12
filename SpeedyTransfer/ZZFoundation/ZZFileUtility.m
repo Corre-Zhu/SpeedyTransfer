@@ -71,8 +71,14 @@
                     NSString *fileName = [temp.lastPathComponent uppercaseString];
                     NSUInteger fileSize = estimatedSize;
                     NSString *fileType = [fileName pathExtension];
-                    NSString *fileUrl = [NSString stringWithFormat:@"http://%@:%@/image/origin/%@", address, @(KSERVERPORT), localIdentifier];
-                    NSString *thumbnailUrl = [NSString stringWithFormat:@"http://%@:%@/image/thumbnail/%@", address, @(KSERVERPORT), localIdentifier];
+                    
+                    NSString *fileUrl = @"";
+                    NSString *thumbnailUrl = @"";
+                    if (address.length > 0) {
+                        fileUrl = [NSString stringWithFormat:@"http://%@:%@/image/origin/%@", address, @(KSERVERPORT), localIdentifier];
+                        thumbnailUrl = [NSString stringWithFormat:@"http://%@:%@/image/thumbnail/%@", address, @(KSERVERPORT), localIdentifier];
+                    }
+                   
                     
                     NSLog(@"file size = %@", @(fileSize));
                     
@@ -90,12 +96,19 @@
             } else {
                 [[PHImageManager defaultManager] requestImageDataForAsset:asset options:nil resultHandler:^(NSData * _Nullable imageData, NSString * _Nullable dataUTI, UIImageOrientation orientation, NSDictionary * _Nullable info) {
                     NSURL *url = [info objectForKey:@"PHImageFileURLKey"];
-                    if (url.absoluteString.length > 0 && imageData.length > 0 && address.length > 0) {
+                    if (url.absoluteString.length > 0 && imageData.length > 0) {
                         NSString *fileName = [url.absoluteString lastPathComponent];
                         NSUInteger fileSize = imageData.length;
                         NSString *fileType = [url.absoluteString pathExtension];
-                        NSString *fileUrl = [NSString stringWithFormat:@"http://%@:%@/image/origin/%@", address, @(KSERVERPORT), localIdentifier];
-                        NSString *thumbnailUrl = [NSString stringWithFormat:@"http://%@:%@/image/thumbnail/%@", address, @(KSERVERPORT), localIdentifier];
+                        
+                        NSString *fileUrl = @"";
+                        NSString *thumbnailUrl = @"";
+                        
+                        if (address.length > 0) {
+                            fileUrl = [NSString stringWithFormat:@"http://%@:%@/image/origin/%@", address, @(KSERVERPORT), localIdentifier];
+                            thumbnailUrl = [NSString stringWithFormat:@"http://%@:%@/image/thumbnail/%@", address, @(KSERVERPORT), localIdentifier];
+                            
+                        }
                         
                         NSLog(@"file size = %@", @(fileSize));
                         
@@ -115,7 +128,10 @@
             NSString *fileName = contactInfo.name;
             NSUInteger fileSize = contactInfo.size;
             NSString *fileType = @"vcard";
-            NSString *fileUrl = [NSString stringWithFormat:@"http://%@:%@/contact/%@", address, @(KSERVERPORT), @(contactInfo.recordId)];
+            NSString *fileUrl = @"";
+            if (address.length > 0) {
+                fileUrl = [NSString stringWithFormat:@"http://%@:%@/contact/%@", address, @(KSERVERPORT), @(contactInfo.recordId)];
+            }
             
             NSDictionary *fileInfo = @{FILE_NAME: fileName,
                                        FILE_TYPE: fileType,
@@ -129,7 +145,11 @@
             NSString *fileName = musciInfo.title;
             NSUInteger fileSize = musciInfo.fileSize;
             NSString *fileType = @"mp3";
-            NSString *fileUrl = [NSString stringWithFormat:@"http://%@:%@/music/%@", address, @(KSERVERPORT), musciInfo.persistentId];
+            
+            NSString *fileUrl = @"";
+            if (address.length > 0) {
+                fileUrl = [NSString stringWithFormat:@"http://%@:%@/music/%@", address, @(KSERVERPORT), musciInfo.persistentId];
+            }
             
             NSDictionary *fileInfo = @{FILE_NAME: fileName,
                                        FILE_TYPE: fileType,

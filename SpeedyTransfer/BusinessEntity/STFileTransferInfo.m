@@ -64,6 +64,7 @@ HT_DEF_SINGLETON(STFileTransferInfo, shareInstant);
         self.dateString = [[NSDate date] dateString];
         self.deviceName = deviceInfo.deviceName;
         self.headImage = deviceInfo.headImage;
+        self.recordId = [fileInfo integerForKey:RECORD_ID];
         
         STFileType fileType = [ZZFunction fileTypeWithPathExtension:[fileInfo stringForKey:FILE_TYPE]];
         self.fileType = fileType;

@@ -12,6 +12,7 @@
 #import "ZZFunction.h"
 #import <Photos/Photos.h>
 #import "STWebServerModel.h"
+#import "STContactInfo.h"
 
 static NSString *STServiceType = @"STServiceZZ";
 
@@ -28,6 +29,7 @@ static NSString *STServiceType = @"STServiceZZ";
 
 // 文件接收
 @property (nonatomic, strong) NSMutableArray *prepareToReceiveFiles; // 收到的的所有文件
+@property (nonatomic) ABAddressBookRef addressBook;
 
 @end
 
@@ -47,7 +49,7 @@ HT_DEF_SINGLETON(STMultiPeerTransferModel, shareInstant);
 - (MCSession *)session {
     if (!_session) {
         MCPeerID *peerID = [[MCPeerID alloc] initWithDisplayName:[UIDevice currentDevice].name];
-        _session = [[MCSession alloc] initWithPeer:peerID securityIdentity:nil encryptionPreference:MCEncryptionRequired];
+        _session = [[MCSession alloc] initWithPeer:peerID securityIdentity:nil encryptionPreference:MCEncryptionNone];
         _session.delegate = self;
     }
     
@@ -175,9 +177,20 @@ HT_DEF_SINGLETON(STMultiPeerTransferModel, shareInstant);
                         
                     }];
                 }
-                
-                
-                
+            } else if ([_sendingItem isKindOfClass:[STContactInfo class]]) {
+                NSInteger recordId = [fileInfo integerForKey:RECORD_ID];
+                if (!self.addressBook) {
+                    self.addressBook = ABAddressBookCreateWithOptions(NULL, NULL);
+                }
+                ABRecordRef recordRef = ABAddressBookGetPersonWithRecordID(self.addressBook, (ABRecordID)recordId);
+                CFArrayRef cfArrayRef =  (__bridge CFArrayRef)@[(__bridge id)recordRef];
+                CFDataRef vcards = (CFDataRef)ABPersonCreateVCardRepresentationWithPeople(cfArrayRef);
+                NSData *vcardData = [STPacket initWithVcard:(__bridge NSData *)vcards recordId:recordId];
+                if ([self sendData:vcardData]) {
+                    [self sendSucceed];
+                } else {
+                    [self sendFaild];
+                }
             }
         } else {
             [self sendFaild];
@@ -272,6 +285,7 @@ HT_DEF_SINGLETON(STMultiPeerTransferModel, shareInstant);
     } else if ([fileUrl containsString:@"/contact"]) {
         entity.fileType = STFileTypeContact;
         entity.url = @([fileInfo integerForKey:RECORD_ID]).stringValue;
+        entity.recordId = [fileInfo integerForKey:RECORD_ID];
     } else if ([fileUrl containsString:@"/music"]) {
         entity.fileType = STFileTypeMusic;
         entity.url = @([fileInfo longLongForKey:RECORD_ID]).stringValue;
@@ -316,6 +330,9 @@ HT_DEF_SINGLETON(STMultiPeerTransferModel, shareInstant);
     info.progress = 1.0f;
     info.transferStatus = STFileTransferStatusReceived;
     [self updateTransferStatus:STFileTransferStatusReceived withIdentifier:info.identifier];
+    @synchronized (_prepareToReceiveFiles) {
+        [_prepareToReceiveFiles removeObject:info];
+    }
     
     if (info.fileType == STFileTypePicture && [[NSUserDefaults standardUserDefaults] boolForKey:AutoImportPhoto]) {
         // 导入图片到系统相册
@@ -468,6 +485,45 @@ HT_DEF_SINGLETON(STMultiPeerTransferModel, shareInstant);
             // 接收到文件
             [self receiveFileInfo:dic];
         }
+    } else if (flag == KPacketVCardFlag) {
+        if (bodyData.length < 3) {
+            return;
+        }
+        
+        UInt16 recordId = 0;
+        [bodyData getBytes:&recordId length:2];
+        bodyData = [bodyData subdataWithRange:NSMakeRange(2, bodyData.length - 2)];
+        
+        ABAddressBookRef book = ABAddressBookCreate();
+        ABRecordRef defaultSource = ABAddressBookCopyDefaultSource(book);
+        CFArrayRef vCardPeople = ABPersonCreatePeopleInSourceWithVCardRepresentation(defaultSource, (__bridge CFDataRef)bodyData);
+        if (CFArrayGetCount(vCardPeople) > 0) {
+            STFileTransferInfo *receivingInfo = nil;
+            @synchronized (_prepareToReceiveFiles) {
+                for (STFileTransferInfo *info in _prepareToReceiveFiles) {
+                    if (info.fileType == STFileTypeContact && info.recordId == recordId) {
+                        receivingInfo = info;
+                        break;
+                    }
+                }
+            }
+            
+            if (!receivingInfo) {
+                return;
+            }
+            
+            ABRecordRef person = CFArrayGetValueAtIndex(vCardPeople, 0);
+            ABAddressBookAddRecord(book, person, NULL);
+            ABAddressBookSave(book, NULL);
+            
+            receivingInfo.progress = 1.0f;
+            receivingInfo.transferStatus = STFileTransferStatusReceived;
+            [self updateTransferStatus:STFileTransferStatusReceived withIdentifier:receivingInfo.identifier];
+            @synchronized (_prepareToReceiveFiles) {
+                [_prepareToReceiveFiles removeObject:receivingInfo];
+            }
+        }
+        
     }
     
     
