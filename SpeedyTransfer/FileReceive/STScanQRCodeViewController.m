@@ -10,6 +10,8 @@
 #import "STWifiNotConnectedPopupView2.h"
 #import "ZZReachability.h"
 #import "STFileTransferViewController.h"
+#import "STConnectWifiAlertView.h"
+#import "STWebServerModel.h"
 
 @interface STScanQRCodeViewController ()<AVCaptureMetadataOutputObjectsDelegate> {
     UIImageView *scanBackgroundView;
@@ -18,6 +20,8 @@
     
     UIView *connectingView;
     UILabel *connectingLabel;
+    
+    STConnectWifiAlertView *wifiAlertView;
 }
 
 @property (nonatomic, strong) AVCaptureSession *session;
@@ -113,6 +117,8 @@
     [knowButton setTitleColor:RGBFromHex(0x2a16c1) forState:UIControlStateNormal];
     
     [[STMultiPeerTransferModel shareInstant] addObserver:self forKeyPath:@"state" options:NSKeyValueObservingOptionNew context:NULL];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(receiveFileNotification) name:KReceiveFileNotification object:nil];
+
 }
 
 - (void)knowButtonClick {
@@ -146,7 +152,7 @@
         }
     }
     
-    [[STMultiPeerTransferModel shareInstant] startBrowsingForName:nil];
+//    [[STMultiPeerTransferModel shareInstant] startBrowsingForName:nil];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -232,6 +238,13 @@
                 } else {
                     [[STMultiPeerTransferModel shareInstant] startBrowsingForName:devicename];
                 }
+            } else {
+                wifiAlertView = [[STConnectWifiAlertView alloc] init];
+                [wifiAlertView showInView:self.view];
+                
+                [[STWebServerModel shareInstant] startWebServer];
+                [[STFileTransferModel shareInstant] startListenBroadcast];
+                [[STFileReceiveModel shareInstant] startBroadcast];
             }
             
             [self stopScanning];
@@ -293,6 +306,20 @@
                 break;
             default:
                 break;
+        }
+    });
+}
+
+- (void)receiveFileNotification {
+    // 当开始接收到文件并且在主界面时跳转至接收界面
+    dispatch_async(dispatch_get_main_queue(), ^{
+        if (self.navigationController.topViewController == self) {
+            STFileTransferViewController *fileTransferVc = [[STFileTransferViewController alloc] init];
+            fileTransferVc.isFromReceive = YES;
+            [self.navigationController pushViewController:fileTransferVc animated:YES];
+            
+            [wifiAlertView removeFromSuperview];
+            wifiAlertView = nil;
         }
     });
 }

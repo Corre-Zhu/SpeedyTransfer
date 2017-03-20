@@ -429,10 +429,10 @@ HT_DEF_SINGLETON(STMultiPeerTransferModel, shareInstant);
       withDiscoveryInfo:(nullable NSDictionary<NSString *, NSString *> *)info {
     NSLog(@"Found peer: %@", peerID.displayName);
 
-//    if ([peerID.displayName isEqualToString:_deviceInfo.deviceName]) {
+    if ([peerID.displayName isEqualToString:_deviceInfo.deviceName]) {
         // 找到需要监听的设备
         [browser invitePeer:peerID toSession:_session withContext:nil timeout:20];
-//    }
+    }
 }
 
 // A nearby peer has stopped advertising.

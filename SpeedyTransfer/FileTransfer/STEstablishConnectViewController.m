@@ -10,6 +10,8 @@
 #import "ZZFunction.h"
 #import "STFileTransferViewController.h"
 #import <GCDWebServerFunctions.h>
+#import "STWebServerModel.h"
+#import "STConnectWifiAlertView.h"
 
 @interface STEstablishConnectViewController () {
     UIScrollView *scrollView;
@@ -26,6 +28,7 @@
 
 - (void)dealloc {
     [[STMultiPeerTransferModel shareInstant] removeObserver:self forKeyPath:@"state"];
+    [[STFileTransferModel shareInstant] removeObserver:self forKeyPath:@"devicesArray"];
 }
 
 - (void)viewDidLoad {
@@ -45,6 +48,11 @@
     
     qrcodeView = [[UIImageView alloc] initWithFrame:CGRectMake((topContainerView.width - 180) / 2.0, 80, 180, 180)];
     [topContainerView addSubview:qrcodeView];
+    
+    UITapGestureRecognizer *tapges = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(doubtap)];
+    tapges.numberOfTapsRequired = 2;
+    [qrcodeView addGestureRecognizer:tapges];
+    qrcodeView.userInteractionEnabled = YES;
     
     UILabel *label1 = [[UILabel alloc] initWithFrame:CGRectMake(0.0f, qrcodeView.bottom + 60, topContainerView.width, 24)];
     label1.text = NSLocalizedString(@"点传扫一扫快速接收", nil);
@@ -188,9 +196,21 @@
     
     // 开始广播
     [[STMultiPeerTransferModel shareInstant] startAdvertising];
-    
     [[STMultiPeerTransferModel shareInstant] addObserver:self forKeyPath:@"state" options:NSKeyValueObservingOptionNew context:NULL];
+    
+    // 启动webserver
+    [[STWebServerModel shareInstant] startWebServer];
 
+    // 开始发送udp广播
+    [[STFileReceiveModel shareInstant] startBroadcast];
+    [[STFileTransferModel shareInstant] startListenBroadcast];
+    
+    [[STFileTransferModel shareInstant] addObserver:self forKeyPath:@"devicesArray" options:NSKeyValueObservingOptionNew context:NULL];
+}
+
+- (void)doubtap {
+    STConnectWifiAlertView *view = [[STConnectWifiAlertView alloc] init];
+    [view showInView:self.view];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -226,6 +246,8 @@
     }
     
     NSString *codeStr = [NSString stringWithFormat:@"http://3tkj.cn/transport/haiwai/?ssid=%@&s=native&pwd=null&ip=%@&devicename=%@", wifiname, address, [UIDevice currentDevice].name];
+//    NSString *codeStr = [NSString stringWithFormat:@"http://3tkj.cn/transport/haiwai/?ssid=%@&s=native&pwd=null&ip=%@", wifiname, address];
+
     codeStr = [codeStr stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
     NSLog(@"code: %@", codeStr);
     
@@ -267,31 +289,51 @@
             return;
         }
         
-        switch ([STMultiPeerTransferModel shareInstant].state) {
-            case STMultiPeerStateNotConnected:
-                
-                break;
-            case STMultiPeerStateBrowsing:
-            case STMultiPeerStateConnecting:
-                
-                break;
-            case STMultiPeerStateConnected: {
-                [[STMultiPeerTransferModel shareInstant] addSendItems:[self.fileSelectionTabController allSelectedFiles]];
+        if ([keyPath isEqualToString:@"state"]) {
+            switch ([STMultiPeerTransferModel shareInstant].state) {
+                case STMultiPeerStateNotConnected:
+                    
+                    break;
+                case STMultiPeerStateBrowsing:
+                case STMultiPeerStateConnecting:
+                    
+                    break;
+                case STMultiPeerStateConnected: {
+                    [[STMultiPeerTransferModel shareInstant] addSendItems:[self.fileSelectionTabController allSelectedFiles]];
+                    [self.fileSelectionTabController removeAllSelectedFiles];
+                    
+                    STFileTransferViewController *fileTransferVc = [[STFileTransferViewController alloc] init];
+                    fileTransferVc.isMultipeerTransfer = YES;
+                    
+                    NSMutableArray *controllers = [NSMutableArray arrayWithArray:self.navigationController.viewControllers];
+                    [controllers removeLastObject];
+                    [controllers addObject:fileTransferVc];
+                    
+                    [self.navigationController setViewControllers:controllers animated:YES];
+                }
+                    break;
+                default:
+                    break;
+            }
+        } else if ([keyPath isEqualToString:@"devicesArray"]) {
+            // 如果只发现一台设备，直接选择这台设备
+            if ([STFileTransferModel shareInstant].selectedDevicesArray.count == 0 && [STFileTransferModel shareInstant].devicesArray.count >= 1) {
+                STDeviceInfo *deviceInfo = [[STFileTransferModel shareInstant].devicesArray firstObject];
+                [STFileTransferModel shareInstant].selectedDevicesArray = [NSArray arrayWithObject:deviceInfo];
+            }
+            
+            // 已经选择好设备的情况下直接进入发送界面
+            if ([STFileTransferModel shareInstant].selectedDevicesArray.count > 0) {
+                [[STFileTransferModel shareInstant] sendItems:[self.fileSelectionTabController allSelectedFiles]];
                 [self.fileSelectionTabController removeAllSelectedFiles];
                 
                 STFileTransferViewController *fileTransferVc = [[STFileTransferViewController alloc] init];
-                fileTransferVc.isMultipeerTransfer = YES;
-                
-                NSMutableArray *controllers = [NSMutableArray arrayWithArray:self.navigationController.viewControllers];
-                [controllers removeLastObject];
-                [controllers addObject:fileTransferVc];
-                
-                [self.navigationController setViewControllers:controllers animated:YES];
+                [self.navigationController pushViewController:fileTransferVc animated:YES];
             }
-                break;
-            default:
-                break;
         }
+        
+        
+        
     });
 }
 

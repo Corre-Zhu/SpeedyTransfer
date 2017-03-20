@@ -166,7 +166,6 @@
 
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reachabilityStatusChange:) name:kHTReachabilityChangedNotification object:nil];
 
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(receiveFileNotification) name:KReceiveFileNotification object:nil];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -302,15 +301,6 @@
 //    STFileTransferViewController *fileTransferVc = [[STFileTransferViewController alloc] init];
 //    fileTransferVc.isFromReceive = YES;
 //    [self.navigationController pushViewController:fileTransferVc animated:YES];
-}
-
-- (void)receiveFileNotification {
-    // 当开始接收到文件并且在主界面时跳转至接收界面
-    dispatch_async(dispatch_get_main_queue(), ^{
-        if (self.navigationController.topViewController == self) {
-            [self receiveButtonClick];
-        }
-    });
 }
 
 - (void)inviteFriendButtonClick {

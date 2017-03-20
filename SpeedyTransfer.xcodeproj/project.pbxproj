@@ -19,6 +19,7 @@
 		5193011BCFD3897B337DD5C0 /* libPods-SpeedyTransfer.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D9ACA0ACB5C116D6970B319 /* libPods-SpeedyTransfer.a */; };
 		CE1A6E2B1CE82128006795E7 /* libWeiboSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CE1A6E281CE82128006795E7 /* libWeiboSDK.a */; };
 		CE1A6E2C1CE82128006795E7 /* WeiboSDK.bundle in Resources */ = {isa = PBXBuildFile; fileRef = CE1A6E291CE82128006795E7 /* WeiboSDK.bundle */; };
+		CE1D323A1E7E5CCA00079C6A /* STConnectWifiAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = CE1D32391E7E5CCA00079C6A /* STConnectWifiAlertView.m */; };
 		CE285AEA1E583849002FC6A1 /* STFilesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE285AE91E583849002FC6A1 /* STFilesViewController.m */; };
 		CE285AF71E585E58002FC6A1 /* HTContactsHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = CE285AF51E585E58002FC6A1 /* HTContactsHeaderView.m */; };
 		CE285AFA1E585E72002FC6A1 /* STMusicSelectionCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CE285AF91E585E72002FC6A1 /* STMusicSelectionCell.m */; };
@@ -124,6 +125,8 @@
 		CE1A6E281CE82128006795E7 /* libWeiboSDK.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libWeiboSDK.a; sourceTree = "<group>"; };
 		CE1A6E291CE82128006795E7 /* WeiboSDK.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = WeiboSDK.bundle; sourceTree = "<group>"; };
 		CE1A6E2A1CE82128006795E7 /* WeiboSDK.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WeiboSDK.h; sourceTree = "<group>"; };
+		CE1D32381E7E5CCA00079C6A /* STConnectWifiAlertView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STConnectWifiAlertView.h; sourceTree = "<group>"; };
+		CE1D32391E7E5CCA00079C6A /* STConnectWifiAlertView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STConnectWifiAlertView.m; sourceTree = "<group>"; };
 		CE285AE81E583849002FC6A1 /* STFilesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STFilesViewController.h; sourceTree = "<group>"; };
 		CE285AE91E583849002FC6A1 /* STFilesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STFilesViewController.m; sourceTree = "<group>"; };
 		CE285AF51E585E58002FC6A1 /* HTContactsHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HTContactsHeaderView.m; sourceTree = "<group>"; };
@@ -391,6 +394,8 @@
 				CE6536AB1C2E8D1B00C1E8A3 /* STWifiNotConnectedPopupView2.m */,
 				CEBF5C511E61B7050072C06B /* STScanQRCodeViewController.h */,
 				CEBF5C521E61B7050072C06B /* STScanQRCodeViewController.m */,
+				CE1D32381E7E5CCA00079C6A /* STConnectWifiAlertView.h */,
+				CE1D32391E7E5CCA00079C6A /* STConnectWifiAlertView.m */,
 			);
 			path = FileReceive;
 			sourceTree = "<group>";
@@ -978,6 +983,7 @@
 				CE9C919D1C38FBE10075CB06 /* STInviteFriendViewController.m in Sources */,
 				CE69FD191CE81C96001A725F /* HTEmailViewController.m in Sources */,
 				CEB29E731C21B8BE00F17804 /* ALView+PureLayout.m in Sources */,
+				CE1D323A1E7E5CCA00079C6A /* STConnectWifiAlertView.m in Sources */,
 				CE6536D51C2ECEC300C1E8A3 /* STContactInfo.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

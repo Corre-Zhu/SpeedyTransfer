@@ -202,7 +202,19 @@
 }
 
 - (void)transferButtonClick {
-    if ([STMultiPeerTransferModel shareInstant].state == STMultiPeerStateConnected) {
+    // 如果只发现一台设备，直接选择这台设备
+    if ([STFileTransferModel shareInstant].selectedDevicesArray.count == 0 && [STFileTransferModel shareInstant].devicesArray.count >= 1) {
+        STDeviceInfo *deviceInfo = [[STFileTransferModel shareInstant].devicesArray firstObject];
+        [STFileTransferModel shareInstant].selectedDevicesArray = [NSArray arrayWithObject:deviceInfo];
+    }
+    
+    if ([STFileTransferModel shareInstant].selectedDevicesArray.count > 0) {
+        [[STFileTransferModel shareInstant] sendItems:[self allSelectedFiles]];
+        [self removeAllSelectedFiles];
+        
+        STFileTransferViewController *fileTransferVc = [[STFileTransferViewController alloc] init];
+        [self.navigationController pushViewController:fileTransferVc animated:YES];
+    } else if ([STMultiPeerTransferModel shareInstant].state == STMultiPeerStateConnected) {
         [[STMultiPeerTransferModel shareInstant] addSendItems:[self.fileSelectionTabController allSelectedFiles]];
         [self.fileSelectionTabController removeAllSelectedFiles];
         
