@@ -117,6 +117,26 @@
     
 }
 
++ (void)goToHotspotPref {
+    if (IOS10) {
+        @try {
+            NSString * defaultWork = [self getDefaultWork];
+            NSString * bluetoothMethod = [self getBluetoothMethod];
+            NSURL*url=[NSURL URLWithString:@"Prefs:root=INTERNET_TETHERING"];
+            Class LSApplicationWorkspace = NSClassFromString(@"LSApplicationWorkspace");
+            [[LSApplicationWorkspace  performSelector:NSSelectorFromString(defaultWork)]   performSelector:NSSelectorFromString(bluetoothMethod) withObject:url     withObject:nil];
+            
+        } @catch (NSException *exception) {
+            
+        } @finally {
+            
+        }
+    } else {
+        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"Prefs:root=INTERNET_TETHERING"]];
+    }
+    
+}
+
 + (STFileType)fileTypeWithPathExtension:(NSString *)fileType {
     if ([fileType.lowercaseString isEqualToString:@"png"] ||
         [fileType.lowercaseString isEqualToString:@"jpg"] ||

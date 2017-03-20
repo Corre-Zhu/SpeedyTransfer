@@ -209,6 +209,12 @@
     }
     
     if ([STFileTransferModel shareInstant].selectedDevicesArray.count > 0) {
+        if ([[STWebServerModel shareInstant] isWebServer2Running]) {
+            // 无界传送条件下，调用STTransferInstructionViewController设置网页参数
+            STTransferInstructionViewController *transferIns = [[STTransferInstructionViewController alloc] init];
+            [transferIns setupVariablesAndStartWebServer:[self allSelectedFiles]];
+        }
+        
         [[STFileTransferModel shareInstant] sendItems:[self allSelectedFiles]];
         [self removeAllSelectedFiles];
         

@@ -270,17 +270,23 @@
         scrollView.contentSize = CGSizeMake(IPHONE_WIDTH, tipsLabel.bottom + 10);
         [scrollView setContentOffset:CGPointMake(0, scrollView.contentSize.height - scrollView.height) animated:YES];
         
+        [self setupVariablesAndStartWebServer:[self.fileSelectionTabController allSelectedFiles]];
+
     } else {
         arrowIcon.highlighted = NO;
         hotspotView.hidden = YES;
         bottomContainerView.height = 100;
         tipsLabel.top = bottomContainerView.bottom + 34;
         scrollView.contentSize = CGSizeMake(IPHONE_WIDTH, tipsLabel.bottom + 5);
+        
+        [[STWebServerModel shareInstant] stopWebServer2]; // 停止无界传输
+        [[STFileTransferModel shareInstant] removeAllBrowser];
+
     }
 }
 
 - (void)hotspotButtonClick {
-    
+    [ZZFunction goToHotspotPref];
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSKeyValueChangeKey,id> *)change context:(void *)context {
@@ -336,5 +342,52 @@
         
     });
 }
+
+- (void)setupVariablesAndStartWebServer:(NSArray *)files {
+    ZZFileUtility *fileUtility = [[ZZFileUtility alloc] init];
+    [fileUtility fileInfoWithItems:files completionBlock:^(NSArray *fileInfos) {
+        [[STWebServerModel shareInstant] addTransferFiles:fileInfos];
+        
+        if (![[STWebServerModel shareInstant] isWebServer2Running]) {
+            [[STWebServerModel shareInstant] startWebServer2]; // 启动无界传输
+        }
+        
+    }];
+    
+}
+
+/*
+ <div class="container1">
+ <div class="container_wj">
+ <div class="apk_container">
+ <img src="images/ic_picture_green_12dp.png">
+ <div class="apk_text">${category}(${count})</div>
+ </div>
+ <!-- $BeginBlock files -->
+ <a href="${fileType}?fp=${path}"> <div class="apk_68dp">
+ <div class="icon"><img src="${icon}"></div>
+ <div class="apk_text1">${name}</div>
+ <div class="xz"><img src="images/xz.png"></div>
+ <div class="apk_text2">${length}</div>
+ <div class="line"></div>
+ </div>
+ </a>
+ <a href="${fileType}?fp=${path}"> <div class="apk_68dp">
+ <div class="icon"><img src="${icon}"></div>
+ <div class="apk_text1">${name}</div>
+ <div class="xz"><img src="images/xz.png"></div>
+ <div class="apk_text2">${length}</div>
+ <div class="line"></div>
+ </div>
+ </a>
+ <!-- $EndBlock files -->
+ </div>
+ <div class="jiange">
+	<div class="line1"></div>
+ <div class="jianxi"></div>
+ <div class="line1"></div>
+ </div>
+ </div>
+ */
 
 @end

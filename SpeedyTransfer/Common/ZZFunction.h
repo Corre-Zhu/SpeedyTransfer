@@ -13,6 +13,7 @@
 + (UIImage *)qrCodeImageWithStr:(NSString *)string withSize:(CGFloat)size topImage:(UIImage *)topImage;
 
 + (void)goToWifiPref;
++ (void)goToHotspotPref;
 
 + (STFileType)fileTypeWithPathExtension:(NSString *)fileType;
 
