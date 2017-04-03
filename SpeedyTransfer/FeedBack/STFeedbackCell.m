@@ -29,7 +29,7 @@
         
         contentLabel = [[UILabel alloc] init];
         contentLabel.textColor = [UIColor blackColor];
-        contentLabel.font = [UIFont systemFontOfSize:17.0f];
+        contentLabel.font = [UIFont systemFontOfSize:16.0f];
         contentLabel.textAlignment = NSTextAlignmentLeft;
         contentLabel.numberOfLines = 0;
         [bubbleView addSubview:contentLabel];
@@ -40,9 +40,9 @@
 
 - (void)configCell {
     bubbleView.width = _info.textWidth + 50.0f;
-    bubbleView.height = _info.cellHeight - 25.0f;
+    bubbleView.height = _info.textHeight + 20.0f;
     bubbleView.left = IPHONE_WIDTH - bubbleView.width - 16.0f;
-    bubbleView.top = 25.0f;
+    bubbleView.top = 5.0f;
     
     contentLabel.text = _info.content;
     contentLabel.width = _info.textWidth;

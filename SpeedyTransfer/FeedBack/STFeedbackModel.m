@@ -16,6 +16,8 @@
     HTFMDatabase *database;
 }
 
+@property (nonatomic, strong) NSArray *tempDataSource;
+
 @end
 
 @implementation STFeedbackModel
@@ -37,11 +39,37 @@
                     [tempArr addObject:[[STFeedbackInfo alloc] initWithDic:result.resultDictionary]];
                 }
             }
-            _dataSource = [NSArray arrayWithArray:tempArr];
+            _tempDataSource = [NSArray arrayWithArray:tempArr];
+            
+            [self setupTimeStr];
         }
     }
     
     return self;
+}
+
+- (void)setupTimeStr {
+    if (_tempDataSource.count == 0) {
+        return;
+    }
+    
+    __block long long lastTime = 0;
+    NSMutableArray *temp = [NSMutableArray array];
+    [_tempDataSource enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        STFeedbackInfo *info = obj;
+        NSString *timeStr = [info.time trim];
+        if (timeStr.length > 0) {
+            long long time = [[[[timeStr componentsSeparatedByString:@" "] lastObject] stringByReplacingOccurrencesOfString:@":" withString:@""] longLongValue];
+            if (time - lastTime >= 500) {
+                [temp addObject:timeStr];
+                lastTime = time;
+            }
+        }
+        
+        [temp addObject:obj];
+    }];
+    
+    _dataSource = temp;
 }
 
 - (void)addTransferFile:(STFeedbackInfo *)info {
@@ -49,13 +77,15 @@
         return;
     }
     
-    if (!_dataSource) {
-        _dataSource = [NSArray arrayWithObject:info];
+    if (!_tempDataSource) {
+        _tempDataSource = [NSArray arrayWithObject:info];
     } else {
         @autoreleasepool {
-            _dataSource = [_dataSource arrayByAddingObject:info];
+            _tempDataSource = [_tempDataSource arrayByAddingObject:info];
         }
     }
+    
+    [self setupTimeStr];
 }
 
 - (void)sendFeedback:(NSString *)feedback email:(NSString *)email {

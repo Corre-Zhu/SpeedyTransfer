@@ -10,6 +10,7 @@
 
 @interface STFileSegementControl () {
     UILabel *titleLabel;
+    NSMutableArray *buttons;
     UIButton *lastSelectedButton;
     UIView *botttomLine;
 }
@@ -38,6 +39,7 @@
         NSArray *imagesOff = @[@"ic_tupian_off", @"ic_video_off", @"ic_tongxunlu_off", @"ic_wenjian_off"];
         NSArray *titles = @[@"图片", @"视频", @"通讯录", @"文件"];
         
+        buttons = [NSMutableArray arrayWithCapacity:4];
         CGFloat width = IPHONE_WIDTH / 4.0f;
         for (int i = 0; i < 4; i++) {
             UIButton *sendButton = [[UIButton alloc] initWithFrame:CGRectMake(i * width, 64.0f, width, 44.0f)];
@@ -60,6 +62,8 @@
             sendButton.showsTouchWhenHighlighted = NO;
             [self addSubview:sendButton];
             
+            [buttons addObject:sendButton];
+            
         }
         
         botttomLine = [[UIView alloc] initWithFrame:CGRectMake(0, 106, width, 2)];
@@ -80,6 +84,10 @@
 
 - (void)backButtonClick {
     [self.delegate didTapBack];
+}
+
+- (void)setSelectedIndex:(NSInteger)index {
+    [self didSelectIndex:buttons[index]];
 }
 
 - (void)didSelectIndex:(UIButton *)sender {

@@ -88,14 +88,14 @@ NSString * const dbName = @"FileTransfer.sqlite";
         
         UILabel *label1 = [[UILabel alloc] initWithFrame:CGRectMake(0.0f, IPHONE_HEIGHT - 180.0f, IPHONE_WIDTH, 44.0f)];
         label1.text = NSLocalizedString(@"点传", nil);
-        label1.textColor = [UIColor whiteColor];
+        label1.textColor = RGBFromHex(0x71b8a6);
         label1.font = [UIFont systemFontOfSize:36.0f];
         label1.textAlignment = NSTextAlignmentCenter;
         [startingWindow addSubview:label1];
         
         UILabel *label2 = [[UILabel alloc] initWithFrame:CGRectMake(0.0f, IPHONE_HEIGHT - 119.0f, IPHONE_WIDTH, 25.0f)];
         label2.text = NSLocalizedString(@"随时随地，极速互传", nil);
-        label2.textColor = RGBFromHex(0xfbeeed);
+        label2.textColor = RGBFromHex(0x75a095);
         label2.font = [UIFont systemFontOfSize:20.0f];
         label2.textAlignment = NSTextAlignmentCenter;
         [startingWindow addSubview:label2];

@@ -10,6 +10,7 @@
 #import "STMusicSelectionCell.h"
 #import "HTContactsHeaderView.h"
 #import "STContactInfo.h"
+#import "STNoFileAlertView.h"
 
 static NSString *headerIdentifier = @"ContactsHeaderView";
 
@@ -20,6 +21,8 @@ static NSString *headerIdentifier = @"ContactsHeaderView";
     UIView *topHeaderView;
     UILabel *topHeaderLabel;
     UIButton *selectAllButton;
+    
+    STNoFileAlertView *alertView;
 }
 
 @property (nonatomic, strong) NSArray *contactModels;
@@ -33,8 +36,6 @@ static NSString *headerIdentifier = @"ContactsHeaderView";
     self.tableView.allowsMultipleSelection = YES;
     self.tableView.sectionIndexColor = RGBFromHex(0x01cc99);
     self.tableView.tableFooterView = [UIView new];
-    self.tableView.contentInset = UIEdgeInsetsMake(0.0f, 0.0f, 49.0f, 0.0f);
-    self.tableView.scrollIndicatorInsets = UIEdgeInsetsMake(0.0f, 0.0f, 49.0f, 0.0f);
     [self.tableView registerClass:[HTContactsHeaderView class] forHeaderFooterViewReuseIdentifier:headerIdentifier];
     
     activityIndicatorView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
@@ -56,6 +57,24 @@ static NSString *headerIdentifier = @"ContactsHeaderView";
 
 }
 
+- (void)setupAlertView {
+    if (_contactModels.count == 0) {
+        if (!alertView) {
+            alertView = [[[NSBundle mainBundle] loadNibNamed:@"STNoFileAlertView" owner:nil options:nil] lastObject];
+            alertView.imageView.image = [UIImage imageNamed:@"img_tongxunlu"];
+            alertView.label.text = @"此设备暂无联系人";
+            alertView.frame = CGRectMake(0, 0, IPHONE_WIDTH, IPHONE_HEIGHT - 109);
+            [self.view addSubview:alertView];
+            
+        }
+        
+        [self.view bringSubviewToFront:alertView];
+        alertView.hidden = NO;
+    } else {
+        alertView.hidden = YES;
+    }
+}
+
 - (void)selectAllButtonClick:(UIButton *)sender {
     if (sender.selected) {
         [self.fileSelectionTabController removeAllContacts];
@@ -72,6 +91,7 @@ static NSString *headerIdentifier = @"ContactsHeaderView";
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
+    [self setupAlertView];
     return [_contactModels count];
 }
 

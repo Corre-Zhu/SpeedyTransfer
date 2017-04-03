@@ -29,7 +29,7 @@ HT_AS_SINGLETON(STFeedbackInfo, shareInstant)
 @property(nonatomic,assign)NSInteger transferStatus;
 @property(nonatomic,assign)NSInteger messageType;
 @property(nonatomic,copy)NSString *content;
-@property(nonatomic,assign)NSString *time;
+@property(nonatomic,strong)NSString *time;
 
 @property (nonatomic) CGFloat textHeight;
 @property (nonatomic) CGFloat textWidth;

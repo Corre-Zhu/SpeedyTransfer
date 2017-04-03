@@ -98,6 +98,11 @@
 		CED62A531C09719500270EDB /* UIView+ZZ.m in Sources */ = {isa = PBXBuildFile; fileRef = CED62A521C09719500270EDB /* UIView+ZZ.m */; };
 		CED62A561C09721F00270EDB /* UIDevice+ZZ.m in Sources */ = {isa = PBXBuildFile; fileRef = CED62A551C09721F00270EDB /* UIDevice+ZZ.m */; };
 		CED62A5F1C099C6000270EDB /* UIColor+ZZ.m in Sources */ = {isa = PBXBuildFile; fileRef = CED62A5E1C099C6000270EDB /* UIColor+ZZ.m */; };
+		CED926E41E8D577B00FBC133 /* STNoFileAlertView.xib in Resources */ = {isa = PBXBuildFile; fileRef = CED926E31E8D577B00FBC133 /* STNoFileAlertView.xib */; };
+		CED926E71E8D5B7C00FBC133 /* STNoFileAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = CED926E61E8D5B7C00FBC133 /* STNoFileAlertView.m */; };
+		CED926EC1E92589800FBC133 /* UIViewController+ZZ.m in Sources */ = {isa = PBXBuildFile; fileRef = CED926EB1E92589800FBC133 /* UIViewController+ZZ.m */; };
+		CED926F31E92624600FBC133 /* STFeedbackTimeCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CED926F11E92624600FBC133 /* STFeedbackTimeCell.m */; };
+		CED926F41E92624600FBC133 /* STFeedbackTimeCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = CED926F21E92624600FBC133 /* STFeedbackTimeCell.xib */; };
 		CEDF05AC1D2ABDB200D48D58 /* ZZFunction.m in Sources */ = {isa = PBXBuildFile; fileRef = CEDF05AB1D2ABDB200D48D58 /* ZZFunction.m */; };
 /* End PBXBuildFile section */
 
@@ -286,6 +291,14 @@
 		CED62A5D1C099C6000270EDB /* UIColor+ZZ.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+ZZ.h"; sourceTree = "<group>"; };
 		CED62A5E1C099C6000270EDB /* UIColor+ZZ.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+ZZ.m"; sourceTree = "<group>"; };
 		CED62A611C09A53F00270EDB /* ZZMacros.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZZMacros.h; sourceTree = "<group>"; };
+		CED926E31E8D577B00FBC133 /* STNoFileAlertView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = STNoFileAlertView.xib; path = ../STNoFileAlertView.xib; sourceTree = "<group>"; };
+		CED926E51E8D5B7C00FBC133 /* STNoFileAlertView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STNoFileAlertView.h; sourceTree = "<group>"; };
+		CED926E61E8D5B7C00FBC133 /* STNoFileAlertView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STNoFileAlertView.m; sourceTree = "<group>"; };
+		CED926EA1E92589800FBC133 /* UIViewController+ZZ.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+ZZ.h"; sourceTree = "<group>"; };
+		CED926EB1E92589800FBC133 /* UIViewController+ZZ.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+ZZ.m"; sourceTree = "<group>"; };
+		CED926F01E92624600FBC133 /* STFeedbackTimeCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STFeedbackTimeCell.h; sourceTree = "<group>"; };
+		CED926F11E92624600FBC133 /* STFeedbackTimeCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STFeedbackTimeCell.m; sourceTree = "<group>"; };
+		CED926F21E92624600FBC133 /* STFeedbackTimeCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = STFeedbackTimeCell.xib; sourceTree = "<group>"; };
 		CEDF05AA1D2ABDB200D48D58 /* ZZFunction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZZFunction.h; sourceTree = "<group>"; };
 		CEDF05AB1D2ABDB200D48D58 /* ZZFunction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZZFunction.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -513,6 +526,9 @@
 				CE9C91A51C390EAA0075CB06 /* STFeedBackInputView.m */,
 				CE9C91AD1C39537C0075CB06 /* STFeedbackCell.h */,
 				CE9C91AE1C39537C0075CB06 /* STFeedbackCell.m */,
+				CED926F01E92624600FBC133 /* STFeedbackTimeCell.h */,
+				CED926F11E92624600FBC133 /* STFeedbackTimeCell.m */,
+				CED926F21E92624600FBC133 /* STFeedbackTimeCell.xib */,
 			);
 			path = FeedBack;
 			sourceTree = "<group>";
@@ -653,6 +669,9 @@
 				CED0D11F1C1D576D00F5C0E3 /* STVideoSelectionViewController.m */,
 				453C46281C434330003A7267 /* STVideoSelectionCell.h */,
 				453C46291C434330003A7267 /* STVideoSelectionCell.m */,
+				CED926E31E8D577B00FBC133 /* STNoFileAlertView.xib */,
+				CED926E51E8D5B7C00FBC133 /* STNoFileAlertView.h */,
+				CED926E61E8D5B7C00FBC133 /* STNoFileAlertView.m */,
 			);
 			path = Video;
 			sourceTree = "<group>";
@@ -759,6 +778,8 @@
 				CE2AD7AA1C4A340D00C67D1D /* HTJSONAdapter.m */,
 				CE69FD141CE81A4F001A725F /* UIAlertController+HT.h */,
 				CE69FD151CE81A4F001A725F /* UIAlertController+HT.m */,
+				CED926EA1E92589800FBC133 /* UIViewController+ZZ.h */,
+				CED926EB1E92589800FBC133 /* UIViewController+ZZ.m */,
 			);
 			name = Category;
 			path = SpeedyTransfer/Category;
@@ -841,6 +862,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				CE2AD7AF1C4AA15D00C67D1D /* IMG_7551.JPG in Resources */,
+				CED926E41E8D577B00FBC133 /* STNoFileAlertView.xib in Resources */,
+				CED926F41E92624600FBC133 /* STFeedbackTimeCell.xib in Resources */,
 				CED62A4B1C09514200270EDB /* Assets.xcassets in Resources */,
 				CE6536E61C2F07A600C1E8A3 /* defaultSql.sql in Resources */,
 				CE2AD7AD1C4A985F00C67D1D /* test.png in Resources */,
@@ -926,6 +949,7 @@
 				CE6536EC1C2F099A00C1E8A3 /* HTSQLBuffer.m in Sources */,
 				CE285AF71E585E58002FC6A1 /* HTContactsHeaderView.m in Sources */,
 				4558BFCC1C745903002F5718 /* OpenUDID.m in Sources */,
+				CED926F31E92624600FBC133 /* STFeedbackTimeCell.m in Sources */,
 				CE6536DF1C2ED74600C1E8A3 /* ZZPath.m in Sources */,
 				CEBB14761C33DB5C00874142 /* STAboutViewController.m in Sources */,
 				4569CB391C41264C00A97D2A /* ZZReachability.m in Sources */,
@@ -937,6 +961,7 @@
 				CEB29E751C21B8BE00F17804 /* NSLayoutConstraint+PureLayout.m in Sources */,
 				CEB7C7BB1E50736000E924D4 /* STLeftPanelView.m in Sources */,
 				CEB29E7C1C230BA400F17804 /* UIViewController+ST.m in Sources */,
+				CED926E71E8D5B7C00FBC133 /* STNoFileAlertView.m in Sources */,
 				CE6536C91C2ECD3400C1E8A3 /* STFileTransferViewController.m in Sources */,
 				CE6536D61C2ECEC300C1E8A3 /* STFileTransferInfo.m in Sources */,
 				CED62A5F1C099C6000270EDB /* UIColor+ZZ.m in Sources */,
@@ -978,6 +1003,7 @@
 				CE6536CB1C2ECD3400C1E8A3 /* STWifiNotConnectedPopupView.m in Sources */,
 				CEBF5C501E61999A0072C06B /* STEstablishConnectViewController.m in Sources */,
 				CE6536FC1C31955000C1E8A3 /* ZZNavigationController.m in Sources */,
+				CED926EC1E92589800FBC133 /* UIViewController+ZZ.m in Sources */,
 				CE6536F01C2FBB2300C1E8A3 /* NSDate+ZZ.m in Sources */,
 				CED62A321C094FDD00270EDB /* AppDelegate.m in Sources */,
 				CE9C919D1C38FBE10075CB06 /* STInviteFriendViewController.m in Sources */,

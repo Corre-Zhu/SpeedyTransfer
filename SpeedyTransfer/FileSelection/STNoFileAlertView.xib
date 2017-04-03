@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11762" systemVersion="15G31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="2b3-7l-ol6" customClass="STNoFileAlertView">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+            <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
+            <subviews>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="jwL-Tw-aSE">
+                    <rect key="frame" x="127.5" y="125" width="120" height="125"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="120" id="rnS-FS-tPg"/>
+                        <constraint firstAttribute="height" constant="125" id="tjh-pZ-bP5"/>
+                    </constraints>
+                </imageView>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3ph-0e-wBi">
+                    <rect key="frame" x="15" y="290" width="345" height="19.5"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                    <color key="textColor" red="0.25882352941176467" green="0.25882352941176467" blue="0.25882352941176467" alpha="1" colorSpace="calibratedRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
+            </subviews>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstItem="jwL-Tw-aSE" firstAttribute="centerX" secondItem="2b3-7l-ol6" secondAttribute="centerX" id="Scr-gy-2kq"/>
+                <constraint firstItem="jwL-Tw-aSE" firstAttribute="top" secondItem="2b3-7l-ol6" secondAttribute="top" constant="125" id="XNi-jQ-PLF"/>
+                <constraint firstItem="3ph-0e-wBi" firstAttribute="leading" secondItem="2b3-7l-ol6" secondAttribute="leading" constant="15" id="ZWw-qo-ErA"/>
+                <constraint firstAttribute="trailing" secondItem="3ph-0e-wBi" secondAttribute="trailing" constant="15" id="ekW-RW-DHj"/>
+                <constraint firstItem="3ph-0e-wBi" firstAttribute="top" secondItem="jwL-Tw-aSE" secondAttribute="bottom" constant="40" id="gMX-Ur-w3E"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <connections>
+                <outlet property="imageView" destination="jwL-Tw-aSE" id="YUM-rn-z4j"/>
+                <outlet property="label" destination="3ph-0e-wBi" id="Ifr-UD-w0b"/>
+            </connections>
+        </view>
+    </objects>
+    <simulatedMetricsContainer key="defaultSimulatedMetrics">
+        <simulatedStatusBarMetrics key="statusBar"/>
+        <simulatedOrientationMetrics key="orientation"/>
+        <simulatedScreenMetrics key="destination" type="retina4_7.fullscreen"/>
+    </simulatedMetricsContainer>
+</document>

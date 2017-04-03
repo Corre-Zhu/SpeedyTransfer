@@ -11,8 +11,10 @@
 #import "STFeedbackCell.h"
 #import "STFeedbackModel.h"
 #import "ZZReachability.h"
+#import "STFeedbackTimeCell.h"
 
 static NSString *FeedbackCellIdentifier = @"FeedbackCellIdentifier";
+static NSString *FeedbackTimeCellIdentifier = @"FeedbackTimeCellIdentifier";
 
 @interface STFeedBackViewController ()<UITableViewDataSource,UITableViewDelegate>
 {
@@ -42,6 +44,7 @@ static NSString *FeedbackCellIdentifier = @"FeedbackCellIdentifier";
     _tableView.tableFooterView = [UIView new];
     _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     [_tableView registerClass:[STFeedbackCell class] forCellReuseIdentifier:FeedbackCellIdentifier];
+    [_tableView registerNib:[UINib nibWithNibName:@"STFeedbackTimeCell" bundle:nil] forCellReuseIdentifier:FeedbackTimeCellIdentifier];
     [self.view addSubview:_tableView];
     
     inputView = [[STFeedBackInputView alloc] init];
@@ -142,16 +145,28 @@ static NSString *FeedbackCellIdentifier = @"FeedbackCellIdentifier";
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    STFeedbackCell *cell = [tableView dequeueReusableCellWithIdentifier:FeedbackCellIdentifier forIndexPath:indexPath];
     STFeedbackInfo *info = [model.dataSource objectAtIndex:indexPath.row];
-    cell.info = info;
-    [cell configCell];
-    return cell;
+    if ([info isKindOfClass:[STFeedbackInfo class]]) {
+        STFeedbackCell *cell = [tableView dequeueReusableCellWithIdentifier:FeedbackCellIdentifier forIndexPath:indexPath];
+        cell.info = info;
+        [cell configCell];
+        return cell;
+    } else {
+        NSString *timeStr = (NSString *)info;
+        STFeedbackTimeCell *cell = [tableView dequeueReusableCellWithIdentifier:FeedbackTimeCellIdentifier forIndexPath:indexPath];
+        cell.label.text = timeStr;
+        return cell;
+    }
+   
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     STFeedbackInfo *info = [model.dataSource objectAtIndex:indexPath.row];
-    return info.cellHeight;
+    if ([info isKindOfClass:[STFeedbackInfo class]]) {
+        return info.cellHeight;
+    } else {
+        return 50.0f;
+    }
 }
 
 @end

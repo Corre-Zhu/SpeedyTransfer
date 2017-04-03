@@ -26,6 +26,7 @@
 
 @interface STHomeViewController ()
 {
+    UIScrollView *scrollView;
     UIImageView *headImageView;
     UIButton *wifiButton;
     UIImageView *wifiPromptView;
@@ -47,28 +48,40 @@
     [button setTitleColor:RGBFromHex(0x333333) forState:UIControlStateNormal];
     button.titleLabel.font = [UIFont systemFontOfSize:14.0f];
     [button addTarget:self action:selector forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:button];
+    [scrollView addSubview:button];
     [button setNeedsLayout];
     [button layoutIfNeeded];
     [button centerImageAndTitle:10.0f];
 }
 
+- (instancetype)init {
+    self = [super init];
+    if (self) {
+        self.automaticallyAdjustsScrollViewInsets = NO;
+    }
+    
+    return self;
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
+    
+    scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, IPHONE_WIDTH, IPHONE_HEIGHT)];
+    [self.view addSubview:scrollView];
 
-    UIView *backView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, IPHONE_WIDTH, 392.0f)];
+    UIView *backView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, IPHONE_WIDTH, 392.0f * (IPHONE_WIDTH / 375))];
     backView.backgroundColor = [UIColor whiteColor];//RGB(233, 105, 79)
-    [self.view addSubview:backView];
+    [scrollView addSubview:backView];
     
     UIImageView *imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"bg_img000"]];
-    imageView.frame = CGRectMake(0.0f, 0.0f, IPHONE_WIDTH, 392.0f);
+    imageView.frame = CGRectMake(0.0f, 0.0f, IPHONE_WIDTH, 392.0f * (IPHONE_WIDTH / 375));
     [backView addSubview:imageView];
     
     UIButton *customView = [[UIButton alloc] initWithFrame:CGRectMake(16.0f, 23.0f, 100.0f, 80.0f)];
     customView.backgroundColor = [UIColor clearColor];
     [customView addTarget:self action:@selector(personalSettingClick) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:customView];
+    [scrollView addSubview:customView];
     
     UIImageView *dotImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"ic_overflow_light"]];
     dotImageView.top = 12.0f;
@@ -88,13 +101,13 @@
     wifiButton = [[UIButton alloc] initWithFrame:CGRectMake(IPHONE_WIDTH - 49.0f, 20.0f, 44, 44)];
     wifiButton.backgroundColor = [UIColor clearColor];
     [wifiButton addTarget:self action:@selector(wifiButtonClick) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:wifiButton];
-    if ([ZZReachability shareInstance].currentReachabilityStatus != ReachableViaWiFi) {
+    [scrollView addSubview:wifiButton];
+    if (![UIDevice isWiFiEnabled]) {
         [wifiButton setImage:[UIImage imageNamed:@"img_wifi"] forState:UIControlStateNormal];
         
         if (![[NSUserDefaults standardUserDefaults] boolForKey:@"wifiPrompt"]) {
             wifiPromptView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"bg_dianjikaiqi"]];
-            [self.view addSubview:wifiPromptView];
+            [scrollView addSubview:wifiPromptView];
             wifiPromptView.top = wifiButton.bottom - 3.0f;
             wifiPromptView.left = IPHONE_WIDTH - wifiPromptView.width - 18.0f;
             
@@ -116,7 +129,7 @@
     inviteButton.backgroundColor = [UIColor clearColor];
     [inviteButton setImage:[UIImage imageNamed:@"ic_yaoqing_white"] forState:UIControlStateNormal];
     [inviteButton addTarget:self action:@selector(inviteFriendButtonClick) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:inviteButton];
+    [scrollView addSubview:inviteButton];
     
     UILabel *promptLabel = [[UILabel alloc] initWithFrame:CGRectMake(0.0f, backView.height - 70.0f, backView.width, 20.0f)];
     promptLabel.textAlignment = NSTextAlignmentCenter;
@@ -133,7 +146,7 @@
         sendButton.backgroundColor = [UIColor clearColor];
         [sendButton addTarget:self action:@selector(actionBtnClick:) forControlEvents:UIControlEventTouchUpInside];
         sendButton.tag = i;
-        [self.view addSubview:sendButton];
+        [scrollView addSubview:sendButton];
         
         UIImageView *sendIcon = [[UIImageView alloc] initWithImage:[UIImage imageNamed:images[i]]];
         [sendButton addSubview:sendIcon];
@@ -155,16 +168,20 @@
     
     maskView = [[UIView alloc] initWithFrame:self.view.bounds];
     maskView.hidden = YES;
-    [self.view addSubview:maskView];
+    [scrollView addSubview:maskView];
     UITapGestureRecognizer *tapGes = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(maskViewTap)];
     [maskView addGestureRecognizer:tapGes];
     
     leftView = [[STLeftPanelView alloc] init];
     leftView.hidden = YES;
     leftView.parentViewController = self;
-    [self.view addSubview:leftView];
+    [scrollView addSubview:leftView];
+    
+    scrollView.contentSize = CGSizeMake(IPHONE_WIDTH, backView.bottom + 240);
+    scrollView.bounces = NO;
 
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reachabilityStatusChange:) name:kHTReachabilityChangedNotification object:nil];
+    //[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reachabilityStatusChange:) name:kHTReachabilityChangedNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidBecomeActiveNotification:) name:UIApplicationDidBecomeActiveNotification object:nil];
 
 }
 
@@ -179,6 +196,7 @@
     leftView.headImageView.image = headImageView.image;
     
     [self.navigationController setNavigationBarHidden:YES animated:YES];
+    
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -193,6 +211,7 @@
 
 - (void)viewDidAppear:(BOOL)animated {
 	[super viewDidAppear:animated];
+    
 }
 
 - (void)didReceiveMemoryWarning {
@@ -200,6 +219,7 @@
     // Dispose of any resources that can be recreated.
 }
 
+/*
 - (void)reachabilityStatusChange:(NSNotification *)notification {
     NetworkStatus status = [ZZReachability shareInstance].currentReachabilityStatus;
     switch (status) {
@@ -212,6 +232,16 @@
         default:
             [wifiButton setImage:[UIImage imageNamed:@"ic_wifi_off"] forState:UIControlStateNormal];
             return;
+    }
+}
+ */
+
+- (void)applicationDidBecomeActiveNotification:(NSNotification *)noti {
+    if ([UIDevice isWiFiEnabled]) {
+        [wifiButton setImage:[UIImage imageNamed:@"ic_wifi_on"] forState:UIControlStateNormal];
+        [wifiPromptView removeFromSuperview];
+    } else {
+        [wifiButton setImage:[UIImage imageNamed:@"ic_wifi_off"] forState:UIControlStateNormal];
     }
 }
 

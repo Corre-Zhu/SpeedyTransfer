@@ -9,6 +9,7 @@
 #import "STVideoSelectionViewController.h"
 #import "STVideoSelectionCell.h"
 #import <Photos/Photos.h>
+#import "STNoFileAlertView.h"
 
 static NSString *VideoSelectionCellIdentifier = @"VideoSelectionCellIdentifier";
 
@@ -16,6 +17,8 @@ static NSString *VideoSelectionCellIdentifier = @"VideoSelectionCellIdentifier";
     UIView *headerView;
     UILabel *headerLabel;
     UIButton *selectAllButton;
+    
+    STNoFileAlertView *alertView;
 }
 
 @property (nonatomic, strong) PHFetchResult *fetchResult;
@@ -61,6 +64,25 @@ static NSString *VideoSelectionCellIdentifier = @"VideoSelectionCellIdentifier";
     self.tableView.contentInset = UIEdgeInsetsMake(0.0f, 0.0f, 49.0f, 0.0f);
     self.tableView.scrollIndicatorInsets = UIEdgeInsetsMake(0.0f, 0.0f, 49.0f, 0.0f);
     [self.tableView registerClass:[STVideoSelectionCell class] forCellReuseIdentifier:VideoSelectionCellIdentifier];
+    
+}
+
+- (void)setupAlertView {
+    if (_fetchResult.count == 0) {
+        if (!alertView) {
+            alertView = [[[NSBundle mainBundle] loadNibNamed:@"STNoFileAlertView" owner:nil options:nil] lastObject];
+            alertView.imageView.image = [UIImage imageNamed:@"img_vedio"];
+            alertView.label.text = @"此设备暂无视频";
+            alertView.frame = CGRectMake(0, 0, IPHONE_WIDTH, IPHONE_HEIGHT - 109);
+            [self.view addSubview:alertView];
+            
+        }
+        
+        [self.view bringSubviewToFront:alertView];
+        alertView.hidden = NO;
+    } else {
+        alertView.hidden = YES;
+    }
 }
 
 - (void)setupSelectAllButton {
@@ -84,6 +106,7 @@ static NSString *VideoSelectionCellIdentifier = @"VideoSelectionCellIdentifier";
 #pragma mark - Table view data source
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    [self setupAlertView];
     return _fetchResult.count;
 }
 

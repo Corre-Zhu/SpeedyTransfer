@@ -22,12 +22,13 @@
 #import "STDeviceInfo.h"
 #import "STWebServerModel.h"
 #import "STEstablishConnectViewController.h"
+#import "UIViewController+ZZ.h"
 
-@interface STFileSelectionViewController ()<STFileSegementControlDelegate> {
+@interface STFileSelectionViewController ()<STFileSegementControlDelegate,UIScrollViewDelegate> {
     STFileSegementControl *segementControl;
+    UIScrollView *scrollView;
     
     NSArray *childViewControllers;
-    UIViewController *lastSelectedViewC;
     NSArray *titles;
     
     UIImageView *toolView;
@@ -49,10 +50,19 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    self.automaticallyAdjustsScrollViewInsets = NO;
     self.view.backgroundColor = [UIColor whiteColor];
     segementControl = [[STFileSegementControl alloc] init];
     segementControl.delegate = self;
     [self.view addSubview:segementControl];
+    
+    scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, segementControl.bottom, IPHONE_WIDTH, IPHONE_HEIGHT - segementControl.height)];
+    scrollView.pagingEnabled = YES;
+    scrollView.contentSize = CGSizeMake(IPHONE_WIDTH * 4, IPHONE_HEIGHT - segementControl.height - 5);
+    scrollView.directionalLockEnabled = YES;
+    scrollView.delegate = self;
+    scrollView.bounces = YES;
+    [self.view addSubview:scrollView];
     
     STPictureCollectionViewController *picVC = [[STPictureCollectionViewController alloc] initWithCollectionViewLayout:[UICollectionViewFlowLayout new]];
     STVideoSelectionViewController *videoVC = [[STVideoSelectionViewController alloc] init];
@@ -61,12 +71,8 @@
 
     childViewControllers = @[picVC, videoVC, contactVC,fileVC];
     titles = @[@"选择图片", @"选择视频", @"选择联系人", @"选择文件"];
-    
-    lastSelectedViewC = [childViewControllers firstObject];
-    [self addChildViewController:lastSelectedViewC];
-    [self.view addSubview:lastSelectedViewC.view];
-    [lastSelectedViewC didMoveToParentViewController:self];
-    [self autoLayoutChildViewController:lastSelectedViewC];
+
+    [segementControl setSelectedIndex:0];
     
     toolView = [[UIImageView alloc] initWithFrame:CGRectMake(0, IPHONE_HEIGHT - 49, IPHONE_WIDTH, 49.0f)];
     toolView.userInteractionEnabled = YES;
@@ -116,26 +122,31 @@
 - (void)didSelectIndex:(NSInteger)index {
     UIViewController *viewController = [childViewControllers objectAtIndex:index];
 
-    [self addChildViewController:viewController];
-    [lastSelectedViewC willMoveToParentViewController:nil];
-    [self transitionFromViewController:lastSelectedViewC toViewController:viewController duration:0.0f options:UIViewAnimationOptionTransitionNone animations:^{
-        [self autoLayoutChildViewController:viewController];
-    } completion:^(BOOL finished) {
+    if (!viewController.view.superview) {
+        [self addChildViewController:viewController];
+        [scrollView addSubview:viewController.view];
         [viewController didMoveToParentViewController:self];
-        [lastSelectedViewC removeFromParentViewController];
-        lastSelectedViewC = viewController;
-    }];
+        viewController.view.frame = scrollView.bounds;
+        viewController.view.left = index * IPHONE_WIDTH;
+    }
+    
+    if (scrollView.contentOffset.x != index * IPHONE_WIDTH) {
+        scrollView.contentOffset = CGPointMake(index * IPHONE_WIDTH, 0);
+    }
+    
     [segementControl setTitle:titles[index]];
     
     [self.view bringSubviewToFront:toolView];
 }
 
+/*
 - (void)autoLayoutChildViewController:(UIViewController *)childViewController {
     [childViewController.view autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:segementControl withOffset:0.0f];
     [childViewController.view autoPinEdge:ALEdgeLeft toEdge:ALEdgeLeft ofView:self.view];
     [childViewController.view autoPinEdge:ALEdgeRight toEdge:ALEdgeRight ofView:self.view];
     [childViewController.view autoPinEdge:ALEdgeBottom toEdge:ALEdgeBottom ofView:self.view];
 }
+ */
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
@@ -172,9 +183,13 @@
         [transferButton setTitle:[NSString stringWithFormat:@"%@ ( %@ )", NSLocalizedString(@"下一步", nil), @(count)] forState:UIControlStateNormal];
         toolView.hidden = NO;
         [self.view bringSubviewToFront:toolView];
+        
     } else {
         toolView.hidden = YES;
     }
+    
+    [childViewControllers makeObjectsPerformSelector:@selector(setContentInset:) withObject:[NSValue valueWithUIEdgeInsets:UIEdgeInsetsMake(0, 0, count > 0 ? 49 : 0, 0)]];
+
 }
 
 - (void)photoLibraryDidChange {
@@ -266,6 +281,12 @@
         
     }
      */
+}
+
+#pragma mark - Scroll view delegate
+
+- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollV {
+    [segementControl setSelectedIndex:scrollView.contentOffset.x / IPHONE_WIDTH];
 }
 
 #pragma mark - Send file
@@ -498,7 +519,7 @@
     }
     
     if (!_selectedVideoAssetsArr) {
-        _selectedVideoAssetsArr = [NSMutableArray array];
+        _selectedVideoAssetsArr = [NSMutableOrderedSet orderedSet];
     }
     
     [_selectedVideoAssetsArr addObjectsFromArray:assets];

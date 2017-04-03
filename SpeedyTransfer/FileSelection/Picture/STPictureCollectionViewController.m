@@ -12,6 +12,7 @@
 #import "HZAssetCollectionViewCell.h"
 #import <Photos/Photos.h>
 #import "MBProgressHUD.h"
+#import "STNoFileAlertView.h"
 
 #define KItemPadding 5.0f
 #define ASSET_PER_ROW 4
@@ -21,7 +22,8 @@ static NSString * const CollectionViewCellReuseIdentifier = @"CollectionViewCell
 
 @interface STPictureCollectionViewController ()<PHPhotoLibraryChangeObserver,UIImagePickerControllerDelegate,UINavigationControllerDelegate>
 {
-    
+    STNoFileAlertView *alertView;
+
 }
 
 @property (strong) PHFetchResult *smartCollections;
@@ -273,6 +275,24 @@ static NSString * const CollectionViewCellReuseIdentifier = @"CollectionViewCell
     [super viewDidAppear:animated];
 }
 
+- (void)setupAlertView {
+    if (self.cachedHeaderModels.count == 0) {
+        if (!alertView) {
+            alertView = [[[NSBundle mainBundle] loadNibNamed:@"STNoFileAlertView" owner:nil options:nil] lastObject];
+            alertView.imageView.image = [UIImage imageNamed:@"img_tupian"];
+            alertView.label.text = @"此设备暂无图片";
+            alertView.frame = CGRectMake(0, 0, IPHONE_WIDTH, IPHONE_HEIGHT - 109);
+            [self.view addSubview:alertView];
+            
+        }
+        
+        [self.view bringSubviewToFront:alertView];
+        alertView.hidden = NO;
+    } else {
+        alertView.hidden = YES;
+    }
+}
+
 - (void)expandButtonClick:(UIButton *)sender {
     if (_cachedHeaderModels.count > sender.tag) {
         STPictureCollectionHeaderInfo *model = [_cachedHeaderModels objectAtIndex:sender.tag];
@@ -312,6 +332,7 @@ static NSString * const CollectionViewCellReuseIdentifier = @"CollectionViewCell
 #pragma mark - UICollectionViewDataSource
 
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView {
+    [self setupAlertView];
     return self.cachedHeaderModels.count;
 }
 

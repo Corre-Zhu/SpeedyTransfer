@@ -19,9 +19,11 @@
 @implementation STLeftPanelView
 
 - (instancetype)init {
-    self = [super initWithFrame:CGRectMake(-310.0f, 0.0f, 310.0f, IPHONE_HEIGHT)];
+    CGFloat width = 300.0f * (IPHONE_WIDTH / 375);
+    self = [super initWithFrame:CGRectMake(-width, 0.0f, width, IPHONE_HEIGHT)];
     if (self) {
         self.backgroundColor = RGBFromHex(0xfdfdfe);
+        self.clipsToBounds = YES;
         
         UIImageView *backView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"bg_img_111"]];
         [self addSubview:backView];

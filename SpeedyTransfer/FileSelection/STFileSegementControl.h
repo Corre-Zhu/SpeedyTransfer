@@ -20,5 +20,6 @@
 @property (nonatomic, weak)id<STFileSegementControlDelegate> delegate;
 @property (nonatomic, strong) NSString *title;
 
+- (void)setSelectedIndex:(NSInteger)index;
 
 @end

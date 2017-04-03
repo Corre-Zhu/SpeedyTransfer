@@ -7,8 +7,11 @@
 //
 
 #import "STFilesViewController.h"
+#import "STNoFileAlertView.h"
 
-@interface STFilesViewController ()
+@interface STFilesViewController () {
+    STNoFileAlertView *alertView;
+}
 
 @end
 
@@ -24,6 +27,24 @@
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
 }
 
+- (void)setupAlertView {
+    if (YES) {
+        if (!alertView) {
+            alertView = [[[NSBundle mainBundle] loadNibNamed:@"STNoFileAlertView" owner:nil options:nil] lastObject];
+            alertView.imageView.image = [UIImage imageNamed:@"img_wenjian"];
+            alertView.label.text = @"此设备暂无文件";
+            alertView.frame = CGRectMake(0, 0, IPHONE_WIDTH, IPHONE_HEIGHT - 109);
+            [self.view addSubview:alertView];
+            
+        }
+        
+        [self.view bringSubviewToFront:alertView];
+        alertView.hidden = NO;
+    } else {
+        alertView.hidden = YES;
+    }
+}
+
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
@@ -32,6 +53,7 @@
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+    [self setupAlertView];
 #warning Incomplete implementation, return the number of sections
     return 0;
 }

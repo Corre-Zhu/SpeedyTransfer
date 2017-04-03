@@ -34,10 +34,10 @@ HT_DEF_SINGLETON(STFeedbackInfo, shareInstant);
 }
 
 - (void)setup {
-    CGRect rect = [self.content boundingRectWithSize:CGSizeMake(IPHONE_WIDTH - 150.0f, MAXFLOAT) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName: [UIFont systemFontOfSize:17.0f]} context:nil];
+    CGRect rect = [self.content boundingRectWithSize:CGSizeMake(IPHONE_WIDTH - 150.0f, MAXFLOAT) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName: [UIFont systemFontOfSize:16.0f]} context:nil];
     _textHeight = rect.size.height;
     _textWidth = rect.size.width;
-    _cellHeight = _textHeight + 45.0f;
+    _cellHeight = _textHeight + 55.0f;
 }
 
 - (NSString *)_tableName {
