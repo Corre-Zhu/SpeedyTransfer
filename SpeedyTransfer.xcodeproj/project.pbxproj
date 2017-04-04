@@ -18,7 +18,6 @@
 		458C7B5E1C97A3AD00CA8017 /* Website in Resources */ = {isa = PBXBuildFile; fileRef = 458C7B5D1C97A3AD00CA8017 /* Website */; };
 		5193011BCFD3897B337DD5C0 /* libPods-SpeedyTransfer.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D9ACA0ACB5C116D6970B319 /* libPods-SpeedyTransfer.a */; };
 		CE0322731E9342050060C25C /* MJPhoto.m in Sources */ = {isa = PBXBuildFile; fileRef = CE0322671E9342050060C25C /* MJPhoto.m */; };
-		CE0322741E9342050060C25C /* MJPhotoBrowser.bundle in Resources */ = {isa = PBXBuildFile; fileRef = CE0322681E9342050060C25C /* MJPhotoBrowser.bundle */; };
 		CE0322751E9342050060C25C /* MJPhotoBrowser.m in Sources */ = {isa = PBXBuildFile; fileRef = CE03226A1E9342050060C25C /* MJPhotoBrowser.m */; };
 		CE0322761E9342050060C25C /* MJPhotoLoadingView.m in Sources */ = {isa = PBXBuildFile; fileRef = CE03226C1E9342050060C25C /* MJPhotoLoadingView.m */; };
 		CE0322771E9342050060C25C /* MJPhotoProgressView.m in Sources */ = {isa = PBXBuildFile; fileRef = CE03226E1E9342050060C25C /* MJPhotoProgressView.m */; };
@@ -136,7 +135,6 @@
 		6D16DCCC400C02236F122188 /* Pods-SpeedyTransfer.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SpeedyTransfer.debug.xcconfig"; path = "Pods/Target Support Files/Pods-SpeedyTransfer/Pods-SpeedyTransfer.debug.xcconfig"; sourceTree = "<group>"; };
 		CE0322661E9342050060C25C /* MJPhoto.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MJPhoto.h; sourceTree = "<group>"; };
 		CE0322671E9342050060C25C /* MJPhoto.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MJPhoto.m; sourceTree = "<group>"; };
-		CE0322681E9342050060C25C /* MJPhotoBrowser.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = MJPhotoBrowser.bundle; sourceTree = "<group>"; };
 		CE0322691E9342050060C25C /* MJPhotoBrowser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MJPhotoBrowser.h; sourceTree = "<group>"; };
 		CE03226A1E9342050060C25C /* MJPhotoBrowser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MJPhotoBrowser.m; sourceTree = "<group>"; };
 		CE03226B1E9342050060C25C /* MJPhotoLoadingView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MJPhotoLoadingView.h; sourceTree = "<group>"; };
@@ -396,7 +394,6 @@
 			children = (
 				CE0322661E9342050060C25C /* MJPhoto.h */,
 				CE0322671E9342050060C25C /* MJPhoto.m */,
-				CE0322681E9342050060C25C /* MJPhotoBrowser.bundle */,
 				CE0322691E9342050060C25C /* MJPhotoBrowser.h */,
 				CE03226A1E9342050060C25C /* MJPhotoBrowser.m */,
 				CE03226B1E9342050060C25C /* MJPhotoLoadingView.h */,
@@ -905,7 +902,6 @@
 				CE2AD7AF1C4AA15D00C67D1D /* IMG_7551.JPG in Resources */,
 				CED926E41E8D577B00FBC133 /* STNoFileAlertView.xib in Resources */,
 				CED926F41E92624600FBC133 /* STFeedbackTimeCell.xib in Resources */,
-				CE0322741E9342050060C25C /* MJPhotoBrowser.bundle in Resources */,
 				CED62A4B1C09514200270EDB /* Assets.xcassets in Resources */,
 				CE6536E61C2F07A600C1E8A3 /* defaultSql.sql in Resources */,
 				CE2AD7AD1C4A985F00C67D1D /* test.png in Resources */,

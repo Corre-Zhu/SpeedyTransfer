@@ -109,6 +109,18 @@
     if (_block) {
         _block();
     }
+    
+    // 1.创建一个本地通知
+    UILocalNotification *localNote = [[UILocalNotification alloc] init];
+    
+    // 1.1.设置通知发出的时间
+    localNote.fireDate = [NSDate dateWithTimeIntervalSinceNow:1.6];
+    
+    // 1.2.设置通知内容
+    localNote.alertBody = @"请连接带有FreeShare字样或带有火箭图标的Wi-Fi";
+    
+    // 2.执行通知
+    [[UIApplication sharedApplication] scheduleLocalNotification:localNote];
 }
 
 - (void)showInView:(UIView *)view {

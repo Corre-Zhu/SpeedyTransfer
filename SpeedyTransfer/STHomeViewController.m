@@ -275,18 +275,6 @@
 
 - (void)wifiButtonClick {
     [ZZFunction goToWifiPref];
-    
-    // 1.创建一个本地通知
-    UILocalNotification *localNote = [[UILocalNotification alloc] init];
-    
-    // 1.1.设置通知发出的时间
-    localNote.fireDate = [NSDate dateWithTimeIntervalSinceNow:1.];
-    
-    // 1.2.设置通知内容
-    localNote.alertBody = @"双方只需要把Wi-Fi打开即可，是否已连接Wi-Fi没有关系";
-    
-    // 2.执行通知
-    [[UIApplication sharedApplication] scheduleLocalNotification:localNote];
 }
 
 - (void)actionBtnClick:(UIButton *)button {
