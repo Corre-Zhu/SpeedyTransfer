@@ -187,7 +187,7 @@
         coverImageView.image = [UIImage imageNamed:@"music_bg"];
 	} else {
 		// 未知文件类型
-		coverImageView.image = [UIImage imageNamed:@"question"];
+		coverImageView.image = [UIImage imageNamed:@"ic_myfile"];
 	}
 	
     succeedLabel.hidden = YES;

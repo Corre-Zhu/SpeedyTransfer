@@ -179,6 +179,10 @@
         count += self.selectedContactsArr.count;
     }
     
+    if (self.selectedFilesArray.count > 0) {
+        count += self.selectedFilesArray.count;
+    }
+    
     if (count > 0) {
         [transferButton setTitle:[NSString stringWithFormat:@"%@ ( %@ )", NSLocalizedString(@"下一步", nil), @(count)] forState:UIControlStateNormal];
         toolView.hidden = NO;
@@ -331,11 +335,15 @@
     }
     
     if (self.selectedVideoAssetsArr.count > 0) {
-        [array addObjectsFromArray:self.selectedVideoAssetsArr];
+        [array addObjectsFromArray:self.selectedVideoAssetsArr.array];
     }
     
     if (self.selectedContactsArr.count > 0) {
         [array addObjectsFromArray:self.selectedContactsArr];
+    }
+    
+    if (self.selectedFilesArray.count > 0) {
+        [array addObjectsFromArray:self.selectedFilesArray];
     }
     
     return array;
@@ -355,6 +363,11 @@
     if (_selectedContactsArr.count > 0) {
         [_selectedContactsArr removeAllObjects];
         [self reloadContactsTableView];
+    }
+    
+    if (_selectedFilesArray.count > 0) {
+        [_selectedFilesArray removeAllObjects];
+        [self reloadFilesTableView];
     }
     
     [self selectedFilesCountChanged];
@@ -621,6 +634,61 @@
     }
     
     return YES;
+}
+
+#pragma mark - File
+
+- (void)addFile:(STFileInfo *)file {
+    if (!file) {
+        return;
+    }
+    
+    if (!_selectedFilesArray) {
+        _selectedFilesArray = [NSMutableArray array];
+    }
+    
+    if (![_selectedFilesArray containsObject:file]) {
+        [_selectedFilesArray addObject:file];
+    }
+    
+    [self selectedFilesCountChanged];
+    
+}
+
+- (void)addFiles:(NSArray *)files {
+    if (!files) {
+        return;
+    }
+    
+    if (!_selectedFilesArray) {
+        _selectedFilesArray = [NSMutableArray array];
+    }
+    
+    [_selectedFilesArray addObjectsFromArray:files];
+    
+    [self selectedFilesCountChanged];
+}
+
+- (void)removeFile:(STFileInfo *)file {
+    if (!file) {
+        return;
+    }
+    
+    if ([_selectedFilesArray containsObject:file]) {
+        [_selectedFilesArray removeObject:file];
+    }
+    
+    [self selectedFilesCountChanged];
+    
+}
+
+- (void)removeAllFiles {
+    [_selectedFilesArray removeAllObjects];
+    [self selectedFilesCountChanged];
+}
+
+- (BOOL)isSelectedWithFile:(STFileInfo *)file {
+    return [_selectedFilesArray containsObject:file];
 }
 
 @end

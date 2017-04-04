@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "HTSingleton.h"
+#import "STDeviceInfo.h"
 
 #define DBFileTransfer [STFileTransferInfo shareInstant]
 

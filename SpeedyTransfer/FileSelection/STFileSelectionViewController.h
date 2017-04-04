@@ -12,6 +12,7 @@
 @class PHFetchResult;
 @class STMusicInfo;
 @class STContactInfo;
+@class STFileInfo;
 
 @interface STFileSelectionViewController : UIViewController
 
@@ -47,6 +48,14 @@
 - (void)removeAllContacts;
 - (BOOL)isSelectedWithContact:(STContactInfo *)contact;
 - (BOOL)isSelectedWithContacts:(NSArray *)contacts;
+
+// 文件
+@property (nonatomic, strong, readonly) NSMutableArray *selectedFilesArray;
+- (void)addFile:(STFileInfo *)file;
+- (void)addFiles:(NSArray *)files;
+- (void)removeFile:(STFileInfo *)file;
+- (void)removeAllFiles;
+- (BOOL)isSelectedWithFile:(STFileInfo *)file;
 
 // 界面刷新
 - (void)photoLibraryDidChange;

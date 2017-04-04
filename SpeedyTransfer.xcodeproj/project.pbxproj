@@ -23,6 +23,9 @@
 		CE0322771E9342050060C25C /* MJPhotoProgressView.m in Sources */ = {isa = PBXBuildFile; fileRef = CE03226E1E9342050060C25C /* MJPhotoProgressView.m */; };
 		CE0322781E9342050060C25C /* MJPhotoToolbar.m in Sources */ = {isa = PBXBuildFile; fileRef = CE0322701E9342050060C25C /* MJPhotoToolbar.m */; };
 		CE0322791E9342050060C25C /* MJPhotoView.m in Sources */ = {isa = PBXBuildFile; fileRef = CE0322721E9342050060C25C /* MJPhotoView.m */; };
+		CE03227C1E93B7C70060C25C /* STFilesModel.m in Sources */ = {isa = PBXBuildFile; fileRef = CE03227B1E93B7C70060C25C /* STFilesModel.m */; };
+		CE03227F1E93BB3C0060C25C /* STFileCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CE03227E1E93BB3C0060C25C /* STFileCell.m */; };
+		CE0322821E93BE890060C25C /* STFileInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = CE0322811E93BE890060C25C /* STFileInfo.m */; };
 		CE1A6E2B1CE82128006795E7 /* libWeiboSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CE1A6E281CE82128006795E7 /* libWeiboSDK.a */; };
 		CE1A6E2C1CE82128006795E7 /* WeiboSDK.bundle in Resources */ = {isa = PBXBuildFile; fileRef = CE1A6E291CE82128006795E7 /* WeiboSDK.bundle */; };
 		CE1D323A1E7E5CCA00079C6A /* STConnectWifiAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = CE1D32391E7E5CCA00079C6A /* STConnectWifiAlertView.m */; };
@@ -145,6 +148,12 @@
 		CE0322701E9342050060C25C /* MJPhotoToolbar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MJPhotoToolbar.m; sourceTree = "<group>"; };
 		CE0322711E9342050060C25C /* MJPhotoView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MJPhotoView.h; sourceTree = "<group>"; };
 		CE0322721E9342050060C25C /* MJPhotoView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MJPhotoView.m; sourceTree = "<group>"; };
+		CE03227A1E93B7C70060C25C /* STFilesModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STFilesModel.h; sourceTree = "<group>"; };
+		CE03227B1E93B7C70060C25C /* STFilesModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STFilesModel.m; sourceTree = "<group>"; };
+		CE03227D1E93BB3C0060C25C /* STFileCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STFileCell.h; sourceTree = "<group>"; };
+		CE03227E1E93BB3C0060C25C /* STFileCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STFileCell.m; sourceTree = "<group>"; };
+		CE0322801E93BE890060C25C /* STFileInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STFileInfo.h; sourceTree = "<group>"; };
+		CE0322811E93BE890060C25C /* STFileInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STFileInfo.m; sourceTree = "<group>"; };
 		CE1A6E281CE82128006795E7 /* libWeiboSDK.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libWeiboSDK.a; sourceTree = "<group>"; };
 		CE1A6E291CE82128006795E7 /* WeiboSDK.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = WeiboSDK.bundle; sourceTree = "<group>"; };
 		CE1A6E2A1CE82128006795E7 /* WeiboSDK.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WeiboSDK.h; sourceTree = "<group>"; };
@@ -431,6 +440,10 @@
 			children = (
 				CE285AE81E583849002FC6A1 /* STFilesViewController.h */,
 				CE285AE91E583849002FC6A1 /* STFilesViewController.m */,
+				CE03227D1E93BB3C0060C25C /* STFileCell.h */,
+				CE03227E1E93BB3C0060C25C /* STFileCell.m */,
+				CE03227A1E93B7C70060C25C /* STFilesModel.h */,
+				CE03227B1E93B7C70060C25C /* STFilesModel.m */,
 			);
 			path = Files;
 			sourceTree = "<group>";
@@ -501,6 +514,8 @@
 				4558BFCE1C746862002F5718 /* STDeviceInfo.m */,
 				CEB74E001E6BEF0500E58911 /* STPacket.h */,
 				CEB74E011E6BEF0500E58911 /* STPacket.m */,
+				CE0322801E93BE890060C25C /* STFileInfo.h */,
+				CE0322811E93BE890060C25C /* STFileInfo.m */,
 			);
 			name = BusinessEntity;
 			path = SpeedyTransfer/BusinessEntity;
@@ -990,6 +1005,7 @@
 				4558BFCC1C745903002F5718 /* OpenUDID.m in Sources */,
 				CED926F31E92624600FBC133 /* STFeedbackTimeCell.m in Sources */,
 				CE6536DF1C2ED74600C1E8A3 /* ZZPath.m in Sources */,
+				CE0322821E93BE890060C25C /* STFileInfo.m in Sources */,
 				CE0322751E9342050060C25C /* MJPhotoBrowser.m in Sources */,
 				CEBB14761C33DB5C00874142 /* STAboutViewController.m in Sources */,
 				4569CB391C41264C00A97D2A /* ZZReachability.m in Sources */,
@@ -1022,6 +1038,8 @@
 				CED62A531C09719500270EDB /* UIView+ZZ.m in Sources */,
 				CE6536DC1C2ED0AF00C1E8A3 /* STFileTransferModel.m in Sources */,
 				CE0322761E9342050060C25C /* MJPhotoLoadingView.m in Sources */,
+				CE03227C1E93B7C70060C25C /* STFilesModel.m in Sources */,
+				CE03227F1E93BB3C0060C25C /* STFileCell.m in Sources */,
 				CE6536C81C2ECD3400C1E8A3 /* STFileTransferCell.m in Sources */,
 				CEB74E021E6BEF0500E58911 /* STPacket.m in Sources */,
 				CEBB14731C33CCD300874142 /* STSettingViewController.m in Sources */,

@@ -191,6 +191,13 @@ HT_DEF_SINGLETON(STMultiPeerTransferModel, shareInstant);
                 } else {
                     [self sendFaild];
                 }
+            } else if ([_sendingItem isKindOfClass:[STFileInfo class]]) {
+                STFileInfo *file = (STFileInfo *)_sendingItem;
+                if (file.fileExist) {
+                    [self sendImage:[NSURL fileURLWithPath:file.localPath]];
+                } else {
+                    [self sendFaild];
+                }
             }
         } else {
             [self sendFaild];
@@ -289,6 +296,8 @@ HT_DEF_SINGLETON(STMultiPeerTransferModel, shareInstant);
     } else if ([fileUrl containsString:@"/music"]) {
         entity.fileType = STFileTypeMusic;
         entity.url = @([fileInfo longLongForKey:RECORD_ID]).stringValue;
+    } else if ([fileUrl containsString:@"/myfile"]) {
+        entity.fileType = STFileTypeOther;
     }
     
     entity.deviceName = _deviceInfo.deviceName;

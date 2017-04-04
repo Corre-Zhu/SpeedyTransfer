@@ -158,6 +158,25 @@
                                        RECORD_ID: musciInfo.persistentId,
                                        FILE_IDENTIFIER: [NSString uniqueID]};
             [self setObject:fileInfo forKey:object];
+        } else if ([object isKindOfClass:[STFileInfo class]]) {
+            STFileInfo *file = object;
+            NSString *fileName = file.fileName;
+            NSUInteger fileSize = file.fileSize;
+            NSString *fileType = file.pathExtension;
+            if (fileType.length == 0) {
+                fileType = @"myfile";
+            }
+            NSString *fileUrl = @"";
+            if (address.length > 0) {
+                fileUrl = [NSString stringWithFormat:@"http://%@:%@/myfile/%@", address, @(KSERVERPORT), file.localPath.lastPathComponent];
+            }
+            
+            NSDictionary *fileInfo = @{FILE_NAME: fileName,
+                                       FILE_TYPE: fileType,
+                                       FILE_SIZE: @(fileSize),
+                                       FILE_URL: fileUrl,
+                                       FILE_IDENTIFIER: file.identifier};
+            [self setObject:fileInfo forKey:object];
         }
     }
 }

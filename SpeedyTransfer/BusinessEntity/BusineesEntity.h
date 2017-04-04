@@ -10,5 +10,6 @@
 #define BusineesEntity_h
 
 #import "STFeedbackInfo.h"
+#import "STFileInfo.h"
 
 #endif /* BusineesEntity_h */

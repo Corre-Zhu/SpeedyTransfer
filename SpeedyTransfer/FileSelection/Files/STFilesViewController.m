@@ -8,9 +8,19 @@
 
 #import "STFilesViewController.h"
 #import "STNoFileAlertView.h"
+#import "STFileCell.h"
+#import "STFilesModel.h"
+#import "STFileInfo.h"
+
+static NSString *STFileCellIdentifier = @"STFileCellIdentifier";
 
 @interface STFilesViewController () {
+    UIView *headerView;
+    UILabel *headerLabel;
+    UIButton *selectAllButton;
     STNoFileAlertView *alertView;
+    
+    STFilesModel *model;
 }
 
 @end
@@ -20,15 +30,16 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    // Uncomment the following line to preserve selection between presentations.
-    // self.clearsSelectionOnViewWillAppear = NO;
+    self.tableView.allowsMultipleSelection = YES;
+    self.tableView.tableFooterView = [UIView new];
+    [self.tableView registerClass:[STFileCell class] forCellReuseIdentifier:STFileCellIdentifier];
     
-    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-    // self.navigationItem.rightBarButtonItem = self.editButtonItem;
+    model = [[STFilesModel alloc] init];
+    [model initData];
 }
 
 - (void)setupAlertView {
-    if (YES) {
+    if (model.dataSource.count == 0) {
         if (!alertView) {
             alertView = [[[NSBundle mainBundle] loadNibNamed:@"STNoFileAlertView" owner:nil options:nil] lastObject];
             alertView.imageView.image = [UIImage imageNamed:@"img_wenjian"];
@@ -50,71 +61,100 @@
     // Dispose of any resources that can be recreated.
 }
 
+- (void)setupSelectAllButton {
+    if (self.fileSelectionTabController.selectedFilesArray.count >= model.dataSource.count) {
+        selectAllButton.selected = YES;
+    } else {
+        selectAllButton.selected = NO;
+    }
+}
+
+- (void)selectAll {
+    if (selectAllButton.selected) {
+        [self.fileSelectionTabController removeAllFiles];
+    } else {
+        [self.fileSelectionTabController addFiles:model.dataSource];
+    }
+    
+    [self.tableView reloadData];
+}
+
 #pragma mark - Table view data source
 
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    [self setupAlertView];
-#warning Incomplete implementation, return the number of sections
-    return 0;
-}
-
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-#warning Incomplete implementation, return the number of rows
-    return 0;
+    [self setupAlertView];
+    return model.dataSource.count;
 }
 
-/*
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:<#@"reuseIdentifier"#> forIndexPath:indexPath];
+    STFileCell *cell = [tableView dequeueReusableCellWithIdentifier:STFileCellIdentifier forIndexPath:indexPath];
     
-    // Configure the cell...
+    STFileInfo *info = [model.dataSource objectAtIndex:indexPath.row];
+    cell.title = info.fileName;
+    cell.subTitle = [NSString formatSize:info.fileSize];
+    
+    if ([self.fileSelectionTabController isSelectedWithFile:info]) {
+        cell.checked = YES;
+        [tableView selectRowAtIndexPath:indexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
+    } else {
+        cell.checked = NO;
+        [tableView deselectRowAtIndexPath:indexPath animated:NO];
+    }
     
     return cell;
 }
-*/
 
-/*
-// Override to support conditional editing of the table view.
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Return NO if you do not want the specified item to be editable.
-    return YES;
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    return 88;
 }
-*/
 
-/*
-// Override to support editing the table view.
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        // Delete the row from the data source
-        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-    } else if (editingStyle == UITableViewCellEditingStyleInsert) {
-        // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-    }   
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
+    if (!headerView) {
+        headerView = [[UIView alloc] init];
+        headerView.backgroundColor = RGBFromHex(0xf4f4f4);
+        
+        headerLabel = [[UILabel alloc] init];
+        headerLabel.font = [UIFont systemFontOfSize:16];
+        headerLabel.textColor = RGBFromHex(0x333333);
+        headerLabel.frame = CGRectMake(16, 0, 200, 40);
+        [headerView addSubview:headerLabel];
+        
+        selectAllButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        [selectAllButton setTitle:NSLocalizedString(@"全选", nil) forState:UIControlStateNormal];
+        [selectAllButton setTitle:NSLocalizedString(@"取消", nil) forState:UIControlStateSelected];
+        [selectAllButton setTitleColor:RGBFromHex(0x01cc99) forState:UIControlStateNormal];
+        [selectAllButton setTitleColor:RGBFromHex(0x01cc99) forState:UIControlStateSelected];
+        selectAllButton.frame = CGRectMake(IPHONE_WIDTH - 96, 0, 80.0f, 40.0f);
+        selectAllButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentRight;
+        [headerView addSubview:selectAllButton];
+        [selectAllButton addTarget:self action:@selector(selectAll)forControlEvents:UIControlEventTouchUpInside];
+    }
+    headerLabel.text = [NSString stringWithFormat:@"%@个文件", @(model.dataSource.count)];
+    [self setupSelectAllButton];
+    
+    return headerView;
 }
-*/
 
-/*
-// Override to support rearranging the table view.
-- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath {
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+    return 40;
 }
-*/
 
-/*
-// Override to support conditional rearranging of the table view.
-- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Return NO if you do not want the item to be re-orderable.
-    return YES;
+#pragma mark - Table view delegate
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    STFileInfo *info = [model.dataSource objectAtIndex:indexPath.row];
+    [self.fileSelectionTabController addFile:info];
+    STFileCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+    cell.checked = YES;
+    [self setupSelectAllButton];
 }
-*/
 
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
+- (void)tableView:(UITableView *)tableView didDeselectRowAtIndexPath:(NSIndexPath *)indexPath {
+    STFileInfo *info = [model.dataSource objectAtIndex:indexPath.row];
+    [self.fileSelectionTabController removeFile:info];
+    STFileCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+    cell.checked = NO;
+    [self setupSelectAllButton];
 }
-*/
 
 @end
