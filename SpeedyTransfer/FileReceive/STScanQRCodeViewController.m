@@ -21,6 +21,7 @@
     UIView *connectingView;
     UILabel *connectingLabel;
     
+    STWifiNotConnectedPopupView2 *popupView;
     STConnectWifiAlertView *wifiAlertView;
 }
 
@@ -118,7 +119,19 @@
     
     [[STMultiPeerTransferModel shareInstant] addObserver:self forKeyPath:@"state" options:NSKeyValueObservingOptionNew context:NULL];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(receiveFileNotification) name:KReceiveFileNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidBecomeActiveNotification:) name:UIApplicationDidBecomeActiveNotification object:nil];
 
+}
+
+- (void)applicationDidBecomeActiveNotification:(NSNotification *)noti {
+    if ([UIDevice isWiFiEnabled]) {
+        if (popupView.superview) {
+            [popupView removeFromSuperview];
+            popupView = nil;
+            
+            [self beginScanning];
+        }
+    }
 }
 
 - (void)knowButtonClick {
@@ -231,9 +244,10 @@
             // url中含有设备名称，认为扫描的是iPhone的二维码
             if (devicename.length > 0) {
                 if (![UIDevice isWiFiEnabled]) {
-                    STWifiNotConnectedPopupView2 *popupView = [[STWifiNotConnectedPopupView2 alloc] init];
+                    popupView = [[STWifiNotConnectedPopupView2 alloc] init];
+                    __weak typeof(self) weakSelf = self;
                     [popupView showInView:self.navigationController.view hiddenBlock:^{
-                        [self beginScanning];
+                        [weakSelf beginScanning];
                     }];
                 } else {
                     [[STMultiPeerTransferModel shareInstant] startBrowsingForName:devicename];

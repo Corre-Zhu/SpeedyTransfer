@@ -12,6 +12,7 @@
 #import <GCDWebServerFunctions.h>
 #import "STWebServerModel.h"
 #import "STConnectWifiAlertView.h"
+#import "STTransferInstructionViewController.h"
 
 @interface STEstablishConnectViewController () {
     UIScrollView *scrollView;
@@ -20,6 +21,8 @@
     UIImageView *arrowIcon;
     UIView *hotspotView;
     UILabel *tipsLabel;
+    
+    BOOL hotSpotButtonClicked;
 }
 
 @end
@@ -206,6 +209,29 @@
     [[STFileTransferModel shareInstant] startListenBroadcast];
     
     [[STFileTransferModel shareInstant] addObserver:self forKeyPath:@"devicesArray" options:NSKeyValueObservingOptionNew context:NULL];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidBecomeActiveNotification:) name:UIApplicationDidBecomeActiveNotification object:nil];
+
+}
+
+- (void)applicationDidBecomeActiveNotification:(NSNotification *)noti {
+    if (hotSpotButtonClicked) {
+        NSString *wifiname = [UIDevice getWifiName];
+        if (wifiname.length > 0 || [UIDevice isPersonalHotspotEnabled]) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                STTransferInstructionViewController *fileTransferVc = [[STTransferInstructionViewController alloc] init];
+                
+                NSMutableArray *controllers = [NSMutableArray arrayWithArray:self.navigationController.viewControllers];
+                [controllers removeLastObject];
+                [controllers addObject:fileTransferVc];
+                
+                [self.navigationController setViewControllers:controllers animated:YES];
+                
+            });
+        }
+        
+    }
+    
 }
 
 - (void)doubtap {
@@ -270,7 +296,7 @@
         scrollView.contentSize = CGSizeMake(IPHONE_WIDTH, tipsLabel.bottom + 10);
         [scrollView setContentOffset:CGPointMake(0, scrollView.contentSize.height - scrollView.height) animated:YES];
         
-        [self setupVariablesAndStartWebServer:[self.fileSelectionTabController allSelectedFiles]];
+        //[self setupVariablesAndStartWebServer:[self.fileSelectionTabController allSelectedFiles]];
 
     } else {
         arrowIcon.highlighted = NO;
@@ -287,6 +313,8 @@
 
 - (void)hotspotButtonClick {
     [ZZFunction goToHotspotPref];
+    
+    hotSpotButtonClicked = YES;
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSKeyValueChangeKey,id> *)change context:(void *)context {

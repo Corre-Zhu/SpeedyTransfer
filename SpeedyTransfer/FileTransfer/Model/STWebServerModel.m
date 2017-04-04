@@ -576,8 +576,10 @@ HT_DEF_SINGLETON(STWebServerModel, shareInstant);
 	}
 	
 	NSDictionary *options = @{GCDWebServerOption_Port: @(KSERVERPORT2)};
-	[self.webServer2 startWithOptions:options error:nil];
-	NSLog(@"Visit %@ in your web browser", self.webServer2.serverURL);
+    NSError *error = nil;
+    if ([self.webServer2 startWithOptions:options error:&error]) {
+        NSLog(@"Visit %@ in your web browser", self.webServer2.serverURL);
+    }
 }
 
 - (void)stopWebServer2 {

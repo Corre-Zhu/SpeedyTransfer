@@ -67,7 +67,14 @@ NSString * const dbName = @"FileTransfer.sqlite";
     [[TencentOAuth alloc] initWithAppId:KQQAppId andDelegate:nil]; //注册
     [WeiboSDK registerApp:HT_WEIBO_APP_KEY];
 
+    [self registerUserNotification];
+    
     return YES;
+}
+
+- (void)registerUserNotification {
+    UIUserNotificationSettings *settings = [UIUserNotificationSettings settingsForTypes:UIUserNotificationTypeBadge | UIUserNotificationTypeSound | UIUserNotificationTypeAlert categories:nil];
+    [[UIApplication sharedApplication] registerUserNotificationSettings:settings];
 }
 
 - (void)setupStartingView {

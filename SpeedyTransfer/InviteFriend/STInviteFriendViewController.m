@@ -16,7 +16,7 @@
 #import <TencentOpenAPI/QQApiInterface.h>
 #import <TencentOpenAPI/TencentOAuth.h>
 
-#define KShareContent @"Hi我一直在用@点传，不仅文件传输速度快，而且传输过程完全无需流量、为批量极速传输大文件的利器，快去下载吧！https://appsto.re/cn/isUdcb.i安卓版点击这里：http://3tkj.cn/dl.php"
+#define KShareContent @"Hi我一直在用@点传，不仅文件传输速度快，而且传输过程完全无需流量、为批量极速传输大文件的利器，快去下载吧！http://t.cn/RiC9im9 安卓版点击这里：http://3tkj.cn/dl.php"
 
 @interface STInviteFriendViewController ()
 {

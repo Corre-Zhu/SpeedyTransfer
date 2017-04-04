@@ -245,6 +245,8 @@
     } else {
         STEstablishConnectViewController *vc = [[STEstablishConnectViewController alloc] init];
         [self.navigationController pushViewController:vc animated:YES];
+        //STTransferInstructionViewController *transferIns = [[STTransferInstructionViewController alloc] init];
+        //[self.navigationController pushViewController:transferIns animated:YES];
     }
     /*
     BOOL hotspotEnable = [UIDevice isPersonalHotspotEnabled];
