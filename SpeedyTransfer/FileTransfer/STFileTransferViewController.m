@@ -20,18 +20,23 @@
 #import "STHomeViewController.h"
 #import "STWebServerModel.h"
 #import "STFileTransferBaseModel.h"
+#import "MJPhotoBrowser.h"
+#import "MJPhoto.h"
+@import AVKit;
 
 static NSString *sendHeaderIdentifier = @"sendHeaderIdentifier";
 static NSString *receiveHeaderIdentifier = @"receiveHeaderIdentifier";
 static NSString *cellIdentifier = @"CellIdentifier";
 
-@interface STFileTransferViewController ()<UITableViewDataSource,UITableViewDelegate>
+@interface STFileTransferViewController ()<UITableViewDataSource,UITableViewDelegate,UIDocumentInteractionControllerDelegate>
 {
     STWifiNotConnectedPopupView2 *popupView;
 
     UIButton *continueSendButton;
     STFileTransferInfo *currentTransferInfo;
     NSTimeInterval lastTimeInterval;
+    
+    UIDocumentInteractionController *documentController;
 }
 
 @property (nonatomic, strong) UITableView *tableView;
@@ -83,7 +88,8 @@ static NSString *cellIdentifier = @"CellIdentifier";
     [self.view addSubview:lineView];
     
     continueSendButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    [continueSendButton setBackgroundImage:[[UIImage imageNamed:@"xuanze_bg"] resizableImageWithCapInsets:UIEdgeInsetsMake(7.0f, 7.0f, 7.0f, 7.0f)] forState:UIControlStateNormal];
+    continueSendButton.backgroundColor = RGBFromHex(0x01cc99);
+    continueSendButton.layer.cornerRadius = 3.0f;
     continueSendButton.frame = CGRectMake((IPHONE_WIDTH - 180.0f) / 2.0f, IPHONE_HEIGHT_WITHOUTTOPBAR - 39.0f, 180.0f, 36.0f);
     [continueSendButton setTitle:NSLocalizedString(@"继续发送文件", nil) forState:UIControlStateNormal];
     continueSendButton.titleLabel.font = [UIFont systemFontOfSize:16.0f];
@@ -193,55 +199,12 @@ static NSString *cellIdentifier = @"CellIdentifier";
     }
 }
 
-#pragma mark - Table view data source
-
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return _model.sectionTransferFiles.count;
-}
-
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    NSArray *arr = [_model.sectionTransferFiles objectAtIndex:section];
-    return arr.count;
-}
-
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    STFileTransferCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier forIndexPath:indexPath];
-    NSArray *arr = [_model.sectionTransferFiles objectAtIndex:indexPath.section];
-    cell.transferInfo = [arr objectAtIndex:indexPath.row];
-    [cell configCell];
-    return cell;
-}
-
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return 92.0f;
-}
-
-- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-    return 60.0f;
-}
-
-- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
-     NSArray *arr = [_model.sectionTransferFiles objectAtIndex:section];
-    STFileTransferInfo *info = arr.firstObject;
-    if (info.transferType == STFileTransferTypeSend) {
-        STSendHeaderView *headView = [tableView dequeueReusableHeaderFooterViewWithIdentifier:sendHeaderIdentifier];
-        headView.transferInfo = info;
-        return headView;
-    } else {
-        STReceiveHeaderView *headView = [tableView dequeueReusableHeaderFooterViewWithIdentifier:receiveHeaderIdentifier];
-        headView.transferInfo = info;
-        return headView;
-    }
-}
-
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    NSArray *arr = [_model.sectionTransferFiles objectAtIndex:indexPath.section];
-    STFileTransferInfo *info = [arr objectAtIndex:indexPath.row];
+- (void)openContactWithTransferInfo:(STFileTransferInfo *)info {
     if (info.fileType == STFileTypeContact) {
         
-        CFDataRef vCardData;
+        CFDataRef vCardData = nil;
         ABAddressBookRef book = ABAddressBookCreate();
-
+        
         if (info.transferType == STFileTransferTypeSend && info.url.integerValue > 0) {
             ABRecordRef recordRef = ABAddressBookGetPersonWithRecordID(book, (ABRecordID)info.url.integerValue);
             CFArrayRef cfArrayRef =  (__bridge CFArrayRef)@[(__bridge id)recordRef];
@@ -264,11 +227,209 @@ static NSString *cellIdentifier = @"CellIdentifier";
                 personViewc.displayedPerson = person;
                 personViewc.allowsEditing = NO;
                 personViewc.allowsActions = YES;
-                [self.navigationController pushViewController:personViewc animated:YES];
+                [self presentViewController:personViewc animated:YES completion:^{
+                    
+                }];
             }
         }
         
     }
+}
+
+- (void)openVideoWithTransferInfo:(STFileTransferInfo *)transferInfo {
+    if (transferInfo.fileType == STFileTypeVideo) {
+        if (transferInfo.url.length > 0 && ![transferInfo.url hasPrefix:@"http://"]) {
+            PHFetchResult *savedAssets = [PHAsset fetchAssetsWithLocalIdentifiers:@[transferInfo.url] options:nil];
+            if (savedAssets.count > 0) {
+                PHAsset *asset = savedAssets.firstObject;
+                [[PHImageManager defaultManager] requestAVAssetForVideo:asset options:nil resultHandler:^(AVAsset * _Nullable avAsset, AVAudioMix * _Nullable audioMix, NSDictionary * _Nullable info) {
+                    AVPlayerItem *playerItem = [AVPlayerItem playerItemWithAsset:avAsset];
+                    AVPlayer *videoPlayer = [AVPlayer playerWithPlayerItem:playerItem];
+                    AVPlayerViewController *playerController = [[AVPlayerViewController alloc]init];
+                    playerController.player = videoPlayer;
+                    
+                    [self presentViewController:playerController animated:YES completion:^{
+                        [videoPlayer play];
+                    }];
+                }];
+            }
+        } else {
+            NSString *path = [[ZZPath downloadPath] stringByAppendingPathComponent:transferInfo.identifier];
+            if ([[NSFileManager defaultManager] fileExistsAtPath:path]) {
+                NSURL *url1 = [NSURL fileURLWithPath:path];
+                
+                AVPlayerItem *playerItem = [AVPlayerItem playerItemWithURL:url1];
+                AVPlayer *videoPlayer = [AVPlayer playerWithPlayerItem:playerItem];
+                AVPlayerViewController *playerController = [[AVPlayerViewController alloc]init];
+                playerController.player = videoPlayer;
+                
+                [self presentViewController:playerController animated:YES completion:^{
+                    [videoPlayer play];
+                }];
+            }
+        }
+        
+    }
+}
+
+- (void)openOtherFileWithTransferInfo:(STFileTransferInfo *)transferInfo {
+    NSString *path = [[ZZPath downloadPath] stringByAppendingPathComponent:transferInfo.identifier];
+    if (![[NSFileManager defaultManager] fileExistsAtPath:path]) {
+        path = [[ZZPath downloadPath] stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.%@", transferInfo.identifier, transferInfo.pathExtension]];
+    }
+    
+    if ([[NSFileManager defaultManager] fileExistsAtPath:path]) {
+        documentController = [UIDocumentInteractionController interactionControllerWithURL:[NSURL fileURLWithPath:path]];
+        if ([documentController presentOptionsMenuFromBarButtonItem:self.navigationItem.leftBarButtonItem animated:YES]) {
+            documentController.delegate = self;
+        } else {
+            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil message:@"此类文件不支持" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
+            [alertView show];
+        }
+    } else {
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil message:@"文件不存在" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
+        [alertView show];
+    }
+    
+    
+    
+}
+
+- (void)openImageWithTransferInfo:(STFileTransferInfo *)transferInfo {
+    NSMutableArray *temp = [NSMutableArray array];
+    MJPhoto *tempPhoto = nil;
+    
+    for (STFileTransferInfo *info in _model.transferFiles) {
+        if (info.fileType == STFileTypePicture && info.transferType == STFileTransferTypeReceive) {
+            if (info.url.length > 0 && ![info.url hasPrefix:@"http://"]) {
+                PHFetchResult *savedAssets = [PHAsset fetchAssetsWithLocalIdentifiers:@[info.url] options:nil];
+                if (savedAssets.count > 0) {
+                    MJPhoto *photo = [[MJPhoto alloc] init];
+                    photo.info = info;
+                    [temp addObject:photo];
+                    
+                    if (transferInfo == info) {
+                        tempPhoto = photo;
+                    }
+                }
+            } else {
+                NSString *path = [[ZZPath downloadPath] stringByAppendingPathComponent:info.identifier];
+                if (![[NSFileManager defaultManager] fileExistsAtPath:path]) {
+                    path = [[ZZPath downloadPath] stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.%@", transferInfo.identifier, transferInfo.pathExtension]];
+                }
+                
+                if ([[NSFileManager defaultManager] fileExistsAtPath:path]) {
+                    MJPhoto *photo = [[MJPhoto alloc] init];
+                    photo.info = info;
+                    [temp addObject:photo];
+                    
+                    if (transferInfo == info) {
+                        tempPhoto = photo;
+                    }
+                }
+            }
+            
+        }
+    }
+    
+    if (temp.count > 0) {
+        MJPhotoBrowser *browser = [[MJPhotoBrowser alloc] init];
+        browser.photos = temp;
+        browser.currentPhotoIndex = [temp indexOfObject:tempPhoto];
+        [self.navigationController pushViewController:browser animated:YES];
+    }
+    
+}
+
+#pragma mark - UIDocumentInteractionControllerDelegate
+
+- (UIViewController *)documentInteractionControllerViewControllerForPreview:(UIDocumentInteractionController *)controller {
+    return self;
+}
+- (UIView *)documentInteractionControllerViewForPreview:(UIDocumentInteractionController *)controller {
+    return self.view;
+}
+- (CGRect)documentInteractionControllerRectForPreview:(UIDocumentInteractionController *)controller {
+    return self.view.frame;
+}
+
+//点击预览窗口的“Done”(完成)按钮时调用
+- (void)documentInteractionControllerDidEndPreview:(UIDocumentInteractionController *)controller {
+}
+
+- (void)openButtonClick:(UIButton *)button event:(UIEvent *)event {
+    NSSet *touches = [event allTouches];
+    UITouch *touch = [touches anyObject];
+    CGPoint currentTouchPosition = [touch locationInView:self.tableView];
+    NSIndexPath *indexPath = [self.tableView indexPathForRowAtPoint:currentTouchPosition];
+    NSArray *arr = [_model.sectionTransferFiles objectAtIndex:indexPath.section];
+    STFileTransferInfo *transferInfo = [arr objectAtIndex:indexPath.row];
+    if (transferInfo.fileType == STFileTypeVideo) {
+        [self openVideoWithTransferInfo:transferInfo];
+    } else if (transferInfo.fileType == STFileTypePicture) {
+        [self openImageWithTransferInfo:transferInfo];
+    } else if (transferInfo.fileType == STFileTypeContact) {
+        [self openContactWithTransferInfo:transferInfo];
+    } else {
+        [self openOtherFileWithTransferInfo:transferInfo];
+    }
+    
+}
+
+#pragma mark - Table view data source
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+    return _model.sectionTransferFiles.count;
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    NSArray *arr = [_model.sectionTransferFiles objectAtIndex:section];
+    return arr.count;
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    STFileTransferCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier forIndexPath:indexPath];
+    [cell.openButton addTarget:self action:@selector(openButtonClick:event:) forControlEvents:UIControlEventTouchUpInside];
+    NSArray *arr = [_model.sectionTransferFiles objectAtIndex:indexPath.section];
+    cell.transferInfo = [arr objectAtIndex:indexPath.row];
+    [cell configCell];
+    return cell;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    return 100.0f;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+    return 60.0f;
+}
+
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
+    NSArray *arr = [_model.sectionTransferFiles objectAtIndex:section];
+    double fileSize = 0;
+    for (STFileTransferInfo *info in arr) {
+        fileSize += info.fileSize;
+    }
+    
+    STFileTransferInfo *info = arr.firstObject;
+    if (info.transferType == STFileTransferTypeSend) {
+        STSendHeaderView *headView = [tableView dequeueReusableHeaderFooterViewWithIdentifier:sendHeaderIdentifier];
+        headView.name = info.deviceName;
+        headView.filesCount = arr.count;
+        headView.fileSize = fileSize;
+        
+        return headView;
+    } else {
+        STReceiveHeaderView *headView = [tableView dequeueReusableHeaderFooterViewWithIdentifier:receiveHeaderIdentifier];
+        headView.name = info.deviceName;
+        headView.filesCount = arr.count;
+        headView.fileSize = fileSize;
+        return headView;
+    }
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    
 
 }
 

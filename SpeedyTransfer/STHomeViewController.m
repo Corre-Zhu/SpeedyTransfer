@@ -326,11 +326,11 @@
 }
 
 - (void)receiveButtonClick {
-    STScanQRCodeViewController *vc = [[STScanQRCodeViewController alloc] init];
-    [self.navigationController pushViewController:vc animated:YES];
-//    STFileTransferViewController *fileTransferVc = [[STFileTransferViewController alloc] init];
-//    fileTransferVc.isFromReceive = YES;
-//    [self.navigationController pushViewController:fileTransferVc animated:YES];
+//    STScanQRCodeViewController *vc = [[STScanQRCodeViewController alloc] init];
+  //  [self.navigationController pushViewController:vc animated:YES];
+    STFileTransferViewController *fileTransferVc = [[STFileTransferViewController alloc] init];
+    fileTransferVc.isFromReceive = YES;
+    [self.navigationController pushViewController:fileTransferVc animated:YES];
 }
 
 - (void)inviteFriendButtonClick {

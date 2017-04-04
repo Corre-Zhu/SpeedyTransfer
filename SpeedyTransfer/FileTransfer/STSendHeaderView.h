@@ -10,6 +10,8 @@
 
 @interface STSendHeaderView : UITableViewHeaderFooterView
 
-@property (nonatomic, strong) STFileTransferInfo *transferInfo;
+@property (nonatomic, strong) NSString *name;
+@property (nonatomic, assign) NSInteger filesCount;
+@property (nonatomic, assign) double fileSize;
 
 @end

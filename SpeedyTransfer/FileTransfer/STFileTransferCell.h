@@ -12,6 +12,7 @@
 @interface STFileTransferCell : UITableViewCell
 
 @property (nonatomic, strong) STFileTransferInfo *transferInfo;
+@property (nonatomic, strong) UIButton *openButton;
 
 - (void)configCell;
 

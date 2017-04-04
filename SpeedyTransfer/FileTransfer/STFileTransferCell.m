@@ -17,8 +17,9 @@
     UILabel *sizeLabel;
     UIProgressView *progressView;
     UILabel *rateLabel;
-    UIImageView *succeedImageView;
+    UILabel *succeedLabel;
     UILabel *failedLabel;
+    UIButton *openButton;
     
     BOOL progressObserverAdded;
 }
@@ -26,6 +27,8 @@
 @end
 
 @implementation STFileTransferCell
+
+@synthesize openButton;
 
 - (void)dealloc {
     if (progressObserverAdded) {
@@ -40,7 +43,7 @@
     if (self) {
         self.selectionStyle = UITableViewCellSelectionStyleNone;
         
-        coverImageView = [[UIImageView alloc] initWithFrame:CGRectMake(16.0f, 10.0f, 72.0f, 72.0f)];
+        coverImageView = [[UIImageView alloc] initWithFrame:CGRectMake(16.0f, 10.0f, 80.0f, 80.0f)];
         coverImageView.layer.cornerRadius = 4.0f;
         coverImageView.layer.masksToBounds = YES;
         [self.contentView addSubview:coverImageView];
@@ -50,13 +53,13 @@
         fileNameLabel.font = [UIFont systemFontOfSize:14.0f];
         [self.contentView addSubview:fileNameLabel];
         
-        dateLabel = [[UILabel alloc] init];
-        dateLabel.textColor = RGBFromHex(0x333333);
-        dateLabel.font = [UIFont systemFontOfSize:12.0f];
-        [self.contentView addSubview:dateLabel];
+        //dateLabel = [[UILabel alloc] init];
+        //dateLabel.textColor = RGBFromHex(0x333333);
+        //dateLabel.font = [UIFont systemFontOfSize:12.0f];
+        //[self.contentView addSubview:dateLabel];
         
         sizeLabel = [[UILabel alloc] initWithFrame:CGRectMake(coverImageView.right + 10.0f, 42.0f, 100.0f, 15.0f)];
-        sizeLabel.textColor = RGBFromHex(0x333333);
+        sizeLabel.textColor = RGBFromHex(0x999999);
         sizeLabel.font = [UIFont systemFontOfSize:12.0f];
         [self.contentView addSubview:sizeLabel];
         
@@ -66,31 +69,48 @@
         [self.contentView addSubview:progressView];
         [progressView setTransform:CGAffineTransformMakeScale(1.0, 2.2)];
         
-        rateLabel = [[UILabel alloc] initWithFrame:CGRectMake(progressView.right + 16.0f, 66.0f, IPHONE_WIDTH - progressView.right - 32.0f, 16.0f)];
+        rateLabel = [[UILabel alloc] initWithFrame:CGRectMake(progressView.right + 16.0f, 64.0f, IPHONE_WIDTH - progressView.right - 32.0f, 16.0f)];
         if (IPHONE_WIDTH == 320.0f) {
-            rateLabel.frame = CGRectMake(progressView.right + 10.0f, 66.0f, IPHONE_WIDTH - progressView.right - 20.0f, 16.0f);
+            rateLabel.frame = CGRectMake(progressView.right + 10.0f, 64.0f, IPHONE_WIDTH - progressView.right - 20.0f, 16.0f);
         }
-        rateLabel.textColor = RGBFromHex(0x333333);
-        rateLabel.font = [UIFont systemFontOfSize:12.0f];
+        rateLabel.textColor = RGBFromHex(0x999999);
+        rateLabel.font = [UIFont systemFontOfSize:14.0f];
         [self.contentView addSubview:rateLabel];
         
-        succeedImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"check_green"]];
-        succeedImageView.left = progressView.right + 10.0f;
-        succeedImageView.centerY = progressView.centerY - 2.0f;
-        [self.contentView addSubview:succeedImageView];
-        succeedImageView.hidden = YES;
+        succeedLabel = [[UILabel alloc] initWithFrame:CGRectMake(progressView.right + 16.0f, 0.0f, 53, 22)];
+        succeedLabel.centerY = progressView.centerY - 2.0f;
+        succeedLabel.textColor = [UIColor whiteColor];
+        succeedLabel.font = [UIFont systemFontOfSize:12.0f];
+        succeedLabel.textAlignment = NSTextAlignmentCenter;
+        succeedLabel.text = NSLocalizedString(@"已发送", nil);
+        succeedLabel.backgroundColor = RGBFromHex(0x01cc99);
+        succeedLabel.layer.cornerRadius = 3.0;
+        succeedLabel.layer.masksToBounds = YES;
+        [self.contentView addSubview:succeedLabel];
+        succeedLabel.hidden = YES;
         
-        failedLabel = [[UILabel alloc] initWithFrame:CGRectMake(progressView.right + 10.0f, 0.0f, 80.0f, 17.0f)];
+        failedLabel = [[UILabel alloc] initWithFrame:CGRectMake(progressView.right + 16.0f, 0.0f, 80.0f, 17.0f)];
         failedLabel.centerY = progressView.centerY - 2.0f;
-        failedLabel.textColor = RGBFromHex(0xff3b30);
+        failedLabel.textColor = RGBFromHex(0xff6600);
         failedLabel.font = [UIFont systemFontOfSize:14.0f];
         failedLabel.textAlignment = NSTextAlignmentLeft;
         failedLabel.text = NSLocalizedString(@"传输失败", nil);
         [self.contentView addSubview:failedLabel];
         failedLabel.hidden = YES;
         
-        UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(16.0f, 91.5f, IPHONE_WIDTH, 0.5f)];
-        lineView.backgroundColor = [UIColor lightGrayColor];
+        openButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        [openButton setTitle:@"打开" forState:UIControlStateNormal];
+        [openButton setTitleColor:RGBFromHex(0x01cc99) forState:UIControlStateNormal];
+        openButton.titleLabel.font = [UIFont systemFontOfSize:14];
+        openButton.layer.cornerRadius = 6.0;
+        openButton.layer.borderColor = RGBFromHex(0x01cc99).CGColor;
+        openButton.layer.borderWidth = 2.0f;
+        openButton.frame = CGRectMake(progressView.right + 16, progressView.centerY - 22, 70, 38);
+        [self.contentView addSubview:openButton];
+        openButton.hidden = YES;
+        
+        UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(16.0f, 99.5f, IPHONE_WIDTH, 0.5f)];
+        lineView.backgroundColor = RGBFromHex(0xcacaca);
         [self.contentView addSubview:lineView];
     }
     
@@ -170,34 +190,38 @@
 		coverImageView.image = [UIImage imageNamed:@"question"];
 	}
 	
+    succeedLabel.hidden = YES;
+    openButton.hidden = YES;
     if (_transferInfo.transferStatus == STFileTransferStatusSending ||
         _transferInfo.transferStatus == STFileTransferStatusReceiving) {
-        succeedImageView.hidden = YES;
         failedLabel.hidden = YES;
         rateLabel.hidden = NO;
     } else if (_transferInfo.transferStatus == STFileTransferStatusSendFailed ||
                _transferInfo.transferStatus == STFileTransferStatusReceiveFailed) {
-        succeedImageView.hidden = YES;
         failedLabel.hidden = NO;
         rateLabel.hidden = YES;
     } else if (_transferInfo.transferStatus == STFileTransferStatusSent ||
                _transferInfo.transferStatus == STFileTransferStatusReceived) {
-        succeedImageView.hidden = NO;
+        if (_transferInfo.transferStatus == STFileTransferStatusSent) {
+            succeedLabel.hidden = NO;
+        } else {
+            openButton.hidden = NO;
+        }
         failedLabel.hidden = YES;
         rateLabel.hidden = YES;
     }
     
     fileNameLabel.text = _transferInfo.fileName;
-    dateLabel.text = _transferInfo.dateString;
+   // dateLabel.text = _transferInfo.dateString;
     sizeLabel.text = _transferInfo.fileSizeString;
     rateLabel.text = _transferInfo.rateString;
     progressView.progress = _transferInfo.progress;
 
-    [dateLabel sizeToFit];
-    dateLabel.left = coverImageView.right + 10.0f;
-    dateLabel.top = 42.0f;
+    //[dateLabel sizeToFit];
+    //dateLabel.left = coverImageView.right + 10.0f;
+    //dateLabel.top = 42.0f;
     
-    sizeLabel.left = dateLabel.right + 16.0f;
+    sizeLabel.left = coverImageView.right + 10.0f;
     
     fileNameLabel.frame = CGRectMake(coverImageView.right + 10.0f, 12.0f, IPHONE_WIDTH - coverImageView.right - 26.0f, 17.0f);
 }

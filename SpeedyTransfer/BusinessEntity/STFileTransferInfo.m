@@ -33,6 +33,7 @@ HT_DEF_SINGLETON(STFileTransferInfo, shareInstant);
         self.url = [dic stringForKey:DBFileTransfer._url];
         self.vcardString = [dic stringForKey:DBFileTransfer._vcard];
         self.fileName = [dic stringForKey:DBFileTransfer._fileName];
+        self.pathExtension = [self.fileName pathExtension];
         self.fileSize = [dic doubleForKey:DBFileTransfer._fileSize];
         self.dateString = [dic stringForKey:DBFileTransfer._date];
         self.downloadSpeed = [dic doubleForKey:DBFileTransfer._downloadSpeed];

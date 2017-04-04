@@ -537,10 +537,14 @@ HT_DEF_SINGLETON(STWebServerModel, shareInstant);
             }
 			
             NSString* relativePath = [[multiPartFormRequest firstArgumentForControlName:@"path"] string];
-            NSString* absolutePath = [weakSelf uniquePathForPath:[[[ZZPath tmpReceivedPath] stringByAppendingPathComponent:relativePath] stringByAppendingPathComponent:file.fileName]];
-            if (![weakSelf checkSandboxedPath:absolutePath]) {
-                return [GCDWebServerErrorResponse responseWithClientError:kGCDWebServerHTTPStatusCode_NotFound message:@"\"%@\" does not exist", relativePath];
+            
+            NSString *identifier = [NSString uniqueID];
+            NSString *fileName = identifier;
+            NSString *pathExtension = [file.fileName pathExtension];
+            if (pathExtension.length > 0) {
+                fileName = [NSString stringWithFormat:@"%@.%@", identifier, pathExtension];
             }
+            NSString* absolutePath = [[ZZPath downloadPath] stringByAppendingPathComponent:[NSString stringWithFormat:@"/%@", fileName]];
             
             NSError* error = nil;
             if (![[NSFileManager defaultManager] moveItemAtPath:file.temporaryPath toPath:absolutePath error:&error]) {
@@ -549,7 +553,7 @@ HT_DEF_SINGLETON(STWebServerModel, shareInstant);
             
             // 上传成功
             STFileTransferInfo *entity = [[STFileTransferInfo alloc] init];
-            entity.identifier = [NSString uniqueID];
+            entity.identifier = identifier;
             entity.transferType = STFileTransferTypeReceive;
             entity.transferStatus = STFileTransferStatusReceived;
             entity.url = absolutePath;

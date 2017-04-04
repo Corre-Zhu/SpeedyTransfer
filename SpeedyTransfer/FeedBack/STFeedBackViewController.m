@@ -60,6 +60,12 @@ static NSString *FeedbackTimeCellIdentifier = @"FeedbackTimeCellIdentifier";
     [self addKeyboardNotification];
 }
 
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    
+    [self scrollToBottomAnimated:NO];
+}
+
 - (void)leftBarButtonItemClick {
     [self.navigationController popViewControllerAnimated:YES];
 }

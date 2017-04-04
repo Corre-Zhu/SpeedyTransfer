@@ -17,6 +17,13 @@
 		4569CB391C41264C00A97D2A /* ZZReachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 4569CB381C41264C00A97D2A /* ZZReachability.m */; };
 		458C7B5E1C97A3AD00CA8017 /* Website in Resources */ = {isa = PBXBuildFile; fileRef = 458C7B5D1C97A3AD00CA8017 /* Website */; };
 		5193011BCFD3897B337DD5C0 /* libPods-SpeedyTransfer.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D9ACA0ACB5C116D6970B319 /* libPods-SpeedyTransfer.a */; };
+		CE0322731E9342050060C25C /* MJPhoto.m in Sources */ = {isa = PBXBuildFile; fileRef = CE0322671E9342050060C25C /* MJPhoto.m */; };
+		CE0322741E9342050060C25C /* MJPhotoBrowser.bundle in Resources */ = {isa = PBXBuildFile; fileRef = CE0322681E9342050060C25C /* MJPhotoBrowser.bundle */; };
+		CE0322751E9342050060C25C /* MJPhotoBrowser.m in Sources */ = {isa = PBXBuildFile; fileRef = CE03226A1E9342050060C25C /* MJPhotoBrowser.m */; };
+		CE0322761E9342050060C25C /* MJPhotoLoadingView.m in Sources */ = {isa = PBXBuildFile; fileRef = CE03226C1E9342050060C25C /* MJPhotoLoadingView.m */; };
+		CE0322771E9342050060C25C /* MJPhotoProgressView.m in Sources */ = {isa = PBXBuildFile; fileRef = CE03226E1E9342050060C25C /* MJPhotoProgressView.m */; };
+		CE0322781E9342050060C25C /* MJPhotoToolbar.m in Sources */ = {isa = PBXBuildFile; fileRef = CE0322701E9342050060C25C /* MJPhotoToolbar.m */; };
+		CE0322791E9342050060C25C /* MJPhotoView.m in Sources */ = {isa = PBXBuildFile; fileRef = CE0322721E9342050060C25C /* MJPhotoView.m */; };
 		CE1A6E2B1CE82128006795E7 /* libWeiboSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CE1A6E281CE82128006795E7 /* libWeiboSDK.a */; };
 		CE1A6E2C1CE82128006795E7 /* WeiboSDK.bundle in Resources */ = {isa = PBXBuildFile; fileRef = CE1A6E291CE82128006795E7 /* WeiboSDK.bundle */; };
 		CE1D323A1E7E5CCA00079C6A /* STConnectWifiAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = CE1D32391E7E5CCA00079C6A /* STConnectWifiAlertView.m */; };
@@ -127,6 +134,19 @@
 		458C7B5D1C97A3AD00CA8017 /* Website */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Website; sourceTree = "<group>"; };
 		4D9ACA0ACB5C116D6970B319 /* libPods-SpeedyTransfer.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-SpeedyTransfer.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		6D16DCCC400C02236F122188 /* Pods-SpeedyTransfer.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SpeedyTransfer.debug.xcconfig"; path = "Pods/Target Support Files/Pods-SpeedyTransfer/Pods-SpeedyTransfer.debug.xcconfig"; sourceTree = "<group>"; };
+		CE0322661E9342050060C25C /* MJPhoto.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MJPhoto.h; sourceTree = "<group>"; };
+		CE0322671E9342050060C25C /* MJPhoto.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MJPhoto.m; sourceTree = "<group>"; };
+		CE0322681E9342050060C25C /* MJPhotoBrowser.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = MJPhotoBrowser.bundle; sourceTree = "<group>"; };
+		CE0322691E9342050060C25C /* MJPhotoBrowser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MJPhotoBrowser.h; sourceTree = "<group>"; };
+		CE03226A1E9342050060C25C /* MJPhotoBrowser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MJPhotoBrowser.m; sourceTree = "<group>"; };
+		CE03226B1E9342050060C25C /* MJPhotoLoadingView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MJPhotoLoadingView.h; sourceTree = "<group>"; };
+		CE03226C1E9342050060C25C /* MJPhotoLoadingView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MJPhotoLoadingView.m; sourceTree = "<group>"; };
+		CE03226D1E9342050060C25C /* MJPhotoProgressView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MJPhotoProgressView.h; sourceTree = "<group>"; };
+		CE03226E1E9342050060C25C /* MJPhotoProgressView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MJPhotoProgressView.m; sourceTree = "<group>"; };
+		CE03226F1E9342050060C25C /* MJPhotoToolbar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MJPhotoToolbar.h; sourceTree = "<group>"; };
+		CE0322701E9342050060C25C /* MJPhotoToolbar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MJPhotoToolbar.m; sourceTree = "<group>"; };
+		CE0322711E9342050060C25C /* MJPhotoView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MJPhotoView.h; sourceTree = "<group>"; };
+		CE0322721E9342050060C25C /* MJPhotoView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MJPhotoView.m; sourceTree = "<group>"; };
 		CE1A6E281CE82128006795E7 /* libWeiboSDK.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libWeiboSDK.a; sourceTree = "<group>"; };
 		CE1A6E291CE82128006795E7 /* WeiboSDK.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = WeiboSDK.bundle; sourceTree = "<group>"; };
 		CE1A6E2A1CE82128006795E7 /* WeiboSDK.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WeiboSDK.h; sourceTree = "<group>"; };
@@ -371,6 +391,26 @@
 			name = Pods;
 			sourceTree = "<group>";
 		};
+		CE0322651E9342050060C25C /* PhotoBrowser */ = {
+			isa = PBXGroup;
+			children = (
+				CE0322661E9342050060C25C /* MJPhoto.h */,
+				CE0322671E9342050060C25C /* MJPhoto.m */,
+				CE0322681E9342050060C25C /* MJPhotoBrowser.bundle */,
+				CE0322691E9342050060C25C /* MJPhotoBrowser.h */,
+				CE03226A1E9342050060C25C /* MJPhotoBrowser.m */,
+				CE03226B1E9342050060C25C /* MJPhotoLoadingView.h */,
+				CE03226C1E9342050060C25C /* MJPhotoLoadingView.m */,
+				CE03226D1E9342050060C25C /* MJPhotoProgressView.h */,
+				CE03226E1E9342050060C25C /* MJPhotoProgressView.m */,
+				CE03226F1E9342050060C25C /* MJPhotoToolbar.h */,
+				CE0322701E9342050060C25C /* MJPhotoToolbar.m */,
+				CE0322711E9342050060C25C /* MJPhotoView.h */,
+				CE0322721E9342050060C25C /* MJPhotoView.m */,
+			);
+			path = PhotoBrowser;
+			sourceTree = "<group>";
+		};
 		CE1A6E261CE82128006795E7 /* SNS */ = {
 			isa = PBXGroup;
 			children = (
@@ -578,6 +618,7 @@
 		CEB29E681C21B88C00F17804 /* ThirdParty */ = {
 			isa = PBXGroup;
 			children = (
+				CE0322651E9342050060C25C /* PhotoBrowser */,
 				CE1A6E261CE82128006795E7 /* SNS */,
 				4558BFC91C7458FB002F5718 /* OpenUDID */,
 				4558BFC51C7453DD002F5718 /* KeychainUtils */,
@@ -864,6 +905,7 @@
 				CE2AD7AF1C4AA15D00C67D1D /* IMG_7551.JPG in Resources */,
 				CED926E41E8D577B00FBC133 /* STNoFileAlertView.xib in Resources */,
 				CED926F41E92624600FBC133 /* STFeedbackTimeCell.xib in Resources */,
+				CE0322741E9342050060C25C /* MJPhotoBrowser.bundle in Resources */,
 				CED62A4B1C09514200270EDB /* Assets.xcassets in Resources */,
 				CE6536E61C2F07A600C1E8A3 /* defaultSql.sql in Resources */,
 				CE2AD7AD1C4A985F00C67D1D /* test.png in Resources */,
@@ -936,6 +978,7 @@
 				CED0D1201C1D576D00F5C0E3 /* STContactsSelectionViewController.m in Sources */,
 				CE8975631C26AE5B002E11F8 /* MBProgressHUD.m in Sources */,
 				CE9C91A91C39414D0075CB06 /* STFeedbackInfo.m in Sources */,
+				CE0322771E9342050060C25C /* MJPhotoProgressView.m in Sources */,
 				CED0D1331C1D959800F5C0E3 /* UITableViewCell+ST.m in Sources */,
 				CEA74C321C79D68100E1B34C /* STReceiveHeaderView.m in Sources */,
 				CED62A351C094FDD00270EDB /* STHomeViewController.m in Sources */,
@@ -951,6 +994,7 @@
 				4558BFCC1C745903002F5718 /* OpenUDID.m in Sources */,
 				CED926F31E92624600FBC133 /* STFeedbackTimeCell.m in Sources */,
 				CE6536DF1C2ED74600C1E8A3 /* ZZPath.m in Sources */,
+				CE0322751E9342050060C25C /* MJPhotoBrowser.m in Sources */,
 				CEBB14761C33DB5C00874142 /* STAboutViewController.m in Sources */,
 				4569CB391C41264C00A97D2A /* ZZReachability.m in Sources */,
 				CE6536F31C2FD53600C1E8A3 /* STFileReceiveModel.m in Sources */,
@@ -963,6 +1007,7 @@
 				CEB29E7C1C230BA400F17804 /* UIViewController+ST.m in Sources */,
 				CED926E71E8D5B7C00FBC133 /* STNoFileAlertView.m in Sources */,
 				CE6536C91C2ECD3400C1E8A3 /* STFileTransferViewController.m in Sources */,
+				CE0322731E9342050060C25C /* MJPhoto.m in Sources */,
 				CE6536D61C2ECEC300C1E8A3 /* STFileTransferInfo.m in Sources */,
 				CED62A5F1C099C6000270EDB /* UIColor+ZZ.m in Sources */,
 				CE9C91B51C3970D60075CB06 /* STPersonalSettingCell.m in Sources */,
@@ -980,6 +1025,7 @@
 				CED0D13A1C21A58800F5C0E3 /* NSString+Extension.m in Sources */,
 				CED62A531C09719500270EDB /* UIView+ZZ.m in Sources */,
 				CE6536DC1C2ED0AF00C1E8A3 /* STFileTransferModel.m in Sources */,
+				CE0322761E9342050060C25C /* MJPhotoLoadingView.m in Sources */,
 				CE6536C81C2ECD3400C1E8A3 /* STFileTransferCell.m in Sources */,
 				CEB74E021E6BEF0500E58911 /* STPacket.m in Sources */,
 				CEBB14731C33CCD300874142 /* STSettingViewController.m in Sources */,
@@ -989,9 +1035,11 @@
 				CE6536E91C2F096600C1E8A3 /* HTFMDatabase.m in Sources */,
 				CEA12C491C29ABCB00328CEF /* Reachability.m in Sources */,
 				CE69FD161CE81A4F001A725F /* UIAlertController+HT.m in Sources */,
+				CE0322781E9342050060C25C /* MJPhotoToolbar.m in Sources */,
 				CE9C91A31C390DAB0075CB06 /* STFeedBackViewController.m in Sources */,
 				CEA74C2C1C78656400E1B34C /* STDeviceButton.m in Sources */,
 				CED0D12D1C1D77DF00F5C0E3 /* HZAssetCollectionViewCell.m in Sources */,
+				CE0322791E9342050060C25C /* MJPhotoView.m in Sources */,
 				CEB7C7B81E502EC600E924D4 /* STWalkThroughView.m in Sources */,
 				4558BFD51C747483002F5718 /* STWebServerModel.m in Sources */,
 				CEB29E741C21B8BE00F17804 /* NSArray+PureLayout.m in Sources */,
