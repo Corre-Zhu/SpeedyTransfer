@@ -55,4 +55,19 @@
     }
 }
 
+- (void)deleteFiles:(NSArray *)files {
+    NSMutableArray *fileIdArr = [NSMutableArray arrayWithCapacity:files.count];
+    for (STFileInfo *info in files) {
+        [fileIdArr addObject:@(info.fileId)];
+    }
+    
+    HTSQLBuffer *sql = [[HTSQLBuffer alloc] init];
+    sql.DELELTE(DBFileTransfer._tableName).WHERE(SQLNumberIn(DBFileTransfer._id, fileIdArr));
+    BOOL result = [database executeUpdate:sql.sql];
+    if (!result) {
+        
+    }
+
+}
+
 @end

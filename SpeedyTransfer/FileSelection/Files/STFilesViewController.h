@@ -10,4 +10,6 @@
 
 @interface STFilesViewController : UITableViewController
 
+@property (nonatomic, assign) BOOL isForEdit;
+
 @end

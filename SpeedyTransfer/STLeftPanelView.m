@@ -26,6 +26,7 @@
         self.clipsToBounds = YES;
         
         UIImageView *backView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"bg_img_111"]];
+        backView.frame = CGRectMake(0, 0, width, 300 / width * 310);
         [self addSubview:backView];
         
         _headImageView = [[UIImageView alloc] initWithFrame:CGRectMake(30.0f, 70.0f, 80.0f, 80.0f)];

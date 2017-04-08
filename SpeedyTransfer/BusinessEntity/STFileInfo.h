@@ -18,6 +18,7 @@
 @property (nonatomic) double fileSize;
 @property (nonatomic, strong) NSString *localPath;
 @property (nonatomic) BOOL fileExist;
+@property (nonatomic) NSInteger fileId;
 
 - (instancetype)initWithDictionary:(NSDictionary *)dic;
 

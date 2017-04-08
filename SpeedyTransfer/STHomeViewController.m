@@ -22,6 +22,7 @@
 #import "STLeftPanelView.h"
 #import "STFileSelectionViewController.h"
 #import "STScanQRCodeViewController.h"
+#import "STFilesViewController.h"
 #import "ZZFunction.h"
 
 @interface STHomeViewController ()
@@ -364,7 +365,9 @@
 }
 
 - (void)mineFilesButtonClick {
-    
+    STFilesViewController *vc = [[STFilesViewController alloc] init];
+    vc.isForEdit = YES;
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 @end

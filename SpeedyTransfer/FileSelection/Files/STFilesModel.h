@@ -13,5 +13,6 @@
 @property (nonatomic, strong) NSArray *dataSource;
 
 - (void)initData;
+- (void)deleteFiles:(NSArray *)files;
 
 @end
