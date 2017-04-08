@@ -14,7 +14,7 @@
 
 static NSString *STFileCellIdentifier = @"STFileCellIdentifier";
 
-@interface STFilesViewController () {
+@interface STFilesViewController ()<UIDocumentInteractionControllerDelegate> {
     UIView *headerView;
     UILabel *headerLabel;
     UIButton *selectAllButton;
@@ -25,6 +25,8 @@ static NSString *STFileCellIdentifier = @"STFileCellIdentifier";
     UIButton *transferButton;
     
     STFilesModel *model;
+    UIDocumentInteractionController *documentController;
+
 }
 
 @property (nonatomic, strong) NSMutableArray *selectedFilesArray;
@@ -40,7 +42,9 @@ static NSString *STFileCellIdentifier = @"STFileCellIdentifier";
     self.view.backgroundColor = [UIColor whiteColor];
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"left_white"] style:UIBarButtonItemStylePlain target:self action:@selector(leftBarButtonItemClick)];
     
-    self.tableView.allowsMultipleSelection = YES;
+    if (!_isForEdit) {
+        self.tableView.allowsMultipleSelection = YES;
+    }
     self.tableView.tableFooterView = [UIView new];
     [self.tableView registerClass:[STFileCell class] forCellReuseIdentifier:STFileCellIdentifier];
     
@@ -98,7 +102,6 @@ static NSString *STFileCellIdentifier = @"STFileCellIdentifier";
         [model deleteFiles:_selectedFilesArray];
         [model initData];
         [_selectedFilesArray removeAllObjects];
-        [self setupSelectAllButton];
         [self selectedCountChanged];
         [self.tableView reloadData];
     }];
@@ -203,6 +206,8 @@ static NSString *STFileCellIdentifier = @"STFileCellIdentifier";
         toolView.hidden = YES;
     }
     
+    [self setupSelectAllButton];
+    
     [self.tableView setContentInset:UIEdgeInsetsMake(0, 0, _selectedFilesArray.count > 0 ? 49 : 0, 0)];
     [self.tableView setScrollIndicatorInsets:UIEdgeInsetsMake(0, 0, _selectedFilesArray.count > 0 ? 49 : 0, 0)];
 
@@ -238,6 +243,57 @@ static NSString *STFileCellIdentifier = @"STFileCellIdentifier";
     }
 }
 
+- (void)checkButtonClick:(UIButton *)button event:(UIEvent *)event {
+    NSSet *touches = [event allTouches];
+    UITouch *touch = [touches anyObject];
+    CGPoint currentTouchPosition = [touch locationInView:self.tableView];
+    NSIndexPath *indexPath = [self.tableView indexPathForRowAtPoint:currentTouchPosition];
+    STFileCell *cell = (STFileCell *)[self.tableView cellForRowAtIndexPath:indexPath];
+    STFileInfo *info = [model.dataSource objectAtIndex:indexPath.row];
+    if ([_selectedFilesArray containsObject:info]) {
+        [_selectedFilesArray removeObject:info];
+        cell.checked = NO;
+    } else {
+        [_selectedFilesArray addObject:info];
+        cell.checked = YES;
+    }
+    
+    [self selectedCountChanged];
+    
+}
+
+- (void)openFile:(STFileInfo *)fileInfo {
+    if (fileInfo.fileExist) {
+        documentController = [UIDocumentInteractionController interactionControllerWithURL:[NSURL fileURLWithPath:fileInfo.localPath]];
+        if ([documentController presentOptionsMenuFromBarButtonItem:self.navigationItem.leftBarButtonItem animated:YES]) {
+            documentController.delegate = self;
+        } else {
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"此类文件不支持" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
+            [alert show];
+        }
+    } else {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"文件不存在" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
+        [alert show];
+    }
+    
+}
+
+#pragma mark - UIDocumentInteractionControllerDelegate
+
+- (UIViewController *)documentInteractionControllerViewControllerForPreview:(UIDocumentInteractionController *)controller {
+    return self;
+}
+- (UIView *)documentInteractionControllerViewForPreview:(UIDocumentInteractionController *)controller {
+    return self.view;
+}
+- (CGRect)documentInteractionControllerRectForPreview:(UIDocumentInteractionController *)controller {
+    return self.view.frame;
+}
+
+//点击预览窗口的“Done”(完成)按钮时调用
+- (void)documentInteractionControllerDidEndPreview:(UIDocumentInteractionController *)controller {
+}
+
 #pragma mark - Table view data source
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
@@ -255,12 +311,15 @@ static NSString *STFileCellIdentifier = @"STFileCellIdentifier";
     if (_isForEdit) {
         if ([_selectedFilesArray containsObject:info]) {
             cell.checked = YES;
-            [tableView selectRowAtIndexPath:indexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
         } else {
             cell.checked = NO;
-            [tableView deselectRowAtIndexPath:indexPath animated:NO];
         }
+        
+        [cell.button addTarget:self action:@selector(checkButtonClick:event:) forControlEvents:UIControlEventTouchUpInside];
+        
     } else {
+        cell.button.enabled = NO;
+        
         if ([self.fileSelectionTabController isSelectedWithFile:info]) {
             cell.checked = YES;
             [tableView selectRowAtIndexPath:indexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
@@ -323,18 +382,15 @@ static NSString *STFileCellIdentifier = @"STFileCellIdentifier";
     STFileInfo *info = [model.dataSource objectAtIndex:indexPath.row];
     
     if (_isForEdit) {
-        if (![_selectedFilesArray containsObject:info]) {
-            [_selectedFilesArray addObject:info];
-        }
-        
-        [self selectedCountChanged];
+        // 打开文件
+        [self openFile:info];
     } else {
         [self.fileSelectionTabController addFile:info];
+        STFileCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+        cell.checked = YES;
+        [self setupSelectAllButton];
     }
     
-    STFileCell *cell = [tableView cellForRowAtIndexPath:indexPath];
-    cell.checked = YES;
-    [self setupSelectAllButton];
 }
 
 - (void)tableView:(UITableView *)tableView didDeselectRowAtIndexPath:(NSIndexPath *)indexPath {

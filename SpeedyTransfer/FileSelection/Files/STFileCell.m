@@ -43,6 +43,10 @@
         checkImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"ic_select_off"]];
         checkImageView.frame = CGRectMake(IPHONE_WIDTH - 38.0f, 25.0f, 22.0f, 22.0f);
         [self.contentView addSubview:checkImageView];
+        
+        _button = [UIButton buttonWithType:UIButtonTypeCustom];
+        _button.frame = CGRectMake((IPHONE_WIDTH - 60), 0, 60, 88);
+        [self.contentView addSubview:_button];
     }
     
     return self;

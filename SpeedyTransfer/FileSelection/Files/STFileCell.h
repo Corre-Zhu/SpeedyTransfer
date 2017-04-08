@@ -14,6 +14,8 @@
 @property (nonatomic, strong) NSString *title;
 @property (nonatomic, strong) NSString *subTitle;
 
+@property (nonatomic, strong) UIButton *button;
+
 @property (nonatomic) BOOL checked;
 
 @end
