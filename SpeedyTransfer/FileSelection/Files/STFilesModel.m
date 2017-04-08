@@ -38,7 +38,7 @@
     NSArray *fileType = @[@(STFileTypeOther), @(STFileTypeMusic)];
     
     HTSQLBuffer *sql = [[HTSQLBuffer alloc] init];
-    sql.SELECT(@"*").FROM(DBFileTransfer._tableName).ORDERBY(DBFileTransfer._id, @"DESC").WHERE(SQLFieldEqual(DBFileTransfer._transferStatus, @(STFileTransferStatusReceived))).AND(SQLFieldEqual(DBFileTransfer._transferType, @(STFileTransferTypeReceive))).AND(SQLNumberIn(DBFileTransfer._fileType, fileType));
+    sql.SELECT(@"*").FROM(DBFileTransfer._tableName).ORDERBY(DBFileTransfer._id, @"DESC").WHERE(SQLFieldEqual(DBFileTransfer._transferStatus, @(STFileTransferStatusReceived))).AND(SQLFieldEqual(DBFileTransfer._transferType, @(STFileTransferTypeReceive))).AND(SQLNumberIn(DBFileTransfer._fileType, fileType)).GROUPBY(DBFileTransfer._identifier);
     FMResultSet *result = [database executeQuery:sql.sql];
     if (result) {
         NSMutableArray *tempArr = [NSMutableArray array];

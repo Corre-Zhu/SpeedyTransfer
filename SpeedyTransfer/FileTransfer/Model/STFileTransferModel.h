@@ -32,7 +32,6 @@ HT_AS_SINGLETON(STFileTransferModel, shareInstant);
 
 // 文件发送
 - (NSArray *)insertItemsToDbWithDeviceInfo:(STDeviceInfo *)deviceInfo fileInfos:(NSArray *)fileInfos;
-- (void)updateTransferStatus:(STFileTransferStatus)status withIdentifier:(NSString *)identifier;
 - (void)updateDownloadSpeed:(float)downloadSpeed withIdentifier:(NSString *)identifier;
 - (void)updateAssetIdentifier:(NSString *)assetIdentifier withIdentifier:(NSString *)identifier;
 - (void)addTransferFile:(STFileTransferInfo *)info;

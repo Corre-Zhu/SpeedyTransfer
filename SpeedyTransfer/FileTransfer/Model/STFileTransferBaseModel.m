@@ -96,10 +96,17 @@
 }
 
 - (void)updateTransferStatus:(STFileTransferStatus)status withIdentifier:(NSString *)identifier {
+    STFileTransferType transferType = STFileTransferTypeSend;
+    if (status >= STFileTransferStatusReceiving) {
+        transferType = STFileTransferTypeReceive;
+    }
+    
+    
     HTSQLBuffer *sql = [[HTSQLBuffer alloc] init];
     sql.UPDATE(DBFileTransfer._tableName)
     .WHERE(SQLStringEqual(DBFileTransfer._identifier, identifier))
-    .SET(DBFileTransfer._transferStatus, @(status));
+    .SET(DBFileTransfer._transferStatus, @(status))
+    .WHERE(SQLFieldEqual(DBFileTransfer._transferType, @(transferType)));
     
     if (![database executeUpdate:sql.sql]) {
         NSLog(@"%@", database.lastError);

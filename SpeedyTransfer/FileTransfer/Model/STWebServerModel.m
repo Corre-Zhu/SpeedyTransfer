@@ -281,7 +281,18 @@ HT_DEF_SINGLETON(STWebServerModel, shareInstant);
 					}
 				}
 				
-			}
+            } else if ([request.path hasPrefix:@"/myfile/"]) {
+                NSInteger loc = [@"/myfile/" length];
+                NSString *fileId = [request.path substringWithRange:NSMakeRange(loc, request.path.length - loc)];
+                if (fileId.length > 0) {
+                    NSString *filePath = [[ZZPath downloadPath] stringByAppendingPathComponent:fileId];
+                    if ([[NSFileManager defaultManager] fileExistsAtPath:filePath]) {
+                        completionBlock([GCDWebServerFileResponse responseWithFile:filePath isAttachment:YES]);
+                        return;
+                    }
+                    
+                }
+            }
 			
 			completionBlock([GCDWebServerResponse responseWithStatusCode:kGCDWebServerHTTPStatusCode_NotFound]);
 		}];
@@ -424,6 +435,7 @@ HT_DEF_SINGLETON(STWebServerModel, shareInstant);
 	NSMutableArray *musicArray = [NSMutableArray arrayWithCapacity:self.transferFiles.count];
 	NSMutableArray *videoArray = [NSMutableArray arrayWithCapacity:self.transferFiles.count];
 	NSMutableArray *contactArray = [NSMutableArray arrayWithCapacity:self.transferFiles.count];
+    NSMutableArray *myFilesArray = [NSMutableArray array];
 	for (NSDictionary *fileInfo in self.transferFiles) {
 		NSString *url = [fileInfo stringForKey:FILE_URL];
 		NSString *fileType = [fileInfo stringForKey:FILE_TYPE];
@@ -439,7 +451,9 @@ HT_DEF_SINGLETON(STWebServerModel, shareInstant);
 			[contactArray addObject:fileInfo];
 		} else if ([url containsString:@"/music/"]) {
 			[musicArray addObject:fileInfo];
-		}
+        } else if ([url containsString:@"/myfile/"]) {
+            [myFilesArray addObject:fileInfo];
+        }
 	}
 	
 	NSMutableString *htmlString = [NSMutableString string];
@@ -459,6 +473,10 @@ HT_DEF_SINGLETON(STWebServerModel, shareInstant);
 	if (contactArray.count > 0) {
 		[htmlString appendString:[self htmlForFileInfo:contactArray category:@"联系人" image:@"images/ic_picture_green_12dp.png" icon:@"images/wendang.png"]];
 	}
+    
+    if (myFilesArray.count > 0) {
+        [htmlString appendString:[self htmlForFileInfo:myFilesArray category:@"文件" image:@"images/ic_wenjian_on.png" icon:@"images/wendang.png"]];
+    }
 	
 	NSString *summary = [NSString stringWithFormat:@"%@给您发送了%@个文件", [UIDevice currentDevice].name, @(self.transferFiles.count)];
 	[[STWebServerModel shareInstant] setVariables:@{@"summary": summary,

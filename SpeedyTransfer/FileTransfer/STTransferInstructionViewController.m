@@ -80,7 +80,7 @@
     
     UIImageView *iconView2 = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"wifi_bg1"]];
     iconView2.top = descLabel2.bottom + 16.0f;
-    iconView2.centerX = topContainerView.width / 2.0f;
+    iconView2.centerX = topContainerView.width / 2.0f + 3;
     [topContainerView addSubview:iconView2];
     
     wifiBgView = [[UIImageView alloc] initWithImage:[[UIImage imageNamed:@"wifi_bg0"] resizableImageWithCapInsets:UIEdgeInsetsMake(6.0f, 12.0f, 6.0f, 12.0f)]];

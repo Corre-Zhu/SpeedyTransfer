@@ -591,17 +591,28 @@ HT_DEF_SINGLETON(STMultiPeerTransferModel, shareInstant);
         // No error so this is a completed transfer.  The resources is located in a temporary location and should be copied to a permenant locatation immediately.
         // Write to documents directory
         NSString *pathExtension = receivingInfo.pathExtension;
-        NSString *downloadPath = [[ZZPath downloadPath] stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.%@", resourceName, pathExtension]];
+        NSString *fileName = resourceName;
+        if (fileName.pathExtension.length == 0 && pathExtension.length > 0) {
+            fileName = [NSString stringWithFormat:@"%@.%@", fileName, pathExtension];
+        }
         
-        if (![[NSFileManager defaultManager] copyItemAtPath:[localURL path] toPath:downloadPath error:nil])
-        {
-            NSLog(@"Error copying resource to documents directory");
-                // 接收失败
-            [self receiveFaildWithInfo:receivingInfo];
-        }
-        else {
+        NSString *downloadPath = [[ZZPath downloadPath] stringByAppendingPathComponent:fileName];
+        if ([[NSFileManager defaultManager] fileExistsAtPath:downloadPath]) {
+            // 之前接收过同样的文件
             [self downloadSucceedWithPath:downloadPath info:receivingInfo];
+        } else {
+            if (![[NSFileManager defaultManager] copyItemAtPath:[localURL path] toPath:downloadPath error:nil])
+            {
+                NSLog(@"Error copying resource to documents directory");
+                // 接收失败
+                [self receiveFaildWithInfo:receivingInfo];
+            }
+            else {
+                [self downloadSucceedWithPath:downloadPath info:receivingInfo];
+            }
         }
+        
+        
     }
 }
 

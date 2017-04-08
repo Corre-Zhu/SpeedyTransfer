@@ -312,9 +312,24 @@
 }
 
 - (void)hotspotButtonClick {
-    [ZZFunction goToHotspotPref];
+    NSString *wifiname = [UIDevice getWifiName];
+    if (wifiname.length > 0 || [UIDevice isPersonalHotspotEnabled]) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            STTransferInstructionViewController *fileTransferVc = [[STTransferInstructionViewController alloc] init];
+            
+            NSMutableArray *controllers = [NSMutableArray arrayWithArray:self.navigationController.viewControllers];
+            [controllers removeLastObject];
+            [controllers addObject:fileTransferVc];
+            
+            [self.navigationController setViewControllers:controllers animated:YES];
+            
+        });
+    } else {
+        [ZZFunction goToHotspotPref];
+        hotSpotButtonClicked = YES;
+    }
     
-    hotSpotButtonClicked = YES;
+    
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSKeyValueChangeKey,id> *)change context:(void *)context {
@@ -326,6 +341,7 @@
         if ([keyPath isEqualToString:@"state"]) {
             switch ([STMultiPeerTransferModel shareInstant].state) {
                 case STMultiPeerStateNotConnected:
+                    // 连接失败
                     
                     break;
                 case STMultiPeerStateBrowsing:

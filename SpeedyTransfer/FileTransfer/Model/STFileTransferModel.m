@@ -321,6 +321,9 @@ withFilterContext:(id)filterContext {
         } else if ([fileUrl containsString:@"/music"]) {
             entity.fileType = STFileTypeMusic;
             entity.url = @([fileInfo longLongForKey:RECORD_ID]).stringValue;
+        } else if ([fileUrl containsString:@"/myfile"]) {
+            entity.fileType = STFileTypeOther;
+            entity.url = fileUrl.lastPathComponent;
         }
          
         entity.deviceName = deviceInfo.deviceName;
