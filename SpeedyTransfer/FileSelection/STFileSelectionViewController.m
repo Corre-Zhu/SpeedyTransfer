@@ -117,6 +117,10 @@
 
 - (void)didTapBack {
     [self.navigationController popViewControllerAnimated:YES];
+    
+    // 停止广播，断开连接和传输
+    [[STMultiPeerTransferModel shareInstant] cancelAllTransferFile];
+    [[STFileTransferModel shareInstant] cancelAllTransferFile];
 }
 
 - (void)didSelectIndex:(NSInteger)index {

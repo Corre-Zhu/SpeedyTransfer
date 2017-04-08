@@ -56,8 +56,10 @@ static NSString *cellIdentifier = @"CellIdentifier";
 - (void)leftBarButtonItemClick {
     UIAlertController *alertController = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"不再传输其它文件，确认退出？", nil) message:nil preferredStyle: UIAlertControllerStyleAlert];
     UIAlertAction *action1 = [UIAlertAction actionWithTitle:NSLocalizedString(@"确认", nil) style:UIAlertActionStyleDestructive handler:^(UIAlertAction * _Nonnull action) {
-        [[STFileTransferModel shareInstant] cancelAllTransferFile];
+        // 停止广播，断开连接和传输
         [[STMultiPeerTransferModel shareInstant] cancelAllTransferFile];
+        [[STFileTransferModel shareInstant] cancelAllTransferFile];
+        
         [self.navigationController popToRootViewControllerAnimated:YES];
     }];
     [alertController addAction:action1];
@@ -163,6 +165,10 @@ static NSString *cellIdentifier = @"CellIdentifier";
         if ([STMultiPeerTransferModel shareInstant].state == STMultiPeerStateNotConnected) {
             dispatch_async(dispatch_get_main_queue(), ^{
                 [self showDeviceNotConnectedAlertWithName:[STMultiPeerTransferModel shareInstant].deviceInfo.deviceName];
+                
+                // 连接失败，停止广播和监听，需要重新扫描连接
+                [[STMultiPeerTransferModel shareInstant] cancelAllTransferFile];
+                [[STFileTransferModel shareInstant] cancelAllTransferFile];
             });
         }
     }
@@ -227,9 +233,7 @@ static NSString *cellIdentifier = @"CellIdentifier";
                 personViewc.displayedPerson = person;
                 personViewc.allowsEditing = NO;
                 personViewc.allowsActions = YES;
-                [self presentViewController:personViewc animated:YES completion:^{
-                    
-                }];
+                [self.navigationController pushViewController:personViewc animated:YES];
             }
         }
         

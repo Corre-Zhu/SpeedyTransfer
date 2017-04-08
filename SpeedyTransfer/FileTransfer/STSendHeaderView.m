@@ -22,7 +22,6 @@
 - (instancetype)initWithReuseIdentifier:(NSString *)reuseIdentifier {
     self = [super initWithReuseIdentifier:reuseIdentifier];
     if (self) {
-        self.backgroundColor = RGBFromHex(0xf4f4f4);
         self.contentView.backgroundColor = RGBFromHex(0xf4f4f4);
         
         label = [[UILabel alloc] initWithFrame:CGRectMake(10.0f, 10.0f, IPHONE_WIDTH - 71.0f, 40.0)];

@@ -34,6 +34,7 @@
 - (void)dealloc {
     [_session stopRunning];
     [[STMultiPeerTransferModel shareInstant] removeObserver:self forKeyPath:@"state"];
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (void)viewDidLoad {

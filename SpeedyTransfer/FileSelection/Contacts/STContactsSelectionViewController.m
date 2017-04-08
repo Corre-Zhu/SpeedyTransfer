@@ -16,8 +16,6 @@ static NSString *headerIdentifier = @"ContactsHeaderView";
 
 @interface STContactsSelectionViewController ()
 {
-    UIActivityIndicatorView *activityIndicatorView;
-    
     UIView *topHeaderView;
     UILabel *topHeaderLabel;
     UIButton *selectAllButton;
@@ -33,31 +31,36 @@ static NSString *headerIdentifier = @"ContactsHeaderView";
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    [self setupAlertView:YES];
+    
     self.tableView.allowsMultipleSelection = YES;
     self.tableView.sectionIndexColor = RGBFromHex(0x01cc99);
     self.tableView.tableFooterView = [UIView new];
     [self.tableView registerClass:[HTContactsHeaderView class] forHeaderFooterViewReuseIdentifier:headerIdentifier];
     
-    activityIndicatorView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
-    [self.view addSubview:activityIndicatorView];
-    activityIndicatorView.centerX = IPHONE_WIDTH / 2.0f;
-    activityIndicatorView.centerY = (IPHONE_HEIGHT_WITHOUTTOPBAR - 49.0f) / 2.0f;
-    [activityIndicatorView startAnimating];
+    ABAuthorizationStatus status = ABAddressBookGetAuthorizationStatus();
+    if (status == kABAuthorizationStatusNotDetermined) {
+        
+    } else if (status != kABAuthorizationStatusAuthorized) {
+        UIAlertView *alertV = [[UIAlertView alloc] initWithTitle:nil message:@"您没有允许访问联系人" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
+        [alertV show];
+        
+        [self setupAlertView:NO];
+    }
     
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         [STContactInfo getContactsModelListWithCompletion:^(NSArray *array) {
             dispatch_async(dispatch_get_main_queue(), ^{
-                [activityIndicatorView stopAnimating];
-                activityIndicatorView.hidden = YES;
                 _contactModels = array;
                 [self.tableView reloadData];
+                [self setupAlertView:NO];
             });
         }];
     });
 
 }
 
-- (void)setupAlertView {
+- (void)setupAlertView:(BOOL)loading {
     if (_contactModels.count == 0) {
         if (!alertView) {
             alertView = [[[NSBundle mainBundle] loadNibNamed:@"STNoFileAlertView" owner:nil options:nil] lastObject];
@@ -66,6 +69,12 @@ static NSString *headerIdentifier = @"ContactsHeaderView";
             alertView.frame = CGRectMake(0, 0, IPHONE_WIDTH, IPHONE_HEIGHT - 109);
             [self.view addSubview:alertView];
             
+        }
+        
+        if (loading) {
+            alertView.label.text = @"正在加载联系人......";
+        } else {
+            alertView.label.text = @"此设备暂无联系人";
         }
         
         [self.view bringSubviewToFront:alertView];
@@ -91,7 +100,6 @@ static NSString *headerIdentifier = @"ContactsHeaderView";
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
-    [self setupAlertView];
     return [_contactModels count];
 }
 

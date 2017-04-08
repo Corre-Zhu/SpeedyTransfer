@@ -612,8 +612,8 @@ withFilterContext:(id)filterContext {
 
 - (void)cancelAllTransferFile {
     [[STFileReceiveModel shareInstant] stopBroadcast];
-    [[STFileTransferModel shareInstant] stopListenBroadcast];
-    [[STFileTransferModel shareInstant] removeAllDevices];
+    [self stopListenBroadcast];
+    [self removeAllDevices];
     [self cancelAllSendItems];
     [self cancelAllReceiveItems];
 	[self removeAllBrowser];

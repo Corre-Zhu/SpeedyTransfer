@@ -23,7 +23,6 @@ static NSString * const CollectionViewCellReuseIdentifier = @"CollectionViewCell
 @interface STPictureCollectionViewController ()<PHPhotoLibraryChangeObserver,UIImagePickerControllerDelegate,UINavigationControllerDelegate>
 {
     STNoFileAlertView *alertView;
-
 }
 
 @property (strong) PHFetchResult *smartCollections;
@@ -251,39 +250,66 @@ static NSString * const CollectionViewCellReuseIdentifier = @"CollectionViewCell
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
     [[PHPhotoLibrary sharedPhotoLibrary] registerChangeObserver:self];
     
     if ([PHPhotoLibrary authorizationStatus] == PHAuthorizationStatusNotDetermined) {
+        [self setupAlertView:YES];
+
         [PHPhotoLibrary requestAuthorization:^(PHAuthorizationStatus status) {
-            
+            if (status == PHAuthorizationStatusDenied) {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [self setupAlertView:NO];
+                });
+            }
         }];
     } else if ([PHPhotoLibrary authorizationStatus] == PHAuthorizationStatusAuthorized) {
-        _imageManager = [[PHCachingImageManager alloc] init];
-        [self setupSmartCollections];
-        [self setupAlbumCollections];
-        [self setupFetchResults];
-        [self setupHeaderModel];
+        [self setupAlertView:YES];
+
+        [[GCDQueue globalQueue] queueBlock:^{
+            _imageManager = [[PHCachingImageManager alloc] init];
+            [self setupSmartCollections];
+            [self setupAlbumCollections];
+            [self setupFetchResults];
+            [self setupHeaderModel];
+            
+            [[GCDQueue mainQueue] queueBlock:^{
+                [self.collectionView reloadData];
+                [self setupAlertView:NO];
+            }];
+        }];
+        
+    } else {
+        UIAlertView *alertV = [[UIAlertView alloc] initWithTitle:nil message:@"您没有允许访问图片" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
+        [alertV show];
+        
+        [self setupAlertView:NO];
     }
     
     self.collectionView.backgroundColor = [UIColor whiteColor];
     self.collectionView.allowsMultipleSelection = YES;
     [self.collectionView registerClass:[STPictureCollectionReusableView class] forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:collectionReusableViewIdenfifier];
     [self.collectionView registerClass:[HZAssetCollectionViewCell class] forCellWithReuseIdentifier:CollectionViewCellReuseIdentifier];
+    
 }
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
 }
 
-- (void)setupAlertView {
+- (void)setupAlertView:(BOOL)loading {
     if (self.cachedHeaderModels.count == 0) {
         if (!alertView) {
             alertView = [[[NSBundle mainBundle] loadNibNamed:@"STNoFileAlertView" owner:nil options:nil] lastObject];
             alertView.imageView.image = [UIImage imageNamed:@"img_tupian"];
-            alertView.label.text = @"此设备暂无图片";
             alertView.frame = CGRectMake(0, 0, IPHONE_WIDTH, IPHONE_HEIGHT - 109);
             [self.view addSubview:alertView];
-            
+        }
+        
+        if (loading) {
+            alertView.label.text = @"正在加载图片......";
+        } else {
+            alertView.label.text = @"此设备暂无图片";
         }
         
         [self.view bringSubviewToFront:alertView];
@@ -332,7 +358,6 @@ static NSString * const CollectionViewCellReuseIdentifier = @"CollectionViewCell
 #pragma mark - UICollectionViewDataSource
 
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView {
-    [self setupAlertView];
     return self.cachedHeaderModels.count;
 }
 
@@ -557,6 +582,8 @@ static NSString * const CollectionViewCellReuseIdentifier = @"CollectionViewCell
             [self.collectionView reloadData];
             [self.fileSelectionTabController photoLibraryDidChange];
         }
+        
+        [self setupAlertView:NO];
     });
 }
 

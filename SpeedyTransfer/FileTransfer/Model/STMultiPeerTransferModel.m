@@ -218,8 +218,10 @@ HT_DEF_SINGLETON(STMultiPeerTransferModel, shareInstant);
 }
 
 - (void)sendFaild {
-    _sendingTransferInfo.transferStatus = STFileTransferStatusSendFailed;
-    [self updateTransferStatus:STFileTransferStatusSendFailed withIdentifier:_sendingTransferInfo.identifier];
+    if (_sendingTransferInfo) {
+        _sendingTransferInfo.transferStatus = STFileTransferStatusSendFailed;
+        [self updateTransferStatus:STFileTransferStatusSendFailed withIdentifier:_sendingTransferInfo.identifier];
+    }
     
     self.sendingItem = nil;
     self.sendingTransferInfo = nil;
@@ -400,11 +402,7 @@ HT_DEF_SINGLETON(STMultiPeerTransferModel, shareInstant);
 #pragma mark - Cancel
 
 - (void)cancelAllTransferFile {
-    [[STFileReceiveModel shareInstant] stopBroadcast];
-    [[STFileTransferModel shareInstant] stopListenBroadcast];
-    [[STFileTransferModel shareInstant] removeAllDevices];
-    [[STWebServerModel shareInstant] stopWebServer2];
-    [[STWebServerModel shareInstant] stopWebServer];
+    [self reset];
     
     @synchronized (_prepareToSendFiles) {
         [_prepareToSendFiles removeAllObjects];
@@ -414,8 +412,6 @@ HT_DEF_SINGLETON(STMultiPeerTransferModel, shareInstant);
     @synchronized (_prepareToReceiveFiles) {
         [_prepareToReceiveFiles removeAllObjects];
     }
-    
-    [_session disconnect];
 }
 
 #pragma mark - MCNearbyServiceAdvertiserDelegate
@@ -464,6 +460,8 @@ HT_DEF_SINGLETON(STMultiPeerTransferModel, shareInstant);
     if (state == MCSessionStateConnected) {
         _deviceInfo.deviceName = peerID.displayName;
         [self sendHeadPortrait];
+    } else if (state == MCSessionStateNotConnected) {
+        
     }
     
     self.state = (STMultiPeerState)state;
@@ -524,6 +522,11 @@ HT_DEF_SINGLETON(STMultiPeerTransferModel, shareInstant);
             ABRecordRef person = CFArrayGetValueAtIndex(vCardPeople, 0);
             ABAddressBookAddRecord(book, person, NULL);
             ABAddressBookSave(book, NULL);
+            
+            NSString *path = [[ZZPath downloadPath] stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.vcard", receivingInfo.identifier]];
+            if (![bodyData writeToFile:path atomically:YES]) {
+                NSLog(@"vcard write file error");
+            }
             
             receivingInfo.progress = 1.0f;
             receivingInfo.transferStatus = STFileTransferStatusReceived;

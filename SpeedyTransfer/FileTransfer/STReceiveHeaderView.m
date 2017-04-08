@@ -21,7 +21,6 @@
 - (instancetype)initWithReuseIdentifier:(NSString *)reuseIdentifier {
     self = [super initWithReuseIdentifier:reuseIdentifier];
     if (self) {
-        self.backgroundColor = RGBFromHex(0xf4f4f4);
         self.contentView.backgroundColor = RGBFromHex(0xf4f4f4);
         
         imageView = [[UIImageView alloc] initWithFrame:CGRectMake(16.0f, 10.0f, 40.0f, 40.0f)];

@@ -32,6 +32,7 @@
 - (void)dealloc {
     [[STMultiPeerTransferModel shareInstant] removeObserver:self forKeyPath:@"state"];
     [[STFileTransferModel shareInstant] removeObserver:self forKeyPath:@"devicesArray"];
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (void)viewDidLoad {
@@ -283,8 +284,9 @@
 - (void)leftBarButtonItemClick {
     [self.navigationController popViewControllerAnimated:YES];
     
-    // 停止广播，断开连接
-    [[STMultiPeerTransferModel shareInstant] reset];
+    // 停止广播，断开连接和传输
+    [[STMultiPeerTransferModel shareInstant] cancelAllTransferFile];
+    [[STFileTransferModel shareInstant] cancelAllTransferFile];
 }
 
 - (void)arrowButtonClick {

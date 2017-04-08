@@ -11,6 +11,10 @@
 @implementation UIViewController (ZZ)
 
 - (void)setContentInset:(NSValue *)value {
+    if (!self.viewLoaded) {
+        return;
+    }
+    
     UIEdgeInsets inset = value.UIEdgeInsetsValue;
     if ([self isKindOfClass:[UITableViewController class]]) {
         UITableViewController *tb = (UITableViewController *)self;
