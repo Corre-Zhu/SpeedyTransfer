@@ -144,7 +144,8 @@
 
 - (void)leftBarButtonItemClick {
     [self.navigationController popViewControllerAnimated:YES];
-    [[STMultiPeerTransferModel shareInstant] reset];
+    [[STMultiPeerTransferModel shareInstant] cancelAllTransferFile];
+    [[STFileTransferModel shareInstant] cancelAllTransferFile];
 }
 
 -(void)viewWillAppear:(BOOL)animated{

@@ -132,6 +132,8 @@
         [viewController didMoveToParentViewController:self];
         viewController.view.frame = scrollView.bounds;
         viewController.view.left = index * IPHONE_WIDTH;
+        
+        [viewController setContentInset:[NSValue valueWithUIEdgeInsets:UIEdgeInsetsMake(0, 0, toolView.hidden ? 0 : 49, 0)]];
     }
     
     if (scrollView.contentOffset.x != index * IPHONE_WIDTH) {
