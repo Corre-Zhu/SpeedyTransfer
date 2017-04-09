@@ -17,6 +17,7 @@
 static NSString *STServiceType = @"STServiceZZ";
 
 @interface STMultiPeerTransferModel ()<MCSessionDelegate, MCNearbyServiceAdvertiserDelegate,MCNearbyServiceBrowserDelegate> {
+    NSTimer *connectingTimer;
 }
 
 @property (strong, nonatomic) MCSession *session;
@@ -74,12 +75,15 @@ HT_DEF_SINGLETON(STMultiPeerTransferModel, shareInstant);
     _deviceInfo.deviceName = name;
     self.state = STMultiPeerStateBrowsing;
     [_browser startBrowsingForPeers];
+    
+    [self fireConnectingTimer];
 }
 
 - (void)reset {
     [_advertiser stopAdvertisingPeer];
     [_browser stopBrowsingForPeers];
     [_session disconnect];
+    [self invalidConnectingTimer];
 }
 
 - (NSString *)stringForPeerConnectionState:(MCSessionState)state
@@ -450,6 +454,28 @@ HT_DEF_SINGLETON(STMultiPeerTransferModel, shareInstant);
     NSLog(@"%s", __func__);
 }
 
+#pragma mark - Timer
+
+- (void)fireConnectingTimer {
+    [self invalidConnectingTimer];
+    
+    connectingTimer = [NSTimer scheduledTimerWithTimeInterval:18 target:self selector:@selector(connectingTimeout) userInfo:nil repeats:NO];
+}
+
+- (void)invalidConnectingTimer {
+    if (connectingTimer) {
+        [connectingTimer invalidate];
+        connectingTimer = nil;
+    }
+}
+
+- (void)connectingTimeout {
+    if (self.state == STMultiPeerStateBrowsing ||
+        self.state == STMultiPeerStateConnecting) {
+        self.state = STMultiPeerStateTimeout;
+    }
+}
+
 #pragma mark - MCSessionDelegate methods
 
 // Override this method to handle changes to peer session state
@@ -460,11 +486,12 @@ HT_DEF_SINGLETON(STMultiPeerTransferModel, shareInstant);
     if (state == MCSessionStateConnected) {
         _deviceInfo.deviceName = peerID.displayName;
         [self sendHeadPortrait];
-    } else if (state == MCSessionStateNotConnected) {
-        
     }
     
     self.state = (STMultiPeerState)state;
+    if (state != MCSessionStateConnecting) {
+        [self invalidConnectingTimer];
+    }
 }
 
 // MCSession Delegate callback when receiving data from a peer in a given session

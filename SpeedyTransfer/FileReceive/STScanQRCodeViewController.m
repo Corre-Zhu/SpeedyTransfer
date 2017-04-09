@@ -18,14 +18,14 @@
     UILabel *tipLabel;
     UIView *alertView;
     
-    UIView *connectingView;
-    UILabel *connectingLabel;
-    
     STWifiNotConnectedPopupView2 *popupView;
     STConnectWifiAlertView *wifiAlertView;
 }
 
 @property (nonatomic, strong) AVCaptureSession *session;
+
+@property (nonatomic, strong) UIView *connectingView;
+@property (nonatomic, strong) UILabel *connectingLabel;
 
 @end
 
@@ -223,6 +223,13 @@
     [_session stopRunning];
 }
 
+- (void)tapConnectingView {
+    if ([STMultiPeerTransferModel shareInstant].state == STMultiPeerStateNotConnected) {
+        _connectingView.hidden = YES;
+        [self beginScanning];
+    }
+}
+
 -(void)captureOutput:(AVCaptureOutput *)captureOutput didOutputMetadataObjects:(NSArray *)metadataObjects fromConnection:(AVCaptureConnection *)connection {
     if (metadataObjects.count > 0) {
         AVMetadataMachineReadableCodeObject *metadataObject = [metadataObjects objectAtIndex:0];
@@ -276,35 +283,47 @@
             return;
         }
         
-        if (!connectingView) {
-            connectingView = [[UIView alloc] initWithFrame:self.view.bounds];
-            connectingView.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.8];
-            [self.view addSubview:connectingView];
+        if (!_connectingView) {
+            _connectingView = [[UIView alloc] initWithFrame:self.view.bounds];
+            _connectingView.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.8];
+            [self.view addSubview:_connectingView];
+            
+            UITapGestureRecognizer *tapGes = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapConnectingView)];
+            [_connectingView addGestureRecognizer:tapGes];
                                                
-            connectingLabel = [[UILabel alloc] initWithFrame:self.view.bounds];
-            connectingLabel.textColor = [UIColor whiteColor];
-            connectingLabel.font = [UIFont systemFontOfSize:17.0f];
-            connectingLabel.textAlignment = NSTextAlignmentCenter;
-            [connectingView addSubview:connectingLabel];
+            _connectingLabel = [[UILabel alloc] initWithFrame:self.view.bounds];
+            _connectingLabel.textColor = [UIColor whiteColor];
+            _connectingLabel.font = [UIFont systemFontOfSize:17.0f];
+            _connectingLabel.textAlignment = NSTextAlignmentCenter;
+            [_connectingView addSubview:_connectingLabel];
             
             UIActivityIndicatorView *ind = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
-            [connectingView addSubview:ind];
+            [_connectingView addSubview:ind];
             ind.left = (self.view.width - ind.width) / 2.;
             ind.top = self.view.height / 2. - 38;
             [ind startAnimating];
         }
         
-        connectingView.hidden = NO;
+        _connectingView.hidden = NO;
         switch ([STMultiPeerTransferModel shareInstant].state) {
+            case STMultiPeerStateTimeout:{
+                    popupView = [[STWifiNotConnectedPopupView2 alloc] init];
+                    __weak typeof(self) weakSelf = self;
+                    [popupView showInView:self.navigationController.view hiddenBlock:^{
+                        weakSelf.connectingView.hidden = YES;
+                        [weakSelf beginScanning];
+                    }];
+                }
             case STMultiPeerStateNotConnected:
-                connectingLabel.text = @"连接失败";
+                _connectingLabel.text = @"连接失败";
+                [[STMultiPeerTransferModel shareInstant] reset];
                 break;
             case STMultiPeerStateBrowsing:
             case STMultiPeerStateConnecting:
-                connectingLabel.text = @"连接中...";
+                _connectingLabel.text = @"连接中...";
                 break;
             case STMultiPeerStateConnected:{
-                connectingLabel.text = @"连接成功";
+                _connectingLabel.text = @"连接成功";
                 
                 STFileTransferViewController *vc = [[STFileTransferViewController alloc] init];
                 vc.isMultipeerTransfer = YES;

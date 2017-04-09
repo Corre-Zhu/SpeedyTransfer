@@ -12,7 +12,8 @@ typedef NS_ENUM (NSInteger, STMultiPeerState) {
     STMultiPeerStateBrowsing = -1,
     STMultiPeerStateNotConnected,
     STMultiPeerStateConnecting,
-    STMultiPeerStateConnected
+    STMultiPeerStateConnected,
+    STMultiPeerStateTimeout, // 接收方连接超时
 };
 
 @interface STMultiPeerTransferModel : STFileTransferBaseModel
