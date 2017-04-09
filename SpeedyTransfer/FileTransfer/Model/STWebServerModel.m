@@ -324,7 +324,21 @@ HT_DEF_SINGLETON(STWebServerModel, shareInstant);
 				entity.url = file_url;
 				entity.thumbnailUrl = thumbnailUrl;
 				entity.fileName = [fileInfo stringForKey:FILE_NAME];
-				entity.fileSize = [fileInfo doubleForKey:FILE_SIZE];
+                
+                NSString *fileSize = [fileInfo stringForKey:FILE_SIZE];
+                
+                if ([fileSize.uppercaseString hasSuffix:@"GB"]) {
+                    entity.fileSize = [fileSize doubleValue] * 1024 * 1024 * 1024;
+                } else if ([fileSize.uppercaseString hasSuffix:@"MB"]) {
+                    entity.fileSize = [fileSize doubleValue] * 1024 * 1024;
+                } else if ([fileSize.uppercaseString hasSuffix:@"KB"]) {
+                    entity.fileSize = [fileSize doubleValue] * 1024;
+                } else if ([fileSize.uppercaseString hasSuffix:@"B"]) {
+                    entity.fileSize = [fileSize doubleValue];
+                } else {
+                    entity.fileSize = [fileInfo doubleForKey:FILE_SIZE];
+                }
+                
 				if (entity.fileName.pathExtension.length > 0) {
 					entity.pathExtension = entity.fileName.pathExtension;
 				} else {
