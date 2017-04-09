@@ -220,14 +220,7 @@
         NSString *wifiname = [UIDevice getWifiName];
         if (wifiname.length > 0 || [UIDevice isPersonalHotspotEnabled]) {
             dispatch_async(dispatch_get_main_queue(), ^{
-                STTransferInstructionViewController *fileTransferVc = [[STTransferInstructionViewController alloc] init];
-                
-                NSMutableArray *controllers = [NSMutableArray arrayWithArray:self.navigationController.viewControllers];
-                [controllers removeLastObject];
-                [controllers addObject:fileTransferVc];
-                
-                [self.navigationController setViewControllers:controllers animated:YES];
-                
+                [self goToTransferInstructionViewController];
             });
         }
         
@@ -313,18 +306,22 @@
     }
 }
 
+- (void)goToTransferInstructionViewController {
+    STTransferInstructionViewController *fileTransferVc = [[STTransferInstructionViewController alloc] init];
+    
+    NSMutableArray *controllers = [NSMutableArray arrayWithArray:self.navigationController.viewControllers];
+    [controllers removeLastObject];
+    [controllers addObject:fileTransferVc];
+    
+    [self.navigationController setViewControllers:controllers animated:YES];
+    [[STMultiPeerTransferModel shareInstant] cancelAllTransferFile];
+}
+
 - (void)hotspotButtonClick {
     NSString *wifiname = [UIDevice getWifiName];
     if (wifiname.length > 0 || [UIDevice isPersonalHotspotEnabled]) {
         dispatch_async(dispatch_get_main_queue(), ^{
-            STTransferInstructionViewController *fileTransferVc = [[STTransferInstructionViewController alloc] init];
-            
-            NSMutableArray *controllers = [NSMutableArray arrayWithArray:self.navigationController.viewControllers];
-            [controllers removeLastObject];
-            [controllers addObject:fileTransferVc];
-            
-            [self.navigationController setViewControllers:controllers animated:YES];
-            
+            [self goToTransferInstructionViewController];
         });
     } else {
         [ZZFunction goToHotspotPref];
@@ -383,8 +380,6 @@
                 [self.navigationController pushViewController:fileTransferVc animated:YES];
             }
         }
-        
-        
         
     });
 }
