@@ -96,7 +96,7 @@ static NSString *STFileCellIdentifier = @"STFileCellIdentifier";
 }
 
 - (void)deleteButtonClick {
-    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil message:@"\n是否删除全部已选文件\n\n" preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil message:@"\0\n是否删除全部已选文件\n\0" preferredStyle:UIAlertControllerStyleAlert];
     
     UIAlertAction *destructiveAction = [UIAlertAction actionWithTitle:@"删除" style:UIAlertActionStyleDestructive handler:^(UIAlertAction * _Nonnull action) {
         [model deleteFiles:_selectedFilesArray];

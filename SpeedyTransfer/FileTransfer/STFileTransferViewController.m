@@ -54,7 +54,7 @@ static NSString *cellIdentifier = @"CellIdentifier";
 }
 
 - (void)leftBarButtonItemClick {
-    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"不再传输其它文件，确认退出？", nil) message:nil preferredStyle: UIAlertControllerStyleAlert];
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"\0\n不再传输其它文件，确认退出\n\0", nil) message:nil preferredStyle: UIAlertControllerStyleAlert];
     UIAlertAction *action1 = [UIAlertAction actionWithTitle:NSLocalizedString(@"确认", nil) style:UIAlertActionStyleDestructive handler:^(UIAlertAction * _Nonnull action) {
         // 停止广播，断开连接和传输
         [[STMultiPeerTransferModel shareInstant] cancelAllTransferFile];
@@ -66,6 +66,10 @@ static NSString *cellIdentifier = @"CellIdentifier";
     
     UIAlertAction *action3 = [UIAlertAction actionWithTitle:NSLocalizedString(@"取消", nil) style:UIAlertActionStyleCancel handler:NULL];
     [alertController addAction:action3];
+    
+    [action3 setValue:RGBFromHex(0x666666) forKey:@"_titleTextColor"];
+    [action1 setValue:RGBFromHex(0x01cc99) forKey:@"_titleTextColor"];
+
     [self presentViewController:alertController animated:YES completion:NULL];
 }
 
