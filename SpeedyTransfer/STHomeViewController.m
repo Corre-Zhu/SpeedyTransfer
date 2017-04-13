@@ -143,7 +143,7 @@
     NSArray *titles = @[@"我要发送", @"我要接收", @"发现"];
 
     for (int i = 0; i < 3; i++) {
-        UIButton *sendButton = [[UIButton alloc] initWithFrame:CGRectMake(0.0, backView.bottom + i * 80.0f, IPHONE_WIDTH, 80.0f)];
+        UIButton *sendButton = [[UIButton alloc] initWithFrame:CGRectMake(0.0, backView.bottom + i * (IPHONE5 ? 75 : 80.0f), IPHONE_WIDTH, (IPHONE5 ? 75 : 80.0f))];
         sendButton.backgroundColor = [UIColor clearColor];
         [sendButton addTarget:self action:@selector(actionBtnClick:) forControlEvents:UIControlEventTouchUpInside];
         sendButton.tag = i;
@@ -178,12 +178,49 @@
     leftView.parentViewController = self;
     [scrollView addSubview:leftView];
     
-    scrollView.contentSize = CGSizeMake(IPHONE_WIDTH, backView.bottom + 240);
+    UIPanGestureRecognizer *panGest = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(panGest:)];
+    [leftView addGestureRecognizer:panGest];
+    
+    scrollView.contentSize = CGSizeMake(IPHONE_WIDTH, backView.bottom + IPHONE5 ? 225 : 240);
     scrollView.bounces = NO;
 
     //[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reachabilityStatusChange:) name:kHTReachabilityChangedNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidBecomeActiveNotification:) name:UIApplicationDidBecomeActiveNotification object:nil];
 
+}
+
+- (void)panGest:(UIPanGestureRecognizer *)panGest {
+    if (panGest.state == UIGestureRecognizerStateChanged) {
+        CGPoint point = [panGest translationInView:scrollView];
+        leftView.left += point.x;
+        [panGest setTranslation:CGPointZero inView:scrollView];
+        
+        if (leftView.left > 0) {
+            leftView.left = 0;
+        } else if (leftView.left < -leftView.width) {
+            leftView.left = -leftView.width;
+        }
+        
+        maskView.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.5 - fabs(leftView.left) / leftView.width * 0.5];
+    } else if (panGest.state == UIGestureRecognizerStateEnded) {
+        CGFloat left = 0;
+        if (fabs(leftView.left) > leftView.width / 2.0) {
+            left = -leftView.width;
+        }
+        
+        [UIView animateWithDuration:0.25f * fabs(leftView.left - left) / leftView.width delay:0.0f options:UIViewAnimationOptionCurveEaseInOut animations:^{
+            leftView.left = left;
+            maskView.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.5 - fabs(leftView.left) / leftView.width * 0.5];
+        } completion:^(BOOL finished) {
+            if (leftView.right == 0.0) {
+                leftView.hidden = YES;
+                maskView.hidden = YES;
+            }
+            
+        }];
+        
+    }
+    
 }
 
 - (void)viewWillAppear:(BOOL)animated {
