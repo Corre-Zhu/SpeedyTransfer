@@ -28,7 +28,7 @@ static NSString *sendHeaderIdentifier = @"sendHeaderIdentifier";
 static NSString *receiveHeaderIdentifier = @"receiveHeaderIdentifier";
 static NSString *cellIdentifier = @"CellIdentifier";
 
-@interface STFileTransferViewController ()<UITableViewDataSource,UITableViewDelegate,UIDocumentInteractionControllerDelegate>
+@interface STFileTransferViewController ()<UITableViewDataSource,UITableViewDelegate,UIDocumentInteractionControllerDelegate,STFileTransferBaseModelDelegate>
 {
     STWifiNotConnectedPopupView2 *popupView;
 
@@ -37,6 +37,8 @@ static NSString *cellIdentifier = @"CellIdentifier";
     NSTimeInterval lastTimeInterval;
     
     UIDocumentInteractionController *documentController;
+    
+    UIView *noDiskSpaceAlertView; // 磁盘空间不足提示
 }
 
 @property (nonatomic, strong) UITableView *tableView;
@@ -126,6 +128,7 @@ static NSString *cellIdentifier = @"CellIdentifier";
         _model = [STFileTransferModel shareInstant];
     }
     
+    _model.delegate = self;
     [_model addObserver:self forKeyPath:@"transferFiles" options:NSKeyValueObservingOptionNew context:NULL];
     
     _model.sectionTransferFiles = [_model sortTransferInfo:_model.transferFiles];
@@ -144,6 +147,49 @@ static NSString *cellIdentifier = @"CellIdentifier";
     }
 }
 
+- (void)setupNoDiskSpaceAlertView {
+    if (!noDiskSpaceAlertView) {
+        noDiskSpaceAlertView = [[UIView alloc] init];
+        noDiskSpaceAlertView.frame = CGRectMake(0, 0, IPHONE_WIDTH, IPHONE_HEIGHT_WITHOUTTOPBAR);
+        noDiskSpaceAlertView.backgroundColor = [UIColor whiteColor];
+        [self.view insertSubview:noDiskSpaceAlertView aboveSubview:self.tableView];
+        
+        UIImageView *imageView = [[UIImageView alloc] init];
+        imageView.backgroundColor = RGB(26,194,155);
+        imageView.layer.cornerRadius = 10;
+        imageView.frame = CGRectMake((IPHONE_WIDTH - 280) / 2.0, 60, 280, 66);
+        [noDiskSpaceAlertView addSubview:imageView];
+        
+        UIImageView *imageView2 = [[UIImageView alloc] initWithImage:[[UIImage imageNamed:@"传输空间对话框0"] resizableImageWithCapInsets:UIEdgeInsetsMake(30, 100, 30, 100)]];
+        imageView2.top = imageView.bottom - 2;
+        imageView2.left = imageView.right - 48;
+        [noDiskSpaceAlertView addSubview:imageView2];
+        
+        UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(0, 10, imageView.width, 19)];
+        label.font = [UIFont systemFontOfSize:16];
+        label.textColor = [UIColor whiteColor];
+        label.text = @"本机可用容量少于300M";
+        label.textAlignment = NSTextAlignmentCenter;
+        [imageView addSubview:label];
+        
+        UILabel *label2 = [[UILabel alloc] initWithFrame:CGRectMake(0, label.bottom + 10, imageView.width, 19)];
+        label2.font = [UIFont systemFontOfSize:16];
+        label2.textColor = [UIColor whiteColor];
+        label2.text = @"无法接收";
+        label2.textAlignment = NSTextAlignmentCenter;
+        [imageView addSubview:label2];
+        
+        UIImageView *imageView3 = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"img_jiqiren2"]];
+        imageView3.centerX = IPHONE_WIDTH / 2.0;
+        imageView3.top = imageView.bottom + 30;
+        [noDiskSpaceAlertView addSubview:imageView3];
+
+    }
+    
+    noDiskSpaceAlertView.hidden = NO;
+}
+
+
 - (void)reachabilityStatusChange:(NSNotification *)notification {
     NetworkStatus status = [ZZReachability shareInstance].currentReachabilityStatus;
     switch (status) {
@@ -157,6 +203,17 @@ static NSString *cellIdentifier = @"CellIdentifier";
         default:
             return;
     }
+}
+
+- (void)shouldReceiveFile:(BOOL)flag {
+    dispatch_async(dispatch_get_main_queue(), ^{
+        if (!flag) {
+            [self setupNoDiskSpaceAlertView];
+        } else {
+            noDiskSpaceAlertView.hidden = YES;
+        }
+    });
+    
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSString *,id> *)change context:(void *)context {

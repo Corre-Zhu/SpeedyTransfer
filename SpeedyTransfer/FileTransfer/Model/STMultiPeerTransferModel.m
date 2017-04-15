@@ -459,7 +459,7 @@ HT_DEF_SINGLETON(STMultiPeerTransferModel, shareInstant);
 - (void)fireConnectingTimer {
     [self invalidConnectingTimer];
     
-    connectingTimer = [NSTimer scheduledTimerWithTimeInterval:18 target:self selector:@selector(connectingTimeout) userInfo:nil repeats:NO];
+    connectingTimer = [NSTimer scheduledTimerWithTimeInterval:10 target:self selector:@selector(connectingTimeout) userInfo:nil repeats:NO];
 }
 
 - (void)invalidConnectingTimer {
@@ -502,6 +502,10 @@ HT_DEF_SINGLETON(STMultiPeerTransferModel, shareInstant);
     }
     
     UInt8 flag = [STPacket getFlagWithData:data];
+    if (flag != KPacketPortraitFlag && ![self shouldReceiveFile]) {
+        return;
+    }
+    
     NSData *bodyData = [data subdataWithRange:NSMakeRange(1, data.length - 1)];
     if (flag == KPacketPortraitFlag) {
         UIImage *image = [[UIImage alloc] initWithData:bodyData];

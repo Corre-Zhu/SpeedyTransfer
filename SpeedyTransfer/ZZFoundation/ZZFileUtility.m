@@ -49,6 +49,10 @@
     if (address.length == 0) {
         // 获取个人热点ip
         address = [UIDevice hotspotAddress];
+        
+        if (address.length == 0) {
+            address = @"192.168.1.99"; // iOS之间Multipeer传输，可以不用连接wifi，此时ip地址为空
+        }
     }
     
     for (id object in items) {

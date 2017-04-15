@@ -63,7 +63,7 @@
         sizeLabel.font = [UIFont systemFontOfSize:12.0f];
         [self.contentView addSubview:sizeLabel];
         
-        progressView = [[UIProgressView alloc] initWithFrame:CGRectMake(coverImageView.right + 10.0f, 75.0f, 140.0f, 0.0f)];
+        progressView = [[UIProgressView alloc] initWithFrame:CGRectMake(coverImageView.right + 10.0f, 75.0f, IPHONE5 ? 120 : 140.0f, 0.0f)];
         progressView.trackTintColor = RGBFromHex(0xe0e1de);
         progressView.progressTintColor = RGBFromHex(0x4adb61);
         [self.contentView addSubview:progressView];
@@ -101,11 +101,12 @@
         openButton = [UIButton buttonWithType:UIButtonTypeCustom];
         [openButton setTitle:@"打开" forState:UIControlStateNormal];
         [openButton setTitleColor:RGBFromHex(0x01cc99) forState:UIControlStateNormal];
-        openButton.titleLabel.font = [UIFont systemFontOfSize:14];
+        openButton.titleLabel.font = [UIFont systemFontOfSize:12];
         openButton.layer.cornerRadius = 6.0;
         openButton.layer.borderColor = RGBFromHex(0x01cc99).CGColor;
         openButton.layer.borderWidth = 2.0f;
-        openButton.frame = CGRectMake(progressView.right + 16, progressView.centerY - 22, 70, 38);
+        openButton.frame = CGRectMake(progressView.right + 16.0f, 0.0f, 53, 22);
+        openButton.centerY = progressView.centerY - 2.0f;
         [self.contentView addSubview:openButton];
         openButton.hidden = YES;
         

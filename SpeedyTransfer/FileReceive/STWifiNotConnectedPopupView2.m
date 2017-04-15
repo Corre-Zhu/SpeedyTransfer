@@ -88,7 +88,10 @@
 
 - (void)hotspotButtonClick {
     [ZZFunction goToWifiPref];
-    _block();
+    
+    if (_block) {
+        _block();
+    }
     
     // 1.创建一个本地通知
     UILocalNotification *localNote = [[UILocalNotification alloc] init];
@@ -123,7 +126,9 @@
     if (!CGRectContainsPoint(whiteView.frame, point)) {
         [self removeFromSuperview];
         
-        _block();
+        if (_block) {
+            _block();
+        }
     }
 }
 

@@ -29,6 +29,12 @@ NSString * const dbName = @"FileTransfer.sqlite";
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     NSLog(@"%@", [ZZPath documentPath]);
+    
+    long long freeDiskSpace = [UIDevice longFreeDiskSpace];
+    if (freeDiskSpace > 200 * 1024 * 1024) { // 有时候读出来的会有200M的偏差
+        freeDiskSpace -= 200 * 1024 * 1024;
+    }
+    NSLog(@"Free disk space: %@", [NSString formatSize:freeDiskSpace]);
 	
     [[NSUserDefaults standardUserDefaults] registerDefaults:@{AutoImportPhoto: @YES, AutoImportVideo: @YES, HeadImage: @"龙", HeadImage_: @"head5"}];
     

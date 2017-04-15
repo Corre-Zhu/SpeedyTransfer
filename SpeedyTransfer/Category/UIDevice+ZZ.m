@@ -385,4 +385,36 @@ NSString *const UIStatusBarOrientationDidChangeNotification = @"UIStatusBarOrien
     return [cset countForObject:@"awdl0"] > 1 ? YES : NO;
 }
 
+// Get the total free disk space in long format
++ (long long)longFreeDiskSpace {
+    // Get the long total free disk space
+    @try {
+        // Set up the variables
+        long long FreeDiskSpace = 0L;
+        NSError *Error = nil;
+        NSDictionary *FileAttributes = [[NSFileManager defaultManager] attributesOfFileSystemForPath:NSHomeDirectory() error:&Error];
+        
+        // Get the file attributes of the home directory assuming no errors
+        if (Error == nil) {
+            FreeDiskSpace = [[FileAttributes objectForKey:NSFileSystemFreeSize] longLongValue];
+        } else {
+            // There was an error
+            return -1;
+        }
+        
+        // Check for valid size
+        if (FreeDiskSpace <= 0) {
+            // Invalid size
+            return -1;
+        }
+        
+        // Successful
+        return FreeDiskSpace;
+    }
+    @catch (NSException *exception) {
+        // Error
+        return -1;
+    }
+}
+
 @end

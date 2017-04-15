@@ -298,6 +298,11 @@ HT_DEF_SINGLETON(STWebServerModel, shareInstant);
 		}];
 		
 		[_webServer addHandlerForMethod:@"POST" path:@"/recv" requestClass:[GCDWebServerDataRequest class] processBlock:^GCDWebServerResponse *(GCDWebServerRequest *request) {
+            
+            if (![[STFileTransferModel shareInstant] shouldReceiveFile]) {
+                return [GCDWebServerDataResponse responseWithStatusCode:403];
+            }
+            
 			GCDWebServerDataRequest *dataRequest = (GCDWebServerDataRequest *)request;
             NSString *dataString = [[NSString alloc] initWithData:dataRequest.data encoding:NSUTF8StringEncoding];
 			NSDictionary *itemsDic = [dataString jsonDictionary];

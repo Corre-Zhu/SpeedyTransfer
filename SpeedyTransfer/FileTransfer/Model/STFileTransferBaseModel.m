@@ -181,4 +181,24 @@
     }
 }
 
+- (BOOL)shouldReceiveFile {
+    long long freeDiskSpace = [UIDevice longFreeDiskSpace];
+    if (freeDiskSpace > 200 * 1024 * 1024) { // 有时候读出来的会有200M的偏差
+        freeDiskSpace -= 200 * 1024 * 1024;
+    }
+    NSLog(@"Free disk space: %@", [NSString formatSize:freeDiskSpace]);
+    
+#if DEBUG
+    if (freeDiskSpace > 0 && freeDiskSpace < 8 * 1024 * 1024 * 1024.0) {
+#else
+    if (freeDiskSpace > 0 && freeDiskSpace < 300 * 1024 * 1024.0) {
+#endif
+        [self.delegate shouldReceiveFile:NO];
+        return NO;
+    }
+
+    [self.delegate shouldReceiveFile:YES];
+    return YES;
+}
+
 @end

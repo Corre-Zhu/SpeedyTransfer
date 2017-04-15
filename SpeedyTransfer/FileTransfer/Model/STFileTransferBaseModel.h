@@ -19,6 +19,12 @@
 
 @class STContactInfo;
 
+@protocol STFileTransferBaseModelDelegate <NSObject>
+
+- (void)shouldReceiveFile:(BOOL)flag;
+
+@end
+
 @interface STFileTransferBaseModel : NSObject {
     HTFMDatabase *database;
     __block PHAssetCollection *toSaveCollection;
@@ -33,5 +39,9 @@
 - (void)insertTransferInfo:(STFileTransferInfo *)info;
 - (void)updateAssetIdentifier:(NSString *)assetIdentifier withIdentifier:(NSString *)identifier;
 - (void)createToSaveCollectionIfNeeded:(void(^)(PHAssetCollection *assetCollection))completionHandler;
+
+- (BOOL)shouldReceiveFile; // 是否可以接收文件，当磁盘剩余容量少于300M时，不接收文件
+
+@property (nonatomic, weak) id<STFileTransferBaseModelDelegate> delegate;
 
 @end
