@@ -497,7 +497,7 @@ HT_DEF_SINGLETON(STWebServerModel, shareInstant);
         [htmlString appendString:[self htmlForFileInfo:myFilesArray category:@"文件" image:@"images/ic_wenjian_on.png" icon:@"images/wendang.png"]];
     }
 	
-	NSString *summary = [NSString stringWithFormat:@"%@给您发送了%@个文件", [UIDevice currentDevice].name, @(self.transferFiles.count)];
+	NSString *summary = [NSString stringWithFormat:@"%@给您发送了%@个文件", [UIDevice name], @(self.transferFiles.count)];
 	[[STWebServerModel shareInstant] setVariables:@{@"summary": summary,
 													@"fileInfo": htmlString}];
 	

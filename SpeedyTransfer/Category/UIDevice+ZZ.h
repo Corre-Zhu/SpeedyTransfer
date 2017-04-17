@@ -45,5 +45,6 @@ UIKIT_EXTERN NSString *const UIStatusBarOrientationDidChangeNotification;
 + (BOOL)isWiFiEnabled; // 判断WiFi开关是否打开
 
 + (long long)longFreeDiskSpace;
++ (NSString *)name;
 
 @end

@@ -157,7 +157,7 @@ static NSString *cellIdentifier = @"CellIdentifier";
         UIImageView *imageView = [[UIImageView alloc] init];
         imageView.backgroundColor = RGB(26,194,155);
         imageView.layer.cornerRadius = 10;
-        imageView.frame = CGRectMake((IPHONE_WIDTH - 280) / 2.0, 60, 280, 66);
+        imageView.frame = CGRectMake((IPHONE_WIDTH - 280) / 2.0, 60, 280, 39);
         [noDiskSpaceAlertView addSubview:imageView];
         
         UIImageView *imageView2 = [[UIImageView alloc] initWithImage:[[UIImage imageNamed:@"传输空间对话框0"] resizableImageWithCapInsets:UIEdgeInsetsMake(30, 100, 30, 100)]];
@@ -168,16 +168,9 @@ static NSString *cellIdentifier = @"CellIdentifier";
         UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(0, 10, imageView.width, 19)];
         label.font = [UIFont systemFontOfSize:16];
         label.textColor = [UIColor whiteColor];
-        label.text = @"本机可用容量少于300M";
+        label.text = @"本机可用容量少于300M，无法接收";
         label.textAlignment = NSTextAlignmentCenter;
         [imageView addSubview:label];
-        
-        UILabel *label2 = [[UILabel alloc] initWithFrame:CGRectMake(0, label.bottom + 10, imageView.width, 19)];
-        label2.font = [UIFont systemFontOfSize:16];
-        label2.textColor = [UIColor whiteColor];
-        label2.text = @"无法接收";
-        label2.textAlignment = NSTextAlignmentCenter;
-        [imageView addSubview:label2];
         
         UIImageView *imageView3 = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"img_jiqiren2"]];
         imageView3.centerX = IPHONE_WIDTH / 2.0;

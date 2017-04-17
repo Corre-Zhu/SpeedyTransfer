@@ -417,4 +417,13 @@ NSString *const UIStatusBarOrientationDidChangeNotification = @"UIStatusBarOrien
     }
 }
 
++ (NSString *)name {
+    NSString *name = [[NSUserDefaults standardUserDefaults] stringForKey:@"name"];
+    if (name.length == 0) {
+        name = [[UIDevice currentDevice] name];
+    }
+    
+    return name;
+}
+
 @end

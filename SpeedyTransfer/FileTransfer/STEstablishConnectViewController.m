@@ -265,7 +265,9 @@
         address = @"null";
     }
     
-    NSString *codeStr = [NSString stringWithFormat:@"http://3tkj.cn/transport/haiwai/?ssid=%@&s=native&pwd=null&ip=%@&devicename=%@", wifiname, address, [UIDevice currentDevice].name];
+    
+    
+    NSString *codeStr = [NSString stringWithFormat:@"http://3tkj.cn/transport/haiwai/?ssid=%@&s=native&pwd=null&ip=%@&devicename=%@", wifiname, address, [UIDevice name]];
 //    NSString *codeStr = [NSString stringWithFormat:@"http://3tkj.cn/transport/haiwai/?ssid=%@&s=native&pwd=null&ip=%@", wifiname, address];
 
     codeStr = [codeStr stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];

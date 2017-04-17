@@ -49,7 +49,7 @@ HT_DEF_SINGLETON(STMultiPeerTransferModel, shareInstant);
 
 - (MCSession *)session {
     if (!_session) {
-        MCPeerID *peerID = [[MCPeerID alloc] initWithDisplayName:[UIDevice currentDevice].name];
+        MCPeerID *peerID = [[MCPeerID alloc] initWithDisplayName:[UIDevice name]];
         _session = [[MCSession alloc] initWithPeer:peerID securityIdentity:nil encryptionPreference:MCEncryptionNone];
         _session.delegate = self;
     }

@@ -204,7 +204,7 @@
         maskView.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.5 - fabs(leftView.left) / leftView.width * 0.5];
     } else if (panGest.state == UIGestureRecognizerStateEnded) {
         CGFloat left = 0;
-        if (fabs(leftView.left) > leftView.width / 2.0) {
+        if (fabs(leftView.left) > 20) {
             left = -leftView.width;
         }
         
