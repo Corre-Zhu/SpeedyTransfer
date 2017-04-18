@@ -377,18 +377,18 @@
 }
 
 - (void)discoverButtonClick {
-        STFileTransferViewController *fileTransferVc = [[STFileTransferViewController alloc] init];
-        fileTransferVc.isFromReceive = YES;
-       [self.navigationController pushViewController:fileTransferVc animated:YES];
+#if DEBUG
+    STFileTransferViewController *fileTransferVc = [[STFileTransferViewController alloc] init];
+    fileTransferVc.isFromReceive = YES;
+   [self.navigationController pushViewController:fileTransferVc animated:YES];
+#else
+	NSString *urlString = [NSString stringWithFormat:@"http://www.3tkj.cn/jurl/j.php?id=%@", [[UIDevice currentDevice] openUDID]];
+	NSURL *url = [NSURL URLWithString:urlString];
+	self.navigationController.view.backgroundColor = [UIColor whiteColor];
+	SVWebViewController *webVC = [[SVWebViewController alloc] initWithURL:url];
+	[self.navigationController pushViewController:webVC animated:YES];
+#endif
     
-	//NSString *urlString = [NSString stringWithFormat:@"http://www.3tkj.cn/jurl/j.php?id=%@", [[UIDevice currentDevice] openUDID]];
-//	NSURL *url = [NSURL URLWithString:urlString];
-	//self.navigationController.view.backgroundColor = [UIColor whiteColor];
-	//SVWebViewController *webVC = [[SVWebViewController alloc] initWithURL:url];
-	//[self.navigationController pushViewController:webVC animated:YES];
-	
-//    STFindViewController *findViewc = [[STFindViewController alloc] init];
-//    [self.navigationController pushViewController:findViewc animated:YES];
 }
 
 - (void)settingButtonClick {

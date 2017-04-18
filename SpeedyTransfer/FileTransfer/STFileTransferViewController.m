@@ -455,6 +455,12 @@ static NSString *cellIdentifier = @"CellIdentifier";
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    NSArray *arr = [_model.sectionTransferFiles objectAtIndex:indexPath.section];
+    STFileTransferInfo *info = [arr objectAtIndex:indexPath.row];
+    if ([info.pathExtension isEqualToString:@"apk"]) {
+        return 123;
+    }
+    
     return 100.0f;
 }
 

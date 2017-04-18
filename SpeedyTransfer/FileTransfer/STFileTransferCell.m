@@ -20,7 +20,9 @@
     UILabel *succeedLabel;
     UILabel *failedLabel;
     UIButton *openButton;
-    
+    UILabel *androidFileLabel;
+    UIView *lineView;
+
     BOOL progressObserverAdded;
 }
 
@@ -110,12 +112,27 @@
         [self.contentView addSubview:openButton];
         openButton.hidden = YES;
         
-        UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(16.0f, 99.5f, IPHONE_WIDTH, 0.5f)];
+        lineView = [[UIView alloc] initWithFrame:CGRectMake(16.0f, 99.5f, IPHONE_WIDTH, 0.5f)];
         lineView.backgroundColor = RGBFromHex(0xcacaca);
         [self.contentView addSubview:lineView];
     }
     
     return self;
+}
+
+- (UILabel *)androidFileLabel {
+    if (!androidFileLabel) {
+        androidFileLabel = [[UILabel alloc] init];
+        androidFileLabel = [[UILabel alloc] initWithFrame:CGRectMake(16.0f, 100.0f, IPHONE_WIDTH - 32, 15.0f)];
+        androidFileLabel.textColor = RGBFromHex(0xff6600);
+        androidFileLabel.font = [UIFont systemFontOfSize:12.0f];
+        androidFileLabel.textAlignment = NSTextAlignmentLeft;
+        androidFileLabel.text = NSLocalizedString(@"此为安卓文件，本机无法使用，您可前往App Store下载", nil);
+        [self.contentView addSubview:androidFileLabel];
+        androidFileLabel.hidden = YES;
+    }
+    
+    return androidFileLabel;
 }
 
 - (void)setTransferInfo:(STFileTransferInfo *)transferInfo {
@@ -144,6 +161,8 @@
 }
 
 - (void)configCell {
+    androidFileLabel.hidden = YES;
+
     if (_transferInfo.fileType == STFileTypeContact) {
         coverImageView.image = [UIImage imageNamed:@"phone_bg"];
     } else if (_transferInfo.fileType == STFileTypePicture ||
@@ -185,10 +204,14 @@
         }
         
     } else if (_transferInfo.fileType == STFileTypeMusic) {
-        coverImageView.image = [UIImage imageNamed:@"music_bg"];
+        coverImageView.image = [UIImage imageNamed:@"ic_myfile"];
 	} else {
 		// 未知文件类型
 		coverImageView.image = [UIImage imageNamed:@"ic_myfile"];
+        
+        if ([self.transferInfo.pathExtension isEqualToString:@"apk"]) {
+            [self androidFileLabel].hidden = NO;
+        }
 	}
 	
     succeedLabel.hidden = YES;
@@ -225,6 +248,7 @@
     sizeLabel.left = coverImageView.right + 10.0f;
     
     fileNameLabel.frame = CGRectMake(coverImageView.right + 10.0f, 12.0f, IPHONE_WIDTH - coverImageView.right - 26.0f, 17.0f);
+    lineView.top = self.height - 0.5;
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSString *,id> *)change context:(void *)context {

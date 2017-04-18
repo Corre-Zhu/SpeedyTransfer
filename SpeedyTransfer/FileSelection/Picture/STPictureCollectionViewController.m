@@ -104,9 +104,11 @@ static NSString * const CollectionViewCellReuseIdentifier = @"CollectionViewCell
                 PHFetchResult *assetsFetchResult = [PHAsset fetchAssetsInAssetCollection:assetCollection options:self.fetchOptions];
                 
                 if (assetCollection.assetCollectionSubtype == PHAssetCollectionSubtypeSmartAlbumUserLibrary) {
-                    [_smartFetchResults insertObject:assetsFetchResult atIndex:0];
-                    [_smartFetchTitles insertObject:collection.localizedTitle atIndex:0];
-                    [_smartIdentifiers insertObject:assetCollection.localIdentifier atIndex:0];
+                    if(assetsFetchResult.count>0) {
+                        [_smartFetchResults insertObject:assetsFetchResult atIndex:0];
+                        [_smartFetchTitles insertObject:collection.localizedTitle atIndex:0];
+                        [_smartIdentifiers insertObject:assetCollection.localIdentifier atIndex:0];
+                    }
                 } else {
                     if(assetsFetchResult.count>0) {
                         [_smartFetchResults addObject:assetsFetchResult];

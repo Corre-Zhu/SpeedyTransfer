@@ -320,8 +320,9 @@
 }
 
 - (void)hotspotButtonClick {
-    NSString *wifiname = [UIDevice getWifiName];
-    if (wifiname.length > 0 || [UIDevice isPersonalHotspotEnabled]) {
+//    NSString *wifiname = [UIDevice getWifiName];
+//    if (wifiname.length > 0 || [UIDevice isPersonalHotspotEnabled]) {
+    if ([UIDevice isPersonalHotspotEnabled]) {
         dispatch_async(dispatch_get_main_queue(), ^{
             [self goToTransferInstructionViewController];
         });
