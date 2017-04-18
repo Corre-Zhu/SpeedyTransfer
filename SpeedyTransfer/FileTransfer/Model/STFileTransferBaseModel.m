@@ -189,7 +189,7 @@
     NSLog(@"Free disk space: %@", [NSString formatSize:freeDiskSpace]);
     
 #if DEBUG
-    if (freeDiskSpace > 0 && freeDiskSpace < 8 * 1024 * 1024 * 1024.0) {
+    if (freeDiskSpace > 0 && freeDiskSpace < 1 * 1024 * 1024 * 1024.0) {
 #else
     if (freeDiskSpace > 0 && freeDiskSpace < 300 * 1024 * 1024.0) {
 #endif
