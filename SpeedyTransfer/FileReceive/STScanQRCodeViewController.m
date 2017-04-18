@@ -251,7 +251,7 @@
             }
             
             // url中含有设备名称，认为扫描的是iPhone的二维码
-            if (devicename.length > 0) {
+            if (devicename.length > 0 && KMultipeer) {
                 if (![UIDevice isWiFiEnabled]) {
                     popupView = [[STWifiNotConnectedPopupView2 alloc] init];
                     __weak typeof(self) weakSelf = self;

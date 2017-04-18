@@ -51,32 +51,32 @@
         label10.font = [UIFont systemFontOfSize:14.0f];
         [whiteView addSubview:label10];
         
-        UIView *borderView = [[HTDrawView alloc] initWithFrame:CGRectMake(16, label10.bottom + 5, whiteView.width - 32, 41)];
+        UIView *borderView = [[HTDrawView alloc] initWithFrame:CGRectMake(16, label10.bottom + 5, whiteView.width - 32, 46)];
         borderView.backgroundColor = [UIColor whiteColor];
         borderView.layer.borderWidth = 2;
         borderView.layer.borderColor = RGBFromHex(0xff7428).CGColor;
         [whiteView addSubview:borderView];
         
-        UILabel *label11 = [[UILabel alloc] initWithFrame:CGRectMake(12, 4, borderView.width - 58, 17)];
+        UILabel *label11 = [[UILabel alloc] initWithFrame:CGRectMake(12, 14, borderView.width - 58, 17)];
         label11.text = @"FreeShare-********";
         label11.textColor = RGBFromHex(0x333333);
         label11.font = [UIFont systemFontOfSize:14.0f];
         label11.textAlignment = NSTextAlignmentLeft;
         [borderView addSubview:label11];
         
-        UILabel *label12 = [[UILabel alloc] initWithFrame:CGRectMake(12, label11.bottom + 5, borderView.width - 58, 15)];
-        label12.text = @"🚀 点传免费流量传输文件，点击这里一键连接";
-        label12.textColor = RGBFromHex(0x333333);
-        label12.font = [UIFont systemFontOfSize:12.0f];
-        [borderView addSubview:label12];
-        label12.numberOfLines = 0;
-        [label12 sizeToFit];
-        label12.left = 12;
-        label12.top = label11.bottom + 5;
-        borderView.height = label12.bottom + 4;
+//        UILabel *label12 = [[UILabel alloc] initWithFrame:CGRectMake(12, label11.bottom + 5, borderView.width - 58, 15)];
+//        label12.text = @"🚀 点传免费流量传输文件，点击这里一键连接";
+//        label12.textColor = RGBFromHex(0x333333);
+//        label12.font = [UIFont systemFontOfSize:12.0f];
+//        [borderView addSubview:label12];
+//        label12.numberOfLines = 0;
+//        [label12 sizeToFit];
+//        label12.left = 12;
+//        label12.top = label11.bottom + 5;
+//        borderView.height = label12.bottom + 4;
         
         UIImageView *imag2 = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"img_wifi"]];
-        imag2.frame = CGRectMake(borderView.width - 34, 8, 22, 22);
+        imag2.frame = CGRectMake(borderView.width - 34, 11, 22, 22);
         [borderView addSubview:imag2];
         
         UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, borderView.bottom + 16, whiteView.width, 0.5f)];
@@ -117,7 +117,7 @@
     localNote.fireDate = [NSDate dateWithTimeIntervalSinceNow:1.6];
     
     // 1.2.设置通知内容
-    localNote.alertBody = @"请连接带有FreeShare字样或带有火箭图标的Wi-Fi";
+    localNote.alertBody = @"请连接带有FreeShare字样的Wi-Fi";
     
     // 2.执行通知
     [[UIApplication sharedApplication] scheduleLocalNotification:localNote];

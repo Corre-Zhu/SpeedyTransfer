@@ -33,3 +33,5 @@
 
 #define KIOSDownloadUrl @"http://t.cn/RiC9im9"
 #define KAndroidDownloadUrl @"http://3tkj.cn/dl.php"
+
+#define KMultipeer 1
