@@ -175,6 +175,12 @@ withFilterContext:(id)filterContext {
                 if (arr.count == 3) {
                     port = [[arr objectAtIndex:1] integerValue];
                 }
+                
+                if (port == KSERVERPORT) {
+                    // 忽略iOS发来的广播
+                    return;
+                }
+                
                 [GCDAsyncUdpSocket getHost:&host port:NULL fromAddress:address];
                 if (host.length > 0 && port > 0 && ![[UIDevice getAllIpAddresses].allValues containsObject:host]) {
                     BOOL find = NO;

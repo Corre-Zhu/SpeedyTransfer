@@ -138,8 +138,8 @@
 }
 
 - (void)reloadWifiName {
-    NSString *wifiname = [UIDevice getWifiName];
-    if (wifiname.length == 0 && [UIDevice isPersonalHotspotEnabled]) {
+    NSString *wifiname = nil;
+    if ([UIDevice isPersonalHotspotEnabled]) {
         wifiname = [[UIDevice currentDevice] name];
     }
     if (wifiname.length > 0) {

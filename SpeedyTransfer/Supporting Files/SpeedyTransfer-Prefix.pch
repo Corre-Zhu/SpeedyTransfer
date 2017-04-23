@@ -18,7 +18,7 @@
 #import "STMultiPeerTransferModel.h"
 
 #define KUDPPORT 3333
-#define KSERVERPORT 8080
+#define KSERVERPORT 8082
 #define KSERVERPORT2 8081
 
 #define KWeChatAppId        @"wxbb111851c6a6de52"
