@@ -153,6 +153,10 @@ HT_DEF_SINGLETON(STWebServerModel, shareInstant);
 			} else if ([request.path hasPrefix:@"/image/origin/"]) {
 				NSInteger loc = [@"/image/origin/" length];
 				NSString *assetIdentifier = [request.path substringWithRange:NSMakeRange(loc, request.path.length - loc)];
+                if ([assetIdentifier containsString:@"/"]) {
+                    assetIdentifier = [assetIdentifier componentsSeparatedByString:@"/"].firstObject;
+                }
+                
 				if (assetIdentifier.length > 0) {
 					PHFetchResult *savedAssets = [PHAsset fetchAssetsWithLocalIdentifiers:@[assetIdentifier] options:nil];
 					if (savedAssets.count > 0) {
@@ -200,6 +204,10 @@ HT_DEF_SINGLETON(STWebServerModel, shareInstant);
 			} else if ([request.path hasPrefix:@"/image/thumbnail/"]) {
 				NSInteger loc = [@"/image/thumbnail/" length];
 				NSString *assetIdentifier = [request.path substringWithRange:NSMakeRange(loc, request.path.length - loc)];
+                if ([assetIdentifier containsString:@"/"]) {
+                    assetIdentifier = [assetIdentifier componentsSeparatedByString:@"/"].firstObject;
+                }
+                
 				if (assetIdentifier.length > 0) {
 					PHFetchResult *savedAssets = [PHAsset fetchAssetsWithLocalIdentifiers:@[assetIdentifier] options:nil];
 					if (savedAssets.count > 0) {
@@ -226,6 +234,10 @@ HT_DEF_SINGLETON(STWebServerModel, shareInstant);
 			} else if ([request.path hasPrefix:@"/contact/"]) {
 				NSInteger loc = [@"/contact/" length];
 				NSString *recordId = [request.path substringWithRange:NSMakeRange(loc, request.path.length - loc)];
+                if ([recordId containsString:@"/"]) {
+                    recordId = [recordId componentsSeparatedByString:@"/"].firstObject;
+                }
+                
 				if (recordId.length > 0) {
 					if (!weakSelf.addressBook) {
 						weakSelf.addressBook = ABAddressBookCreateWithOptions(NULL, NULL);

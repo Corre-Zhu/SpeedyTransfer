@@ -79,8 +79,8 @@
                     NSString *fileUrl = @"";
                     NSString *thumbnailUrl = @"";
                     if (address.length > 0) {
-                        fileUrl = [NSString stringWithFormat:@"http://%@:%@/image/origin/%@", address, @(KSERVERPORT), localIdentifier];
-                        thumbnailUrl = [NSString stringWithFormat:@"http://%@:%@/image/thumbnail/%@", address, @(KSERVERPORT), localIdentifier];
+                        fileUrl = [NSString stringWithFormat:@"http://%@:%@/image/origin/%@/%@", address, @(KSERVERPORT), localIdentifier, fileName];
+                        thumbnailUrl = [NSString stringWithFormat:@"http://%@:%@/image/thumbnail/%@/%@", address, @(KSERVERPORT), localIdentifier, fileName];
                     }
                    
                     
@@ -109,8 +109,8 @@
                         NSString *thumbnailUrl = @"";
                         
                         if (address.length > 0) {
-                            fileUrl = [NSString stringWithFormat:@"http://%@:%@/image/origin/%@", address, @(KSERVERPORT), localIdentifier];
-                            thumbnailUrl = [NSString stringWithFormat:@"http://%@:%@/image/thumbnail/%@", address, @(KSERVERPORT), localIdentifier];
+                            fileUrl = [NSString stringWithFormat:@"http://%@:%@/image/origin/%@/%@", address, @(KSERVERPORT), localIdentifier, fileName];
+                            thumbnailUrl = [NSString stringWithFormat:@"http://%@:%@/image/thumbnail/%@/%@", address, @(KSERVERPORT), localIdentifier, fileName];
                             
                         }
                         
@@ -134,7 +134,7 @@
             NSString *fileType = @"vcard";
             NSString *fileUrl = @"";
             if (address.length > 0) {
-                fileUrl = [NSString stringWithFormat:@"http://%@:%@/contact/%@", address, @(KSERVERPORT), @(contactInfo.recordId)];
+                fileUrl = [NSString stringWithFormat:@"http://%@:%@/contact/%@/%@.vcard", address, @(KSERVERPORT), @(contactInfo.recordId), @(contactInfo.recordId)];
             }
             
             NSDictionary *fileInfo = @{FILE_NAME: fileName,

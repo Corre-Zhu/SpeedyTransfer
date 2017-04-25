@@ -69,7 +69,7 @@
     bottomContainerView.layer.borderWidth = 1;
     bottomContainerView.layer.borderColor = [[UIColor lightGrayColor] colorWithAlphaComponent:0.7].CGColor;
     bottomContainerView.layer.cornerRadius = 5;
-    [scrollView addSubview:bottomContainerView];
+//    [scrollView addSubview:bottomContainerView];
     
     UIButton *arrowButton = [UIButton buttonWithType:UIButtonTypeCustom];
     [arrowButton addTarget:self action:@selector(arrowButtonClick) forControlEvents:UIControlEventTouchUpInside];
@@ -217,8 +217,7 @@
 
 - (void)applicationDidBecomeActiveNotification:(NSNotification *)noti {
     if (hotSpotButtonClicked) {
-        NSString *wifiname = [UIDevice getWifiName];
-        if (wifiname.length > 0 || [UIDevice isPersonalHotspotEnabled]) {
+        if ([UIDevice isPersonalHotspotEnabled]) {
             dispatch_async(dispatch_get_main_queue(), ^{
                 [self goToTransferInstructionViewController];
             });
