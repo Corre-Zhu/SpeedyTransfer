@@ -7,7 +7,6 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "MCTransceiver.h"
 
 @interface STFileTransferViewController : UIViewController
 

@@ -37,7 +37,6 @@
 		CE2AD7AF1C4AA15D00C67D1D /* IMG_7551.JPG in Resources */ = {isa = PBXBuildFile; fileRef = CE2AD7AE1C4AA15D00C67D1D /* IMG_7551.JPG */; };
 		CE3AC9B81E581750004638E3 /* STFileSelectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE3AC9B71E581750004638E3 /* STFileSelectionViewController.m */; };
 		CE6536AC1C2E8D1B00C1E8A3 /* STWifiNotConnectedPopupView2.m in Sources */ = {isa = PBXBuildFile; fileRef = CE6536AB1C2E8D1B00C1E8A3 /* STWifiNotConnectedPopupView2.m */; };
-		CE6536B01C2E92C200C1E8A3 /* MCTransceiver.m in Sources */ = {isa = PBXBuildFile; fileRef = CE6536AF1C2E92C200C1E8A3 /* MCTransceiver.m */; };
 		CE6536C81C2ECD3400C1E8A3 /* STFileTransferCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CE6536C01C2ECD3400C1E8A3 /* STFileTransferCell.m */; };
 		CE6536C91C2ECD3400C1E8A3 /* STFileTransferViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE6536C21C2ECD3400C1E8A3 /* STFileTransferViewController.m */; };
 		CE6536CA1C2ECD3400C1E8A3 /* STTransferInstructionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE6536C41C2ECD3400C1E8A3 /* STTransferInstructionViewController.m */; };
@@ -173,8 +172,6 @@
 		CE3AC9B71E581750004638E3 /* STFileSelectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STFileSelectionViewController.m; sourceTree = "<group>"; };
 		CE6536AA1C2E8D1B00C1E8A3 /* STWifiNotConnectedPopupView2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STWifiNotConnectedPopupView2.h; sourceTree = "<group>"; };
 		CE6536AB1C2E8D1B00C1E8A3 /* STWifiNotConnectedPopupView2.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STWifiNotConnectedPopupView2.m; sourceTree = "<group>"; };
-		CE6536AE1C2E92C200C1E8A3 /* MCTransceiver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MCTransceiver.h; sourceTree = "<group>"; };
-		CE6536AF1C2E92C200C1E8A3 /* MCTransceiver.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MCTransceiver.m; sourceTree = "<group>"; };
 		CE6536BF1C2ECD3400C1E8A3 /* STFileTransferCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STFileTransferCell.h; sourceTree = "<group>"; };
 		CE6536C01C2ECD3400C1E8A3 /* STFileTransferCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STFileTransferCell.m; sourceTree = "<group>"; };
 		CE6536C11C2ECD3400C1E8A3 /* STFileTransferViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STFileTransferViewController.h; sourceTree = "<group>"; };
@@ -463,15 +460,6 @@
 			path = FileReceive;
 			sourceTree = "<group>";
 		};
-		CE6536AD1C2E92C200C1E8A3 /* MultipeerKit */ = {
-			isa = PBXGroup;
-			children = (
-				CE6536AE1C2E92C200C1E8A3 /* MCTransceiver.h */,
-				CE6536AF1C2E92C200C1E8A3 /* MCTransceiver.m */,
-			);
-			path = MultipeerKit;
-			sourceTree = "<group>";
-		};
 		CE6536BB1C2ECD3400C1E8A3 /* FileTransfer */ = {
 			isa = PBXGroup;
 			children = (
@@ -634,7 +622,6 @@
 				CE1A6E261CE82128006795E7 /* SNS */,
 				4558BFC91C7458FB002F5718 /* OpenUDID */,
 				4558BFC51C7453DD002F5718 /* KeychainUtils */,
-				CE6536AD1C2E92C200C1E8A3 /* MultipeerKit */,
 				CEA12C461C29ABCB00328CEF /* Reachability */,
 				CE8975601C26AE5B002E11F8 /* MBProgressHUD */,
 				CEB29E691C21B8BE00F17804 /* UIView+AutoLayout */,
@@ -886,8 +873,7 @@
 				TargetAttributes = {
 					CED62A291C094FDD00270EDB = {
 						CreatedOnToolsVersion = 7.1.1;
-						DevelopmentTeam = 6443RH2762;
-						ProvisioningStyle = Automatic;
+						ProvisioningStyle = Manual;
 					};
 				};
 			};
@@ -1011,7 +997,6 @@
 				4569CB391C41264C00A97D2A /* ZZReachability.m in Sources */,
 				CE6536F31C2FD53600C1E8A3 /* STFileReceiveModel.m in Sources */,
 				CE6536D71C2ECEC300C1E8A3 /* STMusicInfo.m in Sources */,
-				CE6536B01C2E92C200C1E8A3 /* MCTransceiver.m in Sources */,
 				CEA74C2F1C79D65F00E1B34C /* STSendHeaderView.m in Sources */,
 				CED62A481C09512100270EDB /* main.m in Sources */,
 				CEB29E751C21B8BE00F17804 /* NSLayoutConstraint+PureLayout.m in Sources */,
@@ -1169,7 +1154,7 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				DEVELOPMENT_TEAM = 6443RH2762;
+				DEVELOPMENT_TEAM = "";
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				GCC_PREFIX_HEADER = "SpeedyTransfer/Supporting Files/SpeedyTransfer-Prefix.pch";
@@ -1195,7 +1180,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				DEVELOPMENT_TEAM = 6443RH2762;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
@@ -1210,8 +1195,8 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.santikeji.dianchuan;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
-				PROVISIONING_PROFILE_SPECIFIER = "";
+				PROVISIONING_PROFILE = "b46f6589-a1d5-4ae4-9d0a-71e51119cc6b";
+				PROVISIONING_PROFILE_SPECIFIER = "Santikeji AppStore Profile";
 			};
 			name = Release;
 		};
