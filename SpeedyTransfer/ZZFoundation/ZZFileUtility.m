@@ -8,7 +8,6 @@
 
 #import "ZZFileUtility.h"
 #import <Photos/Photos.h>
-#import "STMusicInfo.h"
 #import "STContactInfo.h"
 #import <GCDWebServerFunctions.h>
 #import "NSString+Extension.h"
@@ -147,7 +146,7 @@
                                        RECORD_ID: @(contactInfo.recordId),
                                        FILE_IDENTIFIER: [NSString uniqueID]};
             [self setObject:fileInfo forKey:object];
-        } else if ([object isKindOfClass:[STMusicInfo class]]) {
+        }/* else if ([object isKindOfClass:[STMusicInfo class]]) {
             STMusicInfo *musciInfo = object;
             NSString *fileName = musciInfo.title;
             NSUInteger fileSize = musciInfo.fileSize;
@@ -166,7 +165,7 @@
                                        RECORD_ID: musciInfo.persistentId,
                                        FILE_IDENTIFIER: [NSString uniqueID]};
             [self setObject:fileInfo forKey:object];
-        } else if ([object isKindOfClass:[STFileInfo class]]) {
+        }*/ else if ([object isKindOfClass:[STFileInfo class]]) {
             STFileInfo *file = object;
             NSString *fileName = file.fileName;
             NSUInteger fileSize = file.fileSize;

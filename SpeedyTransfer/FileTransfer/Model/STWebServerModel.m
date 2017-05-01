@@ -19,7 +19,6 @@
 #import "STDeviceInfo.h"
 #import <Photos/Photos.h>
 #import <AddressBook/AddressBook.h>
-#import <MediaPlayer/MediaPlayer.h>
 #import "ZZFunction.h"
 
 @interface STWebServerModel ()
@@ -249,7 +248,7 @@ HT_DEF_SINGLETON(STWebServerModel, shareInstant);
 					return;
 				}
 				
-			} else if ([request.path hasPrefix:@"/music/"]) {
+			} /* else if ([request.path hasPrefix:@"/music/"]) {
 				NSInteger loc = [@"/music/" length];
 				NSString *recordId = [request.path substringWithRange:NSMakeRange(loc, request.path.length - loc)];
 				if (recordId.length > 0) {
@@ -293,7 +292,7 @@ HT_DEF_SINGLETON(STWebServerModel, shareInstant);
 					}
 				}
 				
-            } else if ([request.path hasPrefix:@"/myfile/"]) {
+            }*/ else if ([request.path hasPrefix:@"/myfile/"]) {
                 NSInteger loc = [@"/myfile/" length];
                 NSString *fileId = [request.path substringWithRange:NSMakeRange(loc, request.path.length - loc)];
                 if (fileId.length > 0) {

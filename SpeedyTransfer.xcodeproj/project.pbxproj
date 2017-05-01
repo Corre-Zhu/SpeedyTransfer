@@ -43,7 +43,6 @@
 		CE6536CB1C2ECD3400C1E8A3 /* STWifiNotConnectedPopupView.m in Sources */ = {isa = PBXBuildFile; fileRef = CE6536C61C2ECD3400C1E8A3 /* STWifiNotConnectedPopupView.m */; };
 		CE6536D51C2ECEC300C1E8A3 /* STContactInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = CE6536CE1C2ECEC200C1E8A3 /* STContactInfo.m */; };
 		CE6536D61C2ECEC300C1E8A3 /* STFileTransferInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = CE6536D01C2ECEC200C1E8A3 /* STFileTransferInfo.m */; };
-		CE6536D71C2ECEC300C1E8A3 /* STMusicInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = CE6536D21C2ECEC200C1E8A3 /* STMusicInfo.m */; };
 		CE6536D81C2ECEC300C1E8A3 /* STPictureCollectionHeaderInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = CE6536D41C2ECEC300C1E8A3 /* STPictureCollectionHeaderInfo.m */; };
 		CE6536DC1C2ED0AF00C1E8A3 /* STFileTransferModel.m in Sources */ = {isa = PBXBuildFile; fileRef = CE6536DB1C2ED0AF00C1E8A3 /* STFileTransferModel.m */; };
 		CE6536DF1C2ED74600C1E8A3 /* ZZPath.m in Sources */ = {isa = PBXBuildFile; fileRef = CE6536DE1C2ED74600C1E8A3 /* ZZPath.m */; };
@@ -184,8 +183,6 @@
 		CE6536CE1C2ECEC200C1E8A3 /* STContactInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STContactInfo.m; sourceTree = "<group>"; };
 		CE6536CF1C2ECEC200C1E8A3 /* STFileTransferInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STFileTransferInfo.h; sourceTree = "<group>"; };
 		CE6536D01C2ECEC200C1E8A3 /* STFileTransferInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STFileTransferInfo.m; sourceTree = "<group>"; };
-		CE6536D11C2ECEC200C1E8A3 /* STMusicInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STMusicInfo.h; sourceTree = "<group>"; };
-		CE6536D21C2ECEC200C1E8A3 /* STMusicInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STMusicInfo.m; sourceTree = "<group>"; };
 		CE6536D31C2ECEC200C1E8A3 /* STPictureCollectionHeaderInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STPictureCollectionHeaderInfo.h; sourceTree = "<group>"; };
 		CE6536D41C2ECEC300C1E8A3 /* STPictureCollectionHeaderInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STPictureCollectionHeaderInfo.m; sourceTree = "<group>"; };
 		CE6536DA1C2ED0AF00C1E8A3 /* STFileTransferModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STFileTransferModel.h; sourceTree = "<group>"; };
@@ -490,8 +487,6 @@
 				CE689DAB1C33B4C50013720F /* BusineesEntity.h */,
 				CE6536CD1C2ECEC200C1E8A3 /* STContactInfo.h */,
 				CE6536CE1C2ECEC200C1E8A3 /* STContactInfo.m */,
-				CE6536D11C2ECEC200C1E8A3 /* STMusicInfo.h */,
-				CE6536D21C2ECEC200C1E8A3 /* STMusicInfo.m */,
 				CE6536D31C2ECEC200C1E8A3 /* STPictureCollectionHeaderInfo.h */,
 				CE6536D41C2ECEC300C1E8A3 /* STPictureCollectionHeaderInfo.m */,
 				CE6536CF1C2ECEC200C1E8A3 /* STFileTransferInfo.h */,
@@ -997,7 +992,6 @@
 				CEBB14761C33DB5C00874142 /* STAboutViewController.m in Sources */,
 				4569CB391C41264C00A97D2A /* ZZReachability.m in Sources */,
 				CE6536F31C2FD53600C1E8A3 /* STFileReceiveModel.m in Sources */,
-				CE6536D71C2ECEC300C1E8A3 /* STMusicInfo.m in Sources */,
 				CEA74C2F1C79D65F00E1B34C /* STSendHeaderView.m in Sources */,
 				CED62A481C09512100270EDB /* main.m in Sources */,
 				CEB29E751C21B8BE00F17804 /* NSLayoutConstraint+PureLayout.m in Sources */,

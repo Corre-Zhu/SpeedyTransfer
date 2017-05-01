@@ -9,7 +9,6 @@
 #import "STFileTransferViewController.h"
 #import "STFileTransferCell.h"
 #import "STContactInfo.h"
-#import "STMusicInfo.h"
 #import <AddressBook/AddressBook.h>
 #import <AddressBookUI/AddressBookUI.h>
 #import <Photos/Photos.h>

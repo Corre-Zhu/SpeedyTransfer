@@ -13,7 +13,6 @@
 #import "STContactsSelectionViewController.h"
 #import "STFilesViewController.h"
 #import <Photos/Photos.h>
-#import "STMusicInfo.h"
 #import "STWifiNotConnectedPopupView.h"
 #import "STTransferInstructionViewController.h"
 #import "STFileTransferViewController.h"
