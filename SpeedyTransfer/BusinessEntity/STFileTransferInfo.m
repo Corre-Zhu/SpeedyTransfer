@@ -56,7 +56,7 @@ HT_DEF_SINGLETON(STFileTransferInfo, shareInstant);
         self.transferType = STFileTransferTypeReceive;
         self.transferStatus = STFileTransferStatusReceiving;
         self.fileName = [fileInfo stringForKey:FILE_NAME];
-        self.fileSize = [fileInfo doubleForKey:FILE_SIZE];
+        self.fileSize = [fileInfo doubleForKey:FILE_SIZE_IOS];
         if (self.fileName.pathExtension.length > 0) {
             self.pathExtension = self.fileName.pathExtension;
         } else {

@@ -124,7 +124,8 @@ static inline NSDate* _NSDateFromTimeSpec(const struct timespec* t) {
       NSData* data = [[fileName stringByReplacingOccurrencesOfString:@"\"" withString:@""] dataUsingEncoding:NSISOLatin1StringEncoding allowLossyConversion:YES];
       NSString* lossyFileName = data ? [[NSString alloc] initWithData:data encoding:NSISOLatin1StringEncoding] : nil;
       if (lossyFileName) {
-        NSString* value = [NSString stringWithFormat:@"attachment; filename=\"%@\"; filename*=UTF-8''%@", lossyFileName, GCDWebServerEscapeURLString(fileName)];
+       // NSString* value = [NSString stringWithFormat:@"attachment; filename=\"%@\"; filename*=UTF-8''%@", lossyFileName, GCDWebServerEscapeURLString(fileName)];
+          NSString* value = [NSString stringWithFormat:@"attachment; filename=\"%@\"", lossyFileName]; // 修复filename安卓无法识别问题
         [self setValue:value forAdditionalHeader:@"Content-Disposition"];
       } else {
         GWS_DNOT_REACHED();

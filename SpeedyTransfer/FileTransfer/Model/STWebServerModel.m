@@ -438,7 +438,7 @@ HT_DEF_SINGLETON(STWebServerModel, shareInstant);
 			iconUrl = iconName;
 		}
 		NSString *fileName = [fileInfo stringForKey:FILE_NAME];
-		double fileSize = [fileInfo doubleForKey:FILE_SIZE];
+		double fileSize = [fileInfo doubleForKey:FILE_SIZE_IOS];
 		NSString *fileSizeString = [NSString formatSize:fileSize];
 		[htmlString appendFormat:@"<a href=\"%@\"> <div class=\"apk_68dp\"> \
 		 <div class=\"icon\"><img src=\"%@\"></div> \

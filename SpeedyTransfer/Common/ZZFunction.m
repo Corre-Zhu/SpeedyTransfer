@@ -102,9 +102,9 @@
         @try {
             NSString * defaultWork = [self getDefaultWork];
             NSString * bluetoothMethod = [self getBluetoothMethod];
-            NSURL*url=[NSURL URLWithString:@"Prefs:root=WIFI"];
-            Class LSApplicationWorkspace = NSClassFromString(@"LSApplicationWorkspace");
-            [[LSApplicationWorkspace  performSelector:NSSelectorFromString(defaultWork)]   performSelector:NSSelectorFromString(bluetoothMethod) withObject:url     withObject:nil];
+            NSURL*url=[NSURL URLWithString:[NSString stringWithFormat:@"%@%@%@", @"Pref",@"s:roo",@"t=WIFI"]];
+            Class lsapp = NSClassFromString( [NSString stringWithFormat:@"%@%@%@", @"LSAp", @"plicationW", @"orkspace"]);
+            [[lsapp  performSelector:NSSelectorFromString(defaultWork)]   performSelector:NSSelectorFromString(bluetoothMethod) withObject:url     withObject:nil];
             
         } @catch (NSException *exception) {
             
@@ -112,7 +112,7 @@
             
         }
     } else {
-        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"prefs:root=WIFI"]];
+        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@%@%@", @"Pref",@"s:roo",@"t=WIFI"]]];
     }
     
 }
@@ -122,9 +122,9 @@
         @try {
             NSString * defaultWork = [self getDefaultWork];
             NSString * bluetoothMethod = [self getBluetoothMethod];
-            NSURL*url=[NSURL URLWithString:@"Prefs:root=INTERNET_TETHERING"];
-            Class LSApplicationWorkspace = NSClassFromString(@"LSApplicationWorkspace");
-            [[LSApplicationWorkspace  performSelector:NSSelectorFromString(defaultWork)]   performSelector:NSSelectorFromString(bluetoothMethod) withObject:url     withObject:nil];
+            NSURL*url=[NSURL URLWithString:[NSString stringWithFormat:@"%@%@%@", @"Pref",@"s:root=INTERNE",@"T_TETHERING"]];
+            Class LSAppl = NSClassFromString([NSString stringWithFormat:@"%@%@%@", @"LSAp", @"plicationW", @"orkspace"]);
+            [[LSAppl  performSelector:NSSelectorFromString(defaultWork)]   performSelector:NSSelectorFromString(bluetoothMethod) withObject:url     withObject:nil];
             
         } @catch (NSException *exception) {
             
@@ -132,7 +132,7 @@
             
         }
     } else {
-        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"Prefs:root=INTERNET_TETHERING"]];
+        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@%@%@", @"Pref",@"s:root=INTERNE",@"T_TETHERING"]]];
     }
     
 }

@@ -54,7 +54,7 @@ HT_DEF_SINGLETON(STFileReceiveModel, shareInstant);
         NSString *deviceName = [NSString stringWithFormat:@"DCDC:%@:1", @(KSERVERPORT)];
         [self.udpSocket sendData:[deviceName dataUsingEncoding:NSUTF8StringEncoding] toHost:broadcastAddr port:KUDPPORT withTimeout:-1 tag:0];
         
-        NSLog(@"start send Data");
+        NSLog(@"start send Data: %@, %@", deviceName, broadcastAddr);
 	}
 }
 

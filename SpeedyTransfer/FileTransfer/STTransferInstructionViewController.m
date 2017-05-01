@@ -138,10 +138,11 @@
 }
 
 - (void)reloadWifiName {
-    NSString *wifiname = nil;
-    if ([UIDevice isPersonalHotspotEnabled]) {
+    NSString *wifiname = [UIDevice getWifiName];
+    if (wifiname.length == 0 && [UIDevice isPersonalHotspotEnabled]) {
         wifiname = [[UIDevice currentDevice] name];
     }
+    
     if (wifiname.length > 0) {
         wifiLabel.text = wifiname;
         [wifiLabel sizeToFit];

@@ -69,7 +69,7 @@
     bottomContainerView.layer.borderWidth = 1;
     bottomContainerView.layer.borderColor = [[UIColor lightGrayColor] colorWithAlphaComponent:0.7].CGColor;
     bottomContainerView.layer.cornerRadius = 5;
-//    [scrollView addSubview:bottomContainerView];
+    [scrollView addSubview:bottomContainerView];
     
     UIButton *arrowButton = [UIButton buttonWithType:UIButtonTypeCustom];
     [arrowButton addTarget:self action:@selector(arrowButtonClick) forControlEvents:UIControlEventTouchUpInside];
@@ -217,8 +217,8 @@
 
 - (void)applicationDidBecomeActiveNotification:(NSNotification *)noti {
     if (hotSpotButtonClicked) {
-        if ([UIDevice isPersonalHotspotEnabled]) {
-            dispatch_async(dispatch_get_main_queue(), ^{
+        NSString *wifiname = [UIDevice getWifiName];
+        if (wifiname.length > 0 || [UIDevice isPersonalHotspotEnabled]) {            dispatch_async(dispatch_get_main_queue(), ^{
                 [self goToTransferInstructionViewController];
             });
         }
@@ -319,9 +319,8 @@
 }
 
 - (void)hotspotButtonClick {
-//    NSString *wifiname = [UIDevice getWifiName];
-//    if (wifiname.length > 0 || [UIDevice isPersonalHotspotEnabled]) {
-    if ([UIDevice isPersonalHotspotEnabled]) {
+    NSString *wifiname = [UIDevice getWifiName];
+    if (wifiname.length > 0 || [UIDevice isPersonalHotspotEnabled]) {
         dispatch_async(dispatch_get_main_queue(), ^{
             [self goToTransferInstructionViewController];
         });
@@ -367,20 +366,23 @@
                     break;
             }
         } else if ([keyPath isEqualToString:@"devicesArray"]) {
-            // 如果只发现一台设备，直接选择这台设备
-            if ([STFileTransferModel shareInstant].selectedDevicesArray.count == 0 && [STFileTransferModel shareInstant].devicesArray.count >= 1) {
-                STDeviceInfo *deviceInfo = [[STFileTransferModel shareInstant].devicesArray firstObject];
-                [STFileTransferModel shareInstant].selectedDevicesArray = [NSArray arrayWithObject:deviceInfo];
-            }
-            
-            // 已经选择好设备的情况下直接进入发送界面
-            if ([STFileTransferModel shareInstant].selectedDevicesArray.count > 0) {
-                [[STFileTransferModel shareInstant] sendItems:[self.fileSelectionTabController allSelectedFiles]];
-                [self.fileSelectionTabController removeAllSelectedFiles];
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(3 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                // 如果只发现一台设备，直接选择这台设备
+                if ([STFileTransferModel shareInstant].selectedDevicesArray.count == 0 && [STFileTransferModel shareInstant].devicesArray.count >= 1) {
+                    STDeviceInfo *deviceInfo = [[STFileTransferModel shareInstant].devicesArray firstObject];
+                    [STFileTransferModel shareInstant].selectedDevicesArray = [NSArray arrayWithObject:deviceInfo];
+                }
                 
-                STFileTransferViewController *fileTransferVc = [[STFileTransferViewController alloc] init];
-                [self.navigationController pushViewController:fileTransferVc animated:YES];
-            }
+                // 已经选择好设备的情况下直接进入发送界面
+                if ([STFileTransferModel shareInstant].selectedDevicesArray.count > 0) {
+                    [[STFileTransferModel shareInstant] sendItems:[self.fileSelectionTabController allSelectedFiles]];
+                    [self.fileSelectionTabController removeAllSelectedFiles];
+                    
+                    STFileTransferViewController *fileTransferVc = [[STFileTransferViewController alloc] init];
+                    [self.navigationController pushViewController:fileTransferVc animated:YES];
+                }
+            });
+            
         }
         
     });

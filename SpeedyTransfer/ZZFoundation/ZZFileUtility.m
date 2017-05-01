@@ -88,7 +88,8 @@
                     
                     NSDictionary *fileInfo = @{FILE_NAME: fileName,
                                                FILE_TYPE: fileType,
-                                               FILE_SIZE: @(fileSize),
+                                               FILE_SIZE_IOS: @(fileSize),
+                                               FILE_SIZE: [NSString formatSize:fileSize],
                                                FILE_URL: fileUrl,
                                                ICON_URL: thumbnailUrl,
                                                ASSET_ID: localIdentifier,
@@ -118,7 +119,8 @@
                         
                         NSDictionary *fileInfo = @{FILE_NAME: fileName,
                                                    FILE_TYPE: fileType,
-                                                   FILE_SIZE: @(fileSize),
+                                                   FILE_SIZE_IOS: @(fileSize),
+                                                   FILE_SIZE: [NSString formatSize:fileSize],
                                                    FILE_URL: fileUrl,
                                                    ICON_URL: thumbnailUrl,
                                                    ASSET_ID: localIdentifier,
@@ -139,7 +141,8 @@
             
             NSDictionary *fileInfo = @{FILE_NAME: fileName,
                                        FILE_TYPE: fileType,
-                                       FILE_SIZE: @(fileSize),
+                                       FILE_SIZE_IOS: @(fileSize),
+                                       FILE_SIZE: [NSString formatSize:fileSize],
                                        FILE_URL: fileUrl,
                                        RECORD_ID: @(contactInfo.recordId),
                                        FILE_IDENTIFIER: [NSString uniqueID]};
@@ -157,7 +160,8 @@
             
             NSDictionary *fileInfo = @{FILE_NAME: fileName,
                                        FILE_TYPE: fileType,
-                                       FILE_SIZE: @(fileSize),
+                                       FILE_SIZE_IOS: @(fileSize),
+                                       FILE_SIZE: [NSString formatSize:fileSize],
                                        FILE_URL: fileUrl,
                                        RECORD_ID: musciInfo.persistentId,
                                        FILE_IDENTIFIER: [NSString uniqueID]};
@@ -177,7 +181,8 @@
             
             NSDictionary *fileInfo = @{FILE_NAME: fileName,
                                        FILE_TYPE: fileType,
-                                       FILE_SIZE: @(fileSize),
+                                       FILE_SIZE_IOS: @(fileSize),
+                                       FILE_SIZE: [NSString formatSize:fileSize],
                                        FILE_URL: fileUrl,
                                        FILE_IDENTIFIER: file.identifier};
             [self setObject:fileInfo forKey:object];

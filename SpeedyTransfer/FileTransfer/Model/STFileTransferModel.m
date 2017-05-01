@@ -315,7 +315,7 @@ withFilterContext:(id)filterContext {
         entity.transferStatus = STFileTransferStatusSending;
         entity.fileName = [fileInfo stringForKey:FILE_NAME];
         entity.dateString = [[NSDate date] dateString];
-        entity.fileSize = [fileInfo doubleForKey:FILE_SIZE];
+        entity.fileSize = [fileInfo doubleForKey:FILE_SIZE_IOS];
         
         NSString *fileUrl = [fileInfo stringForKey:FILE_URL];
         if ([fileUrl containsString:@"/image"]) {
