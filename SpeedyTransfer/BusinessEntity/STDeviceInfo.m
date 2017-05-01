@@ -192,7 +192,9 @@ HT_DEF_SINGLETON(STDeviceInfo, shareInstant);
 			
 			NSHTTPURLResponse *response = nil;
 			NSError *error = nil;
-			[NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&error];
+			NSData *data = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&error];
+            NSString *responseStr = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+            NSLog(@"post files: %@", responseStr);
 			if (response.statusCode != 200) {
 				for (STFileTransferInfo *transferInfo in fileTransferInfos) {
 					transferInfo.transferStatus = STFileTransferStatusSendFailed;
