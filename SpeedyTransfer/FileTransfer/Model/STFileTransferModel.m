@@ -176,7 +176,7 @@ withFilterContext:(id)filterContext {
                     port = [[arr objectAtIndex:1] integerValue];
                 }
                 
-                if (port == KSERVERPORT) {
+                if (port == KSERVERPORT && KMultipeer) {
                     // 忽略iOS发来的广播
                     return;
                 }
