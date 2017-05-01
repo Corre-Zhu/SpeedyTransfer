@@ -69,7 +69,7 @@
     bottomContainerView.layer.borderWidth = 1;
     bottomContainerView.layer.borderColor = [[UIColor lightGrayColor] colorWithAlphaComponent:0.7].CGColor;
     bottomContainerView.layer.cornerRadius = 5;
-    [scrollView addSubview:bottomContainerView];
+//    [scrollView addSubview:bottomContainerView];
     
     UIButton *arrowButton = [UIButton buttonWithType:UIButtonTypeCustom];
     [arrowButton addTarget:self action:@selector(arrowButtonClick) forControlEvents:UIControlEventTouchUpInside];
