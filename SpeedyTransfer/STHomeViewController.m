@@ -106,7 +106,7 @@
     if (![UIDevice isWiFiEnabled]) {
         [wifiButton setImage:[UIImage imageNamed:@"img_wifi"] forState:UIControlStateNormal];
         
-        if (![[NSUserDefaults standardUserDefaults] boolForKey:@"wifiPrompt"]) {
+       // if (![[NSUserDefaults standardUserDefaults] boolForKey:@"wifiPrompt"]) {
             wifiPromptView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"bg_dianjikaiqi"]];
             [scrollView addSubview:wifiPromptView];
             wifiPromptView.top = wifiButton.bottom - 3.0f;
@@ -121,7 +121,7 @@
             
             [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"wifiPrompt"];
             [[NSUserDefaults standardUserDefaults] synchronize];
-        }
+        //}
     } else {
         [wifiButton setImage:[UIImage imageNamed:@"ic_wifi_on"] forState:UIControlStateNormal];
     }
@@ -235,6 +235,8 @@
     
     [self.navigationController setNavigationBarHidden:YES animated:YES];
     
+    
+    
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -250,6 +252,8 @@
 - (void)viewDidAppear:(BOOL)animated {
 	[super viewDidAppear:animated];
     
+    [[STFileTransferModel shareInstant] cancelAllTransferFile];
+    [[STMultiPeerTransferModel shareInstant] cancelAllTransferFile];
 }
 
 - (void)didReceiveMemoryWarning {

@@ -181,6 +181,24 @@
     }
 }
 
+- (NSString *)fileNameWithIdentifier:(NSString *)identifier {
+    NSString *fileName = nil;
+ 
+    HTSQLBuffer *sql = [[HTSQLBuffer alloc] init];
+    sql.SELECT(DBFileTransfer._fileName)
+    .FROM(DBFileTransfer._tableName)
+    .WHERE(SQLStringEqual(DBFileTransfer._identifier, identifier));
+    
+    FMResultSet *resultSet = [database executeQuery:sql.sql];
+    while ([resultSet next]) {
+        if (resultSet.resultDictionary) {
+            fileName = [resultSet.resultDictionary stringForKey:DBFileTransfer._fileName];
+        }
+    }
+    
+    return fileName;
+}
+
 - (BOOL)shouldReceiveFile {
     long long freeDiskSpace = [UIDevice longFreeDiskSpace];
     if (freeDiskSpace > 200 * 1024 * 1024) { // 有时候读出来的会有200M的偏差

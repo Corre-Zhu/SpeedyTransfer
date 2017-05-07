@@ -868,6 +868,7 @@
 				TargetAttributes = {
 					CED62A291C094FDD00270EDB = {
 						CreatedOnToolsVersion = 7.1.1;
+						DevelopmentTeam = 6443RH2762;
 						ProvisioningStyle = Manual;
 					};
 				};
@@ -1148,7 +1149,7 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = 6443RH2762;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				GCC_PREFIX_HEADER = "SpeedyTransfer/Supporting Files/SpeedyTransfer-Prefix.pch";
@@ -1162,8 +1163,8 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.dc.geek;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
-				PROVISIONING_PROFILE_SPECIFIER = "";
+				PROVISIONING_PROFILE = "7027049a-2ca3-4582-85bf-1bf264dc6a15";
+				PROVISIONING_PROFILE_SPECIFIER = Dianchuan2Dev;
 			};
 			name = Debug;
 		};

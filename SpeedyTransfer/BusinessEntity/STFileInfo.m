@@ -17,7 +17,6 @@
         self.fileType = [dic integerForKey:DBFileTransfer._fileType];
         self.fileName = [dic stringForKey:DBFileTransfer._fileName];
         self.pathExtension = [self.fileName pathExtension];
-        self.fileSize = [dic doubleForKey:DBFileTransfer._fileSize];
         self.fileId = [dic integerForKey:DBFileTransfer._id];
         
         NSString *path = [[ZZPath downloadPath] stringByAppendingPathComponent:self.identifier];
@@ -26,7 +25,18 @@
         }
         
         self.localPath = path;
+        self.fileSize = [dic doubleForKey:DBFileTransfer._fileSize];
+        if ([[NSFileManager defaultManager] fileExistsAtPath:path]) {
+            NSError *error = nil;
+            NSDictionary *attri = [[NSFileManager defaultManager] attributesOfItemAtPath:path error:&error];
+            if (!error && [attri fileSize] > 0) {
+                self.fileSize = [attri fileSize];
+            }
+        }
+        
         self.fileExist = [[NSFileManager defaultManager] fileExistsAtPath:path];
+        
+        
     }
     
     return self;

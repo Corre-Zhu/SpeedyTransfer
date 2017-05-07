@@ -48,6 +48,8 @@
  */
 + (instancetype)responseWithFile:(NSString*)path isAttachment:(BOOL)attachment;
 
++ (instancetype)responseWithFile:(NSString*)path fileName:(NSString *)fileName isAttachment:(BOOL)attachment;
+
 /**
  *  Creates a response like +responseWithFile: but restricts the file contents
  *  to a specific byte range.

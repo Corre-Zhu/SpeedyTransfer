@@ -100,7 +100,12 @@
             } else {
                 [[PHImageManager defaultManager] requestImageDataForAsset:asset options:nil resultHandler:^(NSData * _Nullable imageData, NSString * _Nullable dataUTI, UIImageOrientation orientation, NSDictionary * _Nullable info) {
                     NSURL *url = [info objectForKey:@"PHImageFileURLKey"];
-                    if (url.absoluteString.length > 0 && imageData.length > 0) {
+                    if (!url) {
+                        NSLog(@"ZZFileUtility requestImageDataForAsset error");
+                        url = [NSURL fileURLWithPath:@"file://fetchError.png"];
+                    }
+                    
+                    //if (url.absoluteString.length > 0 && imageData.length > 0) {
                         NSString *fileName = [url.absoluteString lastPathComponent];
                         NSUInteger fileSize = imageData.length;
                         NSString *fileType = [url.absoluteString pathExtension];
@@ -126,7 +131,8 @@
                                                    FILE_IDENTIFIER: [NSString uniqueID]};
                         [self setObject:fileInfo forKey:object];
                         
-                    }}];
+                 //   }
+                 }];
             }
         } else if ([object isKindOfClass:[STContactInfo class]]) {
             STContactInfo *contactInfo = object;

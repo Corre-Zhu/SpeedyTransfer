@@ -69,7 +69,10 @@
     bottomContainerView.layer.borderWidth = 1;
     bottomContainerView.layer.borderColor = [[UIColor lightGrayColor] colorWithAlphaComponent:0.7].CGColor;
     bottomContainerView.layer.cornerRadius = 5;
-//    [scrollView addSubview:bottomContainerView];
+    
+    if (KBrowserTransfer) {
+        [scrollView addSubview:bottomContainerView];
+    }
     
     UIButton *arrowButton = [UIButton buttonWithType:UIButtonTypeCustom];
     [arrowButton addTarget:self action:@selector(arrowButtonClick) forControlEvents:UIControlEventTouchUpInside];
@@ -367,6 +370,10 @@
             }
         } else if ([keyPath isEqualToString:@"devicesArray"]) {
             dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(3 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                if (self.navigationController.topViewController != self) {
+                    return;
+                }
+                
                 // 如果只发现一台设备，直接选择这台设备
                 if ([STFileTransferModel shareInstant].selectedDevicesArray.count == 0 && [STFileTransferModel shareInstant].devicesArray.count >= 1) {
                     STDeviceInfo *deviceInfo = [[STFileTransferModel shareInstant].devicesArray firstObject];

@@ -54,6 +54,10 @@
   return [[[self class] alloc] initWithFile:path isAttachment:attachment];
 }
 
++ (instancetype)responseWithFile:(NSString *)path fileName:(NSString *)fileName isAttachment:(BOOL)attachment {
+    return [[[self class] alloc] initWithFile:path byteRange:NSMakeRange(NSUIntegerMax, 0) fileName:fileName isAttachment:attachment];
+}
+
 + (instancetype)responseWithFile:(NSString*)path byteRange:(NSRange)range {
   return [[[self class] alloc] initWithFile:path byteRange:range];
 }
@@ -78,66 +82,76 @@ static inline NSDate* _NSDateFromTimeSpec(const struct timespec* t) {
   return [NSDate dateWithTimeIntervalSince1970:((NSTimeInterval)t->tv_sec + (NSTimeInterval)t->tv_nsec / 1000000000.0)];
 }
 
-- (instancetype)initWithFile:(NSString*)path byteRange:(NSRange)range isAttachment:(BOOL)attachment {
-  struct stat info;
-  if (lstat([path fileSystemRepresentation], &info) || !(info.st_mode & S_IFREG)) {
-    GWS_DNOT_REACHED();
-    return nil;
-  }
-#ifndef __LP64__
-  if (info.st_size >= (off_t)4294967295) {  // In 32 bit mode, we can't handle files greater than 4 GiBs (don't use "NSUIntegerMax" here to avoid potential unsigned to signed conversion issues)
-    GWS_DNOT_REACHED();
-    return nil;
-  }
-#endif
-  NSUInteger fileSize = (NSUInteger)info.st_size;
-  
-  BOOL hasByteRange = GCDWebServerIsValidByteRange(range);
-  if (hasByteRange) {
-    if (range.location != NSUIntegerMax) {
-      range.location = MIN(range.location, fileSize);
-      range.length = MIN(range.length, fileSize - range.location);
-    } else {
-      range.length = MIN(range.length, fileSize);
-      range.location = fileSize - range.length;
-    }
-    if (range.length == 0) {
-      return nil;  // TODO: Return 416 status code and "Content-Range: bytes */{file length}" header
-    }
-  } else {
-    range.location = 0;
-    range.length = fileSize;
-  }
-  
-  if ((self = [super init])) {
-    _path = [path copy];
-    _offset = range.location;
-    _size = range.length;
-    if (hasByteRange) {
-      [self setStatusCode:kGCDWebServerHTTPStatusCode_PartialContent];
-      [self setValue:[NSString stringWithFormat:@"bytes %lu-%lu/%lu", (unsigned long)_offset, (unsigned long)(_offset + _size - 1), (unsigned long)fileSize] forAdditionalHeader:@"Content-Range"];
-      GWS_LOG_DEBUG(@"Using content bytes range [%lu-%lu] for file \"%@\"", (unsigned long)_offset, (unsigned long)(_offset + _size - 1), path);
-    }
-    
-    if (attachment) {
-      NSString* fileName = [path lastPathComponent];
-      NSData* data = [[fileName stringByReplacingOccurrencesOfString:@"\"" withString:@""] dataUsingEncoding:NSISOLatin1StringEncoding allowLossyConversion:YES];
-      NSString* lossyFileName = data ? [[NSString alloc] initWithData:data encoding:NSISOLatin1StringEncoding] : nil;
-      if (lossyFileName) {
-       // NSString* value = [NSString stringWithFormat:@"attachment; filename=\"%@\"; filename*=UTF-8''%@", lossyFileName, GCDWebServerEscapeURLString(fileName)];
-          NSString* value = [NSString stringWithFormat:@"attachment; filename=\"%@\"", lossyFileName]; // 修复filename安卓无法识别问题
-        [self setValue:value forAdditionalHeader:@"Content-Disposition"];
-      } else {
+- (instancetype)initWithFile:(NSString*)path byteRange:(NSRange)range fileName:(NSString *)fileN isAttachment:(BOOL)attachment {
+    struct stat info;
+    if (lstat([path fileSystemRepresentation], &info) || !(info.st_mode & S_IFREG)) {
         GWS_DNOT_REACHED();
-      }
+        return nil;
+    }
+#ifndef __LP64__
+    if (info.st_size >= (off_t)4294967295) {  // In 32 bit mode, we can't handle files greater than 4 GiBs (don't use "NSUIntegerMax" here to avoid potential unsigned to signed conversion issues)
+        GWS_DNOT_REACHED();
+        return nil;
+    }
+#endif
+    NSUInteger fileSize = (NSUInteger)info.st_size;
+    
+    BOOL hasByteRange = GCDWebServerIsValidByteRange(range);
+    if (hasByteRange) {
+        if (range.location != NSUIntegerMax) {
+            range.location = MIN(range.location, fileSize);
+            range.length = MIN(range.length, fileSize - range.location);
+        } else {
+            range.length = MIN(range.length, fileSize);
+            range.location = fileSize - range.length;
+        }
+        if (range.length == 0) {
+            return nil;  // TODO: Return 416 status code and "Content-Range: bytes */{file length}" header
+        }
+    } else {
+        range.location = 0;
+        range.length = fileSize;
     }
     
-    self.contentType = GCDWebServerGetMimeTypeForExtension([_path pathExtension]);
-    self.contentLength = _size;
-    self.lastModifiedDate = _NSDateFromTimeSpec(&info.st_mtimespec);
-    self.eTag = [NSString stringWithFormat:@"%llu/%li/%li", info.st_ino, info.st_mtimespec.tv_sec, info.st_mtimespec.tv_nsec];
-  }
-  return self;
+    if ((self = [super init])) {
+        _path = [path copy];
+        _offset = range.location;
+        _size = range.length;
+        if (hasByteRange) {
+            [self setStatusCode:kGCDWebServerHTTPStatusCode_PartialContent];
+            [self setValue:[NSString stringWithFormat:@"bytes %lu-%lu/%lu", (unsigned long)_offset, (unsigned long)(_offset + _size - 1), (unsigned long)fileSize] forAdditionalHeader:@"Content-Range"];
+            GWS_LOG_DEBUG(@"Using content bytes range [%lu-%lu] for file \"%@\"", (unsigned long)_offset, (unsigned long)(_offset + _size - 1), path);
+        }
+        
+        if (attachment) {
+            NSString* fileName = [path lastPathComponent];
+            if (fileN.length > 0) {
+                fileName = fileN;
+            }
+            
+            NSData* data = [[fileName stringByReplacingOccurrencesOfString:@"\"" withString:@""] dataUsingEncoding:NSUTF8StringEncoding allowLossyConversion:YES];
+            NSString* lossyFileName = data ? [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding] : nil;
+            if (lossyFileName) {
+                // NSString* value = [NSString stringWithFormat:@"attachment; filename=\"%@\"; filename*=UTF-8''%@", lossyFileName, GCDWebServerEscapeURLString(fileName)];
+                
+                NSString* value = [NSString stringWithFormat:@"attachment; filename=\"%@\"", GCDWebServerEscapeURLString(lossyFileName)]; // 修复filename安卓无法识别问题
+                [self setValue:value forAdditionalHeader:@"Content-Disposition"];
+            } else {
+                GWS_DNOT_REACHED();
+            }
+        }
+        
+        self.contentType = GCDWebServerGetMimeTypeForExtension([_path pathExtension]);
+        self.contentLength = _size;
+        self.lastModifiedDate = _NSDateFromTimeSpec(&info.st_mtimespec);
+        self.eTag = [NSString stringWithFormat:@"%llu/%li/%li", info.st_ino, info.st_mtimespec.tv_sec, info.st_mtimespec.tv_nsec];
+    }
+    return self;
+}
+
+
+- (instancetype)initWithFile:(NSString*)path byteRange:(NSRange)range isAttachment:(BOOL)attachment {
+    return [self initWithFile:path byteRange:range fileName:nil isAttachment:attachment];
 }
 
 - (BOOL)open:(NSError**)error {

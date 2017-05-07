@@ -42,6 +42,8 @@
 
 - (BOOL)shouldReceiveFile; // 是否可以接收文件，当磁盘剩余容量少于300M时，不接收文件
 
+- (NSString *)fileNameWithIdentifier:(NSString *)identifier;
+
 @property (nonatomic, weak) id<STFileTransferBaseModelDelegate> delegate;
 
 @end

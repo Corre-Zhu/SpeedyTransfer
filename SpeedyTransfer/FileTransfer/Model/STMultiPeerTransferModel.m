@@ -189,6 +189,9 @@ HT_DEF_SINGLETON(STMultiPeerTransferModel, shareInstant);
                 ABRecordRef recordRef = ABAddressBookGetPersonWithRecordID(self.addressBook, (ABRecordID)recordId);
                 CFArrayRef cfArrayRef =  (__bridge CFArrayRef)@[(__bridge id)recordRef];
                 CFDataRef vcards = (CFDataRef)ABPersonCreateVCardRepresentationWithPeople(cfArrayRef);
+                
+                //NSString *sttt = [[NSString alloc] initWithData:(__bridge NSData *)vcards encoding:NSUTF8StringEncoding];
+                
                 NSData *vcardData = [STPacket initWithVcard:(__bridge NSData *)vcards recordId:recordId];
                 if ([self sendData:vcardData]) {
                     [self sendSucceed];

@@ -57,7 +57,7 @@ HT_DEF_SINGLETON(STWebServerModel, shareInstant);
 - (NSString *)deviceInfos {
     NSDictionary* infoDict =[[NSBundle mainBundle] infoDictionary];
     NSString* versionNum =[infoDict objectForKey:@"CFBundleShortVersionString"];
-    NSString *deviceName = [[UIDevice currentDevice] name];
+    NSString *deviceName = [UIDevice name];
     if (deviceName.length == 0) {
 		deviceName = [[UIDevice currentDevice] model];
 		if (deviceName.length == 0) {
@@ -298,7 +298,20 @@ HT_DEF_SINGLETON(STWebServerModel, shareInstant);
                 if (fileId.length > 0) {
                     NSString *filePath = [[ZZPath downloadPath] stringByAppendingPathComponent:fileId];
                     if ([[NSFileManager defaultManager] fileExistsAtPath:filePath]) {
-                        completionBlock([GCDWebServerFileResponse responseWithFile:filePath isAttachment:YES]);
+                        
+                        // 兼容安卓
+                        NSString *ide = fileId;
+                        if (fileId.pathExtension.length > 0) {
+                            ide = [fileId stringByDeletingPathExtension];
+                        }
+                        NSString *fileName = [[STFileTransferModel shareInstant] fileNameWithIdentifier:ide];
+                        
+                        
+                        if (fileName.length > 0) {
+                            completionBlock([GCDWebServerFileResponse responseWithFile:filePath fileName:fileName isAttachment:YES]);
+                        } else {
+                            completionBlock([GCDWebServerFileResponse responseWithFile:filePath isAttachment:YES]);
+                        }
                         return;
                     }
                     

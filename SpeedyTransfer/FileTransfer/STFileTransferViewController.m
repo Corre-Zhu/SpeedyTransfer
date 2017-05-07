@@ -27,7 +27,7 @@ static NSString *sendHeaderIdentifier = @"sendHeaderIdentifier";
 static NSString *receiveHeaderIdentifier = @"receiveHeaderIdentifier";
 static NSString *cellIdentifier = @"CellIdentifier";
 
-@interface STFileTransferViewController ()<UITableViewDataSource,UITableViewDelegate,UIDocumentInteractionControllerDelegate,STFileTransferBaseModelDelegate>
+@interface STFileTransferViewController ()<UITableViewDataSource,UITableViewDelegate,UIDocumentInteractionControllerDelegate,STFileTransferBaseModelDelegate,UIGestureRecognizerDelegate>
 {
     STWifiNotConnectedPopupView2 *popupView;
 
@@ -52,6 +52,13 @@ static NSString *cellIdentifier = @"CellIdentifier";
     [[STMultiPeerTransferModel shareInstant] removeObserver:self forKeyPath:@"state"];
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     [UIApplication sharedApplication].idleTimerDisabled = NO;
+    
+    self.navigationController.interactivePopGestureRecognizer.delegate = nil;
+}
+
+- (BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer {
+    [self leftBarButtonItemClick];
+    return NO;
 }
 
 - (void)leftBarButtonItemClick {
@@ -133,6 +140,8 @@ static NSString *cellIdentifier = @"CellIdentifier";
     _model.sectionTransferFiles = [_model sortTransferInfo:_model.transferFiles];
     
     [UIApplication sharedApplication].idleTimerDisabled = YES;
+    
+    self.navigationController.interactivePopGestureRecognizer.delegate = self;
 	
     if (self.isFromReceive) {
 		// 启动webserver
