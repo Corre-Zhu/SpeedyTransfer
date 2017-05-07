@@ -1190,8 +1190,8 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.dc.geek;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "058c3af2-6a8d-471b-abf1-c7add2868a97";
-				PROVISIONING_PROFILE_SPECIFIER = Dianchuan2AppStore;
+				PROVISIONING_PROFILE = "6ed05455-7994-4c1c-a2e2-000267291af5";
+				PROVISIONING_PROFILE_SPECIFIER = Dianchuan2Distri;
 			};
 			name = Release;
 		};
