@@ -16,7 +16,7 @@
 #import <TencentOpenAPI/QQApiInterface.h>
 #import <TencentOpenAPI/TencentOAuth.h>
 
-#define KShareContent @"Hi我一直在用@点传，不仅文件传输速度快，而且传输过程完全无需流量、为批量极速传输大文件的利器，快去下载吧！http://t.cn/RiC9im9 安卓版点击这里：http://3tkj.cn/dl.php"
+#define KShareContent @"Hi我一直在用@点传，不仅文件传输速度快，而且传输过程完全无需流量、为批量极速传输大文件的利器，快去下载吧！http://3tkj.cn/dl.html"
 
 @interface STInviteFriendViewController ()
 {
@@ -114,31 +114,20 @@
     label4.textAlignment = NSTextAlignmentCenter;
     [self.view addSubview:label4];
 
-    switchCon = [[UISwitch alloc] init];
-    switchCon.top = view2.bottom - 60.0f;
-    switchCon.left = IPHONE_WIDTH / 2.0f - switchCon.width / 2.0f;
-    [switchCon addTarget:self action:@selector(switchConClick) forControlEvents:UIControlEventValueChanged];
-    [self.view addSubview:switchCon];
-    switchCon.on = YES;
+//    switchCon = [[UISwitch alloc] init];
+//    switchCon.top = view2.bottom - 60.0f;
+//    switchCon.left = IPHONE_WIDTH / 2.0f - switchCon.width / 2.0f;
+//    [switchCon addTarget:self action:@selector(switchConClick) forControlEvents:UIControlEventValueChanged];
+//    [self.view addSubview:switchCon];
+//    switchCon.on = YES;
     
-    imageView = [[UIImageView alloc] initWithFrame:CGRectMake((IPHONE_WIDTH - 110.0f) / 2.0f, line1.bottom + 60.0f, 110.0f, 110.0f)];
+    imageView = [[UIImageView alloc] initWithFrame:CGRectMake((IPHONE_WIDTH - 110.0f) / 2.0f, line1.bottom + 80.0f, 110.0f, 110.0f)];
     UIImage *image = [KIOSDownloadUrl createRRcode];
     if (image.size.width < 110.0f) {
         image = [image resizeImage:image withQuality:kCGInterpolationNone rate:110.0f / image.size.width];
     }
     imageView.image = image;
     [self.view addSubview:imageView];
-    
-    subImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"apple-0"]];
-    [imageView addSubview:subImageView];
-    [subImageView autoCenterInSuperview];
-    
-    label = [[UILabel alloc] initWithFrame:CGRectMake(imageView.left - 5.0f, imageView.bottom + 8.0f, imageView.width + 10.0f, 18.0f)];
-    label.text = NSLocalizedString(@"点击切换至安卓版", nil);
-    label.font = [UIFont systemFontOfSize:15.0f];
-    label.textColor = [UIColor grayColor];
-    label.textAlignment = NSTextAlignmentCenter;
-    [self.view addSubview:label];
 }
 
 - (void)leftBarButtonItemClick {

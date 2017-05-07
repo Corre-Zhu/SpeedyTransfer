@@ -31,7 +31,7 @@
 #define HT_WEIBO_APP_SECRET         @"dc3d388bac050d961df309228ef01fe5"
 #define HT_WEIBO_APP_REDIRECTURI    @"https://api.weibo.com/oauth2/default.html"
 
-#define KIOSDownloadUrl @"http://t.cn/RiC9im9"
+#define KIOSDownloadUrl @"http://3tkj.cn/dl.html"
 #define KAndroidDownloadUrl @"http://3tkj.cn/dl.php"
 
 #define KMultipeer 1
