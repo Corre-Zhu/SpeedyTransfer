@@ -112,6 +112,7 @@ static NSString *cellIdentifier = @"CellIdentifier";
     [self.view addSubview:continueSendButton];
     
     if (self.isFromReceive && !self.isMultipeerTransfer) {
+        /*
         BOOL hotspotEnable = [UIDevice isPersonalHotspotEnabled];
         if ([ZZReachability shareInstance].currentReachabilityStatus != ReachableViaWiFi && !hotspotEnable) {
             if (!popupView) {
@@ -120,7 +121,7 @@ static NSString *cellIdentifier = @"CellIdentifier";
             [popupView showInView:self.navigationController.view];
             
              [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reachabilityStatusChange:) name:kHTReachabilityChangedNotification object:nil];
-        }
+        }*/
     } else {
         // 对方退出共享网络通知
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(deviceNotConnectedNotification:) name:KDeviceNotConnectedNotification object:nil];

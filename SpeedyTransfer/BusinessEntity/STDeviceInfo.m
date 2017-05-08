@@ -32,6 +32,8 @@ HT_DEF_SINGLETON(STDeviceInfo, shareInstant);
     if (self.ip.length > 0 && self.port > 0) {
         // 访问api总接口
         NSString *apiUrl = [NSString stringWithFormat:@"http://%@:%@/api", self.ip, @(self.port)];
+        NSLog(@"apiUrl: %@", apiUrl);
+        
         NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:apiUrl]];
         request.timeoutInterval = 3.0f;
         NSURLResponse *response = nil;

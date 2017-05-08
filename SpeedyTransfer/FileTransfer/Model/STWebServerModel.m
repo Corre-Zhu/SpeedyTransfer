@@ -21,7 +21,9 @@
 #import <AddressBook/AddressBook.h>
 #import "ZZFunction.h"
 
-@interface STWebServerModel ()
+@interface STWebServerModel () {
+    
+}
 
 @property (nonatomic, strong) GCDWebServer *webServer;
 @property (nonatomic) ABAddressBookRef addressBook;
@@ -30,6 +32,8 @@
 @property (nonatomic, strong) NSDictionary *constVariable;
 @property (nonatomic, strong) NSDictionary *variables;
 @property (nonatomic, strong) NSMutableArray *transferFiles;
+
+@property (nonatomic, strong) NSMutableDictionary *tempDeviceInfo;
 
 @end
 
@@ -323,6 +327,8 @@ HT_DEF_SINGLETON(STWebServerModel, shareInstant);
 		
 		[_webServer addHandlerForMethod:@"POST" path:@"/recv" requestClass:[GCDWebServerDataRequest class] processBlock:^GCDWebServerResponse *(GCDWebServerRequest *request) {
             
+            NSLog(@"111");
+            
             if (![[STFileTransferModel shareInstant] shouldReceiveFile]) {
                 return [GCDWebServerDataResponse responseWithStatusCode:403];
             }
@@ -332,19 +338,35 @@ HT_DEF_SINGLETON(STWebServerModel, shareInstant);
 			NSDictionary *itemsDic = [dataString jsonDictionary];
 			NSArray *items = [itemsDic arrayForKey:@"items"];
 			NSMutableArray *tempArry = [NSMutableArray array];
+            
+            if (!weakSelf.tempDeviceInfo) {
+                weakSelf.tempDeviceInfo = [NSMutableDictionary dictionary];
+            }
+            
+            if ([STFileTransferModel shareInstant].devicesArray.count == 0) {
+                [weakSelf.tempDeviceInfo removeAllObjects];
+            }
+            
 			for (NSDictionary *fileInfo in items) {
 				NSString *file_url = [fileInfo stringForKey:FILE_URL];
 				NSString *thumbnailUrl = [fileInfo stringForKey:ICON_URL];
 				NSString *host = [[NSURL URLWithString:file_url] host];
 				NSInteger port = [[[NSURL URLWithString:file_url] port] integerValue];
-				STDeviceInfo *deviceInfo = [[STDeviceInfo alloc] init];
-				deviceInfo.ip = host;
-				deviceInfo.port = port;
-				if (![deviceInfo setup]) {
-					NSLog(@"deviceInfo setup error");
-					continue;
-				}
-                [[STFileTransferModel shareInstant] addDevice:deviceInfo];
+                
+                NSString *key = [NSString stringWithFormat:@"%@", host];
+                STDeviceInfo *deviceInfo = [weakSelf.tempDeviceInfo objectForKey:key];
+                if (!deviceInfo) {
+                    deviceInfo = [[STDeviceInfo alloc] init];
+                    deviceInfo.ip = host;
+                    deviceInfo.port = port;
+                    if (![deviceInfo setup]) {
+                        NSLog(@"deviceInfo setup error");
+                        continue;
+                    }
+                    
+                    [weakSelf.tempDeviceInfo setObject:deviceInfo forKey:key];
+                    [[STFileTransferModel shareInstant] addDevice:deviceInfo];
+                }
 				
 				STFileTransferInfo *entity = [[STFileTransferInfo alloc] init];
 				entity.identifier = [NSString uniqueID];
@@ -388,6 +410,9 @@ HT_DEF_SINGLETON(STWebServerModel, shareInstant);
 			}
 			
 			[[STFileTransferModel shareInstant] receiveItems:tempArry];
+            
+            NSLog(@"222");
+
 			
 //			return [GCDWebServerResponse responseWithStatusCode:200];
 			return [GCDWebServerDataResponse responseWithJSONObject:@{@"msg": @"ok"}];
