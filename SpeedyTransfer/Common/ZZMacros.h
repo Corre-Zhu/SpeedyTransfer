@@ -44,6 +44,7 @@
 #define FILE_TYPE @"file_type"
 #define FILE_SIZE @"file_size" // 兼容安卓
 #define FILE_SIZE_IOS @"file_size_ios" // iOS的文件大小，以字节为单位
+#define CONTACT_SIZE_ANDROID @"contact_size_android" // 兼容安卓
 #define FILE_URL @"file_url"
 #define ICON_URL @"icon_url"
 #define ASSET_ID @"asset_id"

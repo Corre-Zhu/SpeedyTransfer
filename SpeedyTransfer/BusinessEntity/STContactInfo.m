@@ -41,6 +41,10 @@
             
             CFDataRef vcards = (CFDataRef)ABPersonCreateVCardRepresentationWithPeople(cfArrayRef);
             contact.size = CFDataGetLength(vcards);
+            
+            NSData *androidData = [ZZFileUtility dataWithVcardForAndroid:(__bridge NSData *)vcards];
+            contact.androidSize = androidData.length;
+            
             if (contact.size <= 0) {
                 continue;
             }

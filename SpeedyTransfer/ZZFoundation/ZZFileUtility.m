@@ -148,6 +148,7 @@
                                        FILE_TYPE: fileType,
                                        FILE_SIZE_IOS: @(fileSize),
                                        FILE_SIZE: [NSString formatSize:fileSize],
+                                       CONTACT_SIZE_ANDROID: @(contactInfo.androidSize),
                                        FILE_URL: fileUrl,
                                        RECORD_ID: @(contactInfo.recordId),
                                        FILE_IDENTIFIER: [NSString uniqueID]};
@@ -193,6 +194,119 @@
             [self setObject:fileInfo forKey:object];
         }
     }
+}
+
++ (NSData *)dataWithVcardForAndroid:(NSData *)vcard {
+    NSString *lastName;
+    NSString *firstName;
+    NSString *name;
+    
+    NSMutableArray *phoneArr = [NSMutableArray array];
+    
+    NSString *vcardStr = [[NSString alloc] initWithData:vcard encoding:NSUTF8StringEncoding];
+
+    
+    NSArray *lines = [vcardStr componentsSeparatedByString:@"\n"];
+    
+    for(NSString* line in lines)
+    {
+        
+        if ([line hasPrefix:@"BEGIN"])
+        {
+            NSLog(@"parse start");
+        }
+        else if ([line hasPrefix:@"END"])
+        {
+            NSLog(@"parse end");
+        }
+        else if ([line hasPrefix:@"N:"])
+        {
+            NSArray *upperComponents = [line componentsSeparatedByString:@":"];
+            NSArray *components = [[upperComponents objectAtIndex:1] componentsSeparatedByString:@";"];
+            
+            lastName = [components objectAtIndex:0];
+            firstName = [components objectAtIndex:1];
+            
+            NSLog(@"firstName: %@, lastName: %@", firstName, lastName);
+            
+        }
+        else if ([line hasPrefix:@"FN:"])
+        {
+            NSArray *upperComponents = [line componentsSeparatedByString:@":"];
+            name = [upperComponents objectAtIndex:1];
+            NSLog(@"name: %@", name);
+            
+        }
+        else if ([line hasPrefix:@"TEL;"])
+        {
+            NSArray *components = [line componentsSeparatedByString:@":"];
+            NSString *phoneNumber = [components objectAtIndex:1];
+            if (phoneNumber.length > 0) {
+                if ([line.uppercaseString containsString:@"CELL"]) {
+                    [phoneArr addObject:@{@"2": phoneNumber}];
+                } else if ([line.uppercaseString containsString:@"HOME"]) {
+                    [phoneArr addObject:@{@"1": phoneNumber}];
+                }
+                
+                NSLog(@"phoneNumber %@",phoneNumber);
+
+            }
+            
+        }
+    }
+    
+    NSMutableArray *items = [NSMutableArray array];
+    
+    if (name.length > 0) {
+        NSMutableDictionary *nameDic = [NSMutableDictionary dictionary];
+        [nameDic setObject:@"vnd.android.cursor.item/name" forKey:@"mimetype"];
+        [nameDic setObject:name forKey:@"data1"];
+        if (firstName.length > 0) {
+            [nameDic setObject:firstName forKey:@"data3"];
+        }
+        
+        if (lastName.length > 0) {
+            [nameDic setObject:lastName forKey:@"data2"];
+        }
+        
+        [nameDic setObject:@"2" forKey:@"data10"];
+        [nameDic setObject:@"0" forKey:@"data11"];
+
+        [items addObject:nameDic];
+    }
+    
+    for (NSDictionary *dic in phoneArr) {
+        NSMutableDictionary *nameDic = [NSMutableDictionary dictionary];
+        [nameDic setObject:@"vnd.android.cursor.item/phone_v2" forKey:@"mimetype"];
+        [nameDic setObject:dic.allKeys.firstObject forKey:@"data2"];
+        [nameDic setObject:dic.allValues.firstObject forKey:@"data1"];
+        
+        [items addObject:nameDic];
+    }
+    
+    
+    NSMutableDictionary *result = [NSMutableDictionary dictionary];
+    [result setObject:@"0" forKey:@"starred"];
+    [result setObject:@"0" forKey:@"send_to_voicemail"];
+    [result setObject:@"com.local.contacts" forKey:@"account_type"];
+    [result setObject:@"local_contact" forKey:@"account_name"];
+    
+    if (items.count > 0) {
+        [result setObject:items forKey:@"items"];
+    }
+    
+    NSMutableData *mutableData = [NSMutableData data];
+    UInt32 count = 1;
+    [mutableData appendBytes:&count length:4];
+    
+    NSData *jsonData = [[result jsonString] dataUsingEncoding:NSUTF8StringEncoding];
+    
+    UInt32 lenght = (UInt32)jsonData.length;
+    [mutableData appendBytes:&lenght length:4];
+    [mutableData appendData:jsonData];
+    
+    
+    return mutableData;
 }
 
 @end

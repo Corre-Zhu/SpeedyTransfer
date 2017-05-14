@@ -248,8 +248,25 @@ HT_DEF_SINGLETON(STWebServerModel, shareInstant);
 					ABRecordRef recordRef = ABAddressBookGetPersonWithRecordID(weakSelf.addressBook, (ABRecordID)recordId.integerValue);
 					CFArrayRef cfArrayRef =  (__bridge CFArrayRef)@[(__bridge id)recordRef];
 					CFDataRef vcards = (CFDataRef)ABPersonCreateVCardRepresentationWithPeople(cfArrayRef);
-					completionBlock([GCDWebServerDataResponse responseWithData:(__bridge NSData *)vcards contentType:@"contact/vcard"]);
-					return;
+                    
+                    // 兼容安卓
+                    BOOL isAndroid = YES;
+                    if (isAndroid) {
+                        NSData *data = [ZZFileUtility dataWithVcardForAndroid:(__bridge NSData *)vcards];
+                        NSString *fileName = @"contacts.json";                               NSString *path = [[ZZPath tmpUploadPath] stringByAppendingPathComponent:fileName];
+                        if ([[NSFileManager defaultManager] fileExistsAtPath:path]) {
+                            [[NSFileManager defaultManager] removeItemAtPath:path error:NULL];
+                        }
+                        if ([data writeToFile:path atomically:YES]) {
+                            completionBlock([GCDWebServerFileResponse responseWithFile:path fileName:fileName isAttachment:YES]);
+                        } else {
+                            completionBlock([GCDWebServerDataResponse responseWithStatusCode:501]);
+                        }
+                    } else {
+                        completionBlock([GCDWebServerDataResponse responseWithData:(__bridge NSData *)vcards contentType:@"contact/vcard"]);
+                    }
+                    
+                    return;
 				}
 				
 			} /* else if ([request.path hasPrefix:@"/music/"]) {
@@ -444,7 +461,10 @@ HT_DEF_SINGLETON(STWebServerModel, shareInstant);
 - (void)stopWebServer {
 	@autoreleasepool {
 		if (self.webServer) {
-			[self.webServer stop];
+            if ([self.webServer isRunning]) {
+                [self.webServer stop];
+            }
+            
 			[self.webServer removeAllHandlers];
 			self.webServer = nil;
 		}

@@ -316,6 +316,7 @@ withFilterContext:(id)filterContext {
         entity.fileName = [fileInfo stringForKey:FILE_NAME];
         entity.dateString = [[NSDate date] dateString];
         entity.fileSize = [fileInfo doubleForKey:FILE_SIZE_IOS];
+        entity.contactSizeAndroid = [fileInfo doubleForKey:CONTACT_SIZE_ANDROID];
         
         NSString *fileUrl = [fileInfo stringForKey:FILE_URL];
         if ([fileUrl containsString:@"/image"]) {

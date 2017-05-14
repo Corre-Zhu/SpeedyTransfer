@@ -74,6 +74,7 @@ HT_AS_SINGLETON(STFileTransferInfo, shareInstant)
 @property (nonatomic) NSInteger recordId;
 
 @property (nonatomic, strong) NSDictionary *fileInfo;
+@property (nonatomic) double contactSizeAndroid;
 
 - (instancetype)initWithDictionary:(NSDictionary *)dic;
 - (instancetype)initWithReceiveFileInfo:(NSDictionary *)fileInfo deviceInfo:(STDeviceInfo *)deviceInfo;

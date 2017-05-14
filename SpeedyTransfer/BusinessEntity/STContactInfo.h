@@ -20,6 +20,7 @@ typedef void(^GetContactsCompletionHandler)(NSArray *array);
 @property (nonatomic, strong) UIImage *image;
 @property (nonatomic, strong) NSString *vcardString;
 @property (nonatomic) double size;
+@property (nonatomic) double androidSize; // 兼容安卓
 
 // 读取手机通讯录
 + (void)getContactsModelListWithCompletion:(GetContactsCompletionHandler)handler;

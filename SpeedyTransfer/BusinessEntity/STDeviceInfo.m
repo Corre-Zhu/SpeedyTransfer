@@ -179,9 +179,23 @@ HT_DEF_SINGLETON(STDeviceInfo, shareInstant);
         @synchronized(_prepareToSendFiles) {
             [self.sendingTransferInfos addObjectsFromArray:fileTransferInfos];
         }
+        
+        // 兼容安卓处理：联系人文件名固定 contacts.json
+        
+        NSMutableArray *tempArr = [NSMutableArray array];
+        for (NSDictionary *dic in fileInfos) {
+            if ([[dic stringForKey:FILE_URL] containsString:@"/contact/"]) {
+                NSMutableDictionary *tempDic = [NSMutableDictionary dictionaryWithDictionary:dic];
+                [tempDic setObject:@"contacts.json" forKey:FILE_NAME];
+                
+                [tempArr addObject:tempDic];
+            } else {
+                [tempArr addObject:dic];
+            }
+        }
 		
 		if (!self.isBrowser) {
-			NSDictionary *itemsDic = @{@"items": fileInfos};
+			NSDictionary *itemsDic = @{@"items": tempArr};
 			NSString *itemsString = [itemsDic jsonString];
 			NSData *postData = [itemsString dataUsingEncoding:NSUTF8StringEncoding];
 			NSString *postLength = @(postData.length).stringValue;
@@ -228,10 +242,15 @@ HT_DEF_SINGLETON(STDeviceInfo, shareInstant);
                 continue;
             }
             
+            double fileSize = info.fileSize;
+            if (info.contactSizeAndroid > 0) {
+                fileSize = info.contactSizeAndroid;
+            }
+            
             NSString *requestPath = [userInfo stringForKey:REQUEST_PATH];
             if (info.url.length > 0 && [requestPath containsString:info.url]) {
                 NSUInteger totalBytesWritten = [userInfo integerForKey:TOTAL_BYTES_WRITTEN];
-                float progress = MIN(1.0f, (totalBytesWritten + 248) / info.fileSize);
+                float progress = MIN(1.0f, (totalBytesWritten + 248) / fileSize);
                 
                 double startTimestamp = [userInfo doubleForKey:START_TIMESTAMP];
                 if (info.lastProgressTimeStamp == 0.0f) {
@@ -240,7 +259,7 @@ HT_DEF_SINGLETON(STDeviceInfo, shareInstant);
                 NSTimeInterval now = [[NSDate date] timeIntervalSince1970];
                 NSTimeInterval timeInterval = now - info.lastProgressTimeStamp;
                 if (timeInterval > 0.3f) { // 每隔0.3秒更新一次速度
-                    info.downloadSpeed = 1 / timeInterval * (progress - info.lastProgress) * info.fileSize;
+                    info.downloadSpeed = 1 / timeInterval * (progress - info.lastProgress) * fileSize;
                     info.lastProgressTimeStamp = now;
                     info.lastProgress = progress;
                 }
@@ -252,7 +271,7 @@ HT_DEF_SINGLETON(STDeviceInfo, shareInstant);
                     info.transferStatus = STFileTransferStatusSent;
                     
                     NSTimeInterval now = [[NSDate date] timeIntervalSince1970];
-                    float downloadSpeed = 1 / (now - startTimestamp) * info.fileSize;
+                    float downloadSpeed = 1 / (now - startTimestamp) * fileSize;
                     [[STFileTransferModel shareInstant] updateDownloadSpeed:downloadSpeed withIdentifier:info.identifier];
                     info.downloadSpeed = downloadSpeed;
                     

@@ -14,4 +14,6 @@ typedef void (^FileInfoCompletionBlock)(NSArray *fileInfos);
 
 - (void)fileInfoWithItems:(NSArray *)items completionBlock:(FileInfoCompletionBlock)completionBlock;
 
++ (NSData *)dataWithVcardForAndroid:(NSData *)vcard;
+
 @end
