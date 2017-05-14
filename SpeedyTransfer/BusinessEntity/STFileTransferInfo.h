@@ -73,6 +73,8 @@ HT_AS_SINGLETON(STFileTransferInfo, shareInstant)
 @property (nonatomic) BOOL showDeviceInfo;
 @property (nonatomic) NSInteger recordId;
 
+@property (nonatomic, strong) NSDictionary *fileInfo;
+
 - (instancetype)initWithDictionary:(NSDictionary *)dic;
 - (instancetype)initWithReceiveFileInfo:(NSDictionary *)fileInfo deviceInfo:(STDeviceInfo *)deviceInfo;
 

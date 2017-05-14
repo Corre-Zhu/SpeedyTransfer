@@ -132,87 +132,95 @@ HT_DEF_SINGLETON(STMultiPeerTransferModel, shareInstant);
     [fileUtility fileInfoWithItems:@[_sendingItem] completionBlock:^(NSArray *fileInfos) {
         NSDictionary *fileInfo = [fileInfos firstObject];
         
-        // 写数据库
+        // Send step 1、写数据库
         _sendingTransferInfo = [self insertItemsToDbWithFileInfo:fileInfo];
+        _sendingTransferInfo.fileInfo = fileInfo;
         
-        // 1、发送info
-        if ([self sendData:[STPacket initWithFileInfo:fileInfo]]) {
-            if ([_sendingItem isKindOfClass:[PHAsset class]]) {
-                PHAsset *asset = (PHAsset *)_sendingItem;
-                // 2、发送大图
-                if (IOS9 && asset.mediaType == PHAssetMediaTypeVideo) {
-                    [[PHImageManager defaultManager] requestAVAssetForVideo:asset options:nil resultHandler:^(AVAsset * _Nullable asset, AVAudioMix * _Nullable audioMix, NSDictionary * _Nullable info) {
-                        NSString *identi = [fileInfo stringForKey:FILE_IDENTIFIER];
-                        NSString *filePath = [[ZZPath tmpUploadPath] stringByAppendingPathComponent:identi];
-                        if ([[NSFileManager defaultManager] fileExistsAtPath:filePath]) {
-                            [[NSFileManager defaultManager] removeItemAtPath:filePath error:NULL];
-                        }
-                        NSURL *outputURL = [NSURL fileURLWithPath:filePath];
-                        AVAssetExportSession *session = [[AVAssetExportSession alloc] initWithAsset:asset presetName:AVAssetExportPresetHighestQuality];
-                        session.outputURL = outputURL;
-                        session.outputFileType = AVFileTypeQuickTimeMovie;
-                        [session exportAsynchronouslyWithCompletionHandler:^(void) {
-                            switch (session.status) {
-                                case AVAssetExportSessionStatusCompleted:
-                                    [self sendImage:outputURL];
-                                    break;
-                                default:
-                                    [self sendFaild];
-                                    break;
-                            }
-                        }];
-                    }];
-                } else {
-                    [[PHImageManager defaultManager] requestImageDataForAsset:asset options:nil resultHandler:^(NSData * _Nullable imageData, NSString * _Nullable dataUTI, UIImageOrientation orientation, NSDictionary * _Nullable info) {
-                        if (imageData.length > 0) {
-                            NSString *identi = [fileInfo stringForKey:FILE_IDENTIFIER];
-                            NSString *path = [[ZZPath tmpUploadPath] stringByAppendingPathComponent:identi];
-                            if ([[NSFileManager defaultManager] fileExistsAtPath:path]) {
-                                [[NSFileManager defaultManager] removeItemAtPath:path error:NULL];
-                            }
-
-                            if ([imageData writeToFile:path atomically:YES]) {
-                                [self sendImage:[NSURL fileURLWithPath:path]];
-                                return;
-                            }
-                        }
-                        
-                        [self sendFaild];
-                        
-                    }];
-                }
-            } else if ([_sendingItem isKindOfClass:[STContactInfo class]]) {
-                NSInteger recordId = [fileInfo integerForKey:RECORD_ID];
-                if (!self.addressBook) {
-                    self.addressBook = ABAddressBookCreateWithOptions(NULL, NULL);
-                }
-                ABRecordRef recordRef = ABAddressBookGetPersonWithRecordID(self.addressBook, (ABRecordID)recordId);
-                CFArrayRef cfArrayRef =  (__bridge CFArrayRef)@[(__bridge id)recordRef];
-                CFDataRef vcards = (CFDataRef)ABPersonCreateVCardRepresentationWithPeople(cfArrayRef);
-                
-                //NSString *sttt = [[NSString alloc] initWithData:(__bridge NSData *)vcards encoding:NSUTF8StringEncoding];
-                
-                NSData *vcardData = [STPacket initWithVcard:(__bridge NSData *)vcards recordId:recordId];
-                if ([self sendData:vcardData]) {
-                    [self sendSucceed];
-                } else {
-                    [self sendFaild];
-                }
-            } else if ([_sendingItem isKindOfClass:[STFileInfo class]]) {
-                STFileInfo *file = (STFileInfo *)_sendingItem;
-                if (file.fileExist) {
-                    [self sendImage:[NSURL fileURLWithPath:file.localPath]];
-                } else {
-                    [self sendFaild];
-                }
-            }
-        } else {
+        // Send step 2、询问对方能否接收
+        if (![self sendData:[STPacket initWithCanReceiveRequest]]) {
             [self sendFaild];
         }
         
-        
     }];
     
+}
+
+- (void)doSend {
+    // Send step 4、发送info
+    NSDictionary *fileInfo = _sendingTransferInfo.fileInfo;
+    if ([self sendData:[STPacket initWithFileInfo:fileInfo]]) {
+        if ([_sendingItem isKindOfClass:[PHAsset class]]) {
+            PHAsset *asset = (PHAsset *)_sendingItem;
+            // Send step 5、发送大图
+            if (IOS9 && asset.mediaType == PHAssetMediaTypeVideo) {
+                [[PHImageManager defaultManager] requestAVAssetForVideo:asset options:nil resultHandler:^(AVAsset * _Nullable asset, AVAudioMix * _Nullable audioMix, NSDictionary * _Nullable info) {
+                    NSString *identi = [fileInfo stringForKey:FILE_IDENTIFIER];
+                    NSString *filePath = [[ZZPath tmpUploadPath] stringByAppendingPathComponent:identi];
+                    if ([[NSFileManager defaultManager] fileExistsAtPath:filePath]) {
+                        [[NSFileManager defaultManager] removeItemAtPath:filePath error:NULL];
+                    }
+                    NSURL *outputURL = [NSURL fileURLWithPath:filePath];
+                    AVAssetExportSession *session = [[AVAssetExportSession alloc] initWithAsset:asset presetName:AVAssetExportPresetHighestQuality];
+                    session.outputURL = outputURL;
+                    session.outputFileType = AVFileTypeQuickTimeMovie;
+                    [session exportAsynchronouslyWithCompletionHandler:^(void) {
+                        switch (session.status) {
+                            case AVAssetExportSessionStatusCompleted:
+                                [self sendImage:outputURL];
+                                break;
+                            default:
+                                [self sendFaild];
+                                break;
+                        }
+                    }];
+                }];
+            } else {
+                [[PHImageManager defaultManager] requestImageDataForAsset:asset options:nil resultHandler:^(NSData * _Nullable imageData, NSString * _Nullable dataUTI, UIImageOrientation orientation, NSDictionary * _Nullable info) {
+                    if (imageData.length > 0) {
+                        NSString *identi = [fileInfo stringForKey:FILE_IDENTIFIER];
+                        NSString *path = [[ZZPath tmpUploadPath] stringByAppendingPathComponent:identi];
+                        if ([[NSFileManager defaultManager] fileExistsAtPath:path]) {
+                            [[NSFileManager defaultManager] removeItemAtPath:path error:NULL];
+                        }
+                        
+                        if ([imageData writeToFile:path atomically:YES]) {
+                            [self sendImage:[NSURL fileURLWithPath:path]];
+                            return;
+                        }
+                    }
+                    
+                    [self sendFaild];
+                    
+                }];
+            }
+        } else if ([_sendingItem isKindOfClass:[STContactInfo class]]) {
+            NSInteger recordId = [fileInfo integerForKey:RECORD_ID];
+            if (!self.addressBook) {
+                self.addressBook = ABAddressBookCreateWithOptions(NULL, NULL);
+            }
+            ABRecordRef recordRef = ABAddressBookGetPersonWithRecordID(self.addressBook, (ABRecordID)recordId);
+            CFArrayRef cfArrayRef =  (__bridge CFArrayRef)@[(__bridge id)recordRef];
+            CFDataRef vcards = (CFDataRef)ABPersonCreateVCardRepresentationWithPeople(cfArrayRef);
+            
+            //NSString *sttt = [[NSString alloc] initWithData:(__bridge NSData *)vcards encoding:NSUTF8StringEncoding];
+            
+            NSData *vcardData = [STPacket initWithVcard:(__bridge NSData *)vcards recordId:recordId];
+            if ([self sendData:vcardData]) {
+                [self sendSucceed];
+            } else {
+                [self sendFaild];
+            }
+        } else if ([_sendingItem isKindOfClass:[STFileInfo class]]) {
+            STFileInfo *file = (STFileInfo *)_sendingItem;
+            if (file.fileExist) {
+                [self sendImage:[NSURL fileURLWithPath:file.localPath]];
+            } else {
+                [self sendFaild];
+            }
+        }
+    } else {
+        [self sendFaild];
+    }
 }
 
 - (void)sendSucceed {
@@ -421,6 +429,15 @@ HT_DEF_SINGLETON(STMultiPeerTransferModel, shareInstant);
     }
 }
 
+// 取消所有发送
+- (void)cancelAllSendFile {
+    @synchronized (_prepareToSendFiles) {
+        [_prepareToSendFiles removeAllObjects];
+    }
+    [self sendFaild];
+}
+
+
 #pragma mark - MCNearbyServiceAdvertiserDelegate
 
 - (void)advertiser:(MCNearbyServiceAdvertiser *)advertiser
@@ -500,17 +517,31 @@ HT_DEF_SINGLETON(STMultiPeerTransferModel, shareInstant);
 // MCSession Delegate callback when receiving data from a peer in a given session
 - (void)session:(MCSession *)session didReceiveData:(NSData *)data fromPeer:(MCPeerID *)peerID
 {
-    if (data.length <= 1) {
+    if (data.length == 0) {
         return;
     }
     
     UInt8 flag = [STPacket getFlagWithData:data];
-    if (flag != KPacketPortraitFlag && ![self shouldReceiveFile]) {
-        return;
-    }
-    
     NSData *bodyData = [data subdataWithRange:NSMakeRange(1, data.length - 1)];
-    if (flag == KPacketPortraitFlag) {
+    
+    if (flag == KPacketCanReceiveRequestFlag) {
+        [self sendData:[STPacket initWithCanReceiveResponse:[self shouldReceiveFile]]];
+    } else if (flag == KPacketCanReceiveResponseFlag) {
+        if (bodyData.length == 0) {
+            return;
+        }
+        
+        UInt8 canReceive = 1;
+        [bodyData getBytes:&canReceive length:1];
+        
+        if (canReceive) {
+            // Send step 3、对方能接收
+            [self doSend];
+        } else {
+            // 对方不能接收
+            [self cancelAllSendFile];
+        }
+    } else if (flag == KPacketPortraitFlag) {
         UIImage *image = [[UIImage alloc] initWithData:bodyData];
         if (image) {
             NSString *headPath = [[ZZPath headImagePath] stringByAppendingFormat:@"/%@", _deviceInfo.deviceName];
@@ -520,7 +551,14 @@ HT_DEF_SINGLETON(STMultiPeerTransferModel, shareInstant);
             [bodyData writeToFile:headPath atomically:YES];
             _deviceInfo.headImage = image;
         }
-    } else if (flag == KPacketFileInfoFlag) {
+    }
+    
+    if (![self shouldReceiveFile]) {
+        // 容量不足不接收文件
+        return;
+    }
+    
+    if (flag == KPacketFileInfoFlag) {
         NSDictionary *dic = [[[NSString alloc] initWithData:bodyData encoding:NSUTF8StringEncoding] jsonDictionary];
         if (dic.count > 0) {
             // 接收到文件

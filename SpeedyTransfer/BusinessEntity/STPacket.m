@@ -35,9 +35,24 @@
     return data;
 }
 
++ (NSData *)initWithCanReceiveRequest {
+    NSMutableData *data = [NSMutableData data];
+    [data appendBytes:&KPacketCanReceiveRequestFlag length:1];
+    
+    return data;
+}
+
++ (NSData *)initWithCanReceiveResponse:(UInt8)flag {
+    NSMutableData *data = [NSMutableData data];
+    [data appendBytes:&KPacketCanReceiveResponseFlag length:1];
+    [data appendBytes:&flag length:1];
+    
+    return data;
+}
+
 + (UInt8)getFlagWithData:(NSData *)data {
     UInt8 flag = 0;
-    if (data.length > 1) {
+    if (data.length >= 1) {
         [data getBytes:&flag length:1];
     }
     
