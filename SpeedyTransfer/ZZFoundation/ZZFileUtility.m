@@ -224,8 +224,8 @@
             NSArray *upperComponents = [line componentsSeparatedByString:@":"];
             NSArray *components = [[upperComponents objectAtIndex:1] componentsSeparatedByString:@";"];
             
-            lastName = [components objectAtIndex:0];
-            firstName = [components objectAtIndex:1];
+            lastName = [[components objectAtIndex:0] trim];
+            firstName = [[components objectAtIndex:1] trim];
             
             NSLog(@"firstName: %@, lastName: %@", firstName, lastName);
             
@@ -233,19 +233,21 @@
         else if ([line hasPrefix:@"FN:"])
         {
             NSArray *upperComponents = [line componentsSeparatedByString:@":"];
-            name = [upperComponents objectAtIndex:1];
+            name = [[upperComponents objectAtIndex:1] trim];
             NSLog(@"name: %@", name);
             
         }
         else if ([line hasPrefix:@"TEL;"])
         {
             NSArray *components = [line componentsSeparatedByString:@":"];
-            NSString *phoneNumber = [components objectAtIndex:1];
+            NSString *phoneNumber = [[components objectAtIndex:1] trim];
             if (phoneNumber.length > 0) {
                 if ([line.uppercaseString containsString:@"CELL"]) {
                     [phoneArr addObject:@{@"2": phoneNumber}];
                 } else if ([line.uppercaseString containsString:@"HOME"]) {
                     [phoneArr addObject:@{@"1": phoneNumber}];
+                } else {
+                    [phoneArr addObject:@{@"2": phoneNumber}];
                 }
                 
                 NSLog(@"phoneNumber %@",phoneNumber);
@@ -297,12 +299,16 @@
     
     NSMutableData *mutableData = [NSMutableData data];
     UInt32 count = 1;
+    
+    count = htonl(count);
     [mutableData appendBytes:&count length:4];
     
     NSData *jsonData = [[result jsonString] dataUsingEncoding:NSUTF8StringEncoding];
     
     UInt32 lenght = (UInt32)jsonData.length;
+    lenght = htonl(lenght);
     [mutableData appendBytes:&lenght length:4];
+    
     [mutableData appendData:jsonData];
     
     

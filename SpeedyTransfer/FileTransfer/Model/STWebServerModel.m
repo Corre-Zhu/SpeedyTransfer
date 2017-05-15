@@ -253,7 +253,7 @@ HT_DEF_SINGLETON(STWebServerModel, shareInstant);
                     BOOL isAndroid = YES;
                     if (isAndroid) {
                         NSData *data = [ZZFileUtility dataWithVcardForAndroid:(__bridge NSData *)vcards];
-                        NSString *fileName = @"contacts.json";                               NSString *path = [[ZZPath tmpUploadPath] stringByAppendingPathComponent:fileName];
+                        NSString *fileName = @"contact.json";                               NSString *path = [[ZZPath tmpUploadPath] stringByAppendingPathComponent:fileName];
                         if ([[NSFileManager defaultManager] fileExistsAtPath:path]) {
                             [[NSFileManager defaultManager] removeItemAtPath:path error:NULL];
                         }

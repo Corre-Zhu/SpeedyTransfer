@@ -180,13 +180,13 @@ HT_DEF_SINGLETON(STDeviceInfo, shareInstant);
             [self.sendingTransferInfos addObjectsFromArray:fileTransferInfos];
         }
         
-        // 兼容安卓处理：联系人文件名固定 contacts.json
+        // 兼容安卓处理：联系人文件名固定 contact.json
         
         NSMutableArray *tempArr = [NSMutableArray array];
         for (NSDictionary *dic in fileInfos) {
             if ([[dic stringForKey:FILE_URL] containsString:@"/contact/"]) {
                 NSMutableDictionary *tempDic = [NSMutableDictionary dictionaryWithDictionary:dic];
-                [tempDic setObject:@"contacts.json" forKey:FILE_NAME];
+                [tempDic setObject:@"contact.json" forKey:FILE_NAME];
                 
                 [tempArr addObject:tempDic];
             } else {
