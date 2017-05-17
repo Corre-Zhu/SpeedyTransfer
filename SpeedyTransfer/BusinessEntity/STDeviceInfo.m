@@ -8,6 +8,7 @@
 
 #import "STDeviceInfo.h"
 #import "ZZFileUtility.h"
+#import "STContactInfo.h"
 
 #define KConcurrentSendFilesCount 2 // 同时最多post两个文件
 
@@ -143,8 +144,34 @@ HT_DEF_SINGLETON(STDeviceInfo, shareInstant);
         
         do {
             id object = _prepareToSendFiles.firstObject;
-            [resultArray addObject:object];
             [_prepareToSendFiles removeObject:object];
+
+            // 合并所有联系人
+            if ([object isKindOfClass:[STContactInfo class]]) {
+                NSMutableArray *tempArr = [NSMutableArray arrayWithObject:object];
+                for (id temp in _prepareToSendFiles) {
+                    if ([temp isKindOfClass:[STContactInfo class]]) {
+                        [tempArr addObject:temp];
+                    }
+                }
+                
+                [_prepareToSendFiles removeObjectsInArray:tempArr];
+                
+                NSString *path = [ZZFileUtility pathForContacts:tempArr];
+                if (path.length > 0) {
+                    STContactInfo *contactInfo = [[STContactInfo alloc] init];
+                    contactInfo.name = @"contact.json";
+                    contactInfo.size = [[[NSFileManager defaultManager] attributesOfItemAtPath:path error:nil] fileSize];
+                    contactInfo.isBatch = YES;
+                    contactInfo.path = path;
+                    
+                    [resultArray addObject:contactInfo];
+                }
+            } else {
+                [resultArray addObject:object];
+            }
+            
+            
         } while ((self.sendingTransferInfos.count + resultArray.count) < KConcurrentSendFilesCount && _prepareToSendFiles.count > 0);
         
         return resultArray;

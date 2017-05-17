@@ -141,7 +141,11 @@
             NSString *fileType = @"vcard";
             NSString *fileUrl = @"";
             if (address.length > 0) {
-                fileUrl = [NSString stringWithFormat:@"http://%@:%@/contact/%@/%@.vcard", address, @(KSERVERPORT), @(contactInfo.recordId), @(contactInfo.recordId)];
+                if (contactInfo.isBatch) {
+                    fileUrl = [NSString stringWithFormat:@"http://%@:%@/contact/batch/%@.vcard", address, @(KSERVERPORT), contactInfo.path.lastPathComponent];
+                } else {
+                    fileUrl = [NSString stringWithFormat:@"http://%@:%@/contact/%@/%@.vcard", address, @(KSERVERPORT), @(contactInfo.recordId), @(contactInfo.recordId)];
+                }
             }
             
             NSDictionary *fileInfo = @{FILE_NAME: fileName,
@@ -196,15 +200,12 @@
     }
 }
 
-+ (NSData *)dataWithVcardForAndroid:(NSData *)vcard {
++ (NSData *)jsonDataWithVcardForAndroid:(NSString *)vcardStr {
     NSString *lastName;
     NSString *firstName;
     NSString *name;
     
     NSMutableArray *phoneArr = [NSMutableArray array];
-    
-    NSString *vcardStr = [[NSString alloc] initWithData:vcard encoding:NSUTF8StringEncoding];
-
     
     NSArray *lines = [vcardStr componentsSeparatedByString:@"\n"];
     
@@ -251,7 +252,7 @@
                 }
                 
                 NSLog(@"phoneNumber %@",phoneNumber);
-
+                
             }
             
         }
@@ -273,7 +274,7 @@
         
         [nameDic setObject:@"2" forKey:@"data10"];
         [nameDic setObject:@"0" forKey:@"data11"];
-
+        
         [items addObject:nameDic];
     }
     
@@ -296,23 +297,37 @@
     if (items.count > 0) {
         [result setObject:items forKey:@"items"];
     }
+
+    return [[result jsonString] dataUsingEncoding:NSUTF8StringEncoding];
+}
+
++ (NSString *)pathForContacts:(NSArray *)contacts {
+    NSMutableArray *arr = [NSMutableArray array];
+    for (STContactInfo *contact in contacts) {
+        [arr addObject:[self jsonDataWithVcardForAndroid:contact.vcardString]];
+    }
     
     NSMutableData *mutableData = [NSMutableData data];
-    UInt32 count = 1;
+    UInt32 count = (UInt32)arr.count;
     
     count = htonl(count);
     [mutableData appendBytes:&count length:4];
+
+    for (NSData *data in arr) {
+        UInt32 lenght = (UInt32)data.length;
+        lenght = htonl(lenght);
+        [mutableData appendBytes:&lenght length:4];
+        [mutableData appendData:data];
+    }
     
-    NSData *jsonData = [[result jsonString] dataUsingEncoding:NSUTF8StringEncoding];
+    NSString *identi = [NSString uniqueID];
+    NSString *path = [[ZZPath tmpUploadPath]stringByAppendingPathComponent:identi];
+    if ([mutableData writeToFile:path atomically:YES]) {
+        return path;
+    }
     
-    UInt32 lenght = (UInt32)jsonData.length;
-    lenght = htonl(lenght);
-    [mutableData appendBytes:&lenght length:4];
-    
-    [mutableData appendData:jsonData];
-    
-    
-    return mutableData;
+    NSLog(@"pathForContacts error");
+    return nil;
 }
 
 @end

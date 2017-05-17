@@ -22,6 +22,9 @@ typedef void(^GetContactsCompletionHandler)(NSArray *array);
 @property (nonatomic) double size;
 @property (nonatomic) double androidSize; // 兼容安卓
 
+@property (nonatomic, strong) NSString *path;
+@property (nonatomic, assign) BOOL isBatch;
+
 // 读取手机通讯录
 + (void)getContactsModelListWithCompletion:(GetContactsCompletionHandler)handler;
 + (NSString *)getMobilePhoneProperty:(ABMultiValueRef)phonesRef;

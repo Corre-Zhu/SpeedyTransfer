@@ -1,3 +1,4 @@
+
 //
 //  STWebServerModel.m
 //  SpeedyTransfer
@@ -235,39 +236,35 @@ HT_DEF_SINGLETON(STWebServerModel, shareInstant);
 					}
 				}
 			} else if ([request.path hasPrefix:@"/contact/"]) {
-				NSInteger loc = [@"/contact/" length];
-				NSString *recordId = [request.path substringWithRange:NSMakeRange(loc, request.path.length - loc)];
-                if ([recordId containsString:@"/"]) {
-                    recordId = [recordId componentsSeparatedByString:@"/"].firstObject;
-                }
-                
-				if (recordId.length > 0) {
-					if (!weakSelf.addressBook) {
-						weakSelf.addressBook = ABAddressBookCreateWithOptions(NULL, NULL);
-					}
-					ABRecordRef recordRef = ABAddressBookGetPersonWithRecordID(weakSelf.addressBook, (ABRecordID)recordId.integerValue);
-					CFArrayRef cfArrayRef =  (__bridge CFArrayRef)@[(__bridge id)recordRef];
-					CFDataRef vcards = (CFDataRef)ABPersonCreateVCardRepresentationWithPeople(cfArrayRef);
-                    
-                    // 兼容安卓
-                    BOOL isAndroid = YES;
-                    if (isAndroid) {
-                        NSData *data = [ZZFileUtility dataWithVcardForAndroid:(__bridge NSData *)vcards];
-                        NSString *fileName = @"contact.json";                               NSString *path = [[ZZPath tmpUploadPath] stringByAppendingPathComponent:fileName];
-                        if ([[NSFileManager defaultManager] fileExistsAtPath:path]) {
-                            [[NSFileManager defaultManager] removeItemAtPath:path error:NULL];
-                        }
-                        if ([data writeToFile:path atomically:YES]) {
-                            completionBlock([GCDWebServerFileResponse responseWithFile:path fileName:fileName isAttachment:YES]);
-                        } else {
-                            completionBlock([GCDWebServerDataResponse responseWithStatusCode:501]);
-                        }
-                    } else {
-                        completionBlock([GCDWebServerDataResponse responseWithData:(__bridge NSData *)vcards contentType:@"contact/vcard"]);
+                if ([request.path hasPrefix:@"/contact/batch/"]) {
+                    NSString *identi = [request.path.lastPathComponent stringByDeletingPathExtension];
+                    NSString *path = [[ZZPath tmpUploadPath] stringByAppendingPathComponent:identi];
+                    if ([[NSFileManager defaultManager] fileExistsAtPath:path]) {
+                        completionBlock([GCDWebServerFileResponse responseWithFile:path fileName:@"contact.json" isAttachment:YES]);
+                        return;
+                    }
+                } else {
+                    NSInteger loc = [@"/contact/" length];
+                    NSString *recordId = [request.path substringWithRange:NSMakeRange(loc, request.path.length - loc)];
+                    if ([recordId containsString:@"/"]) {
+                        recordId = [recordId componentsSeparatedByString:@"/"].firstObject;
                     }
                     
-                    return;
-				}
+                    if (recordId.length > 0) {
+                        if (!weakSelf.addressBook) {
+                            weakSelf.addressBook = ABAddressBookCreateWithOptions(NULL, NULL);
+                        }
+                        ABRecordRef recordRef = ABAddressBookGetPersonWithRecordID(weakSelf.addressBook, (ABRecordID)recordId.integerValue);
+                        CFArrayRef cfArrayRef =  (__bridge CFArrayRef)@[(__bridge id)recordRef];
+                        CFDataRef vcards = (CFDataRef)ABPersonCreateVCardRepresentationWithPeople(cfArrayRef);
+                        
+                        completionBlock([GCDWebServerDataResponse responseWithData:(__bridge NSData *)vcards contentType:@"contact/vcard"]);
+                        
+                        return;
+                    }
+                }
+                
+				
 				
 			} /* else if ([request.path hasPrefix:@"/music/"]) {
 				NSInteger loc = [@"/music/" length];
