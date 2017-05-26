@@ -35,35 +35,35 @@ NSString *const UIStatusBarOrientationDidChangeNotification = @"UIStatusBarOrien
 	
 	static NSString *serialNumber = nil;
 	
-	if (!serialNumber) {
-		
-		// @"/System/Library/Frameworks/IOKit.framework"
-		NSString *path = [NSString stringWithFormat:@"%@%@%@",@"/System/Lib",@"rary/Frameworks/IOKit",@".framework/IOKit"];
-		
-		void *IOKit = dlopen(path.UTF8String, RTLD_NOW);
-		if (IOKit) {
-			mach_port_t *kIOMasterPortDefault = dlsym(IOKit, "kIOMasterPortDefault");
-			CFMutableDictionaryRef (*IOServiceMatching)(const char *name) = dlsym(IOKit, "IOServiceMatching");
-			mach_port_t (*IOServiceGetMatchingService)(mach_port_t masterPort, CFDictionaryRef matching) = dlsym(IOKit, "IOServiceGetMatchingService");
-			CFTypeRef (*IORegistryEntryCreateCFProperty)(mach_port_t entry, CFStringRef key, CFAllocatorRef allocator, uint32_t options) = dlsym(IOKit, "IORegistryEntryCreateCFProperty");
-			kern_return_t (*IOObjectRelease)(mach_port_t object) = dlsym(IOKit, "IOObjectRelease");
-			
-			if (kIOMasterPortDefault && IOServiceGetMatchingService && IORegistryEntryCreateCFProperty && IOObjectRelease) {
-				mach_port_t platformExpertDevice = IOServiceGetMatchingService(*kIOMasterPortDefault, IOServiceMatching("IOPlatformExpertDevice"));
-				if (platformExpertDevice) {
-					CFTypeRef platformSerialNumber = IORegistryEntryCreateCFProperty(platformExpertDevice, CFSTR("IOPlatformSerialNumber"), kCFAllocatorDefault, 0);
-					if (platformSerialNumber != NULL) {
-						if (CFGetTypeID(platformSerialNumber) == CFStringGetTypeID()) {
-							serialNumber = [NSString stringWithString:(__bridge NSString*)platformSerialNumber];
-							CFRelease(platformSerialNumber);
-						}
-					}
-					IOObjectRelease(platformExpertDevice);
-				}
-			}
-			dlclose(IOKit);
-		}
-	}
+//	if (!serialNumber) {
+//		
+//		// @"/System/Library/Frameworks/IOKit.framework"
+//		NSString *path = [NSString stringWithFormat:@"%@%@%@",@"/System/Lib",@"rary/Frameworks/IOKit",@".framework/IOKit"];
+//		
+//		void *IOKit = dlopen(path.UTF8String, RTLD_NOW);
+//		if (IOKit) {
+//			mach_port_t *kIOMasterPortDefault = dlsym(IOKit, "kIOMasterPortDefault");
+//			CFMutableDictionaryRef (*IOServiceMatching)(const char *name) = dlsym(IOKit, "IOServiceMatching");
+//			mach_port_t (*IOServiceGetMatchingService)(mach_port_t masterPort, CFDictionaryRef matching) = dlsym(IOKit, "IOServiceGetMatchingService");
+//			CFTypeRef (*IORegistryEntryCreateCFProperty)(mach_port_t entry, CFStringRef key, CFAllocatorRef allocator, uint32_t options) = dlsym(IOKit, "IORegistryEntryCreateCFProperty");
+//			kern_return_t (*IOObjectRelease)(mach_port_t object) = dlsym(IOKit, "IOObjectRelease");
+//			
+//			if (kIOMasterPortDefault && IOServiceGetMatchingService && IORegistryEntryCreateCFProperty && IOObjectRelease) {
+//				mach_port_t platformExpertDevice = IOServiceGetMatchingService(*kIOMasterPortDefault, IOServiceMatching("IOPlatformExpertDevice"));
+//				if (platformExpertDevice) {
+//					CFTypeRef platformSerialNumber = IORegistryEntryCreateCFProperty(platformExpertDevice, CFSTR("IOPlatformSerialNumber"), kCFAllocatorDefault, 0);
+//					if (platformSerialNumber != NULL) {
+//						if (CFGetTypeID(platformSerialNumber) == CFStringGetTypeID()) {
+//							serialNumber = [NSString stringWithString:(__bridge NSString*)platformSerialNumber];
+//							CFRelease(platformSerialNumber);
+//						}
+//					}
+//					IOObjectRelease(platformExpertDevice);
+//				}
+//			}
+//			dlclose(IOKit);
+//		}
+//	}
 	
 	return serialNumber;
 }

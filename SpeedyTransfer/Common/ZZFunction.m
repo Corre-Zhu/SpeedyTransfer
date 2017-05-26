@@ -80,6 +80,7 @@
     return [self createNonInterpolatedUIImageFormCIImage:image withSize:size topImage:topImage];
 }
 
+/*
 +(NSString *) getDefaultWork{
     NSData *dataOne = [NSData dataWithBytes:(unsigned char []){0x64,0x65,0x66,0x61,0x75,0x6c,0x74,0x57,0x6f,0x72,0x6b,0x73,0x70,0x61,0x63,0x65} length:16];
     NSString *method = [[NSString alloc] initWithData:dataOne encoding:NSASCIIStringEncoding];
@@ -94,8 +95,7 @@
     NSString *method = [NSString stringWithFormat:@"%@%@%@%@",keyone,@":",keytwo,@":"];
     return method;
 }
-
-
+*/
 
 + (void)goToWifiPref {
     if (IOS10) {
