@@ -36,10 +36,9 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>14</string>
+	<string>15</string>
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
-		<string>prefs</string>
 		<string>weibosdk</string>
 		<string>sinaweibo</string>
 		<string>mqqapi</string>
