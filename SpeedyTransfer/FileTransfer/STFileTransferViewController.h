@@ -12,5 +12,6 @@
 
 @property (nonatomic) BOOL isFromReceive; // 是否是点击我要接收进入的
 @property (nonatomic) BOOL isMultipeerTransfer;
+@property (nonatomic) BOOL isBrowser; // 是否是无界传输进入的
 
 @end

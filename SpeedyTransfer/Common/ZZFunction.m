@@ -81,11 +81,33 @@
 }
 
 + (void)goToWifiPref {
-    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:UIApplicationOpenSettingsURLString]];
+    if (IOS10) {
+        NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@%@%@%@", @"Ap", @"p-Pref", @"s:roo", @"t=W",@"IFI"]];
+        [[UIApplication sharedApplication] openURL:url options:@{@"":@""} completionHandler:^(BOOL success) {
+            
+        }];
+    } else {
+        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:UIApplicationOpenSettingsURLString]];
+        
+        //[[UIApplication sharedApplication] openURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@%@%@", @"Pref",@"s:roo",@"t=WIFI"]]];
+    }
+    
+    /*
+    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:UIApplicationOpenSettingsURLString]];*/
 }
 
 + (void)goToHotspotPref {
-    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:UIApplicationOpenSettingsURLString]];    
+    if (IOS10) {
+        NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@%@%@%@%@", @"Ap", @"p-Pre", @"fs:roo", @"t=INTERNE", @"T_TET", @"HERING"]];
+        [[UIApplication sharedApplication] openURL:url options:@{@"":@""} completionHandler:^(BOOL success) {
+            
+        }];
+    } else {
+        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:UIApplicationOpenSettingsURLString]];
+        //[[UIApplication sharedApplication] openURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@%@%@", @"Pref",@"s:root=INTERNE",@"T_TETHERING"]]];
+    }
+    
+    //[[UIApplication sharedApplication] openURL:[NSURL URLWithString:UIApplicationOpenSettingsURLString]];
 }
 
 + (STFileType)fileTypeWithPathExtension:(NSString *)fileType {

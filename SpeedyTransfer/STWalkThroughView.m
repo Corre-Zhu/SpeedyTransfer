@@ -53,11 +53,12 @@
     button.layer.cornerRadius = 5.0f;
     [button setTitle:NSLocalizedString(@"立即体验", nil) forState:UIControlStateNormal];
     [button setTitleColor:RGBFromHex(0xe48b17) forState:UIControlStateNormal];
+    button.titleLabel.font = [UIFont systemFontOfSize:16];
     [button addTarget:self action:@selector(btnClick) forControlEvents:UIControlEventTouchUpInside];
     [img2 addSubview:button];
     
     [button autoAlignAxisToSuperviewAxis:ALAxisVertical];
-    [button autoSetDimensionsToSize:CGSizeMake(105.0f, 28.0f)];
+    [button autoSetDimensionsToSize:CGSizeMake(105.0f, 32.0f)];
     [button autoPinEdgeToSuperviewEdge:ALEdgeBottom withInset:36.0f];
 }
 

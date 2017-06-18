@@ -7,12 +7,14 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "STHomeViewController.h"
 
 extern NSString * const dbName;
 
 @interface AppDelegate : UIResponder <UIApplicationDelegate>
 
 @property (strong, nonatomic) UIWindow *window;
+@property (strong, nonatomic) STHomeViewController *homeVc;
 
 @end
 

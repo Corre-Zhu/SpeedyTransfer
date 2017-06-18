@@ -24,6 +24,7 @@
 #import "STScanQRCodeViewController.h"
 #import "STFilesViewController.h"
 #import "ZZFunction.h"
+#import "STTurnOffHotspotPopupView.h"
 
 @interface STHomeViewController ()
 {

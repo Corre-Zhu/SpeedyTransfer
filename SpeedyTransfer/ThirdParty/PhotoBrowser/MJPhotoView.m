@@ -89,11 +89,14 @@
                 NSInteger currentTag = _photo.info.tag + 1;
                 _photo.info.tag = currentTag;
                 
+                CGFloat width = [UIScreen mainScreen].scale * IPHONE_WIDTH;
+                CGSize size = CGSizeMake(width, width * asset.pixelHeight / asset.pixelWidth);
+                
                 PHImageRequestOptions *options = [[PHImageRequestOptions alloc] init];
                 options.resizeMode = PHImageRequestOptionsResizeModeExact;
                 options.deliveryMode = PHImageRequestOptionsDeliveryModeOpportunistic;
                 [[PHImageManager defaultManager] requestImageForAsset:asset
-                                                           targetSize:CGSizeMake([UIScreen mainScreen].scale * IPHONE_WIDTH, [UIScreen mainScreen].scale * IPHONE_HEIGHT)
+                                                           targetSize:size
                                                           contentMode:PHImageContentModeAspectFill
                                                               options:options
                                                         resultHandler:^(UIImage *result, NSDictionary *info) {

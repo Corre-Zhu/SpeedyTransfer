@@ -38,8 +38,8 @@ NSString * const dbName = @"FileTransfer.sqlite";
 	
     [[NSUserDefaults standardUserDefaults] registerDefaults:@{AutoImportPhoto: @YES, AutoImportVideo: @YES, HeadImage: @"龙", HeadImage_: @"head5"}];
     
-    STHomeViewController *vc = [[STHomeViewController alloc] init];
-    ZZNavigationController *nav = [[ZZNavigationController alloc] initWithRootViewController:vc];
+    _homeVc = [[STHomeViewController alloc] init];
+    ZZNavigationController *nav = [[ZZNavigationController alloc] initWithRootViewController:_homeVc];
     UIWindow *window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     window.rootViewController = nav;
     self.window = window;

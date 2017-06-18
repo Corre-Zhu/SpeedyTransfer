@@ -67,6 +67,7 @@
 		CE9C91B21C39697D0075CB06 /* STPersonalSettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE9C91B11C39697D0075CB06 /* STPersonalSettingViewController.m */; };
 		CE9C91B51C3970D60075CB06 /* STPersonalSettingCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CE9C91B41C3970D60075CB06 /* STPersonalSettingCell.m */; };
 		CE9C91B81C397C210075CB06 /* UIImage+ZZ.m in Sources */ = {isa = PBXBuildFile; fileRef = CE9C91B71C397C210075CB06 /* UIImage+ZZ.m */; };
+		CE9CFA5B1EF6B8A400D096D8 /* STTurnOffHotspotPopupView.m in Sources */ = {isa = PBXBuildFile; fileRef = CE9CFA5A1EF6B8A400D096D8 /* STTurnOffHotspotPopupView.m */; };
 		CEA12C491C29ABCB00328CEF /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = CEA12C481C29ABCB00328CEF /* Reachability.m */; };
 		CEA4965C1E62DB4C00B97BD5 /* STMultiPeerTransferModel.m in Sources */ = {isa = PBXBuildFile; fileRef = CEA4965B1E62DB4C00B97BD5 /* STMultiPeerTransferModel.m */; };
 		CEA74C2C1C78656400E1B34C /* STDeviceButton.m in Sources */ = {isa = PBXBuildFile; fileRef = CEA74C2B1C78656400E1B34C /* STDeviceButton.m */; };
@@ -230,6 +231,8 @@
 		CE9C91B41C3970D60075CB06 /* STPersonalSettingCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STPersonalSettingCell.m; sourceTree = "<group>"; };
 		CE9C91B61C397C210075CB06 /* UIImage+ZZ.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+ZZ.h"; sourceTree = "<group>"; };
 		CE9C91B71C397C210075CB06 /* UIImage+ZZ.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+ZZ.m"; sourceTree = "<group>"; };
+		CE9CFA591EF6B8A400D096D8 /* STTurnOffHotspotPopupView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STTurnOffHotspotPopupView.h; sourceTree = "<group>"; };
+		CE9CFA5A1EF6B8A400D096D8 /* STTurnOffHotspotPopupView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STTurnOffHotspotPopupView.m; sourceTree = "<group>"; };
 		CEA12C471C29ABCB00328CEF /* Reachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Reachability.h; sourceTree = "<group>"; };
 		CEA12C481C29ABCB00328CEF /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Reachability.m; sourceTree = "<group>"; };
 		CEA4965A1E62DB4C00B97BD5 /* STMultiPeerTransferModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STMultiPeerTransferModel.h; sourceTree = "<group>"; };
@@ -453,6 +456,8 @@
 				CEBF5C521E61B7050072C06B /* STScanQRCodeViewController.m */,
 				CE1D32381E7E5CCA00079C6A /* STConnectWifiAlertView.h */,
 				CE1D32391E7E5CCA00079C6A /* STConnectWifiAlertView.m */,
+				CE9CFA591EF6B8A400D096D8 /* STTurnOffHotspotPopupView.h */,
+				CE9CFA5A1EF6B8A400D096D8 /* STTurnOffHotspotPopupView.m */,
 			);
 			path = FileReceive;
 			sourceTree = "<group>";
@@ -987,6 +992,7 @@
 				4558BFCC1C745903002F5718 /* OpenUDID.m in Sources */,
 				CED926F31E92624600FBC133 /* STFeedbackTimeCell.m in Sources */,
 				CE6536DF1C2ED74600C1E8A3 /* ZZPath.m in Sources */,
+				CE9CFA5B1EF6B8A400D096D8 /* STTurnOffHotspotPopupView.m in Sources */,
 				CE0322821E93BE890060C25C /* STFileInfo.m in Sources */,
 				CE0322751E9342050060C25C /* MJPhotoBrowser.m in Sources */,
 				CEBB14761C33DB5C00874142 /* STAboutViewController.m in Sources */,
@@ -1190,8 +1196,8 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.dc.geek;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "6ed05455-7994-4c1c-a2e2-000267291af5";
-				PROVISIONING_PROFILE_SPECIFIER = Dianchuan2Distri;
+				PROVISIONING_PROFILE = "058c3af2-6a8d-471b-abf1-c7add2868a97";
+				PROVISIONING_PROFILE_SPECIFIER = Dianchuan2AppStore;
 			};
 			name = Release;
 		};

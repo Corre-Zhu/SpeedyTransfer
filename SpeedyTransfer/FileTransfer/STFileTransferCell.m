@@ -79,14 +79,14 @@
         rateLabel.font = [UIFont systemFontOfSize:14.0f];
         [self.contentView addSubview:rateLabel];
         
-        succeedLabel = [[UILabel alloc] initWithFrame:CGRectMake(progressView.right + 16.0f, 0.0f, 53, 22)];
+        succeedLabel = [[UILabel alloc] initWithFrame:CGRectMake(progressView.right + 16.0f, 0.0f, 72, 36)];
         succeedLabel.centerY = progressView.centerY - 2.0f;
         succeedLabel.textColor = [UIColor whiteColor];
-        succeedLabel.font = [UIFont systemFontOfSize:12.0f];
+        succeedLabel.font = [UIFont systemFontOfSize:14.0f];
         succeedLabel.textAlignment = NSTextAlignmentCenter;
         succeedLabel.text = NSLocalizedString(@"已发送", nil);
         succeedLabel.backgroundColor = RGBFromHex(0x01cc99);
-        succeedLabel.layer.cornerRadius = 3.0;
+        succeedLabel.layer.cornerRadius = 4.0;
         succeedLabel.layer.masksToBounds = YES;
         [self.contentView addSubview:succeedLabel];
         succeedLabel.hidden = YES;
@@ -103,11 +103,11 @@
         openButton = [UIButton buttonWithType:UIButtonTypeCustom];
         [openButton setTitle:@"打开" forState:UIControlStateNormal];
         [openButton setTitleColor:RGBFromHex(0x01cc99) forState:UIControlStateNormal];
-        openButton.titleLabel.font = [UIFont systemFontOfSize:12];
-        openButton.layer.cornerRadius = 6.0;
+        openButton.titleLabel.font = [UIFont systemFontOfSize:14];
+        openButton.layer.cornerRadius = 4.0;
         openButton.layer.borderColor = RGBFromHex(0x01cc99).CGColor;
         openButton.layer.borderWidth = 2.0f;
-        openButton.frame = CGRectMake(progressView.right + 16.0f, 0.0f, 53, 22);
+        openButton.frame = CGRectMake(progressView.right + 16.0f, 0.0f, 72, 36);
         openButton.centerY = progressView.centerY - 2.0f;
         [self.contentView addSubview:openButton];
         openButton.hidden = YES;

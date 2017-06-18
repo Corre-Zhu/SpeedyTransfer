@@ -234,6 +234,7 @@
                 [self.fileSelectionTabController removeAllSelectedFiles];
                 
                 STFileTransferViewController *fileTransferVc = [[STFileTransferViewController alloc] init];
+                fileTransferVc.isBrowser = YES;
                 [self.navigationController pushViewController:fileTransferVc animated:YES];
             }
         }
