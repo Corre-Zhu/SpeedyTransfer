@@ -873,8 +873,8 @@
 				TargetAttributes = {
 					CED62A291C094FDD00270EDB = {
 						CreatedOnToolsVersion = 7.1.1;
-						DevelopmentTeam = 6443RH2762;
-						ProvisioningStyle = Manual;
+						DevelopmentTeam = 249435TSCD;
+						ProvisioningStyle = Automatic;
 					};
 				};
 			};
@@ -1155,7 +1155,7 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				DEVELOPMENT_TEAM = 6443RH2762;
+				DEVELOPMENT_TEAM = 249435TSCD;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				GCC_PREFIX_HEADER = "SpeedyTransfer/Supporting Files/SpeedyTransfer-Prefix.pch";
@@ -1167,10 +1167,10 @@
 					"$(PROJECT_DIR)/SpeedyTransfer/ThirdParty/SNS/libWeiboSDK",
 					"$(PROJECT_DIR)/SpeedyTransfer/ThirdParty/SNS/WeChat",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.dc.geek;
+				PRODUCT_BUNDLE_IDENTIFIER = com.zz.Demo22;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "7027049a-2ca3-4582-85bf-1bf264dc6a15";
-				PROVISIONING_PROFILE_SPECIFIER = Dianchuan2Dev;
+				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 			};
 			name = Debug;
 		};
@@ -1181,8 +1181,8 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
-				DEVELOPMENT_TEAM = 6443RH2762;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEVELOPMENT_TEAM = 249435TSCD;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				GCC_PREFIX_HEADER = "SpeedyTransfer/Supporting Files/SpeedyTransfer-Prefix.pch";
@@ -1194,10 +1194,10 @@
 					"$(PROJECT_DIR)/SpeedyTransfer/ThirdParty/SNS/libWeiboSDK",
 					"$(PROJECT_DIR)/SpeedyTransfer/ThirdParty/SNS/WeChat",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.dc.geek;
+				PRODUCT_BUNDLE_IDENTIFIER = com.zz.Demo22;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "058c3af2-6a8d-471b-abf1-c7add2868a97";
-				PROVISIONING_PROFILE_SPECIFIER = Dianchuan2AppStore;
+				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 			};
 			name = Release;
 		};

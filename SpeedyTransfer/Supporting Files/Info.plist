@@ -54,13 +54,13 @@
 		<true/>
 	</dict>
 	<key>NSAppleMusicUsageDescription</key>
-	<string>需要播放视频</string>
+	<string>点传需要访问您的媒体库，如果允许，点传将可以展示并传输你的媒体文件给朋友。点传不会将您的数据上传到服务器。如果不允许，点传将无法显示并传输此项内容。</string>
 	<key>NSCameraUsageDescription</key>
-	<string>需要访问相机</string>
+	<string>点传需要访问您的照相机，如果允许，点传将可以接收来自朋友发送的文件。点传不会将您的数据上传到服务器。如果不允许，点传将接收文件。</string>
 	<key>NSContactsUsageDescription</key>
-	<string>需要访问通讯录</string>
+	<string>点传需要访问您的通讯录，如果允许，点传将可以展示并传输你的通讯录给朋友。点传不会将您的数据上传到服务器。如果不允许，点传将无法显示并传输此项内容。</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>需要访问图片</string>
+	<string>点传需要访问您的图库，如果允许，点传将可以展示并传输你的照片给朋友。点传不会将您的数据上传到服务器。如果不允许，点传将无法显示并传输此项内容。</string>
 	<key>UIRequiredDeviceCapabilities</key>
 	<array>
 		<string>armv7</string>

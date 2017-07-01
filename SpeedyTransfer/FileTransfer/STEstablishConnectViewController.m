@@ -221,7 +221,8 @@
 - (void)applicationDidBecomeActiveNotification:(NSNotification *)noti {
     if (hotSpotButtonClicked) {
         NSString *wifiname = [UIDevice getWifiName];
-        if (wifiname.length > 0 || [UIDevice isPersonalHotspotEnabled]) {            dispatch_async(dispatch_get_main_queue(), ^{
+        if (wifiname.length > 0 || [UIDevice isPersonalHotspotEnabled]) {
+			dispatch_async(dispatch_get_main_queue(), ^{
                 [self goToTransferInstructionViewController];
             });
         }

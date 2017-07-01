@@ -54,10 +54,11 @@
     segementControl = [[STFileSegementControl alloc] init];
     segementControl.delegate = self;
     [self.view addSubview:segementControl];
-    
-    scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, segementControl.bottom, IPHONE_WIDTH, IPHONE_HEIGHT - segementControl.height)];
+	
+	CGFloat height = [UIApplication sharedApplication].statusBarFrame.size.height == 40 ? 20 : 0;
+    scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, segementControl.bottom, IPHONE_WIDTH, IPHONE_HEIGHT - segementControl.height - height)];
     scrollView.pagingEnabled = YES;
-    scrollView.contentSize = CGSizeMake(IPHONE_WIDTH * 4, IPHONE_HEIGHT - segementControl.height - 5);
+    scrollView.contentSize = CGSizeMake(IPHONE_WIDTH * 4, IPHONE_HEIGHT - segementControl.height - 5 - height);
     scrollView.directionalLockEnabled = YES;
     scrollView.delegate = self;
     scrollView.bounces = YES;
@@ -72,8 +73,8 @@
     titles = @[@"选择图片", @"选择视频", @"选择联系人", @"选择文件"];
 
     [segementControl setSelectedIndex:0];
-    
-    toolView = [[UIImageView alloc] initWithFrame:CGRectMake(0, IPHONE_HEIGHT - 49, IPHONE_WIDTH, 49.0f)];
+	
+    toolView = [[UIImageView alloc] initWithFrame:CGRectMake(0, IPHONE_HEIGHT - 49 - height, IPHONE_WIDTH, 49.0f)];
     toolView.userInteractionEnabled = YES;
     toolView.backgroundColor = [UIColor whiteColor];
     [self.view addSubview:toolView];
@@ -103,10 +104,14 @@
     [toolView addSubview:lineView];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reachabilityStatusChange:) name:kHTReachabilityChangedNotification object:nil];
-    
+	[[NSNotificationCenter defaultCenter] addObserver:self
+											 selector:@selector(statusBarFrameWillChange:)
+												 name:UIApplicationWillChangeStatusBarFrameNotification
+											   object:nil];
+	
     // 启动webserver
     //[[STWebServerModel shareInstant] startWebServer];
-    
+	
     // 开始发送udp广播
     //[[STFileReceiveModel shareInstant] startBroadcast];
     
@@ -223,6 +228,12 @@
         default:
             return;
     }
+}
+
+- (void)statusBarFrameWillChange:(NSNotification *)notification {
+	CGFloat height = [UIApplication sharedApplication].statusBarFrame.size.height == 40 ? 20 : 0;
+	scrollView.height = IPHONE_HEIGHT - segementControl.height - height;
+	toolView.top = IPHONE_HEIGHT - 49 - height;
 }
 
 - (void)transferButtonClick {
