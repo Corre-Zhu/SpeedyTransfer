@@ -160,7 +160,7 @@
     imageV2.top = label7.bottom + 13;
     
     UILabel *label8 = [[UILabel alloc] initWithFrame:CGRectMake(imageV1.right + 20, imageV2.top, hotspotView.width - 97, 29)];
-    label8.text = NSLocalizedString(@"2.打开“个人热点”，并将热点密码告知接收方", nil);
+    label8.text = NSLocalizedString(@"2.打开“个人热点”，并请接收方连接热点", nil);
     label8.textColor = RGBFromHex(0x333333);
     label8.font = [UIFont systemFontOfSize:12.0f];
     label8.textAlignment = NSTextAlignmentLeft;
@@ -177,7 +177,7 @@
     imageV3.top = MAX(label8.bottom, imageV2.bottom) + 24;
     
     UILabel *label9 = [[UILabel alloc] initWithFrame:CGRectMake(imageV3.right + 20, imageV3.top, hotspotView.width - 97, 29)];
-    label9.text = NSLocalizedString(@"3.本机返回 点传，请接收方按提示操作", nil);
+    label9.text = NSLocalizedString(@"3.连接之后，本机返回 点传，接收方按提示操作", nil);
     label9.textColor = RGBFromHex(0x333333);
     label9.font = [UIFont systemFontOfSize:12.0f];
     label9.textAlignment = NSTextAlignmentLeft;

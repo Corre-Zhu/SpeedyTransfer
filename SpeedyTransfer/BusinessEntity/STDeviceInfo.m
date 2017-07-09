@@ -10,7 +10,7 @@
 #import "ZZFileUtility.h"
 #import "STContactInfo.h"
 
-#define KConcurrentSendFilesCount 2 // 同时最多post两个文件
+#define KConcurrentSendFilesCount(isBrowser) (isBrowser ? MAXFLOAT : 2) // 同时最多post两个文件
 
 @implementation STDeviceInfo
 
@@ -131,7 +131,7 @@ HT_DEF_SINGLETON(STDeviceInfo, shareInstant);
 #pragma mark - Send file
 
 - (NSArray *)popSendingItems {
-    if (self.sendingTransferInfos.count >= KConcurrentSendFilesCount) {
+    if (self.sendingTransferInfos.count >= KConcurrentSendFilesCount(self.isBrowser)) {
         return nil;
     }
     
@@ -140,7 +140,7 @@ HT_DEF_SINGLETON(STDeviceInfo, shareInstant);
             return nil;
         }
         
-        NSMutableArray *resultArray = [NSMutableArray arrayWithCapacity:KConcurrentSendFilesCount];
+        NSMutableArray *resultArray = [NSMutableArray arrayWithCapacity:10];
         
         do {
             id object = _prepareToSendFiles.firstObject;
@@ -172,7 +172,7 @@ HT_DEF_SINGLETON(STDeviceInfo, shareInstant);
             }
             
             
-        } while ((self.sendingTransferInfos.count + resultArray.count) < KConcurrentSendFilesCount && _prepareToSendFiles.count > 0);
+        } while ((self.sendingTransferInfos.count + resultArray.count) < KConcurrentSendFilesCount(self.isBrowser) && _prepareToSendFiles.count > 0);
         
         return resultArray;
     }
@@ -190,7 +190,7 @@ HT_DEF_SINGLETON(STDeviceInfo, shareInstant);
 }
 
 - (void)startSend {
-    if (self.sendingTransferInfos.count >= KConcurrentSendFilesCount) {
+    if (self.sendingTransferInfos.count >= KConcurrentSendFilesCount(self.isBrowser)) {
         return;
     }
     

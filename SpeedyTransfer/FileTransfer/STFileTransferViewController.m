@@ -22,6 +22,7 @@
 #import "MJPhotoBrowser.h"
 #import "MJPhoto.h"
 #import "STTurnOffHotspotPopupView.h"
+#import "ZZFunction.h"
 
 @import AVKit;
 
@@ -72,7 +73,7 @@ static NSString *cellIdentifier = @"CellIdentifier";
         
         [self.navigationController popToRootViewControllerAnimated:YES];
         
-        if (self.isBrowser) {
+        if (self.isBrowser && [UIDevice isPersonalHotspotEnabled]) {
             dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.3 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
                 AppDelegate *delegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
                 STTurnOffHotspotPopupView *wifiNotConnectedPopupView = [[STTurnOffHotspotPopupView alloc] init];
