@@ -182,12 +182,23 @@
     UIPanGestureRecognizer *panGest = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(panGest:)];
     [leftView addGestureRecognizer:panGest];
     
+    UISwipeGestureRecognizer *swipGest = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(swipGest:)];
+    swipGest.direction = UISwipeGestureRecognizerDirectionRight;
+    [scrollView addGestureRecognizer:swipGest];
+    
     scrollView.contentSize = CGSizeMake(IPHONE_WIDTH, backView.bottom + IPHONE5 ? 225 : 240);
     scrollView.bounces = NO;
 
     //[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reachabilityStatusChange:) name:kHTReachabilityChangedNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidBecomeActiveNotification:) name:UIApplicationDidBecomeActiveNotification object:nil];
 
+}
+
+- (void)swipGest:(UISwipeGestureRecognizer *)ges {
+    CGPoint point = [ges locationInView:scrollView];
+    if (point.x <= 60) {
+        [self personalSettingClick];
+    }
 }
 
 - (void)panGest:(UIPanGestureRecognizer *)panGest {

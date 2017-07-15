@@ -194,7 +194,7 @@
     hotspotButton.frame = CGRectMake((hotspotView.width - 160) / 2.0, MAX( imageV3.bottom, label9.bottom) + 15, 160, 38);
     hotspotButton.backgroundColor = RGBFromHex(0x01cc99);
     hotspotButton.layer.cornerRadius = 2;
-    [hotspotButton setTitle:@"去开启个人热点" forState:UIControlStateNormal];
+    [hotspotButton setTitle:@"去设置" forState:UIControlStateNormal];
     
     hotspotView.height = hotspotButton.bottom + 10;
     hotspotView.hidden = YES;
