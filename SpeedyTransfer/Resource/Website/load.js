@@ -52,7 +52,7 @@ var uploadPath='upload';//'/ws/upload';
 						};
 						evt.charCode=(evt.type=="keypress")?evt.keyCode:0;
 						evt.eventPhase=2;
-						evt.timeStamp=(new Date()).getTime();
+						evt.timeStamp=(new Date()).getTime();//提供了更为精确的时间定位
 						
 						evt.layerX=evt.offsetX;
 						evt.layerY=evt.offsetY;
@@ -139,8 +139,7 @@ var uploadPath='upload';//'/ws/upload';
 				uploadComplete:function (evt,name) {
 					base.getEleFromCls(base.getEle(name),'state')[0].innerHTML='已发送';
 					this.hasSend.push(name);
-					document.getElementById('top').style.background="#01cc99";
-					
+					document.getElementById('okWidth').style.width="100%";
 				},
 				uploadFailed:function (evt,name) {
 					base.getEleFromCls(base.getEle(name),'state')[0].innerHTML="已失败";
@@ -152,17 +151,14 @@ var uploadPath='upload';//'/ws/upload';
 									'<span class="sname">'+name+'</span>'+
 									'<span class="ssize">'+size+'</span>'+
 									'<span class="prop">0%</span>'+
-									'<span class="back" id="mycolor"><span class="top"></span></span>'+
-									
-									//'<span class="speed">0%</span>'+
+									'<span class="back" id="mycolor"><span class="top" id="okWidth"></span></span>'+
 									
 								'</dd>'+
 								'<dd class="state_text">'+
-									
 									'<span class="state">等待</span>'+
 								'</dd>'+
-								'<p style="clear:both;"></p>'+
-							'</dl></div>'+
+							'</dl>'+
+							'<p style="clear:both;"></p>'+
 						'</div>';
 					base.getEle('sendCan').innerHTML=str+base.getEle('sendCan').innerHTML;
 					this.preview(name,file,type);

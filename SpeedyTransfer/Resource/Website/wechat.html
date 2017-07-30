@@ -1,68 +1,52 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0" />
-<title>[[WEB_SHARE_0]]-[[WEB_SHARE_1]]</title>
-<style type="text/css">
-	*{
-		padding:0px;
-		margin:0px;
-		border:0px;
-	}
-	body{
-		font-size:1em;
-	}
-	img{
-		width:100%;
-	}
-	.container{
-		position:relative;
-	}
-	.cl{
-		position:absolute;
-		top:0px;
-		color:#fff;
-		left:36.8%;
-		font-size:1em;
-	}
-	.cl1{
-		top:13.43%;
-		left:44.44%;
-		width:27.64%;
-		color:#323232;
-		font-size:0.9em;
-		word-wrap:break-word; 
-	}
-	.cl2{
-		top:44.5%;
-	}
-	.cl3{
-		top:51.82%;
-	}
-	.cl4{
-		top:59%;
-	}
-	.cl5{
-		top:67%;
-	}
-	.cl6{
-		top:74.08%;
-	}
-	.cl7{
-		top:81.58%;
-	}
+<meta content="yes" name="apple-mobile-web-app-capable">
+<meta content="black" name="apple-mobile-web-app-status-bar-style">
+<meta name="viewport" content="initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+<title> </title>
+
+
+<head>
+<body>
+<style>
+body{font:0.8rem/1.5 '微软雅黑',YaHei,tahoma,arial,"Hiragino Sans GB",'宋体'; background:#f6f6f6;}
+body, div, dl, dt, dd, ul, ol, input, button, ul, li, p, form, h1, h2, h3, h4, h5, h6, table, tr, td, span,img{ margin:0; padding:0; outline:none;}
+ul, ol, li { list-style-type: none;}
+img, iframe { border: 0 none;}
+table {border-collapse: collapse;}
+a, iframe, input, select { outline: 0 none;}
+a {color: #666;cursor: pointer; text-decoration: none;}
+
+.shuoming{ /*background-image:url(images/wxbg.jpg); background-repeat:repeat; background-position:center; background-repeat:repeat-x; background-size:100%;*/ position:relative; overflow:hidden; margin-bottom:60px;}
+.shuoming p{ width:120px; overflow:hidden; position:absolute; top:75px; left:43%; font-size:0.9rem;}
+.shuoming p font{ color:#fc0000;}
+.shuoming p span{ color:#F00;}
+.shuoming img{ display:block; width:100%;}
+body{ background:#f6f6f6;}
+.menu-ico{ padding:10px; margin:10px; border:#ccc 1px solid; border-radius:10px; box-shadow:#ccc 1px 1px 3px; overflow:hidden; clear:both; background:#FFF;}
+.menu-ico li{ float:left; width:25%; text-align:center; margin-bottom:10px;}
+.menu-ico li img{ width:60%;}
+.menu-ico li span{ display:block; clear:both; width:100%; text-align:center;  overflow:hidden; color:#333; font-size:12px;}
+@media only screen and (max-width: 400px){
+	.shuoming p{ font-size:0.8rem;}
+}
 </style>
-	<body>
-		<div class="container">
-			<img src="/ws/wx.jpg"/>
-			<p class="cl cl1">[[WEB_SHARE_20]]</p>
-			<p class="cl cl2">[[WEB_SHARE_21]]</p>
-			<p class="cl cl3">[[WEB_SHARE_22]]</p>
-			<p class="cl cl4">[[WEB_SHARE_23]]</p>
-			<p class="cl cl5">[[WEB_SHARE_24]]</p>
-			<p class="cl cl6">[[WEB_SHARE_25]]</p>
-			<p class="cl cl7">[[WEB_SHARE_26]]</p>
-		</div>
-	</body>
+<div class="shuoming">
+     <p>${ws_wechat_menu_9} <span>${ws_wechat_menu_7}</span> ${ws_wechat_menu_10} <span>${ws_wechat_menu_11}</span></p>
+     <img src="/ws/images/wxbg.jpg">
+</div>
+<ul class="menu-ico">
+    <li><img src="/ws/images/wx_send.png"><span>${ws_wechat_menu_1}</span></li>
+    <li><img src="/ws/images/wx_cof.png"><span>${ws_wechat_menu_2}</span></li>
+    <li><img src="/ws/images/wx_star.png"><span>${ws_wechat_menu_3}</span></li>
+    <li><img src="/ws/images/wx_sou.png"><span>${ws_wechat_menu_4}</span></li>
+    <li><img src="/ws/images/wx_link.png"><span>${ws_wechat_menu_5}</span></li>
+    <li><img src="/ws/images/wx_top.png"><span>${ws_wechat_menu_6}</span></li>
+    <li><img src="/ws/images/wx_browser.png"><span style="color:#1cc8dd;">${ws_wechat_menu_7}</span></li>
+    <li><img src="/ws/images/wx_font.png"><span>${ws_wechat_menu_8}</span></li>
+   
+</ul>
+</body>
 </html>

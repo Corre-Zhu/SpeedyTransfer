@@ -56,17 +56,25 @@
 		top:5px;
 		background:url(images/ic_arrow_left_white_24dp.png) no-repeat left 5px;
 		padding-left:10px;
-		}	
+		}
+		.sbtn{ display:block; float:right; background:#13ABEF; height:30px; line-height:30px; width:80px; margin:5px 0 0 10px; text-align:center; border-radius:5px; cursor:pointer; color:#FFF; border:none;}
+        .sbtn:hover{ opacity:0.8;}
         </style>
     </head>
     <body>
 		<div>
-			<video width="100%" height="100%" autoplay>
-				<source src="/file?fp=${filePath}">
+			<video controls width="100%" height="100%" autoplay>
+				<source src="/file?fp=${filePath}" type="video/mp4">
 			Your browser does not support the video tag.
 			</video>
 		</div>
         <div class="swipe_h3">
-        <a href="recive.html">${back}</a> </div>
+        <a href="recive.html">${back}</a> <button class="sbtn" onClick="myrefresh()">${refresh}</button></div>
+       
+        <script type="text/javascript">
+            function myrefresh(){
+            window.location.reload();
+            }
+</script>
     </body>
 </html>

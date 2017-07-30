@@ -1,0 +1,40 @@
+<!doctype html>
+<html class="no-js" lang="zh">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<title>${title}-alert</title>
+<meta name="description" content="点传，DCShare, 共享手机中的多媒体和应用">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<style type="text/css">
+*{  margin:0; padding:0px;}
+.popup-wind{padding:20px; overflow:hidden; background:#FFF;}
+.popup-wind .close{ display:block; position:absolute; top:10px; right:10px; width:20px; height:20px; text-align: center; line-height: 20px; color: #fff; border-radius:50%; background:#EAD337; cursor:pointer;transform:rotate(45deg);-ms-transform:rotate(45deg); 	-moz-transform:rotate(45deg); 	-webkit-transform:rotate(45deg); -o-transform:rotate(45deg); font-size: 16px; }
+.popup-wind .close:hover{ background:#f00; }
+.popup-wind dl{ background:#01CC99; color:#FFF; padding:10px; overflow:hidden; text-align:left;}
+.popup-wind dl dt{ height:40px; line-height:40px; font-weight:bold;}
+.popup-wind dl dd{height:30px; line-height:30px; }
+.popup-wind p{ height:40px; line-height:40px; padding-bottom:30px;clear:both; color:#01CC99;}
+.popup-wind div{ clear:both; overflow:hidden;}
+.popup-wind div a.fl{ display:block; float:left; width:48%; height:38px; line-height:38px; border:#01CC99 1px solid; text-align:center; text-decoration:none; color:#01CC99; font-size:14px;}
+.popup-wind div a.fr{ display:block; float:right; width:48%; height:40px; line-height:40px; background:#01CC99; color:#FFF; text-align:center; text-decoration:none; font-size:14px;}
+
+</style>
+</head>
+<body>
+<div id="popupwind" class="popup-wind">
+     <dl>
+         <dt>${dctips}</dt>
+         <dd>${userdc}</dd>
+         <dd>${canreceiver}</dd>
+     </dl>
+     <p>${dcaccelerate}%</p>
+     <div>
+           <a class="fl" href="index.html">${receiver}</a>
+           <a class="fr" id="fr-btn" href="dianchuan://">${dianchuan}</a>
+     </div>
+</div> 
+
+</body>
+</html>

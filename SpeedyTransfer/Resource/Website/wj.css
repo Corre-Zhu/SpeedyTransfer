@@ -52,16 +52,22 @@ text-align:center;
 .recent a{color:#ffffff;}
 
 /*container*/
-.friend_phone{padding-top:16px;
-margin-left:4.445%;
-margin-right:4.445%;
+.friend_phone{
+	padding-top:16px;
+	margin-left:4.445%;
+	margin-right:4.445%;
 }
-.container_wj{
-margin-left:4.445%;
-margin-right:4.445%;}/*左右间距*/
-.friend_phone img{padding-right:4.8%;
-float:left;}
+
+.friend_phone img{
+	padding-right:4.8%;
+	float:left;
+	width: 40px;
+	height: 68px;
+	max-height:40px; 
+ 	max-width:68px; 
+}
 .friend_phone input{float:left;}
+
 .phone_text{font-size:1.4em;
 height:48px;
 line-height:48px;}
@@ -69,7 +75,9 @@ line-height:48px;}
 width:100%;
 clear:both;
 margin-top:16px;}
-
+.container_wj{
+margin-left:4.445%;
+margin-right:4.445%;}/*左右间距*/
 /*apk*/
 .apk_container{}
 .apk_text{height:58px;
@@ -82,7 +90,7 @@ padding-right:4.8%;
 margin:17px 0;}
 .apk_68dp{clear:both; 
 height:70px;}
-.apk_68dp .icon img{max-width:80%;}
+.apk_68dp .icon img{max-width:50%;}
 .container_wj a{ color:#333333;
   height: 70px;}
 
@@ -91,7 +99,7 @@ height:70px;}
   padding-right: 2%;
 margin: 10px 0 15px 0;
   width: 18%;
-  overflow: hidden;
+ overflow: hidden;
   max-height: 52px;}
 .apk_text1{
 width:45%;
