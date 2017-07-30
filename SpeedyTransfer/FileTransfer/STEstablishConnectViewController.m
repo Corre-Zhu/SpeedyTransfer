@@ -263,7 +263,7 @@
     }
     
     if (address.length > 0) {
-        address = [NSString stringWithFormat:@"http://%@:%@", address, @(KSERVERPORT2)];
+        address = [NSString stringWithFormat:@"%@:%@", address, @(KSERVERPORT2)];
     } else {
         address = @"null";
     }
@@ -277,6 +277,9 @@
     NSLog(@"code: %@", codeStr);
     
     qrcodeView.image = [ZZFunction qrCodeImageWithStr:codeStr withSize:180 topImage:nil];
+    
+    // 启用无界传输
+    [self setupVariablesAndStartWebServer:[self.fileSelectionTabController allSelectedFiles]];
 }
 
 - (void)leftBarButtonItemClick {
