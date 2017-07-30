@@ -1196,8 +1196,8 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.dc.geek;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "ade0ef03-3a38-473b-bcb1-4345fac1ee4e";
-				PROVISIONING_PROFILE_SPECIFIER = SantiAppStore;
+				PROVISIONING_PROFILE = "423aa94a-9ba2-4417-b700-4499575aa2c2";
+				PROVISIONING_PROFILE_SPECIFIER = SantiDistr;
 			};
 			name = Release;
 		};
