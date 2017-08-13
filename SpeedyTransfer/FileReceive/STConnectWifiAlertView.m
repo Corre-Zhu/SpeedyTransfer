@@ -46,7 +46,7 @@
         [whiteView addSubview:label9];
         
         UILabel *label10 = [[UILabel alloc] initWithFrame:CGRectMake(16, label9.bottom + 12, whiteView.width - 32, 17)];
-        label10.text = @"连接以下样式的WIFI";
+        label10.text = @"1.连接以下样式的WIFI";
         label10.textColor = RGBFromHex(0x333333);
         label10.font = [UIFont systemFontOfSize:14.0f];
         [whiteView addSubview:label10];
@@ -64,6 +64,16 @@
         label11.textAlignment = NSTextAlignmentLeft;
         [borderView addSubview:label11];
         
+        UILabel *label111 = [[UILabel alloc] initWithFrame:CGRectMake(16, borderView.bottom + 12, whiteView.width - 32, 17)];
+        label111.text = @"2.连接之后，返回 点传，稍等片刻即可传输";
+        label111.textColor = RGBFromHex(0x333333);
+        label111.font = [UIFont systemFontOfSize:14.0f];
+        label111.numberOfLines = 0;
+        [whiteView addSubview:label111];
+        [label111 sizeToFit];
+        label111.top = borderView.bottom + 12;
+        label111.left = 16;
+        
 //        UILabel *label12 = [[UILabel alloc] initWithFrame:CGRectMake(12, label11.bottom + 5, borderView.width - 58, 15)];
 //        label12.text = @"🚀 点传免费流量传输文件，点击这里一键连接";
 //        label12.textColor = RGBFromHex(0x333333);
@@ -79,7 +89,7 @@
         imag2.frame = CGRectMake(borderView.width - 34, 11, 22, 22);
         [borderView addSubview:imag2];
         
-        UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, borderView.bottom + 16, whiteView.width, 0.5f)];
+        UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, label111.bottom + 16, whiteView.width, 0.5f)];
         lineView.backgroundColor = RGBFromHex(0xbdbdbd);
         [whiteView addSubview:lineView];
 
