@@ -65,7 +65,7 @@
         sizeLabel.font = [UIFont systemFontOfSize:12.0f];
         [self.contentView addSubview:sizeLabel];
         
-        progressView = [[UIProgressView alloc] initWithFrame:CGRectMake(coverImageView.right + 10.0f, 75.0f, IPHONE5 ? 120 : 140.0f, 0.0f)];
+        progressView = [[UIProgressView alloc] initWithFrame:CGRectMake(coverImageView.right + 10.0f, 75.0f, (IPHONE4 ? 110 : (IPHONE5 ? 120 : 140.0f)), 0.0f)];
         progressView.trackTintColor = RGBFromHex(0xe0e1de);
         progressView.progressTintColor = RGBFromHex(0x4adb61);
         [self.contentView addSubview:progressView];
@@ -91,7 +91,7 @@
         [self.contentView addSubview:succeedLabel];
         succeedLabel.hidden = YES;
         
-        failedLabel = [[UILabel alloc] initWithFrame:CGRectMake(progressView.right + 16.0f, 0.0f, 80.0f, 17.0f)];
+        failedLabel = [[UILabel alloc] initWithFrame:CGRectMake(progressView.right + 16.0f, 0.0f, IPHONE4 ? 72 : 80.0f, 17.0f)];
         failedLabel.centerY = progressView.centerY - 2.0f;
         failedLabel.textColor = RGBFromHex(0xff6600);
         failedLabel.font = [UIFont systemFontOfSize:14.0f];

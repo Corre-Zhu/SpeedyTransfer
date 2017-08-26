@@ -54,8 +54,18 @@
         NSArray *images = @[@"ic_mywenjian", @"ic_yaoqing", @"ic_fankui", @"ic_banben"];
         NSArray *titles = @[@"我的文件", @"邀请安装", @"意见反馈", @"版本"];
         
+        
+        CGFloat offset = IPHONE5 ? -20 : 80.0f;
+        CGFloat height = 44;
+        CGFloat inter = (IPHONE5 ? 50 : 60.0f);
+        if (IPHONE4) {
+            offset = -60;
+            height = 40;
+            inter = 40;
+        }
+        
         for (int i = 0; i < 4; i++) {
-            UIButton *sendButton = [[UIButton alloc] initWithFrame:CGRectMake(0.0, backView.bottom + (IPHONE5 ? -20 : 80.0f) + i * (IPHONE5 ? 50 : 60.0f), IPHONE_WIDTH, 44.0f)];
+            UIButton *sendButton = [[UIButton alloc] initWithFrame:CGRectMake(0.0, backView.bottom + offset + i * inter, IPHONE_WIDTH, height)];
             sendButton.backgroundColor = [UIColor clearColor];
             [sendButton addTarget:self action:@selector(actionBtnClick:) forControlEvents:UIControlEventTouchUpInside];
             sendButton.tag = i;

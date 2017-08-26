@@ -34,6 +34,7 @@
     UIImageView *wifiPromptView;
     STLeftPanelView *leftView;
     UIView *maskView;
+    BOOL flashIndicator;
 }
 @end
 
@@ -66,6 +67,8 @@
 }
 
 - (void)viewDidLoad {
+    NSLog(@"%@,%@", @(IPHONE_WIDTH), @(IPHONE_HEIGHT));
+    
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
     
@@ -186,7 +189,7 @@
     swipGest.direction = UISwipeGestureRecognizerDirectionRight;
     [scrollView addGestureRecognizer:swipGest];
     
-    scrollView.contentSize = CGSizeMake(IPHONE_WIDTH, backView.bottom + IPHONE5 ? 225 : 240);
+    scrollView.contentSize = CGSizeMake(IPHONE_WIDTH, backView.bottom + (IPHONE5 ? 225 : 240));
     scrollView.bounces = NO;
 
     //[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reachabilityStatusChange:) name:kHTReachabilityChangedNotification object:nil];
@@ -266,6 +269,11 @@
     
     [[STFileTransferModel shareInstant] cancelAllTransferFile];
     [[STMultiPeerTransferModel shareInstant] cancelAllTransferFile];
+    
+    if (!flashIndicator) {
+        [scrollView flashScrollIndicators];
+        flashIndicator = YES;
+    }
 }
 
 - (void)didReceiveMemoryWarning {
