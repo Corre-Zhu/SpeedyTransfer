@@ -199,7 +199,7 @@
     qrcodeImageView.image = image;
     ipLabel.text = address;
     
-    [self setupVariablesAndStartWebServer:[self.fileSelectionTabController allSelectedFiles]];
+    //[self setupVariablesAndStartWebServer:[self.fileSelectionTabController allSelectedFiles]];
 }
 
 - (void)setupVariablesAndStartWebServer:(NSArray *)files {
