@@ -55,6 +55,8 @@
 		CE69FD161CE81A4F001A725F /* UIAlertController+HT.m in Sources */ = {isa = PBXBuildFile; fileRef = CE69FD151CE81A4F001A725F /* UIAlertController+HT.m */; };
 		CE69FD191CE81C96001A725F /* HTEmailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE69FD181CE81C96001A725F /* HTEmailViewController.m */; };
 		CE86491D1C2592BE0072518B /* AddressBook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CE86491C1C2592BE0072518B /* AddressBook.framework */; };
+		CE89327D1F768D3F00700B7E /* DLSViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE89327B1F768D3F00700B7E /* DLSViewController.m */; };
+		CE89327E1F768D3F00700B7E /* DLSViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CE89327C1F768D3F00700B7E /* DLSViewController.xib */; };
 		CE8975631C26AE5B002E11F8 /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = CE8975621C26AE5B002E11F8 /* MBProgressHUD.m */; };
 		CE8975671C284D89002E11F8 /* AddressBookUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CE8975661C284D89002E11F8 /* AddressBookUI.framework */; };
 		CE9C919D1C38FBE10075CB06 /* STInviteFriendViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE9C919C1C38FBE10075CB06 /* STInviteFriendViewController.m */; };
@@ -208,6 +210,9 @@
 		CE69FD171CE81C96001A725F /* HTEmailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HTEmailViewController.h; sourceTree = "<group>"; };
 		CE69FD181CE81C96001A725F /* HTEmailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HTEmailViewController.m; sourceTree = "<group>"; };
 		CE86491C1C2592BE0072518B /* AddressBook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBook.framework; path = System/Library/Frameworks/AddressBook.framework; sourceTree = SDKROOT; };
+		CE89327A1F768D3F00700B7E /* DLSViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DLSViewController.h; sourceTree = "<group>"; };
+		CE89327B1F768D3F00700B7E /* DLSViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DLSViewController.m; sourceTree = "<group>"; };
+		CE89327C1F768D3F00700B7E /* DLSViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DLSViewController.xib; sourceTree = "<group>"; };
 		CE8975611C26AE5B002E11F8 /* MBProgressHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBProgressHUD.h; sourceTree = "<group>"; };
 		CE8975621C26AE5B002E11F8 /* MBProgressHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBProgressHUD.m; sourceTree = "<group>"; };
 		CE8975661C284D89002E11F8 /* AddressBookUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBookUI.framework; path = System/Library/Frameworks/AddressBookUI.framework; sourceTree = SDKROOT; };
@@ -753,6 +758,9 @@
 				CED62A341C094FDD00270EDB /* STHomeViewController.m */,
 				CEB7C7B91E50736000E924D4 /* STLeftPanelView.h */,
 				CEB7C7BA1E50736000E924D4 /* STLeftPanelView.m */,
+				CE89327A1F768D3F00700B7E /* DLSViewController.h */,
+				CE89327B1F768D3F00700B7E /* DLSViewController.m */,
+				CE89327C1F768D3F00700B7E /* DLSViewController.xib */,
 				CE6536BB1C2ECD3400C1E8A3 /* FileTransfer */,
 				CE6536A61C2E8AB400C1E8A3 /* FileReceive */,
 				CED0D1021C1D3C8B00F5C0E3 /* FileSelection */,
@@ -901,6 +909,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CE89327E1F768D3F00700B7E /* DLSViewController.xib in Resources */,
 				CE2AD7AF1C4AA15D00C67D1D /* IMG_7551.JPG in Resources */,
 				CED926E41E8D577B00FBC133 /* STNoFileAlertView.xib in Resources */,
 				CED926F41E92624600FBC133 /* STFeedbackTimeCell.xib in Resources */,
@@ -1038,6 +1047,7 @@
 				CE0322781E9342050060C25C /* MJPhotoToolbar.m in Sources */,
 				CE9C91A31C390DAB0075CB06 /* STFeedBackViewController.m in Sources */,
 				CEA74C2C1C78656400E1B34C /* STDeviceButton.m in Sources */,
+				CE89327D1F768D3F00700B7E /* DLSViewController.m in Sources */,
 				CED0D12D1C1D77DF00F5C0E3 /* HZAssetCollectionViewCell.m in Sources */,
 				CE0322791E9342050060C25C /* MJPhotoView.m in Sources */,
 				CEB7C7B81E502EC600E924D4 /* STWalkThroughView.m in Sources */,
@@ -1196,8 +1206,8 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.dc.geek;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "ade0ef03-3a38-473b-bcb1-4345fac1ee4e";
-				PROVISIONING_PROFILE_SPECIFIER = SantiAppStore;
+				PROVISIONING_PROFILE = "423aa94a-9ba2-4417-b700-4499575aa2c2";
+				PROVISIONING_PROFILE_SPECIFIER = SantiDistr;
 			};
 			name = Release;
 		};

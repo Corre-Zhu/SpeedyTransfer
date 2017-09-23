@@ -35,4 +35,7 @@
  */
 - (UIImage *)createRRcode;
 
+
+- (NSString *)sha256;
+
 @end

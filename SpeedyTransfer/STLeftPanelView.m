@@ -8,6 +8,7 @@
 
 #import "STLeftPanelView.h"
 #import "STHomeViewController.h"
+#import "DLSViewController.h"
 
 @interface STLeftPanelView () {
     UILabel *nameLabel;
@@ -89,11 +90,42 @@
                 version.text = [[[NSBundle mainBundle] infoDictionary] stringForKey:@"CFBundleShortVersionString"];
                 version.textAlignment = NSTextAlignmentRight;
                 [sendButton addSubview:version];
+                
+                UITapGestureRecognizer *tap3 = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tap3)];
+                tap3.numberOfTapsRequired = 3;
+                [sendButton addGestureRecognizer:tap3];
+                
+                UITapGestureRecognizer *tap4 = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tap4)];
+                tap4.numberOfTapsRequired = 4;
+                [sendButton addGestureRecognizer:tap4];
+                [tap3 requireGestureRecognizerToFail:tap4];
+                
+                UITapGestureRecognizer *tap5 = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tap5)];
+                tap5.numberOfTapsRequired = 5;
+                [sendButton addGestureRecognizer:tap5];
+                [tap4 requireGestureRecognizerToFail:tap5];
+
             }
         }
         
     }
     return self;
+}
+
+- (void)tap3 {
+    UIAlertView *alertV = [[UIAlertView alloc] initWithTitle:nil message:@"再点击2次，进入DLS分析" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
+    [alertV show];
+ 
+}
+
+- (void)tap4 {
+    UIAlertView *alertV = [[UIAlertView alloc] initWithTitle:nil message:@"再点击1次，进入DLS分析" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
+    [alertV show];
+}
+
+- (void)tap5 {
+    DLSViewController *vc = [[DLSViewController alloc] init];
+    [self.parentViewController.navigationController pushViewController:vc animated:YES];
 }
 
 - (void)layoutSubviews {
@@ -145,6 +177,8 @@
         [(STHomeViewController *)self.parentViewController inviteFriendButtonClick];
     } else if (button.tag == 2) {
         [(STHomeViewController *)self.parentViewController feedbackButtonClick];
+    } else {
+        
     }
 }
 
