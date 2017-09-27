@@ -37,7 +37,7 @@
     NSString *sign = [[NSString stringWithFormat:@"%@%@%@", appkey ,didtype , didvalue] sha256];
     NSString *osver = [UIDevice currentDevice].systemVersion;
     
-    return [url stringByAppendingFormat:@"?appid=%@&didtype=%@&didvalue=%@&os=%@&sign=%@&osver=%@", appid, didtype, didvalue, os, sign, osver];
+    return [url stringByAppendingFormat:@"?appid=%@&didtype=%@&didvalue=%@&os=%@&sign=%@&osver=%@&ivc=23773141", appid, didtype, didvalue, os, sign, osver];
 }
 
 - (IBAction)click:(UIButton *)sender {
@@ -58,7 +58,18 @@
         if (!error && httpResponse.statusCode == 200) {
             int code = [responseObject intForKey:@"code"];
             if (code == 200) {
-                _textView.text = @"sfsdfsdf";
+                NSMutableString *mutString = [NSMutableString string];
+                
+                NSDictionary *results = [responseObject dictionaryForKey:@"result"];
+                NSArray *props = [results arrayForKey:@"props"];
+                [mutString appendString:[props componentsJoinedByString:@"\n\n"]];
+                [mutString appendString:@"\n\n"];
+
+                
+                NSArray *tags = [results arrayForKey:@"tags"];
+                [mutString appendFormat:@"标签:\n     %@", [tags componentsJoinedByString:@"\n     "]];
+                
+                _textView.text = mutString;
                 _textView.hidden = NO;
             } else {
                 MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
@@ -95,7 +106,7 @@
     
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"left_white"] style:UIBarButtonItemStylePlain target:self action:@selector(leftBarButtonItemClick)];
     
-    
+    self.navigationItem.title = NSLocalizedString(@"DLS分析", nil);
 }
 
 - (void)didReceiveMemoryWarning {
