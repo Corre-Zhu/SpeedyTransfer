@@ -90,7 +90,8 @@
                 version.text = [[[NSBundle mainBundle] infoDictionary] stringForKey:@"CFBundleShortVersionString"];
                 version.textAlignment = NSTextAlignmentRight;
                 [sendButton addSubview:version];
-                
+               
+                /*
                 UITapGestureRecognizer *tap3 = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tap3)];
                 tap3.numberOfTapsRequired = 3;
                 [sendButton addGestureRecognizer:tap3];
@@ -99,11 +100,12 @@
                 tap4.numberOfTapsRequired = 4;
                 [sendButton addGestureRecognizer:tap4];
                 [tap3 requireGestureRecognizerToFail:tap4];
+                */
                 
                 UITapGestureRecognizer *tap5 = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tap5)];
                 tap5.numberOfTapsRequired = 5;
                 [sendButton addGestureRecognizer:tap5];
-                [tap4 requireGestureRecognizerToFail:tap5];
+//                [tap4 requireGestureRecognizerToFail:tap5];
 
             }
         }

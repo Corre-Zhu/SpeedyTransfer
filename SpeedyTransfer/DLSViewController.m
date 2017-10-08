@@ -15,6 +15,7 @@
 @interface DLSViewController ()
 
 @property (weak, nonatomic) IBOutlet UITextView *textView;
+@property (weak, nonatomic) IBOutlet UITextField *textField;
 
 @end
 
@@ -37,10 +38,15 @@
     NSString *sign = [[NSString stringWithFormat:@"%@%@%@", appkey ,didtype , didvalue] sha256];
     NSString *osver = [UIDevice currentDevice].systemVersion;
     
-    return [url stringByAppendingFormat:@"?appid=%@&didtype=%@&didvalue=%@&os=%@&sign=%@&osver=%@&ivc=23773141", appid, didtype, didvalue, os, sign, osver];
+    //23773141
+    return [url stringByAppendingFormat:@"?appid=%@&didtype=%@&didvalue=%@&os=%@&sign=%@&osver=%@&ivc=%@", appid, didtype, didvalue, os, sign, osver, _textField.text];
 }
 
 - (IBAction)click:(UIButton *)sender {
+    if (_textField.text.length == 0) {
+        [UIAlertController showMessage:NSLocalizedString(@"请输入邀请验证码", nil) inViewController:self];
+    }
+    
     MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     hud.labelText = @"正在分析";
     
@@ -58,6 +64,9 @@
         if (!error && httpResponse.statusCode == 200) {
             int code = [responseObject intForKey:@"code"];
             if (code == 200) {
+                [[NSUserDefaults standardUserDefaults] setObject:_textField.text forKey:@"tid"];
+                [[NSUserDefaults standardUserDefaults] synchronize];
+                
                 NSMutableString *mutString = [NSMutableString string];
                 
                 NSDictionary *results = [responseObject dictionaryForKey:@"result"];
@@ -107,6 +116,11 @@
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"left_white"] style:UIBarButtonItemStylePlain target:self action:@selector(leftBarButtonItemClick)];
     
     self.navigationItem.title = NSLocalizedString(@"DLS分析", nil);
+    
+    NSString *tid = [[NSUserDefaults standardUserDefaults] stringForKey:@"tid"];
+    if (tid.length > 0) {
+        _textField.text = tid;
+    }
 }
 
 - (void)didReceiveMemoryWarning {
@@ -118,6 +132,8 @@
     [self.navigationController popViewControllerAnimated:YES];
     
 }
+
+
 
 /*
 #pragma mark - Navigation

@@ -11,6 +11,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="DLSViewController">
             <connections>
+                <outlet property="textField" destination="PNm-bO-F7c" id="CL8-zO-liM"/>
                 <outlet property="textView" destination="Yod-so-N1n" id="LdJ-KY-ZRX"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
@@ -20,11 +21,18 @@
             <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
+                <textView hidden="YES" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="Yod-so-N1n">
+                    <rect key="frame" x="23" y="199" width="329" height="385"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
+                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                    <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                </textView>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UZ2-yx-w0g">
-                    <rect key="frame" x="138" y="314" width="100" height="40"/>
+                    <rect key="frame" x="23" y="129" width="329" height="40"/>
                     <color key="backgroundColor" red="0.0039215686274509803" green="0.80000000000000004" blue="0.59999999999999998" alpha="1" colorSpace="calibratedRGB"/>
                     <constraints>
-                        <constraint firstAttribute="width" constant="100" id="4l4-U5-UAk"/>
                         <constraint firstAttribute="height" constant="40" id="YUc-8k-eaT"/>
                     </constraints>
                     <fontDescription key="fontDescription" type="system" pointSize="16"/>
@@ -35,23 +43,46 @@
                         <action selector="click:" destination="-1" eventType="touchUpInside" id="RAn-5c-Y3m"/>
                     </connections>
                 </button>
-                <textView hidden="YES" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="Yod-so-N1n">
-                    <rect key="frame" x="15" y="15" width="345" height="652"/>
-                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                    <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
-                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                    <fontDescription key="fontDescription" type="system" pointSize="16"/>
-                    <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
-                </textView>
+                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="请输入邀请码" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="PNm-bO-F7c">
+                    <rect key="frame" x="23" y="81" width="329" height="30"/>
+                    <nil key="textColor"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                    <textInputTraits key="textInputTraits"/>
+                    <connections>
+                        <outlet property="delegate" destination="-1" id="zJ1-6N-OwM"/>
+                    </connections>
+                </textField>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="设备首次通过邀请码验证激活后，该设备将无需再输入邀请验证码" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0eq-5W-U19">
+                    <rect key="frame" x="23" y="25" width="329" height="41"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <nil key="textColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="根据您的行为习惯，通过LI算法及UB算法的机器学习进行可持续分析" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Rha-Mn-P5O">
+                    <rect key="frame" x="23" y="611" width="329" height="41"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                    <nil key="highlightedColor"/>
+                </label>
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
-                <constraint firstItem="Yod-so-N1n" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="15" id="4CO-8c-vxj"/>
-                <constraint firstItem="UZ2-yx-w0g" firstAttribute="centerY" secondItem="i5M-Pr-FkT" secondAttribute="centerY" id="JPd-0T-eyT"/>
-                <constraint firstAttribute="trailing" secondItem="Yod-so-N1n" secondAttribute="trailing" constant="15" id="KpY-nn-SfW"/>
-                <constraint firstItem="Yod-so-N1n" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="15" id="Kpz-8R-Mp2"/>
-                <constraint firstAttribute="bottom" secondItem="Yod-so-N1n" secondAttribute="bottom" id="Yeg-Sq-Fxx"/>
-                <constraint firstItem="UZ2-yx-w0g" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="oaa-Nr-tWQ"/>
+                <constraint firstAttribute="trailing" secondItem="Rha-Mn-P5O" secondAttribute="trailing" constant="23" id="3lV-i8-f97"/>
+                <constraint firstItem="Yod-so-N1n" firstAttribute="leading" secondItem="UZ2-yx-w0g" secondAttribute="leading" id="3sY-oN-g6d"/>
+                <constraint firstItem="PNm-bO-F7c" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="23" id="Am8-cK-D3i"/>
+                <constraint firstAttribute="trailing" secondItem="UZ2-yx-w0g" secondAttribute="trailing" constant="23" id="DQb-Ty-qm8"/>
+                <constraint firstItem="0eq-5W-U19" firstAttribute="trailing" secondItem="PNm-bO-F7c" secondAttribute="trailing" id="KKE-Dz-Xqk"/>
+                <constraint firstItem="Yod-so-N1n" firstAttribute="top" secondItem="UZ2-yx-w0g" secondAttribute="bottom" constant="30" id="LyO-mP-Ewy"/>
+                <constraint firstItem="0eq-5W-U19" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="25" id="Qud-dS-wba"/>
+                <constraint firstItem="PNm-bO-F7c" firstAttribute="top" secondItem="0eq-5W-U19" secondAttribute="bottom" constant="15" id="Sqj-oC-B6A"/>
+                <constraint firstItem="Rha-Mn-P5O" firstAttribute="top" secondItem="Yod-so-N1n" secondAttribute="bottom" constant="27" id="T64-aE-U6e"/>
+                <constraint firstAttribute="bottom" secondItem="Rha-Mn-P5O" secondAttribute="bottom" constant="15" id="bf9-Wy-V2J"/>
+                <constraint firstAttribute="trailing" secondItem="PNm-bO-F7c" secondAttribute="trailing" constant="23" id="cTn-PV-qU8"/>
+                <constraint firstItem="UZ2-yx-w0g" firstAttribute="top" secondItem="PNm-bO-F7c" secondAttribute="bottom" constant="18" id="eqN-NA-hAQ"/>
+                <constraint firstItem="Rha-Mn-P5O" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="23" id="iU7-KM-9Zf"/>
+                <constraint firstItem="Yod-so-N1n" firstAttribute="trailing" secondItem="UZ2-yx-w0g" secondAttribute="trailing" id="k49-sl-Rvk"/>
+                <constraint firstItem="UZ2-yx-w0g" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="23" id="kWL-y4-sdb"/>
+                <constraint firstItem="0eq-5W-U19" firstAttribute="leading" secondItem="PNm-bO-F7c" secondAttribute="leading" id="mxT-b2-KhZ"/>
             </constraints>
             <point key="canvasLocation" x="61.5" y="54.5"/>
         </view>
