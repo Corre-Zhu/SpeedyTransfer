@@ -47,6 +47,8 @@
         [UIAlertController showMessage:NSLocalizedString(@"请输入邀请验证码", nil) inViewController:self];
     }
     
+    [_textField resignFirstResponder];
+    
     MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     hud.labelText = @"正在分析";
     
